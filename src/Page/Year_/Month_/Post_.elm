@@ -50,7 +50,16 @@ routes =
 
 data : RouteParams -> DataSource Data
 data routeParams =
-    DataSource.succeed ()
+    DataSource.File.rawFile
+        ("data/posts/"
+            ++ routeParams.year
+            ++ "/"
+            ++ routeParams.month
+            ++ "/"
+            ++ routeParams.post
+            ++ ".md"
+        )
+        |> DataSource.map Data
 
 
 head :
@@ -74,7 +83,8 @@ head static =
 
 
 type alias Data =
-    ()
+    { content : String
+    }
 
 
 view :
@@ -92,5 +102,8 @@ view maybeUrl sharedModel static =
                 ++ " / "
                 ++ static.routeParams.post
             )
+        , Html.main_ []
+            [ Html.text static.data.content
+            ]
         ]
     }
