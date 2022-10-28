@@ -9,6 +9,8 @@ import Html
 import Html.Attributes as Attr
 import Markdown.Parser
 import Markdown.Renderer
+import OptimizedDecoder as Decode exposing (Decoder)
+import OptimizedDecoder.Pipeline as Decode
 import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
@@ -53,13 +55,18 @@ routes =
 
 data : RouteParams -> DataSource Data
 data routeParams =
-    DataSource.File.rawFile
+    DataSource.File.bodyWithFrontmatter postDataDecoder
         ("data/posts/{year}/{month}/{post}.md"
             |> String.replace "{year}" routeParams.year
             |> String.replace "{month}" routeParams.month
             |> String.replace "{post}" routeParams.post
         )
-        |> DataSource.map Data
+
+
+postDataDecoder : String -> Decoder Data
+postDataDecoder content =
+    Decode.succeed (Data content)
+        |> Decode.required "title" Decode.string
 
 
 head :
@@ -84,12 +91,13 @@ head static =
 
 type alias Data =
     { content : String
+    , title : String
     }
 
 
 title : StaticPayload Data RouteParams -> String
 title static =
-    static.routeParams.post
+    static.data.title
 
 
 view :
@@ -98,21 +106,16 @@ view :
     -> StaticPayload Data RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
-    { title = title static
-    , body =
-        [ Html.text
-            (static.routeParams.year
-                ++ " / "
-                ++ static.routeParams.month
-                ++ " / "
-                ++ static.routeParams.post
-            )
-        , Html.main_ [ Attr.class "container" ]
-            (static.data.content
+    let
+        content =
+            static.data.content
                 |> Markdown.Parser.parse
                 |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
                 |> Result.andThen (Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer)
                 |> Result.withDefault []
-            )
-        ]
+    in
+    { title = title static
+    , body =
+        Html.h1 [] [ Html.text static.data.title ]
+            :: content
     }

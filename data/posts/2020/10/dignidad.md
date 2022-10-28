@@ -1,3 +1,7 @@
+---
+title: Dignidad
+---
+
 A partir de una fecha que ya quedó inscrita en la historia de Chile, el “estallido social” del 18 de octubre de 2019, comenzó un enorme movimiento social al que yo personalmente suelo referirme como “movimiento por la dignidad”, por ser ésta una palabra que se ha vuelto clave en la discusión pública. Desde entonces hemos tenido protestas masivas y violenta represión por parte del estado. Las razones de la protesta son muchas, pero decantan en el reconocimiento de que nos regula un sistema que favorece los intereses económicos de los grupos privilegiados por sobre los derechos, la seguridad social y el respeto al medio ambiente. Ya que el problema es sistémico, a partir de esto se instala la petición central de una nueva constitución, escrita en forma democrática, que reemplace a la escrita durante la dictadura de Pinochet. En pocos días será el plebiscito que decidirá el camino a la nueva constitución.
 
 Desde los primeros días me involucré de distintas formas en el movimiento. Al principio fui a Plaza Ñuñoa a protestar, y después a la marcha en la más transversal ex Plaza Italia, hoy rebautizada como Plaza de la Dignidad por los manifestantes.
