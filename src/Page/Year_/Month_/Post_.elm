@@ -6,6 +6,9 @@ import DataSource.Glob as Glob exposing (Glob)
 import Head
 import Head.Seo as Seo
 import Html
+import Html.Attributes as Attr
+import Markdown.Parser
+import Markdown.Renderer
 import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
@@ -102,8 +105,12 @@ view maybeUrl sharedModel static =
                 ++ " / "
                 ++ static.routeParams.post
             )
-        , Html.main_ []
-            [ Html.text static.data.content
-            ]
+        , Html.main_ [ Attr.class "container" ]
+            (static.data.content
+                |> Markdown.Parser.parse
+                |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
+                |> Result.andThen (Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer)
+                |> Result.withDefault []
+            )
         ]
     }
