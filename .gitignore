@@ -1,6 +1,11 @@
+dist/
 
-reference/
+# elm-pages
+functions/render/elm-pages-cli.js
 
+# Elm
+elm-stuff/
+.elm-pages/
 
 # Node
 node_modules/
