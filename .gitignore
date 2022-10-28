@@ -1,0 +1,14 @@
+
+reference/
+
+
+# Node
+node_modules/
+npm-debug.log
+
+# Racket
+compiled/
+*.rkt~
+
+# Editors
+.vscode/
