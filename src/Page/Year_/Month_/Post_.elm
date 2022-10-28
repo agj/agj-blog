@@ -54,13 +54,10 @@ routes =
 data : RouteParams -> DataSource Data
 data routeParams =
     DataSource.File.rawFile
-        ("data/posts/"
-            ++ routeParams.year
-            ++ "/"
-            ++ routeParams.month
-            ++ "/"
-            ++ routeParams.post
-            ++ ".md"
+        ("data/posts/{year}/{month}/{post}.md"
+            |> String.replace "{year}" routeParams.year
+            |> String.replace "{month}" routeParams.month
+            |> String.replace "{post}" routeParams.post
         )
         |> DataSource.map Data
 
