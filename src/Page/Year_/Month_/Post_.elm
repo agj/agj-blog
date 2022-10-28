@@ -77,7 +77,7 @@ head static =
             }
         , description = "TODO"
         , locale = Nothing
-        , title = "TODO title" -- metadata.title -- TODO
+        , title = title static
         }
         |> Seo.website
 
@@ -87,13 +87,18 @@ type alias Data =
     }
 
 
+title : StaticPayload Data RouteParams -> String
+title static =
+    static.routeParams.post
+
+
 view :
     Maybe PageUrl
     -> Shared.Model
     -> StaticPayload Data RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
-    { title = "title"
+    { title = title static
     , body =
         [ Html.text
             (static.routeParams.year
