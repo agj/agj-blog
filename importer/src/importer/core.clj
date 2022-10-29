@@ -2,7 +2,8 @@
   (:gen-class)
   (:require [clojure.xml :as xml]
             [clojure.java.io :as io]
-            [java-time.api :as jt]))
+            [java-time.api :as jt]
+            [clj-yaml.core :as yaml]))
 
 (defn -main
   "I don't do a whole lot ... yet."
@@ -56,6 +57,11 @@
    :description (get-tag-text :description post-xml)
    :excerpt (get-tag-text :excerpt:encoded post-xml)})
 
+(defn encode-yaml [data]
+  (yaml/generate-string
+   data
+   :dumper-options {:flow-style :block}))
+
 
 ;; Data
 
@@ -84,9 +90,15 @@
 
 
 (comment
-  (->> posts-xml
-       last
-       parse-post)
+  (println
+   (->> posts-xml
+        last
+        parse-post
+        ((fn [post]
+           (as-> post <>
+          ;;   (:tags <>)
+          ;;   (map :slug <>)
+             (yaml/generate-string <> :dumper-options {:flow-style :block}))))))
 
   (last posts)
   ;;
