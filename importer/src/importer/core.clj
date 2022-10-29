@@ -2,7 +2,7 @@
   (:gen-class)
   (:require [clojure.xml :as xml]
             [clojure.java.io :as io]
-            [clojure.zip :as z]))
+            [java-time.api :as jt]))
 
 (defn -main
   "I don't do a whole lot ... yet."
@@ -29,16 +29,24 @@
                              (= (->> el :attrs :domain)
                                 domain))))
        (map (fn [el]
-              (def attrs (:attrs el))
               {:name (->> el :content first)
-               :slug (:nicename attrs)}))))
+               :slug (:nicename (:attrs el))}))))
 
-(defn post-to-frontmatter [post-xml]
+(defn parse-date [date-str]
+  (let [date (jt/local-date-time "yyyy-MM-dd HH:mm:ss"
+                                 date-str)]
+    {:year (jt/format "yyyy" date)
+     :month (jt/format "MM" date)
+     :date (jt/format "dd" date)
+     :hour (jt/format "HH" date)
+     :minutes (jt/format "mm" date)}))
+
+(defn parse-post [post-xml]
   {:title (get-tag-text :title post-xml)
    :id (get-tag-text :wp:post_id post-xml)
    :slug (get-tag-text :wp:post_name post-xml)
    :url (get-tag-text :link post-xml)
-   :date (get-tag-text :wp:post_date post-xml)
+   :date (parse-date (get-tag-text :wp:post_date post-xml))
    :categories (get-taxonomy "category" post-xml)
    :tags (get-taxonomy "post_tag" post-xml)
    :parent (get-tag-text :wp:post_parent post-xml)
@@ -47,6 +55,7 @@
    :content (get-tag-text :content:encoded post-xml)
    :description (get-tag-text :description post-xml)
    :excerpt (get-tag-text :excerpt:encoded post-xml)})
+
 
 ;; Data
 
@@ -70,10 +79,15 @@
                               (= (get-tag-text :wp:post_type item-xml)
                                  "post")))))
 
+(def posts (map parse-post posts-xml))
+
 
 
 (comment
-  (->> (last posts-xml)
-       post-to-frontmatter)
+  (->> posts-xml
+       last
+       parse-post)
+
+  (last posts)
   ;;
   )
