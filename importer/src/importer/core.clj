@@ -124,8 +124,12 @@
   "Generate blog data from Wordpress XML export file."
   [& args]
 
-  (println (System/getProperty "user.dir"))
-  (println (map get-post-path posts)))
+  (println (str "Current directory: "
+                (System/getProperty "user.dir")))
+;;   (println (map get-post-path posts))
+
+  (doseq [post posts]
+    (write-post post)))
 
 
 
