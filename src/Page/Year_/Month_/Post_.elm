@@ -5,7 +5,7 @@ import DataSource.File
 import DataSource.Glob as Glob exposing (Glob)
 import Head
 import Head.Seo as Seo
-import Html
+import Html exposing (Html)
 import Html.Attributes as Attr
 import Markdown.Parser
 import Markdown.Renderer
@@ -27,7 +27,10 @@ type alias Msg =
 
 
 type alias RouteParams =
-    { year : String, month : String, post : String }
+    { year : String
+    , month : String
+    , post : String
+    }
 
 
 page : Page RouteParams Data
@@ -42,12 +45,19 @@ page =
 
 routes : DataSource (List RouteParams)
 routes =
+    let
+        globIntAsString =
+            Glob.map String.fromInt Glob.int
+    in
     Glob.succeed RouteParams
         |> Glob.match (Glob.literal "data/posts/")
-        |> Glob.capture Glob.wildcard
+        -- Year
+        |> Glob.capture globIntAsString
         |> Glob.match (Glob.literal "/")
-        |> Glob.capture Glob.wildcard
-        |> Glob.match (Glob.literal "/")
+        -- Month
+        |> Glob.capture globIntAsString
+        |> Glob.match (Glob.literal "-")
+        -- Slug
         |> Glob.capture Glob.wildcard
         |> Glob.match (Glob.literal ".md")
         |> Glob.toDataSource
@@ -56,7 +66,7 @@ routes =
 data : RouteParams -> DataSource Data
 data routeParams =
     DataSource.File.bodyWithFrontmatter postDataDecoder
-        ("data/posts/{year}/{month}/{post}.md"
+        ("data/posts/{year}/{month}-{post}.md"
             |> String.replace "{year}" routeParams.year
             |> String.replace "{month}" routeParams.month
             |> String.replace "{post}" routeParams.post
@@ -65,7 +75,28 @@ data routeParams =
 
 postDataDecoder : String -> Decoder Data
 postDataDecoder content =
-    Decode.succeed (Data content)
+    let
+        parseContentResult =
+            content
+                |> Markdown.Parser.parse
+                |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
+                |> Result.andThen (Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer)
+
+        parsedContent =
+            case parseContentResult of
+                Ok result ->
+                    result
+
+                Err err ->
+                    [ Html.p []
+                        [ Html.text "Markdown parsing error:"
+                        ]
+                    , Html.pre []
+                        [ Html.code [] [ Html.text err ]
+                        ]
+                    ]
+    in
+    Decode.succeed (Data parsedContent)
         |> Decode.required "title" Decode.string
 
 
@@ -90,7 +121,7 @@ head static =
 
 
 type alias Data =
-    { content : String
+    { content : List (Html Msg)
     , title : String
     }
 
@@ -106,16 +137,8 @@ view :
     -> StaticPayload Data RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
-    let
-        content =
-            static.data.content
-                |> Markdown.Parser.parse
-                |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
-                |> Result.andThen (Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer)
-                |> Result.withDefault []
-    in
     { title = title static
     , body =
         Html.h1 [] [ Html.text static.data.title ]
-            :: content
+            :: static.data.content
     }
