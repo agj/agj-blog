@@ -6,7 +6,8 @@
             [clj-yaml.core :as yaml]
             [clojure.core.match :refer [match]]
             [slugger.core :refer [->slug]]
-            [hickory.core :as hickory]))
+            [hickory.core :as hickory]
+            [clojure.string :as str]))
 
 
 ;; Helpers
@@ -91,6 +92,11 @@
   (let [filename (str "../data/posts/" (get-post-path post))]
     (io/make-parents filename)
     (spit filename (encode-post post))))
+
+(defn get-children [tag el]
+  (->> el
+       :content
+       (filter #(= (:tag %) tag))))
 
 
 ;; Data
@@ -179,6 +185,30 @@
 (defn els->md [els]
   (->> els (map el->md) (apply str)))
 
+(defn div->md [el]
+  (if (= (->> el :attrs :class)
+         "language")
+    (str "\n"
+         "---\n\n"
+         "<!-- language -->\n\n"
+         (->> el :content els->md))
+    (->> el :content els->md)))
+
+(defn span->md [el]
+  (cond
+    (->> el :attrs :style (= "font-style: italic;")) (em->md el)
+    (->> el :attrs :class (= "postbody")) (->> el :content els->md)
+    :else "???"))
+
+(defn blockquote->md [el]
+  (let [parsed-content (->> el :content els->md)]
+    (str "\n"
+         (->> parsed-content
+              str/split-lines
+              (map #(str "> " %))
+              (str/join "\n"))
+         "\n")))
+
 (defn el->md [el]
   (match [(:tag el) (:type el)]
     [:em _] (em->md el)
@@ -187,6 +217,9 @@
     [:ul _]  (->> el :content els->md)
     [:li _] (str "- "
                  (->> el :content els->md))
+    [:blockquote _] (blockquote->md el)
+    [:div _] (div->md el)
+    [:span _] (span->md el)
     [_ :comment] (str "<!-- "
                       (->> el :content els->md)
                       " -->")
@@ -195,17 +228,64 @@
             (h*->md el)
             "???")))
 
+(defn arr-find [pred arr]
+  (->> arr
+       (filter pred)
+       first))
+
+(defn vimeo-el->video [el]
+  (let [width (->> el :attrs :width)
+        height (->> el :attrs :height)
+        id (->> el
+                (get-children :param)
+                (arr-find #(= (->> % :attrs :name)
+                              "src"))
+                :attrs
+                :value
+                (re-matches #".*clip_id=(\d+).*")
+                (#(nth % 1)))]
+    {:service :vimeo
+     :id id
+     :width width
+     :height height}))
+
+(defn object->video [el]
+  (cond
+    (some->> el
+             (get-children :param)
+             (arr-find #(= (->> % :attrs :name)
+                           "src"))
+             :attrs
+             :value
+             (re-matches #".*vimeo.*"))
+    (vimeo-el->video el)
+    :else nil))
+
 (comment
   (println
    (->> posts-xml
-        (#(nth % 0))
+        (#(nth % 6))
         parse-post
         :content
         hickory/parse-fragment
         (map hickory/as-hickory)
-        els->md)
+        els->md
+        ;;
+        )
    ;;
    )
+
+  (->>
+   "<object classid=\"clsid:d27cdb6e-ae6d-11cf-96b8-444553540000\" width=\"500\" height=\"333\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0\">
+       <param name=\"allowfullscreen\" value=\"true\" />
+       <param name=\"allowscriptaccess\" value=\"always\" />
+       <param name=\"src\" value=\"http://vimeo.com/moogaloop.swf?clip_id=1260271&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=ffffff&amp;fullscreen=1\" />
+       <embed type=\"application/x-shockwave-flash\" width=\"500\" height=\"333\" src=\"http://vimeo.com/moogaloop.swf?clip_id=1260271&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=ffffff&amp;fullscreen=1\" allowscriptaccess=\"always\" allowfullscreen=\"true\"></embed>
+     </object>"
+   hickory/parse-fragment
+   (map hickory/as-hickory)
+   first
+   object->video)
 
   (last posts)
   ;;
