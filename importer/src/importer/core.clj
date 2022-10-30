@@ -71,7 +71,8 @@
      :parent (get-tag-text :wp:post_parent post-xml)
      :post-type (get-tag-text :wp:post_type post-xml)
      :status (get-tag-text :wp:status post-xml)
-     :content (get-tag-text :content:encoded post-xml)
+     :content (or (get-tag-text :content:encoded post-xml)
+                  "\n")
      :description (get-tag-text :description post-xml)
      :excerpt (get-tag-text :excerpt:encoded post-xml)}))
 
@@ -322,14 +323,9 @@
 (comment
   (println
    (->> posts-xml
-        (#(nth % 10))
-        post-xml->post
-        ((fn [post]
-           (->> post
-                :content
-                hickory/parse-fragment
-                (map hickory/as-hickory)
-                els->md)))
+     ;;    (#(nth % 10))
+        (map post-xml->post)
+        (filter #(not (:content %)))
         ;;
         )
    ;;
