@@ -148,6 +148,7 @@
   (cond
     (->> el :attrs :style (= "font-style: italic;")) (em->md el)
     (->> el :attrs :class (= "postbody")) (->> el :content els->md)
+    (->> el :attrs :class (= "s1")) (->> el :content els->md)
     :else "???"))
 
 (defn blockquote->md [el]
@@ -188,29 +189,28 @@
        (apply str)))
 
 (defn vimeo-el->url [el]
-  (some->> el
-           (get-children :param)
-           (vector-find #(let [name (->> % :attrs :name)]
-                           (or (= name "src")
-                               (= name "movie"))))
-           :attrs
-           :value))
+  (match [(:tag el)]
+    [:iframe] (->> el :attrs :src)
+    [:object] (some->> el
+                       (get-children :param)
+                       (vector-find #(let [name (->> % :attrs :name)]
+                                       (or (= name "src")
+                                           (= name "movie"))))
+                       :attrs
+                       :value)
+    :else nil))
 
 (defn vimeo-el? [el]
   (boolean
-   (and (= (:tag el)
-           :object)
-        (some->> el
-                 vimeo-el->url
-                 (re-matches #".*vimeo.*")))))
+   (->> el vimeo-el->url)))
 
 (defn vimeo-el->video [el]
   (let [width (->> el :attrs :width)
         height (->> el :attrs :height)
         id (->> el
                 vimeo-el->url
-                (re-matches #".*clip_id=(\d+).*")
-                (#(nth % 1)))]
+                (re-matches #".*(clip_id=|video\/)(\d+).*")
+                (#(nth % 2)))]
     {:service "vimeo"
      :id id
      :width width
@@ -241,6 +241,7 @@
     [:del _] (surround->md "~~" "~~" el)
     [:div _] (div->md el)
     [:span _] (span->md el)
+    [:pre _] (surround->md "```\n" "\n```" el)
     [_ :comment] (surround->md "<!-- " " -->" el)
     [nil nil] el
     :else (cond
@@ -343,12 +344,11 @@
 
   (println
    (->>
-    "<object width=\"500\" height=\"281\">
-  <param name=\"allowfullscreen\" value=\"true\" />
-  <param name=\"allowscriptaccess\" value=\"always\" />
-  <param name=\"movie\" value=\"http://vimeo.com/moogaloop.swf?clip_id=19267207&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=ffffff&amp;fullscreen=1&amp;autoplay=0&amp;loop=0\" />
-  <embed src=\"http://vimeo.com/moogaloop.swf?clip_id=19267207&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=ffffff&amp;fullscreen=1&amp;autoplay=0&amp;loop=0\" type=\"application/x-shockwave-flash\" allowfullscreen=\"true\" allowscriptaccess=\"always\" width=\"500\" height=\"281\"></embed>
-</object>"
+    "<iframe 
+src=\"http://player.vimeo.com/video/32240154?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff\" 
+width=\"500\" height=\"281\" frameborder=\"0\" 
+webkitAllowFullScreen
+allowFullScreen></iframe>"
     hickory/parse-fragment
     (map hickory/as-hickory)
     first
