@@ -176,6 +176,34 @@
               (str/join "\n"))
          "\n")))
 
+(defn ol->md [el]
+  (->> el
+       :content
+       (reduce (fn [result-count el]
+                 (let [result (first result-count)
+                       count (second result-count)]
+                   (if (= (:tag el) :li)
+                     [(conj result
+                            (str (inc count) ". "
+                                 (->> el :content els->md)))
+                      (inc count)]
+                     [(conj result (el->md el))
+                      count])))
+               [[] 0])
+       first
+       (apply str)))
+
+(defn ul->md [el]
+  (->> el
+       :content
+       (map (fn [el]
+              (if (= (:tag el)
+                     :li)
+                (str "- "
+                     (->> el :content els->md))
+                (el->md el))))
+       (apply str)))
+
 (defn vimeo-el->video [el]
   (let [width (->> el :attrs :width)
         height (->> el :attrs :height)
@@ -221,9 +249,8 @@
     [:em _] (em->md el)
     [:a _] (a->md el)
     [:img _] (img->md el)
-    [:ul _]  (->> el :content els->md)
-    [:li _] (str "- "
-                 (->> el :content els->md))
+    [:ul _]  (ul->md el)
+    [:ol _] (ol->md el)
     [:blockquote _] (blockquote->md el)
     [:div _] (div->md el)
     [:span _] (span->md el)
@@ -283,7 +310,7 @@
 (comment
   (println
    (->> posts-xml
-        (#(nth % 6))
+        (#(nth % 7))
         post-xml->post
         :content
         hickory/parse-fragment
@@ -294,18 +321,22 @@
    ;;
    )
 
-  (->>
-   "<object classid=\"clsid:d27cdb6e-ae6d-11cf-96b8-444553540000\" width=\"500\" height=\"333\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0\">
-       <param name=\"allowfullscreen\" value=\"true\" />
-       <param name=\"allowscriptaccess\" value=\"always\" />
-       <param name=\"src\" value=\"http://vimeo.com/moogaloop.swf?clip_id=1260271&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=ffffff&amp;fullscreen=1\" />
-       <embed type=\"application/x-shockwave-flash\" width=\"500\" height=\"333\" src=\"http://vimeo.com/moogaloop.swf?clip_id=1260271&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=ffffff&amp;fullscreen=1\" allowscriptaccess=\"always\" allowfullscreen=\"true\"></embed>
-     </object>"
-   hickory/parse-fragment
-   (map hickory/as-hickory)
-   first
-   object->video)
+  (println
+   (->>
+    "<ul>
+	<li>Cada cómic debe ser original; no debe usar contenido con copyright, y debe ser creado específicamente para este proyecto.</li>
+	<li>No existirán restricciones en estética, trama, personajes, etc. Excepto por las indicadas en los dos siguientes puntos.</li>
+	<li>Al menos un elemento de la tira anterior debe ser usado o desarrollado en la tuya, para mantener un mínimo de continuidad. Ejemplos: un personaje, colores, parte de la historia.</li>
+	<li>El texto está absolutamente vetado, sin importar el idioma (a no ser que sea uno ficticio.)</li>
+	<li>Las tiras deben consistir de una sola imagen en formato png, jpg o gif, en cualquier proporción (tal vez se decida un ancho máximo posteriormente), y hecho para ser leído en pantalla. ¿Tal vez debamos archivar los originales a 300 dpi también, por si acaso?</li>
+	<li>Aquellos interesados en contribuir tienen que ser conocidos míos o de algún autor de una tira (este no es un proyecto completamente abierto). No se requiere tener ningún talento especial.</li>
+	<li>Los autores no pueden dibujar una nueva tira si ya han dibujado una antes, a no ser que no existan candidatos nuevos.</li>
+	<li>Tal vez sea un requerimiento en el futuro usar un logo del proyecto en algún lugar de la imagen. Lo mismo respecto a un nombre o pseudónimo.</li>
+    </ul>"
+    hickory/parse-fragment
+    (map hickory/as-hickory)
+    first
+    ul->md))
 
-  (last posts)
   ;;
   )
