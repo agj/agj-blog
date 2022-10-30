@@ -10,13 +10,21 @@
             [clojure.string :as str]))
 
 
-;; Helpers
+;; Data traversal
+
+(defn vector-find [pred arr]
+  (->> arr
+       (filter pred)
+       first))
+
+(defn get-children [tag el]
+  (->> el
+       :content
+       (filter #(= (:tag %) tag))))
 
 (defn get-tag-text [tag item-xml]
   (->> item-xml
-       :content
-       (filter (fn [el] (= (:tag el)
-                           tag)))
+       (get-children tag)
        first
        :content
        first))
@@ -32,6 +40,9 @@
               {:name (->> el :content first)
                :slug (:nicename (:attrs el))}))))
 
+
+;; Conversion
+
 (defn parse-date [date-str]
   (let [date (jt/local-date-time "yyyy-MM-dd HH:mm:ss"
                                  date-str)
@@ -44,7 +55,7 @@
      :hour (get "HH")
      :minutes (get "mm")}))
 
-(defn parse-post [post-xml]
+(defn post-xml->post [post-xml]
   (let [title (get-tag-text :title post-xml)]
     {:title title
      :id (get-tag-text :wp:post_id post-xml)
@@ -61,22 +72,22 @@
      :description (get-tag-text :description post-xml)
      :excerpt (get-tag-text :excerpt:encoded post-xml)}))
 
-(defn encode-yaml [data]
+(defn data->yaml [data]
   (yaml/generate-string
    data
    :dumper-options {:flow-style :block}))
 
-(defn encode-post [post]
+(defn post->string [post]
   (let [frontmatter-data {:title (:title post)
                           :categories (->> post :categories (map :slug))
                           :tags (->> post :tags (map :slug))}]
     (str "---\n"
-         (encode-yaml frontmatter-data)
+         (data->yaml frontmatter-data)
          "---\n\n"
          (:content post)
          "\n")))
 
-(defn get-post-path [post]
+(defn post->path [post]
   (let [status (:status post)]
     (str (if (= status "draft")
            "drafts/"
@@ -88,73 +99,24 @@
            "")
          ".md")))
 
-(defn write-post [post]
-  (let [filename (str "../data/posts/" (get-post-path post))]
+(defn output-post [post]
+  (let [filename (str "../data/posts/" (post->path post))]
     (io/make-parents filename)
-    (spit filename (encode-post post))))
-
-(defn get-children [tag el]
-  (->> el
-       :content
-       (filter #(= (:tag %) tag))))
+    (spit filename (post->string post))))
 
 
-;; Data
-
-(def wordpress-xml (-> "wordpress-data.xml"
-                       io/resource
-                       io/file
-                       xml/parse))
-
-(def items-xml (->> wordpress-xml
-                    :content
-                    first
-                    :content
-                    (filter (fn [el]
-                              (and (= (:tag el)
-                                      :item)
-                                   (= (:tag (first (:content el)))
-                                      :title))))))
-
-(def posts-xml (->> items-xml
-                    (filter (fn [item-xml]
-                              (= (get-tag-text :wp:post_type item-xml)
-                                 "post")))))
-
-(def posts (map parse-post posts-xml))
-
-
-;; Main
-
-(defn -main
-  "Generate blog data from Wordpress XML export file."
-  [& args]
-
-  (println (str "Current directory: "
-                (System/getProperty "user.dir")))
-;;   (println (map get-post-path posts))
-
-  (doseq [post posts]
-    (write-post post)))
-
-(defn h*->md [el]
-  (let [n (match [(:tag el)]
-            [:h1] 1
-            [:h2] 2
-            [:h3] 3
-            [:h4] 4
-            [:h5] 5)]
-    (str "\n"
-         (apply str (repeat n "="))
-         " "
-         (->> el :content first el->md)
-         "\n")))
+;; Markdown generation
 
 (defn h*-tag? [tag]
   (if (and tag
            (re-matches #"(?i)^h\d$" (name tag)))
     true
     false))
+
+(defn em->md [el]
+  (str "_"
+       (->> el :content els->md)
+       "_"))
 
 (defn img->md [el]
   (let [alt (->> el :attrs :alt)
@@ -177,13 +139,18 @@
        (->> el :attrs :href)
        ")"))
 
-(defn em->md [el]
-  (str "_"
-       (->> el :content els->md)
-       "_"))
-
-(defn els->md [els]
-  (->> els (map el->md) (apply str)))
+(defn h*->md [el]
+  (let [n (match [(:tag el)]
+            [:h1] 1
+            [:h2] 2
+            [:h3] 3
+            [:h4] 4
+            [:h5] 5)]
+    (str "\n"
+         (apply str (repeat n "="))
+         " "
+         (->> el :content first el->md)
+         "\n")))
 
 (defn div->md [el]
   (if (= (->> el :attrs :class)
@@ -209,6 +176,46 @@
               (str/join "\n"))
          "\n")))
 
+(defn vimeo-el->video [el]
+  (let [width (->> el :attrs :width)
+        height (->> el :attrs :height)
+        id (->> el
+                (get-children :param)
+                (vector-find #(= (->> % :attrs :name)
+                                 "src"))
+                :attrs
+                :value
+                (re-matches #".*clip_id=(\d+).*")
+                (#(nth % 1)))]
+    {:service "vimeo"
+     :id id
+     :width width
+     :height height}))
+
+(defn vimeo-el? [el]
+  (and (= (:tag el)
+          :object)
+       (some->> el
+                (get-children :param)
+                (vector-find #(= (->> % :attrs :name)
+                                 "src"))
+                :attrs
+                :value
+                (re-matches #".*vimeo.*"))))
+
+(defn el->video [el]
+  (cond
+    (vimeo-el? el) (vimeo-el->video el)
+    :else nil))
+
+(defn video->md [video]
+  (str "<VideoEmbed "
+       "service=\"" (:service video) "\" "
+       "id=\"" (:id video) "\" "
+       "width=\"" (:width video) "\" "
+       "height=\"" (:height video) "\" "
+       "/>"))
+
 (defn el->md [el]
   (match [(:tag el) (:type el)]
     [:em _] (em->md el)
@@ -224,48 +231,60 @@
                       (->> el :content els->md)
                       " -->")
     [nil nil] el
-    :else (if (h*-tag? (:tag el))
-            (h*->md el)
-            "???")))
+    :else (cond
+            (h*-tag? (:tag el)) (h*->md el)
+            (el->video el) (video->md (el->video el))
+            :else "???")))
 
-(defn arr-find [pred arr]
-  (->> arr
-       (filter pred)
-       first))
+(defn els->md [els]
+  (->> els (map el->md) (apply str)))
 
-(defn vimeo-el->video [el]
-  (let [width (->> el :attrs :width)
-        height (->> el :attrs :height)
-        id (->> el
-                (get-children :param)
-                (arr-find #(= (->> % :attrs :name)
-                              "src"))
-                :attrs
-                :value
-                (re-matches #".*clip_id=(\d+).*")
-                (#(nth % 1)))]
-    {:service :vimeo
-     :id id
-     :width width
-     :height height}))
 
-(defn object->video [el]
-  (cond
-    (some->> el
-             (get-children :param)
-             (arr-find #(= (->> % :attrs :name)
-                           "src"))
-             :attrs
-             :value
-             (re-matches #".*vimeo.*"))
-    (vimeo-el->video el)
-    :else nil))
+;; Data
+
+(def wordpress-xml (-> "wordpress-data.xml"
+                       io/resource
+                       io/file
+                       xml/parse))
+
+(def items-xml (->> wordpress-xml
+                    :content
+                    first
+                    :content
+                    (filter (fn [el]
+                              (and (= (:tag el)
+                                      :item)
+                                   (= (:tag (first (:content el)))
+                                      :title))))))
+
+(def posts-xml (->> items-xml
+                    (filter (fn [item-xml]
+                              (= (get-tag-text :wp:post_type item-xml)
+                                 "post")))))
+
+(def posts (map post-xml->post posts-xml))
+
+
+;; Main
+
+(defn -main
+  "Generate blog data from Wordpress XML export file."
+  [& args]
+
+  (println (str "Current directory: "
+                (System/getProperty "user.dir")))
+;;   (println (map post->path posts))
+
+  (doseq [post posts]
+    (output-post post)))
+
+
 
 (comment
   (println
    (->> posts-xml
         (#(nth % 6))
-        parse-post
+        post-xml->post
         :content
         hickory/parse-fragment
         (map hickory/as-hickory)
