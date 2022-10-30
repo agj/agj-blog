@@ -79,8 +79,7 @@
     (str (if (= status "draft")
            "drafts/"
            (str (-> post :date :year) "/"
-                (-> post :date :month) "-"
-                (-> post :date :date) "-"))
+                (-> post :date :month) "-"))
          (:slug post)
          (if (= status "private")
            "-HIDDEN"
