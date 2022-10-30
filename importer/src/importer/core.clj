@@ -35,12 +35,15 @@
 
 (defn parse-date [date-str]
   (let [date (jt/local-date-time "yyyy-MM-dd HH:mm:ss"
-                                 date-str)]
-    {:year (jt/format "yyyy" date)
-     :month (jt/format "MM" date)
-     :date (jt/format "dd" date)
-     :hour (jt/format "HH" date)
-     :minutes (jt/format "mm" date)}))
+                                 date-str)
+        get #(-> %
+                 (jt/format date)
+                 Integer/parseInt)]
+    {:year (get "yyyy")
+     :month (get "MM")
+     :date (get "dd")
+     :hour (get "HH")
+     :minutes (get "mm")}))
 
 (defn parse-post [post-xml]
   {:title (get-tag-text :title post-xml)
@@ -61,6 +64,15 @@
   (yaml/generate-string
    data
    :dumper-options {:flow-style :block}))
+
+(defn encode-post [post]
+  (let [frontmatter-data {:title (:title post)
+                          :categories (->> post :categories (map :slug))
+                          :tags (->> post :tags (map :slug))}]
+    (str "---\n"
+         (encode-yaml frontmatter-data)
+         "---\n\n"
+         (:content post))))
 
 
 ;; Data
@@ -94,11 +106,7 @@
    (->> posts-xml
         last
         parse-post
-        ((fn [post]
-           (as-> post <>
-          ;;   (:tags <>)
-          ;;   (map :slug <>)
-             (yaml/generate-string <> :dumper-options {:flow-style :block}))))))
+        encode-post))
 
   (last posts)
   ;;
