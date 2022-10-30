@@ -3,12 +3,9 @@
   (:require [clojure.xml :as xml]
             [clojure.java.io :as io]
             [java-time.api :as jt]
-            [clj-yaml.core :as yaml]))
-
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hello, World!"))
+            [clj-yaml.core :as yaml]
+            [clojure.core.match :refer [match]]
+            [slugger.core :refer [->slug]]))
 
 
 ;; Helpers
@@ -46,19 +43,21 @@
      :minutes (get "mm")}))
 
 (defn parse-post [post-xml]
-  {:title (get-tag-text :title post-xml)
-   :id (get-tag-text :wp:post_id post-xml)
-   :slug (get-tag-text :wp:post_name post-xml)
-   :url (get-tag-text :link post-xml)
-   :date (parse-date (get-tag-text :wp:post_date post-xml))
-   :categories (get-taxonomy "category" post-xml)
-   :tags (get-taxonomy "post_tag" post-xml)
-   :parent (get-tag-text :wp:post_parent post-xml)
-   :post-type (get-tag-text :wp:post_type post-xml)
-   :status (get-tag-text :wp:status post-xml)
-   :content (get-tag-text :content:encoded post-xml)
-   :description (get-tag-text :description post-xml)
-   :excerpt (get-tag-text :excerpt:encoded post-xml)})
+  (let [title (get-tag-text :title post-xml)]
+    {:title title
+     :id (get-tag-text :wp:post_id post-xml)
+     :slug (or (get-tag-text :wp:post_name post-xml)
+               (->slug title))
+     :url (get-tag-text :link post-xml)
+     :date (parse-date (get-tag-text :wp:post_date post-xml))
+     :categories (get-taxonomy "category" post-xml)
+     :tags (get-taxonomy "post_tag" post-xml)
+     :parent (get-tag-text :wp:post_parent post-xml)
+     :post-type (get-tag-text :wp:post_type post-xml)
+     :status (get-tag-text :wp:status post-xml)
+     :content (get-tag-text :content:encoded post-xml)
+     :description (get-tag-text :description post-xml)
+     :excerpt (get-tag-text :excerpt:encoded post-xml)}))
 
 (defn encode-yaml [data]
   (yaml/generate-string
@@ -76,10 +75,17 @@
          "\n")))
 
 (defn get-post-path [post]
-  (str (-> post :date :year) "/"
-       (-> post :date :month) "-"
-       (-> post :date :date) "-"
-       (:slug post) ".md"))
+  (let [status (:status post)]
+    (str (if (= status "draft")
+           "drafts/"
+           (str (-> post :date :year) "/"
+                (-> post :date :month) "-"
+                (-> post :date :date) "-"))
+         (:slug post)
+         (if (= status "private")
+           "-HIDDEN"
+           "")
+         ".md")))
 
 (defn write-post [post]
   (let [filename (str "../data/posts/" (get-post-path post))]
@@ -112,16 +118,26 @@
 (def posts (map parse-post posts-xml))
 
 
+;; Main
+
+(defn -main
+  "Generate blog data from Wordpress XML export file."
+  [& args]
+
+  (println (System/getProperty "user.dir"))
+  (println (map get-post-path posts)))
+
+
 
 (comment
   (println
    (->> posts-xml
-        last
-        parse-post
-        ((fn [post]
-           (let [filename (str "../data/posts/" (get-post-path post))]
-             (io/make-parents filename)
-             (spit filename (encode-post post)))))))
+     ;;    last
+        (map parse-post)
+     ;;    (filter #(->> % :slug not))
+     ;;    (map (fn [post]
+     ;;           (assoc post :slug (->slug (:title post)))))
+        (map get-post-path)))
 
   (last posts)
   ;;

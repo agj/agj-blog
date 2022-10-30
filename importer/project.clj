@@ -5,7 +5,9 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [clojure.java-time "1.1.0"]
-                 [clj-commons/clj-yaml "1.0.26"]]
+                 [clj-commons/clj-yaml "1.0.26"]
+                 [org.clojure/core.match "1.0.0"]
+                 [slugger "1.0.1"]]
   :main ^:skip-aot importer.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
