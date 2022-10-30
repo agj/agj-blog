@@ -9,6 +9,9 @@
             [hickory.core :as hickory]
             [clojure.string :as str]))
 
+(declare els->md
+         el->md)
+
 
 ;; Data traversal
 
@@ -76,33 +79,6 @@
   (yaml/generate-string
    data
    :dumper-options {:flow-style :block}))
-
-(defn post->string [post]
-  (let [frontmatter-data {:title (:title post)
-                          :categories (->> post :categories (map :slug))
-                          :tags (->> post :tags (map :slug))}]
-    (str "---\n"
-         (data->yaml frontmatter-data)
-         "---\n\n"
-         (:content post)
-         "\n")))
-
-(defn post->path [post]
-  (let [status (:status post)]
-    (str (if (= status "draft")
-           "drafts/"
-           (str (-> post :date :year) "/"
-                (-> post :date :month) "-"))
-         (:slug post)
-         (if (= status "private")
-           "-HIDDEN"
-           "")
-         ".md")))
-
-(defn output-post [post]
-  (let [filename (str "../data/posts/" (post->path post))]
-    (io/make-parents filename)
-    (spit filename (post->string post))))
 
 
 ;; Markdown generation
@@ -266,6 +242,42 @@
 (defn els->md [els]
   (->> els (map el->md) (apply str)))
 
+(defn post-content->md [content]
+  (->> content
+       hickory/parse-fragment
+       (map hickory/as-hickory)
+       els->md))
+
+
+;; Final processing
+
+(defn post->string [post]
+  (let [frontmatter-data {:title (:title post)
+                          :categories (->> post :categories (map :slug))
+                          :tags (->> post :tags (map :slug))}]
+    (str "---\n"
+         (data->yaml frontmatter-data)
+         "---\n\n"
+         (->> post :content post-content->md)
+         "\n")))
+
+(defn post->path [post]
+  (let [status (:status post)]
+    (str (if (= status "draft")
+           "drafts/"
+           (str (-> post :date :year) "/"
+                (-> post :date :month) "-"))
+         (:slug post)
+         (if (= status "private")
+           "-HIDDEN"
+           "")
+         ".md")))
+
+(defn output-post [post]
+  (let [filename (str "../data/posts/" (post->path post))]
+    (io/make-parents filename)
+    (spit filename (post->string post))))
+
 
 ;; Data
 
@@ -310,12 +322,14 @@
 (comment
   (println
    (->> posts-xml
-        (#(nth % 7))
+        (#(nth % 10))
         post-xml->post
-        :content
-        hickory/parse-fragment
-        (map hickory/as-hickory)
-        els->md
+        ((fn [post]
+           (->> post
+                :content
+                hickory/parse-fragment
+                (map hickory/as-hickory)
+                els->md)))
         ;;
         )
    ;;
