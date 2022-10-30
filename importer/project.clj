@@ -7,7 +7,8 @@
                  [clojure.java-time "1.1.0"]
                  [clj-commons/clj-yaml "1.0.26"]
                  [org.clojure/core.match "1.0.0"]
-                 [slugger "1.0.1"]]
+                 [slugger "1.0.1"]
+                 [hickory "0.7.1"]]
   :main ^:skip-aot importer.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all

@@ -5,7 +5,8 @@
             [java-time.api :as jt]
             [clj-yaml.core :as yaml]
             [clojure.core.match :refer [match]]
-            [slugger.core :refer [->slug]]))
+            [slugger.core :refer [->slug]]
+            [hickory.core :as hickory]))
 
 
 ;; Helpers
@@ -130,17 +131,81 @@
   (doseq [post posts]
     (write-post post)))
 
+(defn h*->md [el]
+  (let [n (match [(:tag el)]
+            [:h1] 1
+            [:h2] 2
+            [:h3] 3
+            [:h4] 4
+            [:h5] 5)]
+    (str "\n"
+         (apply str (repeat n "="))
+         " "
+         (->> el :content first el->md)
+         "\n")))
 
+(defn h*-tag? [tag]
+  (if (and tag
+           (re-matches #"(?i)^h\d$" (name tag)))
+    true
+    false))
+
+(defn img->md [el]
+  (let [alt (->> el :attrs :alt)
+        title (->> el :attrs :title)]
+    (str "!["
+         (if (or (not alt) (= alt ""))
+           "image"
+           alt)
+         "]("
+         (->> el :attrs :src)
+         (if title
+           (str " \"" title "\"")
+           "")
+         ")")))
+
+(defn a->md [el]
+  (str "["
+       (->> el :content els->md)
+       "]("
+       (->> el :attrs :href)
+       ")"))
+
+(defn em->md [el]
+  (str "_"
+       (->> el :content els->md)
+       "_"))
+
+(defn els->md [els]
+  (->> els (map el->md) (apply str)))
+
+(defn el->md [el]
+  (match [(:tag el) (:type el)]
+    [:em _] (em->md el)
+    [:a _] (a->md el)
+    [:img _] (img->md el)
+    [:ul _]  (->> el :content els->md)
+    [:li _] (str "- "
+                 (->> el :content els->md))
+    [_ :comment] (str "<!-- "
+                      (->> el :content els->md)
+                      " -->")
+    [nil nil] el
+    :else (if (h*-tag? (:tag el))
+            (h*->md el)
+            "???")))
 
 (comment
   (println
    (->> posts-xml
-     ;;    last
-        (map parse-post)
-     ;;    (filter #(->> % :slug not))
-     ;;    (map (fn [post]
-     ;;           (assoc post :slug (->slug (:title post)))))
-        (map get-post-path)))
+        (#(nth % 0))
+        parse-post
+        :content
+        hickory/parse-fragment
+        (map hickory/as-hickory)
+        els->md)
+   ;;
+   )
 
   (last posts)
   ;;
