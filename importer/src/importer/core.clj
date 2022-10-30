@@ -84,6 +84,11 @@
 
 ;; Markdown generation
 
+(defn surround->md [before after el]
+  (str before
+       (->> el :content els->md)
+       after))
+
 (defn h*-tag? [tag]
   (if (and tag
            (re-matches #"(?i)^h\d$" (name tag)))
@@ -91,9 +96,10 @@
     false))
 
 (defn em->md [el]
-  (str "_"
-       (->> el :content els->md)
-       "_"))
+  (surround->md "_" "_" el))
+
+(defn strong->md [el]
+  (surround->md "**" "**" el))
 
 (defn img->md [el]
   (let [alt (->> el :attrs :alt)
@@ -181,32 +187,34 @@
                 (el->md el))))
        (apply str)))
 
+(defn vimeo-el->url [el]
+  (some->> el
+           (get-children :param)
+           (vector-find #(let [name (->> % :attrs :name)]
+                           (or (= name "src")
+                               (= name "movie"))))
+           :attrs
+           :value))
+
+(defn vimeo-el? [el]
+  (boolean
+   (and (= (:tag el)
+           :object)
+        (some->> el
+                 vimeo-el->url
+                 (re-matches #".*vimeo.*")))))
+
 (defn vimeo-el->video [el]
   (let [width (->> el :attrs :width)
         height (->> el :attrs :height)
         id (->> el
-                (get-children :param)
-                (vector-find #(= (->> % :attrs :name)
-                                 "src"))
-                :attrs
-                :value
+                vimeo-el->url
                 (re-matches #".*clip_id=(\d+).*")
                 (#(nth % 1)))]
     {:service "vimeo"
      :id id
      :width width
      :height height}))
-
-(defn vimeo-el? [el]
-  (and (= (:tag el)
-          :object)
-       (some->> el
-                (get-children :param)
-                (vector-find #(= (->> % :attrs :name)
-                                 "src"))
-                :attrs
-                :value
-                (re-matches #".*vimeo.*"))))
 
 (defn el->video [el]
   (cond
@@ -224,16 +232,16 @@
 (defn el->md [el]
   (match [(:tag el) (:type el)]
     [:em _] (em->md el)
+    [:strong _] (strong->md el)
     [:a _] (a->md el)
     [:img _] (img->md el)
     [:ul _]  (ul->md el)
     [:ol _] (ol->md el)
     [:blockquote _] (blockquote->md el)
+    [:del _] (surround->md "~~" "~~" el)
     [:div _] (div->md el)
     [:span _] (span->md el)
-    [_ :comment] (str "<!-- "
-                      (->> el :content els->md)
-                      " -->")
+    [_ :comment] (surround->md "<!-- " " -->" el)
     [nil nil] el
     :else (cond
             (h*-tag? (:tag el)) (h*->md el)
@@ -325,7 +333,9 @@
    (->> posts-xml
      ;;    (#(nth % 10))
         (map post-xml->post)
-        (filter #(not (:content %)))
+        (vector-find #(= (:id %) "31"))
+        :content
+        post-content->md
         ;;
         )
    ;;
@@ -333,20 +343,18 @@
 
   (println
    (->>
-    "<ul>
-	<li>Cada cómic debe ser original; no debe usar contenido con copyright, y debe ser creado específicamente para este proyecto.</li>
-	<li>No existirán restricciones en estética, trama, personajes, etc. Excepto por las indicadas en los dos siguientes puntos.</li>
-	<li>Al menos un elemento de la tira anterior debe ser usado o desarrollado en la tuya, para mantener un mínimo de continuidad. Ejemplos: un personaje, colores, parte de la historia.</li>
-	<li>El texto está absolutamente vetado, sin importar el idioma (a no ser que sea uno ficticio.)</li>
-	<li>Las tiras deben consistir de una sola imagen en formato png, jpg o gif, en cualquier proporción (tal vez se decida un ancho máximo posteriormente), y hecho para ser leído en pantalla. ¿Tal vez debamos archivar los originales a 300 dpi también, por si acaso?</li>
-	<li>Aquellos interesados en contribuir tienen que ser conocidos míos o de algún autor de una tira (este no es un proyecto completamente abierto). No se requiere tener ningún talento especial.</li>
-	<li>Los autores no pueden dibujar una nueva tira si ya han dibujado una antes, a no ser que no existan candidatos nuevos.</li>
-	<li>Tal vez sea un requerimiento en el futuro usar un logo del proyecto en algún lugar de la imagen. Lo mismo respecto a un nombre o pseudónimo.</li>
-    </ul>"
+    "<object width=\"500\" height=\"281\">
+  <param name=\"allowfullscreen\" value=\"true\" />
+  <param name=\"allowscriptaccess\" value=\"always\" />
+  <param name=\"movie\" value=\"http://vimeo.com/moogaloop.swf?clip_id=19267207&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=ffffff&amp;fullscreen=1&amp;autoplay=0&amp;loop=0\" />
+  <embed src=\"http://vimeo.com/moogaloop.swf?clip_id=19267207&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=ffffff&amp;fullscreen=1&amp;autoplay=0&amp;loop=0\" type=\"application/x-shockwave-flash\" allowfullscreen=\"true\" allowscriptaccess=\"always\" width=\"500\" height=\"281\"></embed>
+</object>"
     hickory/parse-fragment
     (map hickory/as-hickory)
     first
-    ul->md))
+    vimeo-el->video)
+   ;;
+   )
 
   ;;
   )
