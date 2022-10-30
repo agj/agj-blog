@@ -14,6 +14,7 @@ import OptimizedDecoder.Pipeline as Decode
 import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
+import Result.Extra as Result
 import Shared
 import View exposing (View)
 
@@ -73,28 +74,27 @@ data routeParams =
         )
 
 
+errorToHtml : String -> List (Html Msg)
+errorToHtml error =
+    [ Html.p []
+        [ Html.text "Markdown parsing error:"
+        ]
+    , Html.pre []
+        [ Html.code [] [ Html.text error ]
+        ]
+    ]
+
+
 postDataDecoder : String -> Decoder Data
 postDataDecoder content =
     let
-        parseContentResult =
+        parsedContent =
             content
                 |> Markdown.Parser.parse
                 |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
                 |> Result.andThen (Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer)
-
-        parsedContent =
-            case parseContentResult of
-                Ok result ->
-                    result
-
-                Err err ->
-                    [ Html.p []
-                        [ Html.text "Markdown parsing error:"
-                        ]
-                    , Html.pre []
-                        [ Html.code [] [ Html.text err ]
-                        ]
-                    ]
+                |> Result.mapError errorToHtml
+                |> Result.merge
     in
     Decode.succeed (Data parsedContent)
         |> Decode.required "title" Decode.string
