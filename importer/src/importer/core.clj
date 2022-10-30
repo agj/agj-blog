@@ -72,7 +72,19 @@
     (str "---\n"
          (encode-yaml frontmatter-data)
          "---\n\n"
-         (:content post))))
+         (:content post)
+         "\n")))
+
+(defn get-post-path [post]
+  (str (-> post :date :year) "/"
+       (-> post :date :month) "-"
+       (-> post :date :date) "-"
+       (:slug post) ".md"))
+
+(defn write-post [post]
+  (let [filename (str "../data/posts/" (get-post-path post))]
+    (io/make-parents filename)
+    (spit filename (encode-post post))))
 
 
 ;; Data
@@ -106,7 +118,10 @@
    (->> posts-xml
         last
         parse-post
-        encode-post))
+        ((fn [post]
+           (let [filename (str "../data/posts/" (get-post-path post))]
+             (io/make-parents filename)
+             (spit filename (encode-post post)))))))
 
   (last posts)
   ;;
