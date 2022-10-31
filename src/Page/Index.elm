@@ -52,17 +52,7 @@ data =
                     )
     in
     Glob.succeed (\y m p path -> { y = y, m = m, p = p, path = path })
-        |> Glob.match (Glob.literal "data/posts/")
-        -- Year
-        |> Glob.capture Glob.digits
-        |> Glob.match (Glob.literal "/")
-        -- Month
-        |> Glob.capture Glob.digits
-        |> Glob.match (Glob.literal "-")
-        -- Post
-        |> Glob.capture Glob.wildcard
-        |> Glob.match (Glob.literal ".md")
-        -- Path
+        |> Post.routesGlob
         |> Glob.captureFilePath
         |> Glob.toDataSource
         |> DataSource.andThen (List.map process >> DataSource.combine)

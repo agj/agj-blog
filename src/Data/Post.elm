@@ -1,5 +1,7 @@
 module Data.Post exposing (..)
 
+import DataSource exposing (DataSource)
+import DataSource.Glob as Glob exposing (Glob)
 import Html exposing (Html)
 import Markdown.Parser
 import Markdown.Renderer
@@ -46,6 +48,21 @@ postFrontmatterDecoder =
         |> Decode.required "tags" (Decode.list Decode.string)
         |> Decode.required "date" (Decode.maybe Decode.int)
         |> Decode.required "hour" (Decode.maybe Decode.int)
+
+
+routesGlob : Glob (String -> String -> String -> c) -> Glob c
+routesGlob glob =
+    glob
+        |> Glob.match (Glob.literal "data/posts/")
+        -- Year
+        |> Glob.capture Glob.digits
+        |> Glob.match (Glob.literal "/")
+        -- Month
+        |> Glob.capture Glob.digits
+        |> Glob.match (Glob.literal "-")
+        -- Slug
+        |> Glob.capture Glob.wildcard
+        |> Glob.match (Glob.literal ".md")
 
 
 

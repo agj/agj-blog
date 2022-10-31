@@ -42,16 +42,7 @@ page =
 routes : DataSource (List RouteParams)
 routes =
     Glob.succeed RouteParams
-        |> Glob.match (Glob.literal "data/posts/")
-        -- Year
-        |> Glob.capture Glob.digits
-        |> Glob.match (Glob.literal "/")
-        -- Month
-        |> Glob.capture Glob.digits
-        |> Glob.match (Glob.literal "-")
-        -- Slug
-        |> Glob.capture Glob.wildcard
-        |> Glob.match (Glob.literal ".md")
+        |> Post.routesGlob
         |> Glob.toDataSource
 
 
