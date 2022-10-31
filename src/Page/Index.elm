@@ -1,6 +1,6 @@
 module Page.Index exposing (Data, Model, Msg, page)
 
-import Data.Post as Post exposing (Post)
+import Data.Post as Post exposing (Post, PostFrontmatter)
 import DataSource exposing (DataSource)
 import DataSource.File
 import DataSource.Glob as Glob
@@ -41,7 +41,7 @@ data =
     let
         process : { y : String, m : String, p : String, path : String } -> DataSource PostGist
         process { y, m, p, path } =
-            DataSource.File.onlyFrontmatter (Post.postDecoder "") path
+            DataSource.File.onlyFrontmatter Post.postFrontmatterDecoder path
                 |> DataSource.map
                     (\postData ->
                         { year = y
@@ -96,7 +96,7 @@ type alias PostGist =
     { year : String
     , month : String
     , post : String
-    , data : Post Msg
+    , data : PostFrontmatter
     }
 
 
@@ -128,7 +128,7 @@ viewListedPost gist =
                 |> String.replace "{year}" gist.year
                 |> String.replace "{month}" gist.month
                 |> String.replace "{post}" gist.post
-                |> String.replace "{title}" gist.data.frontmatter.title
+                |> String.replace "{title}" gist.data.title
 
         text =
             "{year}/{month} – {title}"
