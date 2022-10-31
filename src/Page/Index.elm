@@ -1,5 +1,6 @@
 module Page.Index exposing (Data, Model, Msg, page)
 
+import Data.Date as Date
 import Data.Post as Post exposing (Post, PostFrontmatter)
 import DataSource exposing (DataSource)
 import DataSource.File
@@ -7,6 +8,7 @@ import DataSource.Glob as Glob
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attr
+import List.Extra as List
 import Page exposing (Page, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Shared
@@ -92,43 +94,73 @@ view :
     -> View Msg
 view maybeUrl sharedModel static =
     let
-        padNumber : Maybe Int -> String
+        padNumber : Int -> String
         padNumber num =
             num
-                |> Maybe.withDefault 0
                 |> String.fromInt
                 |> String.padLeft 2 '0'
 
         getDateHour : PostGist -> String
         getDateHour gist =
             padNumber gist.data.date
-                ++ padNumber gist.data.hour
+                ++ padNumber (gist.data.hour |> Maybe.withDefault 0)
 
-        sortedGists =
+        getTime : PostGist -> String
+        getTime gist =
+            gist.year ++ gist.month ++ getDateHour gist
+
+        gistsByMonth =
             static.data
-                |> List.sortBy (\gist -> gist.year ++ gist.month ++ getDateHour gist)
-                |> List.reverse
+                |> List.gatherEqualsBy (\gist -> gist.year ++ gist.month)
+                |> List.sortBy (Tuple.first >> getTime)
+                |> List.map
+                    (\( firstGist, rest ) ->
+                        ( "{year}, {month}"
+                            |> String.replace "{year}" firstGist.year
+                            |> String.replace "{month}" (Date.monthNumberToFullName (firstGist.month |> String.toInt |> Maybe.withDefault 0))
+                        , firstGist
+                            :: rest
+                            |> List.sortBy getTime
+                            |> List.reverse
+                        )
+                    )
     in
     { title = title static
     , body =
-        sortedGists
-            |> List.map viewListedPost
+        gistsByMonth
+            |> List.map viewGistMonth
+            |> List.foldl (++) []
     }
 
 
-viewListedPost : PostGist -> Html Msg
-viewListedPost gist =
+viewGistMonth : ( String, List PostGist ) -> List (Html Msg)
+viewGistMonth ( month, gists ) =
+    [ Html.p []
+        [ Html.strong []
+            [ Html.text month
+            ]
+        ]
+    , Html.ul []
+        (gists
+            |> List.map viewGist
+        )
+    ]
+
+
+viewGist : PostGist -> Html Msg
+viewGist gist =
     let
         insertGistValuesToString : String -> String
         insertGistValuesToString string =
             string
                 |> String.replace "{year}" gist.year
                 |> String.replace "{month}" gist.month
+                |> String.replace "{date}" (gist.data.date |> String.fromInt |> String.padLeft 2 '0')
                 |> String.replace "{post}" gist.post
                 |> String.replace "{title}" gist.data.title
 
         text =
-            "{year}/{month} – {title}"
+            "{date} – {title}"
                 |> insertGistValuesToString
 
         url =

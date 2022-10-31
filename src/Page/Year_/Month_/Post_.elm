@@ -1,5 +1,6 @@
 module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page)
 
+import Data.Date as Date
 import Data.Post as Post exposing (Post)
 import DataSource exposing (DataSource)
 import DataSource.File
@@ -81,6 +82,13 @@ view :
     -> StaticPayload Data RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
+    let
+        date =
+            "{year} {month} {date}"
+                |> String.replace "{year}" static.routeParams.year
+                |> String.replace "{month}" (Date.monthNumberToShortName (String.toInt static.routeParams.month |> Maybe.withDefault 0))
+                |> String.replace "{date}" (String.fromInt static.data.frontmatter.date)
+    in
     { title = title static
     , body =
         Html.node "hgroup"
@@ -88,13 +96,18 @@ view maybeUrl sharedModel static =
             [ Html.h1 []
                 [ Html.text static.data.frontmatter.title ]
             , Html.p []
-                [ Html.text "Categories: "
-                , Html.em []
-                    [ Html.text (String.join ", " static.data.frontmatter.categories) ]
-                , Html.text ". Tags: "
-                , Html.em []
-                    [ Html.text (String.join ", " static.data.frontmatter.tags) ]
-                , Html.text "."
+                [ Html.small []
+                    [ Html.text
+                        (date
+                            ++ ". Categories: "
+                        )
+                    , Html.em []
+                        [ Html.text (String.join ", " static.data.frontmatter.categories) ]
+                    , Html.text ". Tags: "
+                    , Html.em []
+                        [ Html.text (String.join ", " static.data.frontmatter.tags) ]
+                    , Html.text "."
+                    ]
                 ]
             ]
             :: static.data.content
