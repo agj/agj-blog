@@ -158,9 +158,14 @@ viewGist gist =
                 |> String.replace "{date}" (gist.data.date |> String.fromInt |> String.padLeft 2 '0')
                 |> String.replace "{post}" gist.post
                 |> String.replace "{title}" gist.data.title
+                |> String.replace "{categories}" (gist.data.categories |> String.join ", ")
 
-        text =
-            "{date} – {title}"
+        dateText =
+            "{date} – "
+                |> insertGistValuesToString
+
+        categoriesText =
+            " ({categories})"
                 |> insertGistValuesToString
 
         url =
@@ -168,7 +173,11 @@ viewGist gist =
                 |> insertGistValuesToString
     in
     Html.li []
-        [ Html.a [ Attr.href url ]
-            [ Html.text text
+        [ Html.text dateText
+        , Html.a [ Attr.href url ]
+            [ Html.strong []
+                [ Html.text gist.data.title ]
             ]
+        , Html.small []
+            [ Html.text categoriesText ]
         ]
