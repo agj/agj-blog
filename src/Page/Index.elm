@@ -128,9 +128,10 @@ viewListedPost gist =
                 |> String.replace "{year}" gist.year
                 |> String.replace "{month}" gist.month
                 |> String.replace "{post}" gist.post
+                |> String.replace "{title}" gist.data.title
 
         text =
-            "{year}/{month} – {post}"
+            "{year}/{month} – {title}"
                 |> insertGistValuesToString
 
         url =
