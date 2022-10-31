@@ -1,12 +1,14 @@
 module Page.Index exposing (Data, Model, Msg, page)
 
 import DataSource exposing (DataSource)
+import DataSource.File
 import DataSource.Glob as Glob
 import Head
 import Head.Seo as Seo
-import Html
+import Html exposing (Html)
 import Html.Attributes as Attr
 import Page exposing (Page, StaticPayload)
+import Page.Year_.Month_.Post_ as Post
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
 import Shared
@@ -36,7 +38,20 @@ page =
 
 data : DataSource Data
 data =
-    Glob.succeed PostGist
+    let
+        process : { y : String, m : String, p : String, path : String } -> DataSource PostGist
+        process { y, m, p, path } =
+            DataSource.File.onlyFrontmatter (Post.postDataDecoder "") path
+                |> DataSource.map
+                    (\postData ->
+                        { year = y
+                        , month = m
+                        , post = p
+                        , data = postData
+                        }
+                    )
+    in
+    Glob.succeed (\y m p path -> { y = y, m = m, p = p, path = path })
         |> Glob.match (Glob.literal "data/posts/")
         -- Year
         |> Glob.capture Glob.digits
@@ -44,10 +59,13 @@ data =
         -- Month
         |> Glob.capture Glob.digits
         |> Glob.match (Glob.literal "-")
-        -- Slug
+        -- Post
         |> Glob.capture Glob.wildcard
         |> Glob.match (Glob.literal ".md")
+        -- Path
+        |> Glob.captureFilePath
         |> Glob.toDataSource
+        |> DataSource.andThen (List.map process >> DataSource.combine)
 
 
 head :
@@ -78,6 +96,7 @@ type alias PostGist =
     { year : String
     , month : String
     , post : String
+    , data : Post.Data
     }
 
 
@@ -92,33 +111,34 @@ view maybeUrl sharedModel static =
             static.data
                 |> List.sortBy (\gist -> gist.year ++ gist.month ++ gist.post)
                 |> List.reverse
+    in
+    { title = "Hi"
+    , body =
+        sortedGists
+            |> List.map viewListedPost
+    }
 
-        insertGistValuesToString : PostGist -> String -> String
-        insertGistValuesToString gist string =
+
+viewListedPost : PostGist -> Html Msg
+viewListedPost gist =
+    let
+        insertGistValuesToString : String -> String
+        insertGistValuesToString string =
             string
                 |> String.replace "{year}" gist.year
                 |> String.replace "{month}" gist.month
                 |> String.replace "{post}" gist.post
 
-        postGistToString : PostGist -> String
-        postGistToString gist =
+        text =
             "{year}/{month} – {post}"
-                |> insertGistValuesToString gist
+                |> insertGistValuesToString
 
-        postGistToUrl : PostGist -> String
-        postGistToUrl gist =
+        url =
             "/{year}/{month}/{post}"
-                |> insertGistValuesToString gist
-
-        postGistToLink gist =
-            Html.li []
-                [ Html.a [ Attr.href (postGistToUrl gist) ]
-                    [ Html.text (postGistToString gist)
-                    ]
-                ]
+                |> insertGistValuesToString
     in
-    { title = "Hi"
-    , body =
-        sortedGists
-            |> List.map postGistToLink
-    }
+    Html.li []
+        [ Html.a [ Attr.href url ]
+            [ Html.text text
+            ]
+        ]

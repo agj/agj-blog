@@ -1,4 +1,4 @@
-module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page)
+module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page, postDataDecoder)
 
 import DataSource exposing (DataSource)
 import DataSource.File
