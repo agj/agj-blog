@@ -275,6 +275,8 @@
 
 (defn post->string [post]
   (let [frontmatter-data {:title (:title post)
+                          :date (->> post :date :date)
+                          :hour (->> post :date :hour)
                           :categories (->> post :categories (map :slug))
                           :tags (->> post :tags (map :slug))}]
     (str "---\n"
