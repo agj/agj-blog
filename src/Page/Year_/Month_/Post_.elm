@@ -102,6 +102,19 @@ view :
 view maybeUrl sharedModel static =
     { title = title static
     , body =
-        Html.h1 [] [ Html.text static.data.title ]
+        Html.node "hgroup"
+            []
+            [ Html.h1 []
+                [ Html.text static.data.title ]
+            , Html.p []
+                [ Html.text "Categories: "
+                , Html.em []
+                    [ Html.text (String.join ", " static.data.categories) ]
+                , Html.text ". Tags: "
+                , Html.em []
+                    [ Html.text (String.join ", " static.data.tags) ]
+                , Html.text "."
+                ]
+            ]
             :: static.data.content
     }

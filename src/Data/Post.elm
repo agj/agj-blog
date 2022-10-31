@@ -11,6 +11,8 @@ import Result.Extra as Result
 type alias Post msg =
     { content : List (Html msg)
     , title : String
+    , categories : List String
+    , tags : List String
     }
 
 
@@ -27,6 +29,8 @@ postDecoder content =
     in
     Decode.succeed (Post parsedContent)
         |> Decode.required "title" Decode.string
+        |> Decode.required "categories" (Decode.list Decode.string)
+        |> Decode.required "tags" (Decode.list Decode.string)
 
 
 
