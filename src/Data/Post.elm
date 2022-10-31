@@ -10,7 +10,12 @@ import Result.Extra as Result
 
 type alias Post msg =
     { content : List (Html msg)
-    , title : String
+    , frontmatter : PostFrontmatter
+    }
+
+
+type alias PostFrontmatter =
+    { title : String
     , categories : List String
     , tags : List String
     }
@@ -27,7 +32,13 @@ postDecoder content =
                 |> Result.mapError errorToHtml
                 |> Result.merge
     in
-    Decode.succeed (Post parsedContent)
+    postFrontmatterDecoder
+        |> Decode.map (Post parsedContent)
+
+
+postFrontmatterDecoder : Decoder PostFrontmatter
+postFrontmatterDecoder =
+    Decode.succeed PostFrontmatter
         |> Decode.required "title" Decode.string
         |> Decode.required "categories" (Decode.list Decode.string)
         |> Decode.required "tags" (Decode.list Decode.string)

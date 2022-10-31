@@ -91,7 +91,7 @@ type alias Data =
 
 title : StaticPayload Data RouteParams -> String
 title static =
-    static.data.title
+    static.data.frontmatter.title
 
 
 view :
@@ -105,14 +105,14 @@ view maybeUrl sharedModel static =
         Html.node "hgroup"
             []
             [ Html.h1 []
-                [ Html.text static.data.title ]
+                [ Html.text static.data.frontmatter.title ]
             , Html.p []
                 [ Html.text "Categories: "
                 , Html.em []
-                    [ Html.text (String.join ", " static.data.categories) ]
+                    [ Html.text (String.join ", " static.data.frontmatter.categories) ]
                 , Html.text ". Tags: "
                 , Html.em []
-                    [ Html.text (String.join ", " static.data.tags) ]
+                    [ Html.text (String.join ", " static.data.frontmatter.tags) ]
                 , Html.text "."
                 ]
             ]
