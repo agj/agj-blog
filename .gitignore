@@ -1,5 +1,9 @@
 dist/
 
+# Private data
+data/posts/drafts/
+**/*-HIDDEN.md
+
 # elm-pages
 functions/render/elm-pages-cli.js
 
