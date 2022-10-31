@@ -256,7 +256,9 @@
   (->> content
        hickory/parse-fragment
        (map hickory/as-hickory)
-       els->md))
+       els->md
+       str/trim
+       (#(str/replace % #"\n\n\n+" "\n\n"))))
 
 
 ;; Final processing
