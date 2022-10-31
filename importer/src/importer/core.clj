@@ -198,7 +198,7 @@
                 (el->md el))))
        (apply str)))
 
-(defn vimeo-el->url [el]
+(defn video-el->url [el]
   (match [(:tag el)]
     [:iframe] (->> el :attrs :src)
     [:object] (some->> el
@@ -212,23 +212,40 @@
 
 (defn vimeo-el? [el]
   (boolean
-   (->> el vimeo-el->url)))
+   (->> el
+        video-el->url
+        (re-matches #".*vimeo.*"))))
+
+(defn youtube-el? [el]
+  (boolean
+   (->> el
+        video-el->url
+        (re-matches #".*youtube.*"))))
 
 (defn vimeo-el->video [el]
-  (let [width (->> el :attrs :width)
-        height (->> el :attrs :height)
-        id (->> el
-                vimeo-el->url
+  (let [id (->> el
+                video-el->url
                 (re-matches #".*(clip_id=|video\/)(\d+).*")
                 (#(nth % 2)))]
     {:service "vimeo"
      :id id
-     :width width
-     :height height}))
+     :width (->> el :attrs :width)
+     :height (->> el :attrs :height)}))
+
+(defn youtube-el->video [el]
+  (let [id (->> el
+                video-el->url
+                (re-matches #".*(embed\/)([^?]+).*")
+                (#(nth % 2)))]
+    {:service "youtube"
+     :id id
+     :width (->> el :attrs :width)
+     :height (->> el :attrs :height)}))
 
 (defn el->video [el]
   (cond
     (vimeo-el? el) (vimeo-el->video el)
+    (youtube-el? el) (youtube-el->video el)
     :else nil))
 
 (defn video->md [video]
@@ -358,15 +375,11 @@
 
   (println
    (->>
-    "<iframe 
-src=\"http://player.vimeo.com/video/32240154?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff\" 
-width=\"500\" height=\"281\" frameborder=\"0\" 
-webkitAllowFullScreen
-allowFullScreen></iframe>"
+    "<iframe width=\"500\" height=\"281\" src=\"//www.youtube.com/embed/6Oiq0rH9_SI?rel=0\" frameborder=\"0\" allowfullscreen></iframe>"
     hickory/parse-fragment
     (map hickory/as-hickory)
     first
-    vimeo-el->video)
+    vimeo-el?)
    ;;
    )
 

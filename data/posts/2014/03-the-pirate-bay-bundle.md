@@ -11,7 +11,7 @@ tags:
 - video-game
 ---
 
-<VideoEmbed service="vimeo" id="" width="500" height="281" />
+<VideoEmbed service="youtube" id="6Oiq0rH9_SI" width="500" height="281" />
 
 The wonderfully enthusiastic [Steve Cook](https://twitter.com/moshboy) put together a compilation of over a hundred free games, and made me a part of it by including my game [_Runnerby_](http://www.agj.cl/games/#game:runnerby). It's called the [**Pirate Bay Bundle**](http://odditie-s.tumblr.com/post/81109325064/the-pirate-bay-bundle).
 
