@@ -41,7 +41,20 @@ page =
 
 routes : DataSource (List RouteParams)
 routes =
-    Glob.succeed RouteParams
+    let
+        toRouteParamsDataSource : String -> String -> String -> Bool -> DataSource RouteParams
+        toRouteParamsDataSource year month slug isHidden =
+            if isHidden then
+                DataSource.fail "Post is hidden."
+
+            else
+                DataSource.succeed
+                    { year = year
+                    , month = month
+                    , post = slug
+                    }
+    in
+    Glob.succeed toRouteParamsDataSource
         |> Glob.match (Glob.literal "data/posts/")
         -- Year
         |> Glob.capture Glob.digits
@@ -51,8 +64,15 @@ routes =
         |> Glob.match (Glob.literal "-")
         -- Slug
         |> Glob.capture Glob.wildcard
-        |> Glob.match (Glob.literal ".md")
+        -- Hidden post flag
+        |> Glob.capture
+            (Glob.oneOf
+                ( ( "-HIDDEN.md", True )
+                , [ ( ".md", False ) ]
+                )
+            )
         |> Glob.toDataSource
+        |> DataSource.resolve
 
 
 data : RouteParams -> DataSource Data
