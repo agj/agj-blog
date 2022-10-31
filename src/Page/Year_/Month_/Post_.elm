@@ -6,7 +6,6 @@ import DataSource.Glob as Glob exposing (Glob)
 import Head
 import Head.Seo as Seo
 import Html exposing (Html)
-import Html.Attributes as Attr
 import Markdown.Parser
 import Markdown.Renderer
 import OptimizedDecoder as Decode exposing (Decoder)
@@ -46,17 +45,13 @@ page =
 
 routes : DataSource (List RouteParams)
 routes =
-    let
-        globIntAsString =
-            Glob.map String.fromInt Glob.int
-    in
     Glob.succeed RouteParams
         |> Glob.match (Glob.literal "data/posts/")
         -- Year
-        |> Glob.capture globIntAsString
+        |> Glob.capture Glob.digits
         |> Glob.match (Glob.literal "/")
         -- Month
-        |> Glob.capture globIntAsString
+        |> Glob.capture Glob.digits
         |> Glob.match (Glob.literal "-")
         -- Slug
         |> Glob.capture Glob.wildcard
