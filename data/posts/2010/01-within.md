@@ -1,0 +1,22 @@
+---
+title: Within
+date: 17
+hour: 1
+categories:
+- my-games
+tags:
+- kotm
+- release
+- text-game
+- twine
+- video-game
+- within
+---
+
+> _There's a way to find things you've lost recently. You have to concentrate and retrace your every step, remember where you were at each time and what you did then. That technique might also work to recover a lost memory._
+
+I could finally join another [Klik of the Month Klub](http://blog.agj.cl/tag/kotm/)! Tried using [Twine](http://gimcrackd.com/etc/src/) for the first time; it's a tool for making 'interactive stories' (text games).
+
+**[Play _Within_ in your browser](http://www.agj.cl/files/games/within-kotm/)**
+
+Don't hold it against me if it doesn't work properly—I just didn't exactly test it thoroughly. Also, a warning: it's not very good.

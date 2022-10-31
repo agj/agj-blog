@@ -1,0 +1,23 @@
+---
+title: Spoems
+date: 19
+hour: 15
+categories:
+- interactive
+- language
+tags:
+- event
+- javascript
+- release
+- web
+---
+
+![image](http://blog.agj.cl/wp-content/uploads/2012/10/spoemsscreen.png "Spoems screenshot")
+
+Over at Glorious Trainwrecks, a spambot started [an event](http://www.glorioustrainwrecks.com/node/4281), and thus we had to comply and make stuff. I didn't really make a game; it's a silly visualization of Noyb's [readings of (other) spambot postings](http://www.glorioustrainwrecks.com/node/1529).
+
+[**Read _Spoems_**](http://www.agj.cl/files/games/spoems/) (web)
+
+The audio may or may not sync with the text for you, depending on your configuration. Try reloading if it doesn't, and if it still won't, then I think you're out of luck.
+
+A shoutout to Kirk Israel for his useful [lowLag.js](http://lowlag.alienbill.com/).

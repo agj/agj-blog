@@ -1,0 +1,20 @@
+---
+title: Weekly concern
+date: 17
+hour: 1
+categories:
+- interactive
+- language
+tags:
+- php
+- release
+- super-friendship-club
+- web
+- weekly-concern
+---
+
+In the context of the final [Super Friendship Club](http://www.superfriendshipclub.com/) pageant, themed 'ritual', I made something which I won't fool anybody by calling a game.
+
+[_**Weekly concern**_](http://www.agj.cl/files/games/concern/) (web)
+
+An auto-generated line of text for you to ponder every week. Inspired by koans of Buddhist tradition.
