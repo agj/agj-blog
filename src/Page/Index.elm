@@ -88,6 +88,11 @@ view :
     -> View Msg
 view maybeUrl sharedModel static =
     let
+        sortedGists =
+            static.data
+                |> List.sortBy (\gist -> gist.year ++ gist.month ++ gist.post)
+                |> List.reverse
+
         insertGistValuesToString : PostGist -> String -> String
         insertGistValuesToString gist string =
             string
@@ -114,6 +119,6 @@ view maybeUrl sharedModel static =
     in
     { title = "Hi"
     , body =
-        static.data
+        sortedGists
             |> List.map postGistToLink
     }
