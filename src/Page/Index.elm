@@ -1,5 +1,6 @@
 module Page.Index exposing (Data, Model, Msg, page)
 
+import Data.Post as Post exposing (Post)
 import DataSource exposing (DataSource)
 import DataSource.File
 import DataSource.Glob as Glob
@@ -8,7 +9,6 @@ import Head.Seo as Seo
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Page exposing (Page, StaticPayload)
-import Page.Year_.Month_.Post_ as Post
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
 import Shared
@@ -41,7 +41,7 @@ data =
     let
         process : { y : String, m : String, p : String, path : String } -> DataSource PostGist
         process { y, m, p, path } =
-            DataSource.File.onlyFrontmatter (Post.postDataDecoder "") path
+            DataSource.File.onlyFrontmatter (Post.postDecoder "") path
                 |> DataSource.map
                     (\postData ->
                         { year = y
@@ -96,7 +96,7 @@ type alias PostGist =
     { year : String
     , month : String
     , post : String
-    , data : Post.Data
+    , data : Post Msg
     }
 
 

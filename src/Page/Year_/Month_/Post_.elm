@@ -1,19 +1,15 @@
-module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page, postDataDecoder)
+module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page)
 
+import Data.Post as Post exposing (Post)
 import DataSource exposing (DataSource)
 import DataSource.File
 import DataSource.Glob as Glob exposing (Glob)
 import Head
 import Head.Seo as Seo
 import Html exposing (Html)
-import Markdown.Parser
-import Markdown.Renderer
-import OptimizedDecoder as Decode exposing (Decoder)
-import OptimizedDecoder.Pipeline as Decode
 import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
-import Result.Extra as Result
 import Shared
 import View exposing (View)
 
@@ -61,38 +57,12 @@ routes =
 
 data : RouteParams -> DataSource Data
 data routeParams =
-    DataSource.File.bodyWithFrontmatter postDataDecoder
+    DataSource.File.bodyWithFrontmatter Post.postDecoder
         ("data/posts/{year}/{month}-{post}.md"
             |> String.replace "{year}" routeParams.year
             |> String.replace "{month}" routeParams.month
             |> String.replace "{post}" routeParams.post
         )
-
-
-errorToHtml : String -> List (Html Msg)
-errorToHtml error =
-    [ Html.p []
-        [ Html.text "Markdown parsing error:"
-        ]
-    , Html.pre []
-        [ Html.code [] [ Html.text error ]
-        ]
-    ]
-
-
-postDataDecoder : String -> Decoder Data
-postDataDecoder content =
-    let
-        parsedContent =
-            content
-                |> Markdown.Parser.parse
-                |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
-                |> Result.andThen (Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer)
-                |> Result.mapError errorToHtml
-                |> Result.merge
-    in
-    Decode.succeed (Data parsedContent)
-        |> Decode.required "title" Decode.string
 
 
 head :
@@ -116,9 +86,7 @@ head static =
 
 
 type alias Data =
-    { content : List (Html Msg)
-    , title : String
-    }
+    Post Msg
 
 
 title : StaticPayload Data RouteParams -> String
