@@ -5,14 +5,22 @@ import DataSource exposing (DataSource)
 import DataSource.File
 import DataSource.Glob as Glob
 import Head
-import Head.Seo as Seo
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Page exposing (Page, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
-import Pages.Url
 import Shared
+import Site
 import View exposing (View)
+
+
+page : Page RouteParams Data
+page =
+    Page.single
+        { head = head
+        , data = data
+        }
+        |> Page.buildNoState { view = view }
 
 
 type alias Model =
@@ -27,13 +35,16 @@ type alias RouteParams =
     {}
 
 
-page : Page RouteParams Data
-page =
-    Page.single
-        { head = head
-        , data = data
-        }
-        |> Page.buildNoState { view = view }
+type alias Data =
+    List PostGist
+
+
+type alias PostGist =
+    { year : String
+    , month : String
+    , post : String
+    , data : PostFrontmatter
+    }
 
 
 data : DataSource Data
@@ -58,36 +69,20 @@ data =
         |> DataSource.andThen (List.map process >> DataSource.combine)
 
 
+
+-- VIEW
+
+
+title : StaticPayload Data RouteParams -> String
+title static =
+    Site.windowTitle "Home"
+
+
 head :
     StaticPayload Data RouteParams
     -> List Head.Tag
 head static =
-    Seo.summary
-        { canonicalUrlOverride = Nothing
-        , siteName = "elm-pages"
-        , image =
-            { url = Pages.Url.external "TODO"
-            , alt = "elm-pages logo"
-            , dimensions = Nothing
-            , mimeType = Nothing
-            }
-        , description = "TODO"
-        , locale = Nothing
-        , title = "TODO title" -- metadata.title -- TODO
-        }
-        |> Seo.website
-
-
-type alias Data =
-    List PostGist
-
-
-type alias PostGist =
-    { year : String
-    , month : String
-    , post : String
-    , data : PostFrontmatter
-    }
+    Site.meta (title static)
 
 
 view :
@@ -114,7 +109,7 @@ view maybeUrl sharedModel static =
                 |> List.sortBy (\gist -> gist.year ++ gist.month ++ getDateHour gist)
                 |> List.reverse
     in
-    { title = "Hi"
+    { title = title static
     , body =
         sortedGists
             |> List.map viewListedPost

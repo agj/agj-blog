@@ -5,13 +5,22 @@ import DataSource exposing (DataSource)
 import DataSource.File
 import DataSource.Glob as Glob exposing (Glob)
 import Head
-import Head.Seo as Seo
 import Html exposing (Html)
 import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
-import Pages.Url
 import Shared
+import Site
 import View exposing (View)
+
+
+page : Page RouteParams Data
+page =
+    Page.prerender
+        { head = head
+        , routes = routes
+        , data = data
+        }
+        |> Page.buildNoState { view = view }
 
 
 type alias Model =
@@ -29,21 +38,15 @@ type alias RouteParams =
     }
 
 
-page : Page RouteParams Data
-page =
-    Page.prerender
-        { head = head
-        , routes = routes
-        , data = data
-        }
-        |> Page.buildNoState { view = view }
-
-
 routes : DataSource (List RouteParams)
 routes =
     Glob.succeed RouteParams
         |> Post.routesGlob
         |> Glob.toDataSource
+
+
+type alias Data =
+    Post Msg
 
 
 data : RouteParams -> DataSource Data
@@ -56,33 +59,20 @@ data routeParams =
         )
 
 
-head :
-    StaticPayload Data RouteParams
-    -> List Head.Tag
-head static =
-    Seo.summary
-        { canonicalUrlOverride = Nothing
-        , siteName = "elm-pages"
-        , image =
-            { url = Pages.Url.external "TODO"
-            , alt = "elm-pages logo"
-            , dimensions = Nothing
-            , mimeType = Nothing
-            }
-        , description = "TODO"
-        , locale = Nothing
-        , title = title static
-        }
-        |> Seo.website
 
-
-type alias Data =
-    Post Msg
+-- VIEW
 
 
 title : StaticPayload Data RouteParams -> String
 title static =
-    static.data.frontmatter.title
+    Site.windowTitle static.data.frontmatter.title
+
+
+head :
+    StaticPayload Data RouteParams
+    -> List Head.Tag
+head static =
+    Site.meta (title static)
 
 
 view :

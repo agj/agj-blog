@@ -1,8 +1,10 @@
-module Site exposing (config)
+module Site exposing (config, meta, windowTitle)
 
 import DataSource
 import Head
+import Head.Seo as Seo
 import Pages.Manifest as Manifest
+import Pages.Url
 import Route
 import SiteConfig exposing (SiteConfig)
 
@@ -39,3 +41,31 @@ manifest static =
         , startUrl = Route.Index |> Route.toPath
         , icons = []
         }
+
+
+
+-- CUSTOMIZED
+
+
+windowTitle : String -> String
+windowTitle pageTitle =
+    "{pageTitle} [agj's blog]"
+        |> String.replace "{pageTitle}" pageTitle
+
+
+meta : String -> List Head.Tag
+meta title =
+    Seo.summary
+        { canonicalUrlOverride = Nothing
+        , siteName = "agj's blog"
+        , image =
+            { url = Pages.Url.external "TODO"
+            , alt = "agj's blog"
+            , dimensions = Nothing
+            , mimeType = Nothing
+            }
+        , description = "Writing about coding weird things, strange thoughts and more random nonsense."
+        , locale = Nothing
+        , title = title
+        }
+        |> Seo.website
