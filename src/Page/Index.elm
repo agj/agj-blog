@@ -107,9 +107,21 @@ view :
     -> View Msg
 view maybeUrl sharedModel static =
     let
+        padNumber : Maybe Int -> String
+        padNumber num =
+            num
+                |> Maybe.withDefault 0
+                |> String.fromInt
+                |> String.padLeft 2 '0'
+
+        getDateHour : PostGist -> String
+        getDateHour gist =
+            padNumber gist.data.date
+                ++ padNumber gist.data.hour
+
         sortedGists =
             static.data
-                |> List.sortBy (\gist -> gist.year ++ gist.month ++ gist.post)
+                |> List.sortBy (\gist -> gist.year ++ gist.month ++ getDateHour gist)
                 |> List.reverse
     in
     { title = "Hi"

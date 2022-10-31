@@ -18,6 +18,8 @@ type alias PostFrontmatter =
     { title : String
     , categories : List String
     , tags : List String
+    , date : Maybe Int
+    , hour : Maybe Int
     }
 
 
@@ -42,6 +44,8 @@ postFrontmatterDecoder =
         |> Decode.required "title" Decode.string
         |> Decode.required "categories" (Decode.list Decode.string)
         |> Decode.required "tags" (Decode.list Decode.string)
+        |> Decode.required "date" (Decode.maybe Decode.int)
+        |> Decode.required "hour" (Decode.maybe Decode.int)
 
 
 
