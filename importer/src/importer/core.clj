@@ -13,6 +13,16 @@
          el->md)
 
 
+;; Utilities
+
+(defn leftpad [char length target]
+  (cond
+    (number? target) (leftpad char length (str target))
+    (string? target) (apply str (concat (take (- length (count target))
+                                              (repeat char))
+                                        target))))
+
+
 ;; Data traversal
 
 (defn vector-find [pred arr]
@@ -277,8 +287,8 @@
   (let [status (:status post)]
     (str (if (= status "draft")
            "drafts/"
-           (str (-> post :date :year) "/"
-                (-> post :date :month) "-"))
+           (str (->> post :date :year) "/"
+                (->> post :date :month (leftpad \0 2)) "-"))
          (:slug post)
          (if (= status "private")
            "-HIDDEN"
