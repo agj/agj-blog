@@ -12,6 +12,7 @@ tags:
 - graphic-design
 - javascript
 - web
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2012/10/gamesscreen.png "Games aggregate screenshot")

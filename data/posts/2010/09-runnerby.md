@@ -12,6 +12,7 @@ tags:
 - release
 - runnerby
 - video-game
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2010/09/runnerbyscreen.png "Runnerby screenshot")

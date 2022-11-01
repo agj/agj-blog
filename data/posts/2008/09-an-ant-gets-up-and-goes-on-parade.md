@@ -10,6 +10,7 @@ tags:
 - comic
 - release
 - the-ants-parade
+language: eng
 ---
 
 Remember that idea I had of making [a round-robin webcomic](http://blog.agj.cl/2008/07/28/round-robin-webcomic-project/)? Well, I've finally launched the site, with a strip to start things. It's called [The Ants Parade](http://ants.agj.cl/), a name that, I believe, illustrates what I want to achieve with the comic: collaboration, a succession of authors, whose works, together, contribute to a bigger opus. Not that big, of course --we're not talking _elephants_ here--, but hopefully worth everyone's time.

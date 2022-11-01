@@ -11,6 +11,7 @@ tags:
 - release
 - video-game
 - visual-novel
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2012/09/hanyouscreen.png "han'you tokimeki screenshot")

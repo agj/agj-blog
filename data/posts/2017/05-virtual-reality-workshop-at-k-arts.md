@@ -16,6 +16,7 @@ tags:
 - university
 - video
 - virtual-reality
+language: eng
 ---
 
 <video-embed service="vimeo" id="216446958" width="500" height="281" />

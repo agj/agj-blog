@@ -11,6 +11,7 @@ tags:
 - university
 - video
 - nihongo
+language: eng
 ---
 
 <video-embed service="vimeo" id="151801842" width="500" height="281" />

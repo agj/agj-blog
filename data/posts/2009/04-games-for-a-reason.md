@@ -10,6 +10,7 @@ tags:
 - industry
 - video-game
 - web
+language: eng
 ---
 
 After seeing videos and reports of some of the talks at this year's [Independent Games Festival](http://www.igf.com/), I'm saddened. Sure, all those indie game developers are having the time of their lives out there, and the scene seems to be growing and doing very well for itself. The problem is, it's just all a bit empty. There's a lot of whizbang, but very little substance. Most of these game developers make games for the sake of making games, which is a good thing to do for themselves, but ultimately doesn't result in a product that will be relevant for the end user, and to society as a whole. So many game developers, from the mainstream industry and the indies, repeat that they want to make fun games, and 'fun' is that end goal that every game needs to accomplish. And if you look around, you will see that most games are indeed catering to our senses, because what else is fun if not pleasure? I mean, _addictiveness_ is a desireable quality in a game, according to most game reviewers out there—but do gamers really wanna be playing packs of cigarettes all the time? Don't they wanna get something positive out of the experience, be stimulated every now and then? Don't their minds (as opposed to their _brains_) wanna be challenged, or nurtured?

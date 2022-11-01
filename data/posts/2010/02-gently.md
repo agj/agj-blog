@@ -12,6 +12,7 @@ tags:
 - text-game
 - twine
 - video-game
+language: eng
 ---
 
 > _She's so beautiful. Pale skin, dark hair, green eyes. The curves in her body send me spinning. Can't believe she's here in bed with me, tonight. She has her eyes fixed on mine. She's shy under the covers, but her look speaks of a contained lust. Now, what I should do is..._

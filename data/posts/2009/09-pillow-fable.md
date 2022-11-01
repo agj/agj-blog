@@ -14,6 +14,7 @@ tags:
 - santiago
 - sound-design
 - video
+language: eng
 ---
 
 <video-embed service="vimeo" id="6445520" width="500" height="375" />

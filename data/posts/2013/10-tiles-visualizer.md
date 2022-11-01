@@ -7,6 +7,7 @@ categories:
 - interactive
 tags:
 - javascript
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2013/10/cordilleravis.jpg "Cordillera Vis")

@@ -12,6 +12,7 @@ tags:
 - graphic-design
 - illustration
 - university
+language: eng
 ---
 
 [Español](http://blog.agj.cl/2008/12/illustrated-mythology/#more-52)

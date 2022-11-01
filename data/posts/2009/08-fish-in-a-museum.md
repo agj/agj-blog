@@ -8,6 +8,7 @@ categories:
 tags:
 - museography
 - university
+language: eng
 ---
 
 Probably the most interesting course I took while in university was Rodrigo Ampuero's workshop, in 2007. The subject of that semester was as divorced from the core of my degree (graphic design) as my classes got, and I say that in a good way. During that semester we learned about museography: the design of exhibition spaces. It was a fascinating enough experience that I sought to do an internship related to that, but it fell through in the end.

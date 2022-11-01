@@ -1,5 +1,6 @@
-module CustomMarkup.LanguageBreak exposing (renderer, stringToLanguage, toHtml)
+module CustomMarkup.LanguageBreak exposing (renderer, toHtml)
 
+import Data.Language as Language exposing (Language)
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Markdown.Html
@@ -8,13 +9,6 @@ import Markdown.Html
 type alias LanguageBreak =
     { language : Maybe Language
     }
-
-
-type Language
-    = English
-    | Spanish
-    | Japanese
-    | Mandarin
 
 
 renderer : Markdown.Html.Renderer (Result String LanguageBreak)
@@ -29,25 +23,6 @@ toHtml languageBreak _ =
         []
 
 
-stringToLanguage : String -> Result String Language
-stringToLanguage str =
-    case str of
-        "eng" ->
-            Ok English
-
-        "spa" ->
-            Ok Spanish
-
-        "jap" ->
-            Ok Japanese
-
-        "cnm" ->
-            Ok Mandarin
-
-        _ ->
-            Err ("Unknown language: " ++ str ++ ".")
-
-
 
 -- INTERNAL
 
@@ -59,5 +34,5 @@ constructLanguageBreak languageM =
             Ok (LanguageBreak Nothing)
 
         Just str ->
-            stringToLanguage str
+            Language.fromString str
                 |> Result.map (Just >> LanguageBreak)

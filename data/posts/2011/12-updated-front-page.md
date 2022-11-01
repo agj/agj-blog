@@ -13,6 +13,7 @@ tags:
 - javascript
 - mootools
 - web
+language: eng
 ---
 
 I've refreshed the [front page](http://www.agj.cl/). The new design sports a rather subtle effect that nonetheless took me a fair number of hours to pull off, in part because I'm still not that familiar with javascript, but also because it was far more complicated than I originally estimated. It may not work as it's supposed to in browsers other than Firefox and Safari's latest versions, since it hasn't been tested beyond those.

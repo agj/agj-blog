@@ -10,6 +10,7 @@ tags:
 - kotm
 - release
 - sound-design
+language: eng
 ---
 
 Another Klik of the Month, and another game made in two (and a half) hours. This time it's an audio game, no graphics. To tell the truth, the idea for this game seemed much cooler in my head than the result, but what am I going to do. I might make a more involved game with the general idea for this game in the future. If you play it, please, excuse my poor diction.

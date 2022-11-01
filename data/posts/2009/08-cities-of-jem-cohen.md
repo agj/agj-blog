@@ -9,6 +9,7 @@ categories:
 - videos
 tags:
 - cinema
+language: eng
 ---
 
 I had the opportunity to hear Jem Cohen talk three times in the past three days. The first was a supposed 'master class', which was really just a talk, where he was accompanied by Guy Picciotto (of Fugazi) and Todd Griffin, both musicians. The talk was called _Another kind of music_, and it was about the way he approaches filmmaking in relation to sound and music. One of his insights was that making films can be a bit like making music; there's rhythm, texture, and other sensory elements in the mix, beside the more evident aspect of narrative that is most films' core. He also said that the way he shoots his footage is akin to a musician's improvisation.

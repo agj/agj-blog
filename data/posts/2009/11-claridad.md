@@ -11,6 +11,7 @@ tags:
 - exhibition
 - release
 - video
+language: eng
 ---
 
 <video-embed service="vimeo" id="6187924" width="500" height="375" />

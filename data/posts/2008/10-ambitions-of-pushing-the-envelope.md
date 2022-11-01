@@ -15,6 +15,7 @@ tags:
 - industry
 - university
 - video-game
+language: eng
 ---
 
 I'm currently in my final semester for the Bachelor of Graphic Design degree, so I'm devoting my time to a project I haven't discussed here so far. Now that I have something to show, though, I think it's time to talk about it a bit. I'll start from the very beginning: the conception of the idea.

@@ -12,6 +12,7 @@ tags:
 - heart
 - intervalo-lucido-del-individuo-inconsciente
 - video-game
+language: eng
 ---
 
 [![image](http://blog.agj.cl/wp-content/uploads/2012/10/gameonplaquesmall.jpg "My games' plaque")](http://blog.agj.cl/wp-content/uploads/2012/10/gameonplaque.jpg)

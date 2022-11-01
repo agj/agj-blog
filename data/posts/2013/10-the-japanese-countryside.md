@@ -11,6 +11,7 @@ tags:
 - moving-photo
 - video
 - vine
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2013/10/ueda.jpg "Chuo-higashi, Ueda")

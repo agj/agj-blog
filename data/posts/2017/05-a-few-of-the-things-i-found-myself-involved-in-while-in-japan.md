@@ -11,6 +11,7 @@ tags:
 - japan
 - video
 - web
+language: eng
 ---
 
 One unexpected thing during my stay in Japan was becoming a performer. Friend and seminar-peer [Hiramoto Mizuki](http://mimimizuki.com/) needed people to carry out her _Sushi performance,_ which involves humans taking on the appearance of the popular traditional Japanese dish in the streets of the crowded night-life district Roppongi, as part of the [Roppongi Art Night festival.](http://www.roppongiartnight.com/2016/) So I became the _rice_ to her _tuna._ I was actually part of the (huge) camera crew half of the time as well. I don't normally enjoy performing in public, but the experience was actually pretty fun. She made [a video](https://www.youtube.com/watch?v=yJiCW0mebk0) out of the copious material her little army of camerapeople got for her, and made it her graduation project. The video's spoken in Japanese, but if interested just skip to the performances.

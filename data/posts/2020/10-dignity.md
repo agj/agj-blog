@@ -11,6 +11,7 @@ tags:
 - graphic-design
 - illustration
 - video
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2020/10/dignidad.jpg)

@@ -10,6 +10,7 @@ tags:
 - javascript
 - release
 - video-game
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2012/11/flowerpatternscreen.jpg "Flower pattern screenshot")

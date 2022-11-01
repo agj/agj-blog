@@ -11,6 +11,7 @@ tags:
 - nitrotracker
 - release
 - video-game
+language: eng
 ---
 
 A few months ago, as I was waking up, and while I was halfway between being asleep and awake, I had this dream/idea for a game. When I woke up properly, I wrote it down in my sketchbook. And only a few hours ago, for this month's [Klik](http://blog.agj.cl/tag/kotm/), I made it concrete.

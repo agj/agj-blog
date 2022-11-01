@@ -7,6 +7,7 @@ categories:
 - interactive
 - musings
 tags: []
+language: eng
 ---
 
 The past five weeks I have been 'attending' an online course on game design, generously offered by Ian Schreiber, and named [Game Design Concepts](http://gamedesignconcepts.wordpress.com/). His only condition was that one purchase [the book he co-wrote with Brenda Brathwaite](http://amzn.com/158450580X), precisely for the purpose of teaching, which turned out to be a very good acquisition in itself, and which I might review at some point in the future. The course itself involves a blog, a forum, and a wiki. In the blog, Ian posts, every monday and thursday, a 'lecture', and lists a couple of extra readings; plus, he leaves a 'homeplay' (as he calls it) assignment that usually consists of designing a game under certain limitations, or to make changes to an existing one. That's when the forum comes into play, as everyone is expected to post their game and comment on a few of their peers', to generate some inter-feedback. The wiki is mostly just an aside that has served no significant purpose other than as a space to offer translations of the different lessons.

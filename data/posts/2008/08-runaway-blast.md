@@ -10,6 +10,7 @@ tags:
 - kotm
 - release
 - video-game
+language: eng
 ---
 
 What happens if you mix a group of people, an old and crippled game-making software, and two hours on a Saturday evening? Awesomeness happens, that is what. It's the basic premise of the Klik of the Month Klub; you grab Klik & Play, a buggy, limited and old (from 1994) software that is nevertheless endearing and fun to use (also free,) then make a game with it during those two hours. The results are often broken and nigh-unplayable, but hilarious or even enlightening.

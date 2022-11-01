@@ -295,7 +295,8 @@
                           :date (->> post :date :date)
                           :hour (->> post :date :hour)
                           :categories (->> post :categories (map :slug))
-                          :tags (->> post :tags (map :slug))}]
+                          :tags (->> post :tags (map :slug))
+                          :language "eng"}]
     (str "---\n"
          (data->yaml frontmatter-data)
          "---\n\n"

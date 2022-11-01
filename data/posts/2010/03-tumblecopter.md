@@ -11,6 +11,7 @@ tags:
 - release
 - tumblecopter
 - video-game
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2010/03/tumblecopterscreen.png "Tumblecopter screenshot")

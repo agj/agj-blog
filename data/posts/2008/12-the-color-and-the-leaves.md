@@ -12,6 +12,7 @@ tags:
 - lofi
 - release
 - the-color-and-the-leaves
+language: eng
 ---
 
 In six days, spaced over three weekends, three guys online, recording songs collaboratively, grabbing what the other made and putting some guitar on top, or some stream-of-consciousness vocals, or some crazy radio static. That was the dynamic that resulted in the creation of _Tree_, a full-length (well, 30 minutes long) digital release by The Color and the Leaves project!

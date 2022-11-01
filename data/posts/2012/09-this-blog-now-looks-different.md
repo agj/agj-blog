@@ -12,6 +12,7 @@ tags:
 - graphic-design
 - php
 - web
+language: eng
 ---
 
 I have made this blog look different from how it looked yesterday. It is also used somewhat different. I pressed many keys during several days to make this happen.

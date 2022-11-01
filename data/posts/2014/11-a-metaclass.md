@@ -13,6 +13,7 @@ tags:
 - japanese
 - language
 - metaclase-de-kanji
+language: eng
 ---
 
 [![Kanji metaclass poster](http://blog.agj.cl/wp-content/uploads/2014/11/kanjimetaclass.png)](http://piclog.agj.cl/?picture=72)[Español](http://blog.agj.cl/2014/11/a-metaclass/#language)

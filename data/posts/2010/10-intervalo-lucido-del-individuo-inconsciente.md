@@ -11,6 +11,7 @@ tags:
 - intervalo-lucido-del-individuo-inconsciente
 - release
 - video-game
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2010/10/therapyscreenwide.png "Intervalo... screenshot")

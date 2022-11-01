@@ -14,6 +14,7 @@ tags:
 - tigsource
 - video-game
 - viewpoints
+language: eng
 ---
 
 I've completed a new videogame—another entry in [another TIGSource competition](http://tigsource.com/articles/2009/02/20/cockpit-compo). The theme, this time, is 'cockpits'. My game is pretty much on the fringe in the way it implements the theme, though. What I originally intended to make was some manner of car driving game, inspired by the original [_Out Run_](http://www.youtube.com/watch?v=WiWiTXq4yYY), since I'm such a big fan of the series, and because I love the aesthetic of that kind of low-tech 3D. I might do this in the future; we'll see how creating such an engine will go for me. But the game I ended up conceiving, because I only had roughly a week to make it (until the deadline was extended another week), is not about driving anything at all, it is merely about _looking_; how much more simple can a game's interface and set of verbs get? You are still in some kind of convertible sportscar, but you're just sitting on the passenger's seat.

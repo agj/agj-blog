@@ -12,6 +12,7 @@ tags:
 - graphic-design
 - javascript
 - web
+language: eng
 ---
 
 I wanted to highlight some new stuff on the [front page](http://www.agj.cl/), but ended up redesigning it. I like this new version much better than the last one, even though it's just a retool gone a bit out of hand. Other than still featuring Cleo, it includes a favorite feature of mine: random colors. Another 'feature': it doesn't work properly in IE.

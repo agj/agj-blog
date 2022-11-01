@@ -12,6 +12,7 @@ tags:
 - super-friendship-club
 - web
 - weekly-concern
+language: eng
 ---
 
 In the context of the final [Super Friendship Club](http://www.superfriendshipclub.com/) pageant, themed 'ritual', I made something which I won't fool anybody by calling a game.

@@ -9,6 +9,7 @@ tags:
 - flash
 - release
 - video-game
+language: eng
 ---
 
 [![image](http://blog.agj.cl/wp-content/uploads/2010/12/ascensionshot.png "Ascension screenshot")](http://blog.agj.cl/wp-content/uploads/2010/12/ascensionshot.png)

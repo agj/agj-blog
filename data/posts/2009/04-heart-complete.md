@@ -12,6 +12,7 @@ tags:
 - release
 - sound
 - video-game
+language: eng
 ---
 
 ![Heart logo](http://blog.agj.cl/wp-content/uploads/2009/04/heartlogo1.png "Heart logo")

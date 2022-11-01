@@ -8,6 +8,7 @@ categories:
 - my-games
 tags:
 - video-game
+language: eng
 ---
 
 Prompted by [mcc](http://msm.runhello.com/p/615), I've compiled a list of whatever weak narrative impetus my games have. I used games as listed in [my aggregate](http://www.agj.cl/games/), and removed those that are comprised of only surface, i.e. toys, or that are non-interactive.<!-- more -->

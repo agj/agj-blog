@@ -8,6 +8,7 @@ categories:
 tags:
 - portfolio
 - web
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2017/05/mobileportfolio.jpg)

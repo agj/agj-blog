@@ -14,6 +14,7 @@ tags:
 - text-game
 - tigsource
 - video-game
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2012/12/spwordsscreen.png "Spwords screenshot")

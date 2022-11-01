@@ -12,6 +12,7 @@ tags:
 - twine
 - video-game
 - within
+language: eng
 ---
 
 > _There's a way to find things you've lost recently. You have to concentrate and retrace your every step, remember where you were at each time and what you did then. That technique might also work to recover a lost memory._

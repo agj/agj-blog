@@ -10,6 +10,7 @@ categories:
 tags:
 - event
 - video-game
+language: eng
 ---
 
 The game I posted last about, _Ascension_, was made by talented game author [Jonathan Whiting](http://jonathanwhiting.com/).

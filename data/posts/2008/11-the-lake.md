@@ -14,6 +14,7 @@ tags:
 - the-lake
 - tigsource
 - video-game
+language: eng
 ---
 
 I made a very quick game (though not quite as quick as the [Klik of the Month](http://blog.agj.cl/tag/kotm/) ones) for a competition that is due today. The game is called The Lake, and it's for the TIGSource [Commonplace Book Competition](http://tigsource.com/articles/2008/10/17/tigcompo-commonplace-book). The objective was to create a game inspired by one or several of the brief ideas that H.P. Lovecraft jotted down in his [Commonplace Book](http://www.lapetiteclaudine.com/archives/011196.html), most of which never got turned into full stories. This is what I did; my game is not 'based on' as much as it's just 'triggered' by one of these ideas, though.

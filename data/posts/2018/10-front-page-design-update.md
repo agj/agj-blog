@@ -14,6 +14,7 @@ tags:
 - graphic-design
 - javascript
 - web
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2018/10/newfront2.png)

@@ -11,6 +11,7 @@ tags:
 - espanol
 - the-ants-parade
 - web
+language: eng
 ---
 
 [Español](http://blog.agj.cl/?p=8#more-8)

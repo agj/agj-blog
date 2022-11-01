@@ -11,6 +11,7 @@ tags:
 - release
 - video-game
 - walker
+language: eng
 ---
 
 ![Walker screenshot](http://blog.agj.cl/wp-content/uploads/2009/10/walkerscreen.png "Walker screenshot")

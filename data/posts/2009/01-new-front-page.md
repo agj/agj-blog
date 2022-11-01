@@ -13,6 +13,7 @@ tags:
 - javascript
 - php
 - web
+language: eng
 ---
 
 Changed the design of the [front page](http://www.agj.cl/). Tried something different this time---I wanted it to be more disorderly, less clean; a bit more striking, perhaps. It didn't come out quite how I envisioned it, but it will have to do, for now. The main reason for this redesign was that I wanted all the links to my different accounts at community websites there. I had something else entirely in mind at first, a design that integrated the last few piclog thumbnails and blog headlines, but since I don't know much Javascript or PHP, all that will have to wait until I have the time to sit down and learn.

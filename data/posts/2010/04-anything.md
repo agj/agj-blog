@@ -13,6 +13,7 @@ tags:
 - release
 - text-game
 - video-game
+language: eng
 ---
 
 > _The music room is here because this house is large enough to have one. I took advantage of it as a kid. The most notorious protagonist here is the piano, but other instruments adorn the wall._

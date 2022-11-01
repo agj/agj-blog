@@ -10,6 +10,7 @@ tags:
 - kotm
 - release
 - video-game
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2010/07/drawingscreenshot.png "Drawing thingie for KOTM screenshot")

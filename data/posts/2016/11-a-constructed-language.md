@@ -14,6 +14,7 @@ tags:
 - language
 - release
 - university
+language: eng
 ---
 
 For my Master's dissertation project in the New Media program at the Tokyo University of the Arts, I quickly devised a small constructed language, something that would be a tool for me to explore language itself in abstraction. Before I undertook the subject of human communication languages, I had been researching programming language design, and in that process came across a paradigm that was new to me, called [_concatenative._](https://en.wikipedia.org/wiki/Concatenative_programming_language) This paradigm is mathematically very elegant, structurally very simple, and in superficial appearance very similar to human written languages. I thought I could use it as a basis for a simple human language, and so I took the main ideas of it and applied them to my design.

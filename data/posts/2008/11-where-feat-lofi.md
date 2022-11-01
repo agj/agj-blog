@@ -11,6 +11,7 @@ tags:
 - lofi
 - release
 - video-game
+language: eng
 ---
 
 Last saturday I participated again in this month's [Klik of the Month Klub](http://blog.agj.cl/2008/08/18/runaway-blast/). This time I didn't use Klik & Play to make my game, because I had heard of a different software, modelled around [Clickteam](http://www.clickteam.com/eng/index.php)'s own (creators of Klik & Play), but improved, called [Construct](http://www.scirra.com/). It's still in beta, but it's a very complete package nonetheless. Much like last time, I used that very day's afternoon to learn to use the software, scribbled a few notes on the game I was going to make, and in the evening, proceeded to spend two hours figuring out how to do stuff. The resulting game is more complex than last time's Runaway Blast, simply because Construct is so much more capable than K&P.

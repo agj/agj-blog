@@ -11,6 +11,7 @@ tags:
 - twine
 - video-game
 - while-telling-with-the-eyes
+language: eng
 ---
 
 Or, _Idea for Twee game_. This is something I was compelled to make.

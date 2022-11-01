@@ -10,6 +10,7 @@ tags:
 - espanol
 - japonol
 - language
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2020/10/japoñol-profile.png)

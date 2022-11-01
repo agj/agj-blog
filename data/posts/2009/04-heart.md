@@ -16,6 +16,7 @@ tags:
 - release
 - video
 - video-game
+language: eng
 ---
 
 <video-embed service="vimeo" id="4235554" width="500" height="313" />

@@ -17,6 +17,7 @@ tags:
 - release
 - university
 - video
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2017/05/mp2017setsuei.jpg)

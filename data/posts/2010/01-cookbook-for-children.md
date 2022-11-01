@@ -13,6 +13,7 @@ tags:
 - graphic-design
 - illustration
 - jugosa-cocina-para-ninos
+language: eng
 ---
 
 [Español](http://blog.agj.cl/2010/01/cookbook-for-children/#language)

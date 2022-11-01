@@ -10,6 +10,7 @@ tags:
 - kotm
 - release
 - video-game
+language: eng
 ---
 
 ![Allegr screenshot](http://blog.agj.cl/wp-content/uploads/2009/08/allegrscreen.png "Allegr screenshot")

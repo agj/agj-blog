@@ -14,6 +14,7 @@ tags:
 - text-game
 - twine
 - video-game
+language: eng
 ---
 
 > January, the month named after the Roman god Janus. A god of thresholds between past and future, here and there, he is depicted as having a head bearing two faces staring simultaneously forward and back.

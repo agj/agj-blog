@@ -10,6 +10,7 @@ tags:
 - heart
 - interactive
 - video-game
+language: eng
 ---
 
 When I posted [my entry](http://www.ludumdare.com/compo/?category_name=ld14&author_name=agj) for the Ludum Dare competition, _[Heart](http://blog.agj.cl/tag/heart/)_, I received mostly positive comments, though many of them were appended with something close to this sentence: _"But it is not a game."_ I was not too surprised. Indeed, when I talk to people about games, they normally think of them in terms of gameplay, interaction, challenge, fun, goals. Which is not wrong, as most video games can be accurately described with these words, but it is unnecessarily restrictive to categorize the whole art within these boundaries—doing so is an exercise in exclusivity. This ties directly with [my previous post about expanding the scope of video games](http://blog.agj.cl/2009/04/games-for-a-reason/). Do we really need to keep a short leash on what video games are or can be?

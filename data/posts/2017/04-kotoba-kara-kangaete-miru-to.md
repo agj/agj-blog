@@ -17,6 +17,7 @@ tags:
 - university
 - video
 - nihongo
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2017/04/tsumiki.jpg)

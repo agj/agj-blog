@@ -11,6 +11,7 @@ tags:
 - university
 - video
 - nihongo
+language: eng
 ---
 
 At university I've ended up working on several video pieces, most of them very fun to work at. Here are some of them, all created as part of some assignment.

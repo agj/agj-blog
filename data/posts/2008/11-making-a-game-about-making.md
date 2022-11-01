@@ -17,6 +17,7 @@ tags:
 - video-game
 - web
 - web-20
+language: eng
 ---
 
 In [a previous post](http://blog.agj.cl/2008/10/13/ambitions-of-pushing-the-envelope/) I explained what motivated me to make the game I am currently making as my final project in college. In this entry I will actually describe what I have achieved so far, and my plans for what's to come. If you so wish, you may [**play the game**](http://www.agj.cl/files/games/viscomp1/), incomplete as it is, before reading what follows. If you do, I'd be very interested in hearing about your experience, how you approached the game without knowing exactly what it was about, what could have been clearer or better.

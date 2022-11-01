@@ -11,6 +11,7 @@ tags:
 - javascript
 - library
 - release
+language: eng
 ---
 
 I decided to try my hand at creating and releasing some reusable code. I have a big inferiority complex on my code quality, but I've been getting over it little by little just by piling information on my brain. So, while I've had [a Github account](https://github.com/agj) for some years (though only decided to actually start using it much recently), this is my first time offering some of my code on a module repository. So I created two tiny npm packages (that means Javascript) that do only one thing, and might prove useful to people other than myself.

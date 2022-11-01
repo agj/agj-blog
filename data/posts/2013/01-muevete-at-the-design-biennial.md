@@ -11,6 +11,7 @@ tags:
 - event
 - muevete
 - santiago
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2013/01/muevetebiennalphoto.jpg "Muévete biennal photo")

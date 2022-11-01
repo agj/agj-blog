@@ -11,6 +11,7 @@ tags:
 - javascript
 - release
 - web
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2012/10/spoemsscreen.png "Spoems screenshot")

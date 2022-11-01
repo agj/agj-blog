@@ -11,6 +11,7 @@ tags:
 - javascript
 - release
 - web
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2014/04/aphasiapoetica.png "Aphasia Poetica screenshot")

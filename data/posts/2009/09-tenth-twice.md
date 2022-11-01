@@ -13,6 +13,7 @@ tags:
 - tigsource
 - video-game
 - viewpoints
+language: eng
 ---
 
 I forgot to report back then, but my game, [_Viewpoints_](http://blog.agj.cl/tag/viewpoints/), [got tenth place](http://tigsource.com/articles/2009/05/04/cockpit-compo-results) in the competition it was created for, TIGSource's Cockpit Competition. Considering that there were 41 entries, that's not too bad.

@@ -1,6 +1,7 @@
 module Data.Post exposing (..)
 
 import CustomMarkup
+import Data.Language as Language exposing (Language)
 import DataSource exposing (DataSource)
 import DataSource.Glob as Glob exposing (Glob)
 import Html exposing (Html)
@@ -20,6 +21,7 @@ type alias Post msg =
 type alias PostFrontmatter =
     { id : Maybe Int
     , title : String
+    , language : Language
     , categories : List String
     , tags : List String
     , date : Int
@@ -47,6 +49,7 @@ postFrontmatterDecoder =
     Decode.succeed PostFrontmatter
         |> Decode.required "id" (Decode.maybe Decode.int)
         |> Decode.required "title" Decode.string
+        |> Decode.required "language" Language.decoder
         |> Decode.required "categories" (Decode.list Decode.string)
         |> Decode.required "tags" (Decode.list Decode.string)
         |> Decode.required "date" Decode.int

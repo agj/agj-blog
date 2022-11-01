@@ -7,6 +7,7 @@ categories:
 - opinion
 tags:
 - cinema
+language: eng
 ---
 
 Takeshi 'Beat' Kitano is my favorite director in Japan right now. The first film of his that I watched was _Dolls;_ at the time, it had been recently premiered (2002 or 3.) Someone from the Internet community I used to frequent was praising the film, so, fan of everything Japanese as I was back then, I went looking for it. Now, my memory gets fuzzy at this point, but of one thing I'm sure: I ended up not only watching _Dolls,_ but _Hana-bi_ too, and while the former was a good movie with interesting cinematography, it's the latter which really caught my interest and made me the fan that I'm now. The film was so very contrasted; it was violent but it was not raw as life, it was preternatural, it sublimated the awful and the quietly beautiful and confronted them, just  as black and white struggle in the chiaroscuro of a romanticist painting. The stillness and the orthogonal perspective and framing of the camera captivated me.

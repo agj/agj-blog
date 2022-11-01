@@ -14,6 +14,7 @@ tags:
 - ludum-dare
 - release
 - video-game
+language: eng
 ---
 
 ![Climbrunner screenshot](http://blog.agj.cl/wp-content/uploads/2009/12/climbrunnershot.png "Climbrunner screenshot")

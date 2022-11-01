@@ -11,6 +11,7 @@ tags:
 - javascript
 - release
 - video-game
+language: eng
 ---
 
 Although I released it in 2012, over seven years ago now, [_Flower pattern_](/2012/11/flower-pattern/) is actually still one of my favorite digital things I've made. It's simple, feels good to play around with for a bit, and it's impactful to show to people. It's not the deepest, it just looks cool.  So the fact that because of evolving technologies it's sort of aging poorly is not something I'm happy with. For one, back then I didn't own a smartphone, so it was poorly tested on them, and actually looks really cramped. Higher pixel density displays also became the norm since then, and my toy looks blurry on them. Then some DOM API changes means that on touch devices there's issues with touch events…

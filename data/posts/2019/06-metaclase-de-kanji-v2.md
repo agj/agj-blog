@@ -11,6 +11,7 @@ tags:
 - japanese
 - language
 - metaclase-de-kanji
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2019/06/metaclase.png)

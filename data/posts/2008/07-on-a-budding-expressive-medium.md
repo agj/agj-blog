@@ -12,6 +12,7 @@ tags:
 - forum
 - industry
 - video-game
+language: eng
 ---
 
 I'm in my senior year, studying graphic design and doing my final year project, which will be due in January 2009. I'm a big gamer; played videogames since I was little and got my NES (which I still keep,) and have kept going at it since then, more or less uninterrupted. So I guess it's no surprise that I decided to make, for my project, a game; the first videogame I've ever made. Nevertheless, this post is not about my project, but, rather, about my opinion on videogames, which I hope will serve to justify my choice. Though I consider myself a critical individual, I've cut videogames a lot of slack in the past; I've become a lot more critical of the medium lately, though, and done a lot of reading on the subject because of my project. Thus, a collection of some posts I've made elsewhere, on the subject of videogames:<!-- more -->

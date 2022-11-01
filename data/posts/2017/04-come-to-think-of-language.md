@@ -16,6 +16,7 @@ tags:
 - release
 - university
 - video
+language: eng
 ---
 
 <video-embed service="vimeo" id="201826714" width="500" height="282" />

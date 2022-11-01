@@ -12,6 +12,7 @@ tags:
 - release
 - text-game
 - video-game
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2012/03/sinasuntoscreenshot.png "(Sin asunto) screenshot")

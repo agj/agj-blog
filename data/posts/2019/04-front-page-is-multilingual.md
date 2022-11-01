@@ -12,6 +12,7 @@ tags:
 - elm
 - front-page-design
 - web
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2019/04/front-languages.png)

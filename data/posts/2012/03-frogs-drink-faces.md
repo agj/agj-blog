@@ -11,6 +11,7 @@ tags:
 - pirate-kart
 - release
 - video-game
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2012/03/frogsscreen.png "Frogs Drink Faces screenshot")

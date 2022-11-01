@@ -9,6 +9,7 @@ tags:
 - blog
 - the-lake
 - video-game
+language: eng
 ---
 
 I'm honored that The Lake was linked by awesome blogs such as [Indie Games](http://www.indiegames.com/blog/2008/11/freeware_game_pick_the_lake_al.html) and [Rock, Paper, Shotgun](http://www.rockpapershotgun.com/2008/11/28/the-lake/). Although some people found some [hilarious bugs](http://jb.radium.se/blacklake.jpg), and many had trouble getting it to run (due to Construct's dependence on some recently released DirectX runtimes, but read on for more on this), the reactions were mostly positive. So, mission accomplished!

@@ -8,6 +8,7 @@ categories:
 tags:
 - album
 - release
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2014/03/cover01_400.jpg "Fade cover")

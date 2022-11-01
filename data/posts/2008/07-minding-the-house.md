@@ -8,6 +8,7 @@ categories:
 - musings
 tags:
 - blog
+language: eng
 ---
 
 It was a busy day! I've been setting up this website, and the only thing I hadn't yet done was post here. Among the update's there's a new main page with links to the blog, the portfolio and the [piclog](http://piclog.agj.cl/). The latter is a [Pixelpost](http://www.pixelpost.org/) installation for what some people call a photoblog, but the word has a negative connotation to me (at least [phonetically](http://geo.fotolog.com/directory?country=CI),) and it wasn't meant to be for photographs only, so I chose 'pic,' for picture. The difference with this blog is that the piclog is more of a gallery with not much other than the pictures themselves; to flesh out the process, the ideas or the anecdotes behind them I will use this blog. So they're meant to complement eachother.

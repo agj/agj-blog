@@ -13,6 +13,7 @@ tags:
 - the-games-collective
 - video-game
 - wirewalk
+language: eng
 ---
 
 ![image](http://blog.agj.cl/wp-content/uploads/2010/05/prosopamnesiascreen.png "Prosopamnesia screenshot")

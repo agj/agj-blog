@@ -12,6 +12,7 @@ tags:
 - release
 - university
 - web
+language: eng
 ---
 
 ![Buranko screenshot](http://blog.agj.cl/wp-content/uploads/2015/11/buranko.jpg)

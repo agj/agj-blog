@@ -10,6 +10,7 @@ tags:
 - kotm
 - release
 - video-game
+language: eng
 ---
 
 ![Colormatch screenshot](http://blog.agj.cl/wp-content/uploads/2009/05/colormatch.png "Colormatch screenshot")
