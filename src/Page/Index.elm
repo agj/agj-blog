@@ -9,16 +9,15 @@ import Html exposing (Html)
 import Html.Attributes as Attr
 import List.Extra as List
 import Maybe.Extra as Maybe
-import Page exposing (Page, StaticPayload)
+import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Path exposing (Path)
-import QueryParams exposing (QueryParams)
 import Shared
 import Site
 import View exposing (View)
 
 
-page : Page RouteParams Data
+page : PageWithState {} Data Model Msg
 page =
     Page.single
         { head = head
@@ -26,13 +25,13 @@ page =
         }
         |> Page.buildWithSharedState
             { init = init
-            , view = view
             , update = update
             , subscriptions = subscriptions
+            , view = view
             }
 
 
-init : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> ( Model, Cmd Msg )
+init : Maybe PageUrl -> Shared.Model -> StaticPayload Data {} -> ( Model, Cmd Msg )
 init maybePageUrl sharedModel static =
     let
         findPostGistById id =
@@ -45,61 +44,69 @@ init maybePageUrl sharedModel static =
                 |> Maybe.map postGistToUrl
                 |> Maybe.map Browser.Navigation.load
     in
-    ( ()
+    ( {}
     , maybePostRedirectCommand
         |> Maybe.withDefault Cmd.none
     )
 
 
-update :
-    PageUrl
-    -> Maybe Browser.Navigation.Key
-    -> Shared.Model
-    -> StaticPayload templateData routeParams
-    -> Msg
-    -> Model
-    -> ( Model, Cmd Msg, Maybe Shared.Msg )
-update pageUrl navKey sharedModel static msg model =
-    ( (), Cmd.none, Nothing )
+
+-- DATA
 
 
-subscriptions : Maybe PageUrl -> RouteParams -> Path -> Model -> Shared.Model -> Sub Msg
-subscriptions maybePageUrl routeParams path model sharedModel =
-    Sub.none
+type alias Data =
+    {}
+
+
+
+-- UPDATE
 
 
 type alias Model =
-    ()
+    {}
 
 
 type alias Msg =
     Never
 
 
-type alias RouteParams =
-    {}
-
-
-type alias Data =
-    ()
-
-
 data : DataSource Data
 data =
-    DataSource.succeed ()
+    DataSource.succeed {}
+
+
+update :
+    PageUrl
+    -> Maybe Browser.Navigation.Key
+    -> Shared.Model
+    -> StaticPayload Data {}
+    -> Msg
+    -> Model
+    -> ( Model, Cmd Msg, Maybe Shared.Msg )
+update pageUrl navKey sharedModel static msg model =
+    ( {}, Cmd.none, Nothing )
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Maybe PageUrl -> {} -> Path -> Model -> Shared.Model -> Sub Msg
+subscriptions maybePageUrl _ path model sharedModel =
+    Sub.none
 
 
 
 -- VIEW
 
 
-title : StaticPayload Data RouteParams -> String
+title : StaticPayload Data {} -> String
 title static =
     Site.windowTitle "Home"
 
 
 head :
-    StaticPayload Data RouteParams
+    StaticPayload Data {}
     -> List Head.Tag
 head static =
     Site.meta (title static)
@@ -109,7 +116,7 @@ view :
     Maybe PageUrl
     -> Shared.Model
     -> Model
-    -> StaticPayload Data RouteParams
+    -> StaticPayload Data {}
     -> View Msg
 view maybeUrl sharedModel model static =
     let
