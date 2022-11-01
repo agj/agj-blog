@@ -1,5 +1,6 @@
 module CustomMarkup exposing (..)
 
+import CustomMarkup.LanguageBreak
 import CustomMarkup.VideoEmbed
 import Html exposing (Html)
 import Markdown.Html
@@ -18,6 +19,8 @@ renderer =
             Markdown.Html.oneOf
                 [ CustomMarkup.VideoEmbed.renderer
                     |> resultToHtml CustomMarkup.VideoEmbed.toHtml
+                , CustomMarkup.LanguageBreak.renderer
+                    |> resultToHtml CustomMarkup.LanguageBreak.toHtml
                 ]
     }
 

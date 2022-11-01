@@ -22,9 +22,7 @@ At university I've ended up working on several video pieces, most of them very f
 
 This video, which I titled when uploading to Vimeo [**_An experiment in high-speed filming,_**](https://vimeo.com/148618680) is the result of a process of doing just that, but then trying to use the technique acquired for expressive purposes. The concept is of a —I struggle with what to call it— _metadiegesis_ in which us students act ourselves, and, well, saying further would be spoiling it. Despite what the above might suggest, it is a lowbrow, hackneyed little video that we still enjoyed putting together.
 
----
-
-<!-- language -->
+<language-break />
 
 <video-embed service="vimeo" id="132215482" width="500" height="281" />
 

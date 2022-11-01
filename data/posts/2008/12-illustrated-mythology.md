@@ -39,8 +39,6 @@ And that is how the book looks on the inside. The page on the left is my own wor
 
 <!-- more -->
 
----
-
-<!-- language -->
+<language-break />
 
 La mitología chilena es bastante rica, en particular aquella proveniente de la isla de Chiloé, de donde se originaron personajes como el Trauco y la Pincoya. Ese fue el tema del examen de mi taller del segundo semestre de 2007, con Jennifer King y Ximena Undurraga. Lo que creamos fue un supuesto 'diccionario' de seres mitológicos locales, todo un libro que comprende, ya que éramos cerca de 20 y cada quien hacía diez, alrededor de 200 ilustraciones.

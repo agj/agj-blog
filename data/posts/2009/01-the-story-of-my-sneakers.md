@@ -26,9 +26,7 @@ As you can see, the video could not have been made without the help of the star,
 And since I'm on the subject, [here's another video](http://vimeo.com/1260555) I made for that same class, as an exercise in shooting and editing. All of the material was recorded at the Diana arcade in San Diego, Santiago. My original idea was to make it much more musical, but due to time constraints, I was only able to do so much.
 <!-- more -->
 
----
-
-<!-- language -->
+<language-break />
 
 [_"La historia de mis zapatillas"_](http://vimeo.com/1260921) es un video que hice para el examen final de mi clase de video experimental, en 2007. Es la historia de una niña que documenta un íntimo y catártico ritual. Utilicé una edición conscientemente pausada, a pesar de que el [_storyboard_ original](http://www.agj.cl/files/video/zapatillas_storyboard.pdf) indicaba un ritmo mucho más rápido, porque noté que contribuía a la estética. En [una versión abreviada](http://vimeo.com/1260983) que hice después, para un muy mal concurso publicitario de Falabella, pude comprobarlo.
 

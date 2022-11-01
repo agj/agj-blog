@@ -28,9 +28,7 @@ I thought that a fable was perfect to complement visuals that didn't have much t
 
 The other sounds all came from my own mouth. I used a Nintendo DS and [NitroTracker](http://nitrotracker.tobw.net/) to sample my voice, and to structure the sounds into what you hear. The video was made using After Effects. This whole project was completed in around 10 hours.<!-- more -->
 
----
-
-<!-- language -->
+<language-break />
 
 Hice este video, titulado _Fábula de almohada_ (originalmente _Sueños_, pero...) que hice para una competencia local, llamada [Nanometrajes](http://www.nanometrajes.cl/), de videos breves. Tristemente, no se me ocurrió nada que hacer hasta que ya estaba muy cerca del plazo, así que se me ocurrió un plan. No tenía cámara de video (la que uso normalmente es de mi papá), así que tendría que animar. Decidí usar mi cámara fotográfica para capturar las escenas veloces, tomando dos pasos entre cada foto. Ya que no tenía una historia o un contexto concretos, decidí que tomaran un estilo onírico, y convertirlo en la interpretación de un sueño. Así es como se me ocurrió la narración, que viene transcrita a continuación (ya que la voz está bien filtrada):
 

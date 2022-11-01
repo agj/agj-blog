@@ -29,9 +29,7 @@ For my defense I had to ---evidently--- show the game, and do a presentation of 
 
 I have uploaded [the version of the game that I presented today (yesterday)](http://www.agj.cl/files/games/campodecolor1/). The algorithms are still lacking, I'm afraid, but I plan to make them [my top priority](http://listography.com/action/list?uid=9200085793&lid=6233889452) now. The dynamic audio is created using the minor pentatonic scale, with the sound of a Rhodes piano, as recorded by [Guy Cockroft](http://www.soundsnap.com/user/18). I'm glad it sounds as well as it does, considering the notes are selected randomly from the scale. Since it seems to be crediting time, I have to thank [Stephen Lavelle](http://www.maths.tcd.ie/~icecube/) and [muku](http://eriatic.wikidot.com/) for their invaluable help and suggestions on all aspects of my game. Also, of course, my teacher throughout this whole process, Eduardo Castillo.<!-- more -->
 
----
-
-<!-- language -->
+<language-break />
 
 Desde hoy (ayer), soy un diseñador gráfico profesional. Mi proyecto de título es Campodecolor, [el mismo juego sin nombre al que me he referido antes](http://blog.agj.cl/tag/final-years-project/), sobre composición visual. No está terminado como proyecto, pero este es un hito importante en su desarrollo, pues cumplió su primer objetivo, que era darme el título.
 

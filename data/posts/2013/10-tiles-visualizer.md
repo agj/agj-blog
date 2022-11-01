@@ -21,9 +21,7 @@ Technically challenging was figuring out a way to display the tiles in correct p
 
 Although I am rather happy with my work on the interaction design end, the result does sadly have many shortcomings...<!-- more -->
 
----
-
-<!-- language -->
+<language-break />
 
 Fui contratado para terminar un trabajo que había sido empezado pero nunca completado, [un visualizador de baldosas en contexto](http://www.cordillera.cl/flash.php) para la web del cliente que las produce. Sobre una foto de un ambiente puedes elegir los productos que quieres ver puestos en sus muros y pisos para comprobar cómo se ven los productos en un contexto real. Aunque el proyecto ya estaba casi terminado, el código fuente se traspapeló. Tomé eso como una oportunidad y corregí el diseño interactivo, haciendo posible una aplicación más enfocada y accesible de lo que se había concebido en un comienzo. Originalmente nada más iba a atar algunos cabos sueltos en el código, pero acabé por trabajar su diseño interactivo además de programarla desde cero.
 

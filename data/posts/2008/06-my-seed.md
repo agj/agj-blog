@@ -14,9 +14,7 @@ I don't like blogs all that much, to tell you the truth, Dear Reader. I don't th
 
 What makes this blog worthy for me, then, even if I can't foresee it getting any more than a visit per day? I simply needed a dumping place for my things; little things that might not be appropriate to display anywhere other than this tiny personal space, but which, put together, might form a collection worthy of showing. I lack a timeline for my doings in and out of the Web, one that could document my own growth. And I wanted a more personal web space, something that felt more like myself rather than what I do (my portfolio.) Yes: this blog is my face, my mind, my hands. It's already starting to feel like it's my child. I will not post here for you, Dear Reader; I will do it for myself.
 
----
-
-<!-- language -->
+<language-break />
 
 El problema de conocer dos idiomas es el sentir la necesidad de comunicarse usando ambos, porque, no importa cuál se elija, siempre se va a dejar a un enorme grupo fuera. He elegido el inglés como el idioma principal de este blog porque es estadísticamente más hablado, pero intercambiaré con el español en la medida en que crea preferible. Espero me disculpes, Lector.
 

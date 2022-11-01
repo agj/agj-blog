@@ -30,9 +30,7 @@ An interesting feature is that it silently captures images as seen by the camera
 If you'd like to give this a try but can't attend the actual physical space, there's also a web version that can be used with your computer's webcam. Go to [the site of the exhibit](http://www.ccplm.cl/color/) and click the last button in that horizontal bar, the one that says _'¡Muévete!'_ Then, click on _'Juega!'_
 
 <!-- more -->
----
-
-<!-- language -->
+<language-break />
 
 Esta entrada debió ser escrita en septiembre, pero me ganó la flojera. El video de más arriba lo terminé recién anoche. Es una presentación de una instalación de arte creada para el nuevo espacio Arte y Tecnología del [Centro Cultural Palacio La Moneda](http://www.ccplm.cl/). Mi labor fue su programación, para lo que fui invitado por Sebastián Skoknic y Francisco Fuentes.
 

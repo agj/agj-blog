@@ -34,9 +34,7 @@ I'm pretty happy that this happened, since it's the first time my games have bee
 > **@whatisian:** @alegrilli [...] comes from the generation of game-like objects.
 > **@smestorp:** @alegrilli Standing seventeen feet tall, Mr Agj looms over his peers, but he is a gentle giant and has never hurt a living vegetable.
 
----
-
-<!-- language -->
+<language-break />
 
 La imagen de arriba es el letrero puesto junto al computador cargado con dos de mis juegos, [_Intervalo lúcido del individuo inconsciente_](http://www.agj.cl/games/#game:intervalo) y [_Heart_](http://www.agj.cl/games/#game:heart), en una exhibición en Buenos Aires llamada [Game On!](http://www.gameonxp.com/) También, aquí hay una foto de [un anónimo usando un computador personal](http://blog.agj.cl/wp-content/uploads/2012/10/gameonplayer.jpg). Ambas imágenes cortesía de mi corresponsal oficial en Buenos Aires y colega creador de juegos, [Tembac](http://tembac.com/).
 

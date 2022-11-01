@@ -19,8 +19,6 @@ Another arbitrary span of time, another game. I can't really explain much about 
 
 [**Play _Intervalo..._**](http://www.agj.cl/files/games/intervalo/) (Flash)
 
----
-
-<!-- language -->
+<language-break />
 
 Este es, creo, el primero de mis juegos que contiene una (relativa) gran cantidad de español. Por lo común los hago en inglés por razones de audiencia y de los círculos que frecuento. Desde hace un tiempo que quería hacer uno bilingüe, para jugar con las intersecciones y exclusiones que se producen entre grupos culturales diferenciados por su lengua, y ahora lo hice.

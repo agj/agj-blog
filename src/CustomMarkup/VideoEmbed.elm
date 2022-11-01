@@ -33,8 +33,8 @@ renderer =
         |> Markdown.Html.withAttribute "height"
 
 
-toHtml : VideoEmbed -> List (Html msg) -> Html msg
-toHtml videoEmbed children =
+toHtml : VideoEmbed -> dropped -> Html msg
+toHtml videoEmbed _ =
     let
         makeIframe theSrc =
             [ Html.iframe

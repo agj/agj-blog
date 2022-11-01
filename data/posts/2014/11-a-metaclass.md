@@ -40,9 +40,7 @@ So that is one of the things I've been up to. And to end this post, here's a lit
 
 <!-- more -->
 
----
-
-<!-- language -->
+<language-break />
 
 Fui invitado por el centro en el que estudié originalmente japonés ([Ceija](http://www.ceija.cl/), aquí en Santiago) a dar un taller breve. Era una invitación abierta, lo que significa que dependía de mí proponer el tema. Decidí hace tiempo que no soy un buen profesor, así que casi rechacé el ofrecimiento, pero finalmente decidí proponer un programa no tradicional que me posicionaría no como un profesor, sino como un estudiante con más experiencia (un _senpai,_ como diría un japonés), y convertir la sala de clases en un espacio más horizontal para la discusión y la experimentación. Los temas a discutir serían el sistema de escritura japonesa kanji, y la autoenseñanza. Lo llamé metaclase de kanji, usando ligeramente el prefijo 'meta' de la misma forma en que se usa en la palabra 'metainformación'; o sea para sugerir recursividad: aprender sobre el aprender.
 

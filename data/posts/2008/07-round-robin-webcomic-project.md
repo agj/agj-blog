@@ -34,9 +34,7 @@ Take your strip as seriously or as lightly as you like; that's the whole point! 
 
 <!-- more -->
 
----
-
-<!-- language -->
+<language-break />
 
 Leí un thread sobre los webcomics en que habían trabajado los que posteaban en un foro. Comparando los diferentes estilos, pensé "Me gustaría dibujar un cómic a mí también. Lo malo es que soy pésimo haciéndolos, y también muy poco constante". Pero la respuesta a mi dilema estaba frente a mis ojos, y me llegó en forma dramática: "¡Tengo que hacer un webcomic en formato _round-robin!"._
 

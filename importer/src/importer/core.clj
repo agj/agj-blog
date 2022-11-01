@@ -149,8 +149,7 @@
   (if (= (->> el :attrs :class)
          "language")
     (str "\n"
-         "---\n\n"
-         "<!-- language -->\n\n"
+         "<language-break />\n\n"
          (->> el :content els->md))
     (->> el :content els->md)))
 
