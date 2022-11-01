@@ -29,37 +29,6 @@ template =
     }
 
 
-type Msg
-    = OnPageChange
-        { path : Path
-        , query : Maybe String
-        , fragment : Maybe String
-        }
-    | SharedMsg SharedMsg
-
-
-type alias Data =
-    List PostGist
-
-
-type alias PostGist =
-    { year : String
-    , month : String
-    , post : String
-    , data : PostFrontmatter
-    }
-
-
-type SharedMsg
-    = NoOp
-
-
-type alias Model =
-    { showMobileMenu : Bool
-    , redirectTargetPostId : Maybe Int
-    }
-
-
 init :
     Maybe Browser.Navigation.Key
     -> Pages.Flags.Flags
@@ -93,19 +62,20 @@ init navigationKey flags maybePagePath =
     )
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        OnPageChange _ ->
-            ( { model | showMobileMenu = False }, Cmd.none )
 
-        SharedMsg globalMsg ->
-            ( model, Cmd.none )
+-- DATA
 
 
-subscriptions : Path -> Model -> Sub Msg
-subscriptions _ _ =
-    Sub.none
+type alias Data =
+    List PostGist
+
+
+type alias PostGist =
+    { year : String
+    , month : String
+    , post : String
+    , data : PostFrontmatter
+    }
 
 
 data : DataSource Data
@@ -128,6 +98,52 @@ data =
         |> Glob.captureFilePath
         |> Glob.toDataSource
         |> DataSource.andThen (List.map process >> DataSource.combine)
+
+
+
+-- UPDATE
+
+
+type Msg
+    = OnPageChange
+        { path : Path
+        , query : Maybe String
+        , fragment : Maybe String
+        }
+    | SharedMsg SharedMsg
+
+
+type SharedMsg
+    = NoOp
+
+
+type alias Model =
+    { showMobileMenu : Bool
+    , redirectTargetPostId : Maybe Int
+    }
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        OnPageChange _ ->
+            ( { model | showMobileMenu = False }, Cmd.none )
+
+        SharedMsg globalMsg ->
+            ( model, Cmd.none )
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Path -> Model -> Sub Msg
+subscriptions _ _ =
+    Sub.none
+
+
+
+-- VIEW
 
 
 view :
