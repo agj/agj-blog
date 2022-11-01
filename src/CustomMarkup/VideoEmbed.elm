@@ -7,6 +7,7 @@ module CustomMarkup.VideoEmbed exposing
     )
 
 import Html exposing (Html)
+import Html.Attributes as Attr
 import Markdown.Html
 
 
@@ -34,8 +35,47 @@ renderer =
 
 toHtml : VideoEmbed -> List (Html msg) -> Html msg
 toHtml videoEmbed children =
-    Html.div []
-        [ Html.text "Yes!" ]
+    let
+        makeIframe theSrc =
+            [ Html.iframe
+                [ Attr.src theSrc
+                , Attr.attribute "frameborder" "0"
+                , Attr.attribute "allowfullscreen" "allowfullscreen"
+                , Attr.style "width" ((videoEmbed.width |> String.fromInt) ++ "px")
+                , Attr.style "height" ((videoEmbed.height |> String.fromInt) ++ "px")
+                ]
+                []
+            ]
+    in
+    Html.figure []
+        (case videoEmbed.service of
+            Vimeo ->
+                let
+                    params =
+                        [ { key = "byline", value = "0" }
+                        , { key = "portrait", value = "0" }
+                        ]
+                in
+                makeIframe
+                    ("https://player.vimeo.com/video/"
+                        ++ videoEmbed.id
+                        ++ "?"
+                        ++ parseParameters params
+                    )
+
+            Youtube ->
+                let
+                    params =
+                        [ { key = "rel", value = "0" }
+                        ]
+                in
+                makeIframe
+                    ("https://www.youtube-nocookie.com/embed/"
+                        ++ videoEmbed.id
+                        ++ "?"
+                        ++ parseParameters params
+                    )
+        )
 
 
 stringToVideoService : String -> Result String VideoService
@@ -62,3 +102,16 @@ constructVideoEmbed service id width height =
         (stringToVideoService service)
         (String.toInt width |> Result.fromMaybe "Wrong width value.")
         (String.toInt height |> Result.fromMaybe "Wrong height value.")
+
+
+parseParameters : List { key : String, value : String } -> String
+parseParameters params =
+    let
+        toString param =
+            param.key
+                ++ "="
+                ++ param.value
+    in
+    params
+        |> List.map toString
+        |> String.join "&"
