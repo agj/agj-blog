@@ -1,4 +1,5 @@
 ---
+id: 450
 title: Colorful new front page
 date: 9
 hour: 1

@@ -1,4 +1,5 @@
 ---
+id: 976
 title: Two npm packages
 date: 2
 hour: 13

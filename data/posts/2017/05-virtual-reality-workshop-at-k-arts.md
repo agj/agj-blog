@@ -1,4 +1,5 @@
 ---
+id: 1074
 title: Virtual reality workshop at K-Arts
 date: 8
 hour: 2

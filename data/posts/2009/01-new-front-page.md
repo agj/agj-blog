@@ -1,4 +1,5 @@
 ---
+id: 94
 title: New front page
 date: 7
 hour: 3

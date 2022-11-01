@@ -1,4 +1,5 @@
 ---
+id: 301
 title: Studying game design
 date: 31
 hour: 3

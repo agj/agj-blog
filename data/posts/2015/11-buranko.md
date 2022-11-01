@@ -1,4 +1,5 @@
 ---
+id: 968
 title: Buranko
 date: 3
 hour: 12

@@ -18,7 +18,8 @@ type alias Post msg =
 
 
 type alias PostFrontmatter =
-    { title : String
+    { id : Maybe Int
+    , title : String
     , categories : List String
     , tags : List String
     , date : Int
@@ -44,6 +45,7 @@ postDecoder content =
 postFrontmatterDecoder : Decoder PostFrontmatter
 postFrontmatterDecoder =
     Decode.succeed PostFrontmatter
+        |> Decode.required "id" (Decode.maybe Decode.int)
         |> Decode.required "title" Decode.string
         |> Decode.required "categories" (Decode.list Decode.string)
         |> Decode.required "tags" (Decode.list Decode.string)

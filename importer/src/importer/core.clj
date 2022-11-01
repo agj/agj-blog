@@ -291,7 +291,8 @@
 ;; Final processing
 
 (defn post->string [post]
-  (let [frontmatter-data {:title (:title post)
+  (let [frontmatter-data {:id (Integer/parseInt (:id post))
+                          :title (:title post)
                           :date (->> post :date :date)
                           :hour (->> post :date :hour)
                           :categories (->> post :categories (map :slug))

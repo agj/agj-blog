@@ -1,4 +1,5 @@
 ---
+id: 560
 title: Updated front page
 date: 9
 hour: 16

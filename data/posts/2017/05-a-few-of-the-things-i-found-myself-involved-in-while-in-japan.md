@@ -1,4 +1,5 @@
 ---
+id: 1077
 title: A few of the things I found myself involved in while in Japan
 date: 4
 hour: 23
