@@ -71,15 +71,8 @@ init navigationKey flags maybePagePath =
                 |> Maybe.andThen .query
                 |> Maybe.map QueryParams.toDict
                 |> Maybe.andThen (Dict.get "p")
-                |> Maybe.andThen
-                    (\value ->
-                        case value of
-                            [ id ] ->
-                                String.toInt id
-
-                            _ ->
-                                Nothing
-                    )
+                |> Maybe.andThen List.head
+                |> Maybe.andThen String.toInt
     in
     ( { showMobileMenu = False }
     , case maybePostId of
