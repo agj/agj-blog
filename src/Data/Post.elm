@@ -58,7 +58,8 @@ type alias GlobMatch =
     , year : String
     , month : String
     , post : String
-    , isHidden : Bool
+
+    -- , isHidden : Bool
     }
 
 
@@ -77,12 +78,12 @@ routesGlob =
         -- Post
         |> Glob.capture Glob.wildcard
         -- Hidden post flag
-        |> Glob.capture
-            (Glob.oneOf
-                ( ( "-HIDDEN.md", True )
-                , [ ( ".md", False ) ]
-                )
-            )
+        -- |> Glob.capture
+        --     (Glob.oneOf
+        --         ( ( "-HIDDEN.md", True )
+        --         , [ ( ".md", False ) ]
+        --         )
+        --     )
         |> Glob.toDataSource
         |> DataSource.map (List.map (Debug.log "spy"))
 

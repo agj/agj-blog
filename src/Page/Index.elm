@@ -146,7 +146,6 @@ view maybeUrl sharedModel model static =
 
         gistsByMonth =
             static.sharedData
-                |> Debug.log "shared data"
                 |> List.gatherEqualsBy (\gist -> gist.year ++ gist.month)
                 |> List.sortBy (Tuple.first >> getTime)
                 |> List.map
