@@ -4,6 +4,7 @@
             [clojure.java.io :as io]
             [hickory.core :as hickory]
             [clojure.string :as str]
+            [clojure.core.match :refer [match]]
             [importer.utils :as utils]
             [importer.posts :as posts]))
 
@@ -32,11 +33,10 @@
   "Generate blog data from Wordpress XML export file."
   [& args]
 
-  (println (str "Current directory: "
-                (System/getProperty "user.dir")))
-;;   (println (map post->path posts))
-
-  (posts/output-posts items-xml))
+  (let [command (first args)]
+    (match [command]
+      ["posts"] (posts/output-posts items-xml)
+      :else (println "No recognized command entered."))))
 
 
 

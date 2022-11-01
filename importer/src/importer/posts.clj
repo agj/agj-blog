@@ -275,6 +275,7 @@
 (defn output-post [post]
   (let [filename (str "../data/posts/" (post->path post))]
     (io/make-parents filename)
+    (println (str "Output: " filename))
     (spit filename (post->string post))))
 
 
