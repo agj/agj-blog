@@ -15,7 +15,7 @@ tags:
 - video
 ---
 
-<VideoEmbed service="vimeo" id="6445520" width="500" height="375" />
+<video-embed service="vimeo" id="6445520" width="500" height="375" />
 
 [Español](http://blog.agj.cl/2009/09/pillow-fable/#more-362)
 

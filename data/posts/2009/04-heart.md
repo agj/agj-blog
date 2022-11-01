@@ -17,7 +17,7 @@ tags:
 - video-game
 ---
 
-<VideoEmbed service="vimeo" id="4235554" width="500" height="313" />
+<video-embed service="vimeo" id="4235554" width="500" height="313" />
 
 What you see above is my computer screen during the past weekend (each hour reduced to 2.5 seconds), as I make two games for two events that were held concurrently. One is a competition called [Ludum Dare](http://www.ludumdare.com/), on which, during the 48 hours of its duration, participants are expected to create a game by themselves and 'from scratch'. The week prior, participants vote on a theme. 'Advancing wall of doom' won this time, which is not one I'm too fond of, but I did participate and make a game. Or two, in fact, because for the other event, my [usual](http://blog.agj.cl/tag/kotm/) two-hour [Klik of the Month](http://www.glorioustrainwrecks.com/node/44), I made a game based on the same theme.
 

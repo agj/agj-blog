@@ -21,4 +21,4 @@ I had things to do and places to be Friday night and all Saturday, so only got s
 
 This one was made using FlashDevelop and Flex SDK 4, coded in actionscript 3. Below you can see all those hours of work, squashed into just a few seconds.
 
-<VideoEmbed service="vimeo" id="6353166" width="500" height="313" />
+<video-embed service="vimeo" id="6353166" width="500" height="313" />

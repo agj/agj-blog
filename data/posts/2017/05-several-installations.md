@@ -24,23 +24,23 @@ The yearly schedule in the New Media program I attended revolves around two publ
 
 == Media Taiso Dai-Ichi
 
-<VideoEmbed service="youtube" id="3FnBO_Y6FlI" width="500" height="281" />
+<video-embed service="youtube" id="3FnBO_Y6FlI" width="500" height="281" />
 
 The first exhibition for our generation was in fact yet another one. During the first term we do intensive work with each of the professors for a few weeks each, and during the first of those, Fujihata Masaki's, we were tasked for the last week to make an exhibition. This involved making the works to display as well, all during a single week, and with it being our first experience, let's just say it was quite hectic. This exhibit we called _Media Taiso Dai-Ichi_ (playing on Japanese radio calisthenics, "radio taiso".) We had two assignments to cover: "projecting over something other than a screen", and a movement sensor-triggered video. Below is the first of these, as prepared by my team. It's really just a projector fit into a trashcan...
 
-<VideoEmbed service="vimeo" id="133152140" width="500" height="281" />
+<video-embed service="vimeo" id="133152140" width="500" height="281" />
 
 == Open Studio 2015
 
 This was the first of the proper exhibitions (here is the [official website](http://www.fm.geidai.ac.jp/openstudio/2015/)). Second-year students made [a great rap video to promote the exhibition](https://www.youtube.com/watch?v=TjTJ_Zn0HTk), that I couldn't get out of my head for months. For us first-years, we had to prepare a selection of what we had done with each professor. I exhibited one work I had created during professor Kiriyama Takashi's class, _Asymmetric feedback._ It involves two computers running two separate programs I made in [openFrameworks,](http://openframeworks.cc/) designed to pick up on the other's output, and create a different output based on it. So one of the computers can "see" with a camera, and outputs sound, while the other can "hear" with a microphone, and outputs an image. The installation was also displayed so that visitors would interfere in the exchange.
 
-<VideoEmbed service="vimeo" id="135842909" width="500" height="281" />
+<video-embed service="vimeo" id="135842909" width="500" height="281" />
 
 I also have an older recording of [the installation in its original form,](https://vimeo.com/133233148) during Kiriyama's class.
 
 == Media Practice 15-16 and the Nendo Project
 
-<VideoEmbed service="vimeo" id="153488240" width="500" height="281" />
+<video-embed service="vimeo" id="153488240" width="500" height="281" />
 
 (I was in charge of camera recording, so I was the one to make the video above.)
 
@@ -48,7 +48,7 @@ I also have an older recording of [the installation in its original form,](https
 
 You can see a video record of my corner in the exhibition below. The monitor at the center was what I made for my first presentation of the project, and involves many ideas I ended up discarding (it's all in Japanese, but [the video itself is here](https://vimeo.com/147703509)). Three of the iMacs around it display a screen-capture of me demonstrating what I had implemented to three different people. The leftmost computer with the red chair is where you can try it out for yourself. I wrote a few example programs in a flyer to get interested visitors started and experimenting right there, or even at home if desired.
 
-<VideoEmbed service="vimeo" id="153662272" width="500" height="281" />
+<video-embed service="vimeo" id="153662272" width="500" height="281" />
 
 Ideas I implemented include modifications to [the native Racket library _pict_](http://docs.racket-lang.org/pict/index.html) (whose _value_-based approach was attractive,) a basic functional-style implementation of [turtle graphics,](https://en.wikipedia.org/wiki/Turtle_graphics) and [Conal Elliot's supremely interesting _Pan_ language.](http://conal.net/Pan/) I put the code up on Github: what I called [my "first sketch" is here,](https://github.com/agj/nendo/tree/sketch-1) and the ["second sketch" is here](https://github.com/agj/nendo/tree/sketch-2)—both are written in the [Racket programming language.](https://racket-lang.org/)
 

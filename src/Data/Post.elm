@@ -1,5 +1,6 @@
 module Data.Post exposing (..)
 
+import CustomMarkup
 import DataSource exposing (DataSource)
 import DataSource.Glob as Glob exposing (Glob)
 import Html exposing (Html)
@@ -32,8 +33,8 @@ postDecoder content =
             content
                 |> Markdown.Parser.parse
                 |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
-                |> Result.andThen (Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer)
-                |> Result.mapError errorToHtml
+                |> Result.andThen (Markdown.Renderer.render CustomMarkup.renderer)
+                |> Result.mapError CustomMarkup.renderErrorMessage
                 |> Result.merge
     in
     postFrontmatterDecoder
@@ -63,18 +64,3 @@ routesGlob glob =
         -- Slug
         |> Glob.capture Glob.wildcard
         |> Glob.match (Glob.literal ".md")
-
-
-
--- INTERNAL
-
-
-errorToHtml : String -> List (Html msg)
-errorToHtml error =
-    [ Html.p []
-        [ Html.text "Markdown parsing error:"
-        ]
-    , Html.pre []
-        [ Html.code [] [ Html.text error ]
-        ]
-    ]

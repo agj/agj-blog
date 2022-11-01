@@ -249,7 +249,7 @@
     :else nil))
 
 (defn video->md [video]
-  (str "<VideoEmbed "
+  (str "<video-embed "
        "service=\"" (:service video) "\" "
        "id=\"" (:id video) "\" "
        "width=\"" (:width video) "\" "

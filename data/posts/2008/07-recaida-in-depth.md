@@ -10,7 +10,7 @@ tags:
 - university
 ---
 
-<VideoEmbed service="vimeo" id="1260271" width="500" height="333" />
+<video-embed service="vimeo" id="1260271" width="500" height="333" />
 
 This is called Recaída (Relapse,) a decidedly bad and rather cheesy name (the 'caída' part means 'to fall') for an animation I made for school in 2006. It's, as I describe it in the video page, 'a simple story of lost love,' as told in wiggly pen lines, abstracted characters and two colors.
 

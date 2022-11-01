@@ -16,7 +16,7 @@ tags:
 - video
 ---
 
-<VideoEmbed service="vimeo" id="32240154" width="500" height="281" />
+<video-embed service="vimeo" id="32240154" width="500" height="281" />
 
 [Español](http://blog.agj.cl/2011/11/muevete/#language)
 

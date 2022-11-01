@@ -14,7 +14,7 @@ tags:
 - university
 ---
 
-<VideoEmbed service="vimeo" id="2729724" width="500" height="375" />
+<video-embed service="vimeo" id="2729724" width="500" height="375" />
 
 [Español](http://blog.agj.cl/2009/01/the-story-of-my-sneakers/#more-73)
 

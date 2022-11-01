@@ -16,7 +16,7 @@ tags:
 - video
 ---
 
-<VideoEmbed service="vimeo" id="9476412" width="500" height="281" />
+<video-embed service="vimeo" id="9476412" width="500" height="281" />
 
 I decided to make a new video, as an exercise. A quickie—took me two days. [Another](http://blog.agj.cl/2009/01/volcano/) music video, but this one is for a song I made myself [a good while ago](http://blog.agj.cl/2008/12/the-color-and-the-leaves/), together with [Matt Peter](http://www.fireandrobot.com/).
 

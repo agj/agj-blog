@@ -12,7 +12,7 @@ tags:
 - nihongo
 ---
 
-<VideoEmbed service="vimeo" id="151801842" width="500" height="281" />
+<video-embed service="vimeo" id="151801842" width="500" height="281" />
 
 To make that which is not normally seen, visible. That was the assignment in school for which this video work (made late 2015) was born, in which we tried to make a sewing machine's mechanism visible—where does the thread go and how does it ultimately form the stitching pattern. We tried shooting a transparent fabric from up close and in high-speed (for slow-motion playback,) but however we tried, we couldn't make its inner workings clear. Instead, hands out of focus partially covering the view of our subject seen only in portions at a time, with white and rounded shapes contrasting sharp and shiny metal ones, the sewing machine's mystery and allure only deepened.
 

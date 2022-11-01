@@ -17,7 +17,7 @@ tags:
 - video
 ---
 
-<VideoEmbed service="vimeo" id="201826714" width="500" height="282" />
+<video-embed service="vimeo" id="201826714" width="500" height="282" />
 
 Even though I've been making a lot of stuff and been involved in many projects during my stay in Japan, I've failed to keep this blog updated, so I'll try to slowly and retroactively add everything. I'll start with the latest: my graduation project.
 
@@ -37,7 +37,7 @@ The second work was a series of four postcards themed puzzle poetry. These had a
 
 The third and final work is a video, for which I wanted to prove a point by using a novel medium. In this one, two people converse by placing wooden blocks in order, in nine different positions surrounding a starting block. Like in the other works, this format of expression for the language uses a one-dimensional array of words, but results in a three-dimensional structure that gives shape to a phrase. Using a vocabulary of only nine words, this one relies the most on context, requiring pointing at things around, without which the level of ambiguity makes communication impossible.
 
-<VideoEmbed service="vimeo" id="199388496" width="500" height="281" />
+<video-embed service="vimeo" id="199388496" width="500" height="281" />
 
 The three works are different to varying degrees, but they all use the same underlying language system I devised: once grokked thanks to one work, although the vocabulary changes, the other works should be very easy to understand. For each, I've custom-built a small vocabulary just for the purpose of understanding/decoding the work at hand. Although the underlying language can be expanded to be self-reflecting like any natural language and thus become flexible and self-dependent, since the language itself was not the focus, but rather its use in the works was, I did not use this ability. My focus was on the process of encoding/decoding this language (or language-alike, if you prefer) and the thought process that, both me as author and the viewer, incur in the understanding.
 
