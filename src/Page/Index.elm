@@ -1,16 +1,21 @@
 module Page.Index exposing (Data, Model, Msg, page)
 
+import Browser.Navigation
 import Data.Date as Date
 import Data.Post as Post exposing (Post, PostFrontmatter)
 import DataSource exposing (DataSource)
 import DataSource.File
 import DataSource.Glob as Glob
+import Dict exposing (Dict)
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attr
 import List.Extra as List
+import Maybe.Extra as Maybe
 import Page exposing (Page, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
+import Path exposing (Path)
+import QueryParams exposing (QueryParams)
 import Shared
 import Site
 import View exposing (View)
@@ -22,7 +27,48 @@ page =
         { head = head
         , data = data
         }
-        |> Page.buildNoState { view = view }
+        |> Page.buildWithSharedState
+            { init = init
+            , view = view
+            , update = update
+            , subscriptions = subscriptions
+            }
+
+
+init : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> ( Model, Cmd Msg )
+init maybePageUrl sharedModel static =
+    let
+        findPostGistById id =
+            static.data
+                |> List.find (\pg -> pg.data.id == Just id)
+
+        maybePostRedirectCommand =
+            sharedModel.redirectTargetPostId
+                |> Maybe.andThen findPostGistById
+                |> Maybe.map postGistToUrl
+                |> Maybe.map Browser.Navigation.load
+    in
+    ( ()
+    , maybePostRedirectCommand
+        |> Maybe.withDefault Cmd.none
+    )
+
+
+update :
+    PageUrl
+    -> Maybe Browser.Navigation.Key
+    -> Shared.Model
+    -> StaticPayload templateData routeParams
+    -> Msg
+    -> Model
+    -> ( Model, Cmd Msg, Maybe Shared.Msg )
+update pageUrl navKey sharedModel static msg model =
+    ( (), Cmd.none, Nothing )
+
+
+subscriptions : Maybe PageUrl -> RouteParams -> Path -> Model -> Shared.Model -> Sub Msg
+subscriptions maybePageUrl routeParams path model sharedModel =
+    Sub.none
 
 
 type alias Model =
@@ -90,9 +136,10 @@ head static =
 view :
     Maybe PageUrl
     -> Shared.Model
+    -> Model
     -> StaticPayload Data RouteParams
     -> View Msg
-view maybeUrl sharedModel static =
+view maybeUrl sharedModel model static =
     let
         padNumber : Int -> String
         padNumber num =
@@ -150,34 +197,32 @@ viewGistMonth ( month, gists ) =
 viewGist : PostGist -> Html Msg
 viewGist gist =
     let
-        insertGistValuesToString : String -> String
-        insertGistValuesToString string =
-            string
-                |> String.replace "{year}" gist.year
-                |> String.replace "{month}" gist.month
-                |> String.replace "{date}" (gist.data.date |> String.fromInt |> String.padLeft 2 '0')
-                |> String.replace "{post}" gist.post
-                |> String.replace "{title}" gist.data.title
-                |> String.replace "{categories}" (gist.data.categories |> String.join ", ")
-
         dateText =
             "{date} – "
-                |> insertGistValuesToString
+                |> String.replace "{date}" (gist.data.date |> String.fromInt |> String.padLeft 2 '0')
 
         categoriesText =
             " ({categories})"
-                |> insertGistValuesToString
-
-        url =
-            "/{year}/{month}/{post}"
-                |> insertGistValuesToString
+                |> String.replace "{categories}" (gist.data.categories |> String.join ", ")
     in
     Html.li []
         [ Html.text dateText
-        , Html.a [ Attr.href url ]
+        , Html.a [ Attr.href (postGistToUrl gist) ]
             [ Html.strong []
                 [ Html.text gist.data.title ]
             ]
         , Html.small []
             [ Html.text categoriesText ]
         ]
+
+
+
+-- UTILITIES
+
+
+postGistToUrl : PostGist -> String
+postGistToUrl gist =
+    "/{year}/{month}/{post}"
+        |> String.replace "{year}" gist.year
+        |> String.replace "{month}" gist.month
+        |> String.replace "{post}" gist.post

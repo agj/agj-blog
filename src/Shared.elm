@@ -1,7 +1,10 @@
 module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
 
 import Browser.Navigation
-import DataSource
+import Data.Post as Post exposing (PostFrontmatter)
+import DataSource exposing (DataSource)
+import DataSource.File
+import DataSource.Glob as Glob
 import Dict
 import Html exposing (Html)
 import Html.Attributes as Attr
@@ -45,6 +48,7 @@ type SharedMsg
 
 type alias Model =
     { showMobileMenu : Bool
+    , redirectTargetPostId : Maybe Int
     }
 
 
@@ -74,13 +78,10 @@ init navigationKey flags maybePagePath =
                 |> Maybe.andThen List.head
                 |> Maybe.andThen String.toInt
     in
-    ( { showMobileMenu = False }
-    , case maybePostId of
-        Just id ->
-            Browser.Navigation.load ("https://elm-lang.org?p=" ++ String.fromInt id)
-
-        Nothing ->
-            Cmd.none
+    ( { showMobileMenu = False
+      , redirectTargetPostId = maybePostId
+      }
+    , Cmd.none
     )
 
 
