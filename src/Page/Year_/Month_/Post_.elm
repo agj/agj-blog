@@ -41,9 +41,20 @@ type alias RouteParams =
 
 routes : DataSource (List RouteParams)
 routes =
-    Glob.succeed RouteParams
-        |> Post.routesGlob
-        |> Glob.toDataSource
+    Post.routesGlob
+        |> DataSource.map
+            (List.map
+                (\match ->
+                    { year = match.year
+                    , month = match.month
+                    , post = match.post
+                    }
+                )
+            )
+
+
+
+-- DATA
 
 
 type alias Data =

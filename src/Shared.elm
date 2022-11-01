@@ -69,22 +69,19 @@ type alias PostGist =
 data : DataSource Data
 data =
     let
-        process : { y : String, m : String, p : String, path : String } -> DataSource PostGist
-        process { y, m, p, path } =
-            DataSource.File.onlyFrontmatter Post.postFrontmatterDecoder path
+        process : Post.GlobMatch -> DataSource PostGist
+        process match =
+            DataSource.File.onlyFrontmatter Post.postFrontmatterDecoder match.path
                 |> DataSource.map
                     (\postData ->
-                        { year = y
-                        , month = m
-                        , post = p
+                        { year = match.year
+                        , month = match.month
+                        , post = match.post
                         , data = postData
                         }
                     )
     in
-    Glob.succeed (\y m p path -> { y = y, m = m, p = p, path = path })
-        |> Post.routesGlob
-        |> Glob.captureFilePath
-        |> Glob.toDataSource
+    Post.routesGlob
         |> DataSource.andThen (List.map process >> DataSource.combine)
 
 

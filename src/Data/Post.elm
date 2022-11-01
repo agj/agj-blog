@@ -53,16 +53,39 @@ postFrontmatterDecoder =
         |> Decode.required "hour" (Decode.maybe Decode.int)
 
 
-routesGlob : Glob (String -> String -> String -> c) -> Glob c
-routesGlob glob =
-    glob
+type alias GlobMatch =
+    { path : String
+    , year : String
+    , month : String
+    , post : String
+    , isHidden : Bool
+    }
+
+
+routesGlob : DataSource (List GlobMatch)
+routesGlob =
+    Glob.succeed GlobMatch
         |> Glob.match (Glob.literal "data/posts/")
+        -- Path
+        |> Glob.captureFilePath
         -- Year
         |> Glob.capture Glob.digits
         |> Glob.match (Glob.literal "/")
         -- Month
         |> Glob.capture Glob.digits
         |> Glob.match (Glob.literal "-")
-        -- Slug
+        -- Post
         |> Glob.capture Glob.wildcard
-        |> Glob.match (Glob.literal ".md")
+        -- Hidden post flag
+        |> Glob.capture
+            (Glob.oneOf
+                ( ( "-HIDDEN.md", True )
+                , [ ( ".md", False ) ]
+                )
+            )
+        |> Glob.toDataSource
+        |> DataSource.map (List.map (Debug.log "spy"))
+
+
+
+-- |> DataSource.map (List.filter (.isHidden >> not))
