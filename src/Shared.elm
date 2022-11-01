@@ -1,4 +1,4 @@
-module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
+module Shared exposing (Data, Model, Msg(..), PostGist, SharedMsg(..), template)
 
 import Browser.Navigation
 import Data.Post as Post exposing (PostFrontmatter)
@@ -39,7 +39,15 @@ type Msg
 
 
 type alias Data =
-    ()
+    List PostGist
+
+
+type alias PostGist =
+    { year : String
+    , month : String
+    , post : String
+    , data : PostFrontmatter
+    }
 
 
 type SharedMsg
@@ -100,9 +108,26 @@ subscriptions _ _ =
     Sub.none
 
 
-data : DataSource.DataSource Data
+data : DataSource Data
 data =
-    DataSource.succeed ()
+    let
+        process : { y : String, m : String, p : String, path : String } -> DataSource PostGist
+        process { y, m, p, path } =
+            DataSource.File.onlyFrontmatter Post.postFrontmatterDecoder path
+                |> DataSource.map
+                    (\postData ->
+                        { year = y
+                        , month = m
+                        , post = p
+                        , data = postData
+                        }
+                    )
+    in
+    Glob.succeed (\y m p path -> { y = y, m = m, p = p, path = path })
+        |> Post.routesGlob
+        |> Glob.captureFilePath
+        |> Glob.toDataSource
+        |> DataSource.andThen (List.map process >> DataSource.combine)
 
 
 view :

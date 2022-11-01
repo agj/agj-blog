@@ -2,10 +2,7 @@ module Page.Index exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
 import Data.Date as Date
-import Data.Post as Post exposing (Post, PostFrontmatter)
 import DataSource exposing (DataSource)
-import DataSource.File
-import DataSource.Glob as Glob
 import Dict exposing (Dict)
 import Head
 import Html exposing (Html)
@@ -39,7 +36,7 @@ init : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> ( Mode
 init maybePageUrl sharedModel static =
     let
         findPostGistById id =
-            static.data
+            static.sharedData
                 |> List.find (\pg -> pg.data.id == Just id)
 
         maybePostRedirectCommand =
@@ -84,37 +81,12 @@ type alias RouteParams =
 
 
 type alias Data =
-    List PostGist
-
-
-type alias PostGist =
-    { year : String
-    , month : String
-    , post : String
-    , data : PostFrontmatter
-    }
+    ()
 
 
 data : DataSource Data
 data =
-    let
-        process : { y : String, m : String, p : String, path : String } -> DataSource PostGist
-        process { y, m, p, path } =
-            DataSource.File.onlyFrontmatter Post.postFrontmatterDecoder path
-                |> DataSource.map
-                    (\postData ->
-                        { year = y
-                        , month = m
-                        , post = p
-                        , data = postData
-                        }
-                    )
-    in
-    Glob.succeed (\y m p path -> { y = y, m = m, p = p, path = path })
-        |> Post.routesGlob
-        |> Glob.captureFilePath
-        |> Glob.toDataSource
-        |> DataSource.andThen (List.map process >> DataSource.combine)
+    DataSource.succeed ()
 
 
 
@@ -147,17 +119,17 @@ view maybeUrl sharedModel model static =
                 |> String.fromInt
                 |> String.padLeft 2 '0'
 
-        getDateHour : PostGist -> String
+        getDateHour : Shared.PostGist -> String
         getDateHour gist =
             padNumber gist.data.date
                 ++ padNumber (gist.data.hour |> Maybe.withDefault 0)
 
-        getTime : PostGist -> String
+        getTime : Shared.PostGist -> String
         getTime gist =
             gist.year ++ gist.month ++ getDateHour gist
 
         gistsByMonth =
-            static.data
+            static.sharedData
                 |> List.gatherEqualsBy (\gist -> gist.year ++ gist.month)
                 |> List.sortBy (Tuple.first >> getTime)
                 |> List.map
@@ -180,7 +152,7 @@ view maybeUrl sharedModel model static =
     }
 
 
-viewGistMonth : ( String, List PostGist ) -> List (Html Msg)
+viewGistMonth : ( String, List Shared.PostGist ) -> List (Html Msg)
 viewGistMonth ( month, gists ) =
     [ Html.p []
         [ Html.strong []
@@ -194,7 +166,7 @@ viewGistMonth ( month, gists ) =
     ]
 
 
-viewGist : PostGist -> Html Msg
+viewGist : Shared.PostGist -> Html Msg
 viewGist gist =
     let
         dateText =
@@ -220,7 +192,7 @@ viewGist gist =
 -- UTILITIES
 
 
-postGistToUrl : PostGist -> String
+postGistToUrl : Shared.PostGist -> String
 postGistToUrl gist =
     "/{year}/{month}/{post}"
         |> String.replace "{year}" gist.year
