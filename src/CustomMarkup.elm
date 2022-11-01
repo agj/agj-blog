@@ -4,6 +4,7 @@ import CustomMarkup.VideoEmbed
 import Html exposing (Html)
 import Markdown.Html
 import Markdown.Renderer
+import Result.Extra as Result
 
 
 renderer : Markdown.Renderer.Renderer (Html msg)
@@ -16,15 +17,7 @@ renderer =
         | html =
             Markdown.Html.oneOf
                 [ CustomMarkup.VideoEmbed.renderer
-                    |> Markdown.Html.map
-                        (\result ->
-                            case result of
-                                Ok videoEmbed ->
-                                    CustomMarkup.VideoEmbed.toHtml videoEmbed
-
-                                Err err ->
-                                    \_ -> Html.div [] (renderErrorMessage err)
-                        )
+                    |> resultToHtml CustomMarkup.VideoEmbed.toHtml
                 ]
     }
 
@@ -38,3 +31,21 @@ renderErrorMessage error =
         [ Html.code [] [ Html.text error ]
         ]
     ]
+
+
+
+-- INTERNAL
+
+
+resultToHtml :
+    (a -> List (Html msg) -> Html msg)
+    -> Markdown.Html.Renderer (Result String a)
+    -> Markdown.Html.Renderer (List (Html msg) -> Html msg)
+resultToHtml toHtml resultRenderer =
+    resultRenderer
+        |> Markdown.Html.map
+            (Result.mapBoth
+                (\err _ -> Html.div [] (renderErrorMessage err))
+                toHtml
+            )
+        |> Markdown.Html.map Result.merge
