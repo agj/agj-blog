@@ -77,6 +77,7 @@ routesGlob =
         |> Glob.match (Glob.literal "-")
         -- Post
         |> Glob.capture Glob.wildcard
+        |> Glob.match (Glob.literal ".md")
         -- Hidden post flag
         -- |> Glob.capture
         --     (Glob.oneOf
