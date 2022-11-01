@@ -1,5 +1,6 @@
 (ns importer.utils
-  (:require [java-time.api :as jt]))
+  (:require [java-time.api :as jt]
+            [clj-yaml.core :as yaml]))
 
 ;; General
 
@@ -21,6 +22,11 @@
      :date (get "dd")
      :hour (get "HH")
      :minutes (get "mm")}))
+
+(defn data->yaml [data]
+  (yaml/generate-string
+   data
+   :dumper-options {:flow-style :block}))
 
 
 ;; Data traversal

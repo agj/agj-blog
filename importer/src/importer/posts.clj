@@ -43,11 +43,6 @@
      :description (utils/get-tag-text :description post-xml)
      :excerpt (utils/get-tag-text :excerpt:encoded post-xml)}))
 
-(defn data->yaml [data]
-  (yaml/generate-string
-   data
-   :dumper-options {:flow-style :block}))
-
 
 ;; Markdown generation
 
@@ -255,7 +250,7 @@
                           :tags (->> post :tags (map :slug))
                           :language "eng"}]
     (str "---\n"
-         (data->yaml frontmatter-data)
+         (utils/data->yaml frontmatter-data)
          "---\n\n"
          (->> post :content post-content->md)
          "\n")))
