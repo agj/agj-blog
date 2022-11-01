@@ -2,11 +2,14 @@ module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
 
 import Browser.Navigation
 import DataSource
+import Dict
 import Html exposing (Html)
 import Html.Attributes as Attr
+import Maybe.Extra as Maybe
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Path exposing (Path)
+import QueryParams exposing (QueryParams)
 import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
 import View exposing (View)
@@ -60,8 +63,31 @@ init :
             }
     -> ( Model, Cmd Msg )
 init navigationKey flags maybePagePath =
+    let
+        maybePostId =
+            maybePagePath
+                |> Maybe.andThen .pageUrl
+                |> Maybe.filter (\{ path } -> Path.toSegments path == [])
+                |> Maybe.andThen .query
+                |> Maybe.map QueryParams.toDict
+                |> Maybe.andThen (Dict.get "p")
+                |> Maybe.andThen
+                    (\value ->
+                        case value of
+                            [ id ] ->
+                                String.toInt id
+
+                            _ ->
+                                Nothing
+                    )
+    in
     ( { showMobileMenu = False }
-    , Cmd.none
+    , case maybePostId of
+        Just id ->
+            Browser.Navigation.load ("https://elm-lang.org?p=" ++ String.fromInt id)
+
+        Nothing ->
+            Cmd.none
     )
 
 
