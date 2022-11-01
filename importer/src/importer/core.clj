@@ -140,7 +140,7 @@
             [:h4] 4
             [:h5] 5)]
     (str "\n"
-         (apply str (repeat n "="))
+         (apply str (repeat n "#"))
          " "
          (->> el :content first el->md)
          "\n")))
