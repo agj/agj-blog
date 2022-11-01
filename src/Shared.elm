@@ -44,19 +44,7 @@ init :
             }
     -> ( Model, Cmd Msg )
 init navigationKey flags maybePagePath =
-    let
-        maybePostId =
-            maybePagePath
-                |> Maybe.andThen .pageUrl
-                |> Maybe.filter (\{ path } -> Path.toSegments path == [])
-                |> Maybe.andThen .query
-                |> Maybe.map QueryParams.toDict
-                |> Maybe.andThen (Dict.get "p")
-                |> Maybe.andThen List.head
-                |> Maybe.andThen String.toInt
-    in
     ( { showMobileMenu = False
-      , redirectTargetPostId = maybePostId
       }
     , Cmd.none
     )
@@ -119,7 +107,6 @@ type SharedMsg
 
 type alias Model =
     { showMobileMenu : Bool
-    , redirectTargetPostId : Maybe Int
     }
 
 

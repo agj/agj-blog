@@ -12,6 +12,7 @@ import Maybe.Extra as Maybe
 import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Path exposing (Path)
+import QueryParams exposing (QueryParams)
 import Shared
 import Site
 import View exposing (View)
@@ -34,12 +35,20 @@ page =
 init : Maybe PageUrl -> Shared.Model -> StaticPayload Data {} -> ( Model, Cmd Msg )
 init maybePageUrl sharedModel static =
     let
+        maybeRequestedPostId =
+            maybePageUrl
+                |> Maybe.andThen .query
+                |> Maybe.map QueryParams.toDict
+                |> Maybe.andThen (Dict.get "p")
+                |> Maybe.andThen List.head
+                |> Maybe.andThen String.toInt
+
         findPostGistById id =
             static.sharedData
                 |> List.find (\pg -> pg.data.id == Just id)
 
         maybePostRedirectCommand =
-            sharedModel.redirectTargetPostId
+            maybeRequestedPostId
                 |> Maybe.andThen findPostGistById
                 |> Maybe.map postGistToUrl
                 |> Maybe.map Browser.Navigation.load
