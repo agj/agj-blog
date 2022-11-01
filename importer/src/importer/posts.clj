@@ -281,11 +281,12 @@
 
 ;; Main
 
-(defn output-posts [items-xml]
-  (let [posts-xml (->> items-xml
+(defn output-posts [wordpress-xml]
+  (let [posts-xml (->> wordpress-xml
                        (filter (fn [item-xml]
-                                 (= (utils/get-tag-text :wp:post_type item-xml)
-                                    "post"))))
+                                 (and (= (:tag item-xml) :item)
+                                      (= (utils/get-tag-text :wp:post_type item-xml)
+                                         "post")))))
         posts (map post-xml->post posts-xml)]
     (doseq [post posts]
       (output-post post))))

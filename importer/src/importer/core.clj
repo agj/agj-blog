@@ -6,25 +6,21 @@
             [clojure.string :as str]
             [clojure.core.match :refer [match]]
             [importer.utils :as utils]
-            [importer.posts :as posts]))
+            [importer.posts :as posts]
+            [importer.taxonomy :as taxonomy]))
 
 
 ;; Data
 
-(def wordpress-xml (-> "wordpress-data.xml"
-                       io/resource
-                       io/file
-                       xml/parse))
+(def wordpress-xml-root (-> "wordpress-data.xml"
+                            io/resource
+                            io/file
+                            xml/parse))
 
-(def items-xml (->> wordpress-xml
-                    :content
-                    first
-                    :content
-                    (filter (fn [el]
-                              (and (= (:tag el)
-                                      :item)
-                                   (= (:tag (first (:content el)))
-                                      :title))))))
+(def wordpress-xml (->> wordpress-xml-root
+                        :content
+                        first
+                        :content))
 
 
 ;; Main
@@ -35,31 +31,25 @@
 
   (let [command (first args)]
     (match [command]
-      ["posts"] (posts/output-posts items-xml)
+      ["posts"] (posts/output-posts wordpress-xml)
+      ["taxonomy"] (taxonomy/output-taxonomy wordpress-xml)
       :else (println "No recognized command entered."))))
 
 
 
 (comment
   (println
-   (->> posts-xml
-     ;;    (#(nth % 10))
-        (map post-xml->post)
-        (vector-find #(= (:id %) "31"))
+   (->> wordpress-xml
         :content
-        post-content->md
+        first
+        :content
+     ;;    (#(nth % 10))
+        ((fn [items-xml]
+           (->> items-xml
+                (filter #(= (:tag %) :wp:tag)))))
+        (map)
         ;;
         )
-   ;;
-   )
-
-  (println
-   (->>
-    "<iframe width=\"500\" height=\"281\" src=\"//www.youtube.com/embed/6Oiq0rH9_SI?rel=0\" frameborder=\"0\" allowfullscreen></iframe>"
-    hickory/parse-fragment
-    (map hickory/as-hickory)
-    first
-    vimeo-el?)
    ;;
    )
 
