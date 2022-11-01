@@ -1,5 +1,4 @@
 (ns importer.posts
-  ;; (:gen-class)
   (:require [clojure.java.io :as io]
             [clj-yaml.core :as yaml]
             [clojure.core.match :refer [match]]

@@ -1,5 +1,4 @@
 (ns importer.utils
-  ;; (:gen-class)
   (:require [java-time.api :as jt]))
 
 ;; General
