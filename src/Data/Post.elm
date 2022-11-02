@@ -3,6 +3,7 @@ module Data.Post exposing (..)
 import CustomMarkup
 import Data.Language as Language exposing (Language)
 import DataSource exposing (DataSource)
+import DataSource.File
 import DataSource.Glob as Glob exposing (Glob)
 import Html exposing (Html)
 import Markdown.Parser
@@ -27,6 +28,72 @@ type alias Frontmatter =
     , date : Int
     , hour : Maybe Int
     }
+
+
+type alias GlobMatch =
+    { path : String
+    , year : String
+    , month : String
+    , post : String
+    , isHidden : Bool
+    }
+
+
+type alias GlobMatchFrontmatter =
+    { path : String
+    , year : String
+    , month : String
+    , post : String
+    , isHidden : Bool
+    , frontmatter : Frontmatter
+    }
+
+
+listDataSource : DataSource (List GlobMatch)
+listDataSource =
+    Glob.succeed GlobMatch
+        |> Glob.match (Glob.literal "data/posts/")
+        -- Path
+        |> Glob.captureFilePath
+        -- Year
+        |> Glob.capture Glob.digits
+        |> Glob.match (Glob.literal "/")
+        -- Month
+        |> Glob.capture Glob.digits
+        |> Glob.match (Glob.literal "-")
+        -- Post
+        |> Glob.capture Glob.wildcard
+        -- Hidden post flag
+        |> Glob.capture
+            (Glob.oneOf
+                ( ( "-HIDDEN", True )
+                , [ ( "", False ) ]
+                )
+            )
+        |> Glob.match (Glob.literal ".md")
+        |> Glob.toDataSource
+        |> DataSource.map (List.filter (.isHidden >> not))
+
+
+listWithFrontmatterDataSource : DataSource (List GlobMatchFrontmatter)
+listWithFrontmatterDataSource =
+    let
+        processPost : GlobMatch -> DataSource GlobMatchFrontmatter
+        processPost match =
+            DataSource.File.onlyFrontmatter frontmatterDecoder match.path
+                |> DataSource.map
+                    (\frontmatter ->
+                        { path = match.path
+                        , year = match.year
+                        , month = match.month
+                        , post = match.post
+                        , isHidden = match.isHidden
+                        , frontmatter = frontmatter
+                        }
+                    )
+    in
+    listDataSource
+        |> DataSource.andThen (List.map processPost >> DataSource.combine)
 
 
 postDecoder : String -> Decoder (Post msg)
@@ -54,38 +121,3 @@ frontmatterDecoder =
         |> Decode.required "tags" (Decode.list Decode.string)
         |> Decode.required "date" Decode.int
         |> Decode.required "hour" (Decode.maybe Decode.int)
-
-
-type alias GlobMatch =
-    { path : String
-    , year : String
-    , month : String
-    , post : String
-    , isHidden : Bool
-    }
-
-
-dataSource : DataSource (List GlobMatch)
-dataSource =
-    Glob.succeed GlobMatch
-        |> Glob.match (Glob.literal "data/posts/")
-        -- Path
-        |> Glob.captureFilePath
-        -- Year
-        |> Glob.capture Glob.digits
-        |> Glob.match (Glob.literal "/")
-        -- Month
-        |> Glob.capture Glob.digits
-        |> Glob.match (Glob.literal "-")
-        -- Post
-        |> Glob.capture Glob.wildcard
-        -- Hidden post flag
-        |> Glob.capture
-            (Glob.oneOf
-                ( ( "-HIDDEN", True )
-                , [ ( "", False ) ]
-                )
-            )
-        |> Glob.match (Glob.literal ".md")
-        |> Glob.toDataSource
-        |> DataSource.map (List.filter (.isHidden >> not))

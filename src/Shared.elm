@@ -1,10 +1,9 @@
-module Shared exposing (Data, Model, Msg(..), PostGist, SharedMsg(..), template)
+module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
 
 import Browser.Navigation
 import Data.Category as Category exposing (Category)
 import Data.Post as Post
 import DataSource exposing (DataSource)
-import DataSource.File
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Pages.Flags
@@ -53,38 +52,15 @@ init navigationKey flags maybePagePath =
 
 
 type alias Data =
-    { posts : List PostGist
+    { posts : List Post.GlobMatchFrontmatter
     , categories : List Category
-    }
-
-
-type alias PostGist =
-    { year : String
-    , month : String
-    , post : String
-    , data : Post.Frontmatter
     }
 
 
 data : DataSource Data
 data =
-    let
-        processPost : Post.GlobMatch -> DataSource PostGist
-        processPost match =
-            DataSource.File.onlyFrontmatter Post.frontmatterDecoder match.path
-                |> DataSource.map
-                    (\postData ->
-                        { year = match.year
-                        , month = match.month
-                        , post = match.post
-                        , data = postData
-                        }
-                    )
-    in
     DataSource.map2 Data
-        (Post.dataSource
-            |> DataSource.andThen (List.map processPost >> DataSource.combine)
-        )
+        Post.listWithFrontmatterDataSource
         Category.dataSource
 
 

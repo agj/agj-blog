@@ -3,6 +3,7 @@ module Page.Index exposing (Data, Model, Msg, page)
 import Browser.Navigation
 import Data.Category as Category exposing (Category)
 import Data.Date as Date
+import Data.Post as Post
 import DataSource exposing (DataSource)
 import Dict exposing (Dict)
 import Head
@@ -46,7 +47,7 @@ init maybePageUrl sharedModel static =
 
         findPostGistById id =
             static.sharedData.posts
-                |> List.find (\pg -> pg.data.id == Just id)
+                |> List.find (\pg -> pg.frontmatter.id == Just id)
 
         maybePostRedirectCommand =
             maybeRequestedPostId
@@ -136,12 +137,12 @@ view maybeUrl sharedModel model static =
                 |> String.fromInt
                 |> String.padLeft 2 '0'
 
-        getDateHour : Shared.PostGist -> String
+        getDateHour : Post.GlobMatchFrontmatter -> String
         getDateHour gist =
-            padNumber gist.data.date
-                ++ padNumber (gist.data.hour |> Maybe.withDefault 0)
+            padNumber gist.frontmatter.date
+                ++ padNumber (gist.frontmatter.hour |> Maybe.withDefault 0)
 
-        getTime : Shared.PostGist -> String
+        getTime : Post.GlobMatchFrontmatter -> String
         getTime gist =
             gist.year ++ gist.month ++ getDateHour gist
 
@@ -169,7 +170,7 @@ view maybeUrl sharedModel model static =
     }
 
 
-viewGistMonth : List Category -> ( String, List Shared.PostGist ) -> List (Html Msg)
+viewGistMonth : List Category -> ( String, List Post.GlobMatchFrontmatter ) -> List (Html Msg)
 viewGistMonth categories ( month, gists ) =
     [ Html.p []
         [ Html.strong []
@@ -183,22 +184,22 @@ viewGistMonth categories ( month, gists ) =
     ]
 
 
-viewGist : List Category -> Shared.PostGist -> Html Msg
+viewGist : List Category -> Post.GlobMatchFrontmatter -> Html Msg
 viewGist categories gist =
     let
         dateText =
             "{date} – "
-                |> String.replace "{date}" (gist.data.date |> String.fromInt |> String.padLeft 2 '0')
+                |> String.replace "{date}" (gist.frontmatter.date |> String.fromInt |> String.padLeft 2 '0')
 
         postCategories =
-            gist.data.categories
+            gist.frontmatter.categories
                 |> List.map (Category.get categories)
     in
     Html.li []
         [ Html.text dateText
         , Html.a [ Attr.href (postGistToUrl gist) ]
             [ Html.strong []
-                [ Html.text gist.data.title ]
+                [ Html.text gist.frontmatter.title ]
             ]
         , Html.small []
             (Html.text " ("
@@ -223,7 +224,7 @@ viewInlineCategory category =
 -- UTILITIES
 
 
-postGistToUrl : Shared.PostGist -> String
+postGistToUrl : Post.GlobMatchFrontmatter -> String
 postGistToUrl gist =
     "/{year}/{month}/{post}"
         |> String.replace "{year}" gist.year
