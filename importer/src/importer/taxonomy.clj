@@ -1,10 +1,5 @@
 (ns importer.taxonomy
   (:require [clojure.java.io :as io]
-            [clj-yaml.core :as yaml]
-            [clojure.core.match :refer [match]]
-            [slugger.core :refer [->slug]]
-            [hickory.core :as hickory]
-            [clojure.string :as str]
             [importer.utils :as utils]))
 
 (defn category-xml->category [category-xml]
@@ -24,7 +19,9 @@
   (let [filename (str "../data/" filename ".yaml")]
     (io/make-parents filename)
     (println (str "Output: " filename))
-    (spit filename (utils/data->yaml items))))
+    (spit filename
+          (str "---\n"
+               (utils/data->yaml items)))))
 
 
 ;; Main
