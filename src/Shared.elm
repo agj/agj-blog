@@ -52,7 +52,7 @@ init navigationKey flags maybePagePath =
 
 
 type alias Data =
-    List PostGist
+    { posts : List PostGist }
 
 
 type alias PostGist =
@@ -80,6 +80,7 @@ data =
     in
     Post.dataSource
         |> DataSource.andThen (List.map process >> DataSource.combine)
+        |> DataSource.map Data
 
 
 

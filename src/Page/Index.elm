@@ -44,7 +44,7 @@ init maybePageUrl sharedModel static =
                 |> Maybe.andThen String.toInt
 
         findPostGistById id =
-            static.sharedData
+            static.sharedData.posts
                 |> List.find (\pg -> pg.data.id == Just id)
 
         maybePostRedirectCommand =
@@ -145,7 +145,7 @@ view maybeUrl sharedModel model static =
             gist.year ++ gist.month ++ getDateHour gist
 
         gistsByMonth =
-            static.sharedData
+            static.sharedData.posts
                 |> List.gatherEqualsBy (\gist -> gist.year ++ gist.month)
                 |> List.sortBy (Tuple.first >> getTime)
                 |> List.map
