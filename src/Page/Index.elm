@@ -4,6 +4,7 @@ import Browser.Navigation
 import Data.Category as Category exposing (Category)
 import Data.Date as Date
 import Data.Post as Post
+import Data.PostList
 import DataSource exposing (DataSource)
 import Dict exposing (Dict)
 import Head
@@ -130,94 +131,9 @@ view :
     -> StaticPayload Data {}
     -> View Msg
 view maybeUrl sharedModel model static =
-    let
-        padNumber : Int -> String
-        padNumber num =
-            num
-                |> String.fromInt
-                |> String.padLeft 2 '0'
-
-        getDateHour : Post.GlobMatchFrontmatter -> String
-        getDateHour gist =
-            padNumber gist.frontmatter.date
-                ++ padNumber (gist.frontmatter.hour |> Maybe.withDefault 0)
-
-        getTime : Post.GlobMatchFrontmatter -> String
-        getTime gist =
-            gist.year ++ gist.month ++ getDateHour gist
-
-        gistsByMonth =
-            static.sharedData.posts
-                |> List.gatherEqualsBy (\gist -> gist.year ++ gist.month)
-                |> List.sortBy (Tuple.first >> getTime)
-                |> List.map
-                    (\( firstGist, rest ) ->
-                        ( "{year}, {month}"
-                            |> String.replace "{year}" firstGist.year
-                            |> String.replace "{month}" (Date.monthNumberToFullName (firstGist.month |> String.toInt |> Maybe.withDefault 0))
-                        , firstGist
-                            :: rest
-                            |> List.sortBy getTime
-                            |> List.reverse
-                        )
-                    )
-    in
     { title = title static
-    , body =
-        gistsByMonth
-            |> List.map (viewGistMonth static.sharedData.categories)
-            |> List.foldl (++) []
+    , body = Data.PostList.view static.sharedData.categories static.sharedData.posts
     }
-
-
-viewGistMonth : List Category -> ( String, List Post.GlobMatchFrontmatter ) -> List (Html Msg)
-viewGistMonth categories ( month, gists ) =
-    [ Html.p []
-        [ Html.strong []
-            [ Html.text month
-            ]
-        ]
-    , Html.ul []
-        (gists
-            |> List.map (viewGist categories)
-        )
-    ]
-
-
-viewGist : List Category -> Post.GlobMatchFrontmatter -> Html Msg
-viewGist categories gist =
-    let
-        dateText =
-            "{date} – "
-                |> String.replace "{date}" (gist.frontmatter.date |> String.fromInt |> String.padLeft 2 '0')
-
-        postCategories =
-            gist.frontmatter.categories
-                |> List.map (Category.get categories)
-    in
-    Html.li []
-        [ Html.text dateText
-        , Html.a [ Attr.href (postGistToUrl gist) ]
-            [ Html.strong []
-                [ Html.text gist.frontmatter.title ]
-            ]
-        , Html.small []
-            (Html.text " ("
-                :: (List.map viewInlineCategory postCategories
-                        |> List.intersperse (Html.text ", ")
-                   )
-                ++ [ Html.text ")" ]
-            )
-        ]
-
-
-viewInlineCategory : Category -> Html Msg
-viewInlineCategory category =
-    Html.a
-        [ Attr.class "secondary"
-        , Attr.href (Category.toUrl category)
-        ]
-        [ Html.text category.name ]
 
 
 
