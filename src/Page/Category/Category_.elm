@@ -1,6 +1,7 @@
 module Page.Category.Category_ exposing (Data, Model, Msg, page)
 
 import Data.Category as Category exposing (Category)
+import Data.PostList
 import DataSource exposing (DataSource)
 import DataSource.File
 import Head
@@ -83,13 +84,23 @@ view maybeUrl sharedModel static =
     let
         category =
             Category.get static.sharedData.categories static.routeParams.category
+
+        posts =
+            static.sharedData.posts
+                |> List.filter
+                    (\post ->
+                        List.any ((==) category.slug) post.frontmatter.categories
+                    )
+
+        postViews =
+            Data.PostList.view static.sharedData.categories posts
     in
     { title = title static
     , body =
-        [ Html.h1 []
+        Html.h1 []
             [ Html.text "Category: "
             , Html.em []
                 [ Html.text category.name ]
             ]
-        ]
+            :: postViews
     }
