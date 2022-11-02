@@ -1,6 +1,7 @@
 module Shared exposing (Data, Model, Msg(..), PostGist, SharedMsg(..), template)
 
 import Browser.Navigation
+import Data.Category as Category exposing (Category)
 import Data.Post as Post
 import DataSource exposing (DataSource)
 import DataSource.File
@@ -52,7 +53,9 @@ init navigationKey flags maybePagePath =
 
 
 type alias Data =
-    { posts : List PostGist }
+    { posts : List PostGist
+    , categories : List Category
+    }
 
 
 type alias PostGist =
@@ -66,8 +69,8 @@ type alias PostGist =
 data : DataSource Data
 data =
     let
-        process : Post.GlobMatch -> DataSource PostGist
-        process match =
+        processPost : Post.GlobMatch -> DataSource PostGist
+        processPost match =
             DataSource.File.onlyFrontmatter Post.frontmatterDecoder match.path
                 |> DataSource.map
                     (\postData ->
@@ -78,9 +81,11 @@ data =
                         }
                     )
     in
-    Post.dataSource
-        |> DataSource.andThen (List.map process >> DataSource.combine)
-        |> DataSource.map Data
+    DataSource.map2 Data
+        (Post.dataSource
+            |> DataSource.andThen (List.map processPost >> DataSource.combine)
+        )
+        Category.dataSource
 
 
 

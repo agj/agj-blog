@@ -1,4 +1,4 @@
-module Data.Category exposing (Category, dataSource)
+module Data.Category exposing (Category, dataSource, toUrl)
 
 import DataSource exposing (DataSource)
 import DataSource.File
@@ -16,6 +16,12 @@ dataSource =
     DataSource.File.rawFile "data/categories.yaml"
         |> DataSource.map (Decode.fromString (Decode.list decoder))
         |> DataSource.map (Result.withDefault [])
+
+
+toUrl : Category -> String
+toUrl { slug } =
+    "/category/{slug}"
+        |> String.replace "{slug}" slug
 
 
 

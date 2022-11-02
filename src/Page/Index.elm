@@ -1,6 +1,7 @@
 module Page.Index exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
+import Data.Category as Category exposing (Category)
 import Data.Date as Date
 import DataSource exposing (DataSource)
 import Dict exposing (Dict)
@@ -67,6 +68,11 @@ type alias Data =
     {}
 
 
+data : DataSource Data
+data =
+    DataSource.succeed {}
+
+
 
 -- UPDATE
 
@@ -77,11 +83,6 @@ type alias Model =
 
 type alias Msg =
     Never
-
-
-data : DataSource Data
-data =
-    DataSource.succeed {}
 
 
 update :
@@ -163,13 +164,13 @@ view maybeUrl sharedModel model static =
     { title = title static
     , body =
         gistsByMonth
-            |> List.map viewGistMonth
+            |> List.map (viewGistMonth static.sharedData.categories)
             |> List.foldl (++) []
     }
 
 
-viewGistMonth : ( String, List Shared.PostGist ) -> List (Html Msg)
-viewGistMonth ( month, gists ) =
+viewGistMonth : List Category -> ( String, List Shared.PostGist ) -> List (Html Msg)
+viewGistMonth categories ( month, gists ) =
     [ Html.p []
         [ Html.strong []
             [ Html.text month
@@ -177,21 +178,22 @@ viewGistMonth ( month, gists ) =
         ]
     , Html.ul []
         (gists
-            |> List.map viewGist
+            |> List.map (viewGist categories)
         )
     ]
 
 
-viewGist : Shared.PostGist -> Html Msg
-viewGist gist =
+viewGist : List Category -> Shared.PostGist -> Html Msg
+viewGist categories gist =
     let
         dateText =
             "{date} – "
                 |> String.replace "{date}" (gist.data.date |> String.fromInt |> String.padLeft 2 '0')
 
-        categoriesText =
-            " ({categories})"
-                |> String.replace "{categories}" (gist.data.categories |> String.join ", ")
+        postCategories =
+            gist.data.categories
+                |> List.map (\slug -> List.find (\cat -> cat.slug == slug) categories)
+                |> List.map (Maybe.withDefault { name = "ERROR", slug = "error" })
     in
     Html.li []
         [ Html.text dateText
@@ -200,8 +202,22 @@ viewGist gist =
                 [ Html.text gist.data.title ]
             ]
         , Html.small []
-            [ Html.text categoriesText ]
+            (Html.text " ("
+                :: (List.map viewInlineCategory postCategories
+                        |> List.intersperse (Html.text ", ")
+                   )
+                ++ [ Html.text ")" ]
+            )
         ]
+
+
+viewInlineCategory : Category -> Html Msg
+viewInlineCategory category =
+    Html.a
+        [ Attr.class "secondary"
+        , Attr.href (Category.toUrl category)
+        ]
+        [ Html.text category.name ]
 
 
 
