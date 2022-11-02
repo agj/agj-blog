@@ -132,8 +132,30 @@ view :
     -> View Msg
 view maybeUrl sharedModel model static =
     { title = title static
-    , body = Data.PostList.view static.sharedData.categories static.sharedData.posts
+    , body =
+        [ Html.div [ Attr.class "grid" ]
+            [ Html.section []
+                (Data.PostList.view
+                    static.sharedData.categories
+                    static.sharedData.posts
+                )
+            , Html.section []
+                [ Html.article []
+                    [ Html.ul []
+                        (static.sharedData.categories |> List.map viewCategory)
+                    ]
+                ]
+            ]
+        ]
     }
+
+
+viewCategory : Category -> Html Msg
+viewCategory category =
+    Html.li []
+        [ Html.a [ Attr.href (Category.toUrl category) ]
+            [ Html.text category.name ]
+        ]
 
 
 
