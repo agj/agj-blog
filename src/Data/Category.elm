@@ -1,7 +1,8 @@
-module Data.Category exposing (Category, dataSource, error, toUrl)
+module Data.Category exposing (Category, dataSource, error, get, toUrl)
 
 import DataSource exposing (DataSource)
 import DataSource.File
+import List.Extra as List
 import Yaml.Decode as Decode exposing (Decoder)
 
 
@@ -22,6 +23,13 @@ toUrl : Category -> String
 toUrl { slug } =
     "/category/{slug}"
         |> String.replace "{slug}" slug
+
+
+get : List Category -> String -> Category
+get categories slug =
+    categories
+        |> List.find (.slug >> (==) slug)
+        |> Maybe.withDefault error
 
 
 error : Category

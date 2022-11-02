@@ -192,8 +192,7 @@ viewGist categories gist =
 
         postCategories =
             gist.data.categories
-                |> List.map (\slug -> List.find (\cat -> cat.slug == slug) categories)
-                |> List.map (Maybe.withDefault Category.error)
+                |> List.map (Category.get categories)
     in
     Html.li []
         [ Html.text dateText

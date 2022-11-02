@@ -82,9 +82,7 @@ view :
 view maybeUrl sharedModel static =
     let
         category =
-            static.sharedData.categories
-                |> List.find (.slug >> (==) static.routeParams.category)
-                |> Maybe.withDefault Category.error
+            Category.get static.sharedData.categories static.routeParams.category
     in
     { title = title static
     , body =
