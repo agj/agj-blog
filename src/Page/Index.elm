@@ -1,7 +1,7 @@
 module Page.Index exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
-import Data.Category as Category exposing (Category)
+import Data.Category as Category exposing (Category, NestedCategory)
 import Data.Date as Date
 import Data.Post as Post
 import Data.PostList
@@ -131,6 +131,10 @@ view :
     -> StaticPayload Data {}
     -> View Msg
 view maybeUrl sharedModel model static =
+    let
+        nestedCategories =
+            Category.nest static.sharedData.categories
+    in
     { title = title static
     , body =
         [ Html.div [ Attr.class "grid" ]
@@ -142,7 +146,9 @@ view maybeUrl sharedModel model static =
             , Html.section []
                 [ Html.article []
                     [ Html.ul []
-                        (static.sharedData.categories |> List.map viewCategory)
+                        (nestedCategories
+                            |> List.map viewCategory
+                        )
                     ]
                 ]
             ]
@@ -150,12 +156,25 @@ view maybeUrl sharedModel model static =
     }
 
 
-viewCategory : Category -> Html Msg
-viewCategory category =
+viewCategory : NestedCategory -> Html Msg
+viewCategory (Category.NestedCategory category children) =
+    let
+        childUl =
+            if List.length children > 0 then
+                [ Html.ul []
+                    (children
+                        |> List.map viewCategory
+                    )
+                ]
+
+            else
+                []
+    in
     Html.li []
-        [ Html.a [ Attr.href (Category.toUrl category) ]
+        (Html.a [ Attr.href (Category.toUrl category) ]
             [ Html.text category.name ]
-        ]
+            :: childUl
+        )
 
 
 

@@ -1,15 +1,29 @@
-module Data.Category exposing (Category, dataSource, error, get, toUrl)
+module Data.Category exposing
+    ( Category
+    , NestedCategory(..)
+    , dataSource
+    , error
+    , get
+    , nest
+    , toUrl
+    )
 
 import DataSource exposing (DataSource)
 import DataSource.File
 import List.Extra as List
+import Maybe.Extra as Maybe
 import Yaml.Decode as Decode exposing (Decoder)
 
 
 type alias Category =
     { name : String
     , slug : String
+    , parent : Maybe String
     }
+
+
+type NestedCategory
+    = NestedCategory Category (List NestedCategory)
 
 
 dataSource : DataSource (List Category)
@@ -32,10 +46,18 @@ get categories slug =
         |> Maybe.withDefault error
 
 
+nest : List Category -> List NestedCategory
+nest categories =
+    categories
+        |> List.filter (.parent >> Maybe.isNothing)
+        |> List.map (nestDelegate categories)
+
+
 error : Category
 error =
     { name = "ERROR"
     , slug = "ERROR"
+    , parent = Nothing
     }
 
 
@@ -45,6 +67,16 @@ error =
 
 decoder : Decoder Category
 decoder =
-    Decode.map2 Category
+    Decode.map3 Category
         (Decode.field "name" Decode.string)
         (Decode.field "slug" Decode.string)
+        (Decode.maybe (Decode.field "parent" Decode.string))
+
+
+nestDelegate : List Category -> Category -> NestedCategory
+nestDelegate categories category =
+    NestedCategory category
+        (categories
+            |> List.filter (.parent >> (==) (Just category.slug))
+            |> List.map (nestDelegate categories)
+        )
