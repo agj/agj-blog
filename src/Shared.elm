@@ -1,14 +1,11 @@
 module Shared exposing (Data, Model, Msg(..), PostGist, SharedMsg(..), template)
 
 import Browser.Navigation
-import Data.Post as Post exposing (PostFrontmatter)
+import Data.Post as Post
 import DataSource exposing (DataSource)
 import DataSource.File
-import DataSource.Glob as Glob
-import Dict
 import Html exposing (Html)
 import Html.Attributes as Attr
-import Maybe.Extra as Maybe
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Path exposing (Path)
@@ -62,7 +59,7 @@ type alias PostGist =
     { year : String
     , month : String
     , post : String
-    , data : PostFrontmatter
+    , data : Post.Frontmatter
     }
 
 
@@ -71,7 +68,7 @@ data =
     let
         process : Post.GlobMatch -> DataSource PostGist
         process match =
-            DataSource.File.onlyFrontmatter Post.postFrontmatterDecoder match.path
+            DataSource.File.onlyFrontmatter Post.frontmatterDecoder match.path
                 |> DataSource.map
                     (\postData ->
                         { year = match.year
@@ -81,7 +78,7 @@ data =
                         }
                     )
     in
-    Post.routesGlob
+    Post.dataSource
         |> DataSource.andThen (List.map process >> DataSource.combine)
 
 

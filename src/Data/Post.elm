@@ -14,11 +14,11 @@ import Result.Extra as Result
 
 type alias Post msg =
     { content : List (Html msg)
-    , frontmatter : PostFrontmatter
+    , frontmatter : Frontmatter
     }
 
 
-type alias PostFrontmatter =
+type alias Frontmatter =
     { id : Maybe Int
     , title : String
     , language : Language
@@ -40,13 +40,13 @@ postDecoder content =
                 |> Result.mapError CustomMarkup.renderErrorMessage
                 |> Result.merge
     in
-    postFrontmatterDecoder
+    frontmatterDecoder
         |> Decode.map (Post parsedContent)
 
 
-postFrontmatterDecoder : Decoder PostFrontmatter
-postFrontmatterDecoder =
-    Decode.succeed PostFrontmatter
+frontmatterDecoder : Decoder Frontmatter
+frontmatterDecoder =
+    Decode.succeed Frontmatter
         |> Decode.required "id" (Decode.maybe Decode.int)
         |> Decode.required "title" Decode.string
         |> Decode.required "language" Language.decoder
@@ -65,8 +65,8 @@ type alias GlobMatch =
     }
 
 
-routesGlob : DataSource (List GlobMatch)
-routesGlob =
+dataSource : DataSource (List GlobMatch)
+dataSource =
     Glob.succeed GlobMatch
         |> Glob.match (Glob.literal "data/posts/")
         -- Path

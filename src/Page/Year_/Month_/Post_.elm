@@ -41,7 +41,7 @@ type alias RouteParams =
 
 routes : DataSource (List RouteParams)
 routes =
-    Post.routesGlob
+    Post.dataSource
         |> DataSource.map
             (List.map
                 (\match ->
