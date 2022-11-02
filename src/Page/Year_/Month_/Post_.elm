@@ -63,12 +63,7 @@ type alias Data =
 
 data : RouteParams -> DataSource Data
 data routeParams =
-    DataSource.File.bodyWithFrontmatter Post.postDecoder
-        ("data/posts/{year}/{month}-{post}.md"
-            |> String.replace "{year}" routeParams.year
-            |> String.replace "{month}" routeParams.month
-            |> String.replace "{post}" routeParams.post
-        )
+    Post.singleDataSource routeParams.year routeParams.month routeParams.post
 
 
 

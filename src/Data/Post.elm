@@ -1,4 +1,12 @@
-module Data.Post exposing (..)
+module Data.Post exposing
+    ( Frontmatter
+    , GlobMatch
+    , GlobMatchFrontmatter
+    , Post
+    , listDataSource
+    , listWithFrontmatterDataSource
+    , singleDataSource
+    )
 
 import CustomMarkup
 import Data.Language as Language exposing (Language)
@@ -94,6 +102,20 @@ listWithFrontmatterDataSource =
     in
     listDataSource
         |> DataSource.andThen (List.map processPost >> DataSource.combine)
+
+
+singleDataSource : String -> String -> String -> DataSource (Post msg)
+singleDataSource year month post =
+    DataSource.File.bodyWithFrontmatter postDecoder
+        ("data/posts/{year}/{month}-{post}.md"
+            |> String.replace "{year}" year
+            |> String.replace "{month}" month
+            |> String.replace "{post}" post
+        )
+
+
+
+-- INTERNAL
 
 
 postDecoder : String -> Decoder (Post msg)
