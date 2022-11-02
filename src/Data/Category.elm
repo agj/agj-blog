@@ -18,6 +18,7 @@ import Yaml.Decode as Decode exposing (Decoder)
 type alias Category =
     { name : String
     , slug : String
+    , description : Maybe String
     , parent : Maybe String
     }
 
@@ -57,6 +58,7 @@ error : Category
 error =
     { name = "ERROR"
     , slug = "ERROR"
+    , description = Nothing
     , parent = Nothing
     }
 
@@ -67,9 +69,10 @@ error =
 
 decoder : Decoder Category
 decoder =
-    Decode.map3 Category
+    Decode.map4 Category
         (Decode.field "name" Decode.string)
         (Decode.field "slug" Decode.string)
+        (Decode.maybe (Decode.field "description" Decode.string))
         (Decode.maybe (Decode.field "parent" Decode.string))
 
 
