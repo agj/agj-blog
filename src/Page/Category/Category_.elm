@@ -5,6 +5,7 @@ import DataSource exposing (DataSource)
 import DataSource.File
 import Head
 import Html
+import List.Extra as List
 import OptimizedDecoder as Decode exposing (Decoder)
 import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
@@ -79,8 +80,18 @@ view :
     -> StaticPayload Data RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
+    let
+        category =
+            static.sharedData.categories
+                |> List.find (.slug >> (==) static.routeParams.category)
+                |> Maybe.withDefault Category.error
+    in
     { title = title static
     , body =
-        [ Html.text (title static)
+        [ Html.h1 []
+            [ Html.text "Category: "
+            , Html.em []
+                [ Html.text category.name ]
+            ]
         ]
     }

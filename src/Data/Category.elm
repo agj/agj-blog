@@ -1,4 +1,4 @@
-module Data.Category exposing (Category, dataSource, toUrl)
+module Data.Category exposing (Category, dataSource, error, toUrl)
 
 import DataSource exposing (DataSource)
 import DataSource.File
@@ -22,6 +22,13 @@ toUrl : Category -> String
 toUrl { slug } =
     "/category/{slug}"
         |> String.replace "{slug}" slug
+
+
+error : Category
+error =
+    { name = "ERROR"
+    , slug = "ERROR"
+    }
 
 
 
