@@ -38,9 +38,7 @@ type alias RouteParams =
 
 routes : DataSource (List RouteParams)
 routes =
-    DataSource.File.rawFile "data/categories.yaml"
-        |> DataSource.map (Yaml.Decode.fromString (Yaml.Decode.list Category.decoder))
-        |> DataSource.map (Result.withDefault [])
+    Category.dataSource
         |> DataSource.map (List.map (\{ slug } -> { category = slug }))
 
 
