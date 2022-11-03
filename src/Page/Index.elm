@@ -169,17 +169,19 @@ viewCategory (Category.NestedCategory category children) =
 
             else
                 []
+
+        descriptionAttr =
+            case category.description of
+                Just desc ->
+                    [ Attr.title desc ]
+
+                Nothing ->
+                    []
     in
     Html.li []
         (Html.a
             (Attr.href (Category.toUrl category)
-                :: (case category.description of
-                        Just desc ->
-                            [ Attr.title desc ]
-
-                        Nothing ->
-                            []
-                   )
+                :: descriptionAttr
             )
             [ Html.text category.name ]
             :: childUl

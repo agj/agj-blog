@@ -94,13 +94,29 @@ view maybeUrl sharedModel static =
 
         postViews =
             Data.PostList.view static.sharedData.categories posts
+
+        titleEl =
+            Html.h1 []
+                [ Html.text "Category: "
+                , Html.em []
+                    [ Html.text category.name ]
+                ]
+
+        wrapperEl =
+            case category.description of
+                Just desc ->
+                    Html.node "hgroup"
+                        []
+                        [ titleEl
+                        , Html.p []
+                            [ Html.text desc ]
+                        ]
+
+                Nothing ->
+                    titleEl
     in
     { title = title static
     , body =
-        Html.h1 []
-            [ Html.text "Category: "
-            , Html.em []
-                [ Html.text category.name ]
-            ]
+        wrapperEl
             :: postViews
     }
