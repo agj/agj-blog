@@ -22,10 +22,17 @@ dataSource =
         |> DataSource.map (Result.withDefault [])
 
 
-toUrl : Tag -> String
-toUrl { slug } =
-    "/tag/?t={slug}"
-        |> String.replace "{slug}" slug
+toUrl : Tag -> List Tag -> String
+toUrl firstTag moreTags =
+    let
+        slugs =
+            firstTag
+                :: moreTags
+                |> List.map .slug
+                |> String.join ","
+    in
+    "/tag/?t={slugs}"
+        |> String.replace "{slug}" slugs
 
 
 get : List Tag -> String -> Tag
@@ -38,7 +45,7 @@ get tags slug =
 toLink : List (Html.Attribute msg) -> Tag -> Html msg
 toLink attrs tag =
     Html.a
-        (Attr.href (toUrl tag)
+        (Attr.href (toUrl tag [])
             :: attrs
         )
         [ Html.text tag.name ]
