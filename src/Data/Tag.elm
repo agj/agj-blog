@@ -24,7 +24,7 @@ dataSource =
 
 toUrl : Tag -> String
 toUrl { slug } =
-    "/tag/{slug}"
+    "/tag/?t={slug}"
         |> String.replace "{slug}" slug
 
 
