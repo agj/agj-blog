@@ -2,9 +2,9 @@ module Page.Index exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
 import Data.Category as Category exposing (Category, NestedCategory)
-import Data.Date as Date
 import Data.Post as Post
 import Data.PostList
+import Data.Tag as Tag
 import DataSource exposing (DataSource)
 import Dict exposing (Dict)
 import Head
@@ -142,6 +142,11 @@ view maybeUrl sharedModel model static =
             , Html.section []
                 [ Html.article []
                     [ Category.viewList static.sharedData.categories ]
+                , Html.article []
+                    (static.sharedData.tags
+                        |> List.map (Tag.toLink [ Attr.style "white-space" "nowrap" ])
+                        |> List.intersperse (Html.text ", ")
+                    )
                 ]
             ]
         ]

@@ -3,6 +3,7 @@ module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
 import Browser.Navigation
 import Data.Category as Category exposing (Category)
 import Data.Post as Post
+import Data.Tag as Tag exposing (Tag)
 import DataSource exposing (DataSource)
 import Html exposing (Html)
 import Html.Attributes as Attr
@@ -54,14 +55,16 @@ init navigationKey flags maybePagePath =
 type alias Data =
     { posts : List Post.GlobMatchFrontmatter
     , categories : List Category
+    , tags : List Tag
     }
 
 
 data : DataSource Data
 data =
-    DataSource.map2 Data
+    DataSource.map3 Data
         Post.listWithFrontmatterDataSource
         Category.dataSource
+        Tag.dataSource
 
 
 
