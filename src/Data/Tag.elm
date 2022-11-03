@@ -1,5 +1,14 @@
-module Data.Tag exposing (..)
+module Data.Tag exposing
+    ( Tag
+    , dataSource
+    , error
+    , get
+    , listView
+    , toLink
+    , toUrl
+    )
 
+import Data.Post as Post
 import DataSource exposing (DataSource)
 import DataSource.File
 import Html exposing (Html)
@@ -32,7 +41,7 @@ toUrl firstTag moreTags =
                 |> String.join ","
     in
     "/tag/?t={slugs}"
-        |> String.replace "{slug}" slugs
+        |> String.replace "{slugs}" slugs
 
 
 get : List Tag -> String -> Tag
@@ -49,6 +58,51 @@ toLink attrs tag =
             :: attrs
         )
         [ Html.text tag.name ]
+
+
+listView : List Post.GlobMatchFrontmatter -> List Tag -> List (Html msg)
+listView posts tags =
+    let
+        tagsCount =
+            tags
+                |> List.map
+                    (\tag ->
+                        ( tag
+                        , posts
+                            |> List.filter
+                                (\post ->
+                                    List.any ((==) tag.slug) post.frontmatter.tags
+                                )
+                            |> List.length
+                        )
+                    )
+
+        maxCount =
+            tagsCount
+                |> List.map Tuple.second
+                |> List.maximum
+                |> Maybe.withDefault 0
+
+        minCount =
+            tagsCount
+                |> List.map Tuple.second
+                |> List.minimum
+                |> Maybe.withDefault 0
+
+        tagElAttrs count =
+            let
+                opacity =
+                    (toFloat (count - minCount) / toFloat (maxCount - minCount) * 0.7)
+                        + 0.3
+            in
+            [ Attr.style "white-space" "nowrap"
+            , Attr.style "opacity" (String.fromFloat opacity)
+            , Attr.title ("Posts: " ++ String.fromInt count)
+            ]
+    in
+    tagsCount
+        |> List.map (\( tag, count ) -> toLink (tagElAttrs count) tag)
+        |> List.intersperse (Html.text ", ")
 
 
 error : Tag
