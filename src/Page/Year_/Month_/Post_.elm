@@ -1,5 +1,6 @@
 module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page)
 
+import Data.Category as Category
 import Data.Date as Date
 import Data.Post as Post exposing (Post)
 import DataSource exposing (DataSource)
@@ -94,6 +95,12 @@ view maybeUrl sharedModel static =
                 |> String.replace "{year}" static.routeParams.year
                 |> String.replace "{month}" (Date.monthNumberToShortName (String.toInt static.routeParams.month |> Maybe.withDefault 0))
                 |> String.replace "{date}" (String.fromInt static.data.frontmatter.date)
+
+        categoryEls =
+            static.data.frontmatter.categories
+                |> List.map (Category.get static.sharedData.categories)
+                |> List.map (Category.toLink [])
+                |> List.intersperse (Html.text ", ")
     in
     { title = title static
     , body =
@@ -107,8 +114,7 @@ view maybeUrl sharedModel static =
                         (date
                             ++ ". Categories: "
                         )
-                    , Html.em []
-                        [ Html.text (String.join ", " static.data.frontmatter.categories) ]
+                    , Html.em [] categoryEls
                     , Html.text ". Tags: "
                     , Html.em []
                         [ Html.text (String.join ", " static.data.frontmatter.tags) ]
