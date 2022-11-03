@@ -146,9 +146,28 @@ view maybeUrl sharedModel model static =
                         )
                     )
 
+        maxCount =
+            tagsCount
+                |> List.map Tuple.second
+                |> List.maximum
+                |> Maybe.withDefault 0
+
+        minCount =
+            tagsCount
+                |> List.map Tuple.second
+                |> List.minimum
+                |> Maybe.withDefault 0
+
         tagElAttrs count =
+            let
+                opacity =
+                    (toFloat (count - minCount) / toFloat (maxCount - minCount) * 0.7)
+                        + 0.3
+                        |> Debug.log "opacity"
+            in
             [ Attr.style "white-space" "nowrap"
-            , Attr.style "opacity" (String.fromFloat (toFloat count / 10))
+            , Attr.style "opacity" (String.fromFloat opacity)
+            , Attr.title ("Posts: " ++ String.fromInt count)
             ]
 
         tagEls =
