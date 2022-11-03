@@ -131,6 +131,31 @@ view :
     -> StaticPayload Data {}
     -> View Msg
 view maybeUrl sharedModel model static =
+    let
+        tagsCount =
+            static.sharedData.tags
+                |> List.map
+                    (\tag ->
+                        ( tag
+                        , static.sharedData.posts
+                            |> List.filter
+                                (\post ->
+                                    List.any ((==) tag.slug) post.frontmatter.tags
+                                )
+                            |> List.length
+                        )
+                    )
+
+        tagElAttrs count =
+            [ Attr.style "white-space" "nowrap"
+            , Attr.style "opacity" (String.fromFloat (toFloat count / 10))
+            ]
+
+        tagEls =
+            tagsCount
+                |> List.map (\( tag, count ) -> Tag.toLink (tagElAttrs count) tag)
+                |> List.intersperse (Html.text ", ")
+    in
     { title = title static
     , body =
         [ Html.div [ Attr.class "grid" ]
@@ -141,12 +166,16 @@ view maybeUrl sharedModel model static =
                 )
             , Html.section []
                 [ Html.article []
-                    [ Category.viewList static.sharedData.categories ]
+                    [ Html.h3 []
+                        [ Html.text "Categories" ]
+                    , Category.viewList static.sharedData.categories
+                    ]
                 , Html.article []
-                    (static.sharedData.tags
-                        |> List.map (Tag.toLink [ Attr.style "white-space" "nowrap" ])
-                        |> List.intersperse (Html.text ", ")
-                    )
+                    [ Html.h3 []
+                        [ Html.text "Tags" ]
+                    , Html.p []
+                        tagEls
+                    ]
                 ]
             ]
         ]
