@@ -163,7 +163,6 @@ view maybeUrl sharedModel model static =
                 opacity =
                     (toFloat (count - minCount) / toFloat (maxCount - minCount) * 0.7)
                         + 0.3
-                        |> Debug.log "opacity"
             in
             [ Attr.style "white-space" "nowrap"
             , Attr.style "opacity" (String.fromFloat opacity)
