@@ -5,11 +5,14 @@ module Data.Category exposing
     , error
     , get
     , nest
+    , toLink
     , toUrl
     )
 
 import DataSource exposing (DataSource)
 import DataSource.File
+import Html exposing (Html)
+import Html.Attributes as Attr
 import List.Extra as List
 import Maybe.Extra as Maybe
 import Yaml.Decode as Decode exposing (Decoder)
@@ -52,6 +55,25 @@ nest categories =
     categories
         |> List.filter (.parent >> Maybe.isNothing)
         |> List.map (nestDelegate categories)
+
+
+toLink : List (Html.Attribute msg) -> Category -> Html msg
+toLink attrs category =
+    let
+        descriptionAttr =
+            case category.description of
+                Just desc ->
+                    Attr.title desc
+                        :: attrs
+
+                Nothing ->
+                    attrs
+    in
+    Html.a
+        (Attr.href (toUrl category)
+            :: descriptionAttr
+        )
+        [ Html.text category.name ]
 
 
 error : Category

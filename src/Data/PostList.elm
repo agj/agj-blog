@@ -84,7 +84,8 @@ viewGist categories gist =
             ]
         , Html.small []
             (Html.text " ("
-                :: (List.map viewInlineCategory postCategories
+                :: (postCategories
+                        |> List.map (Category.toLink [ Attr.class "secondary" ])
                         |> List.intersperse (Html.text ", ")
                    )
                 ++ [ Html.text ")" ]
