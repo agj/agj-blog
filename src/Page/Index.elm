@@ -131,10 +131,6 @@ view :
     -> StaticPayload Data {}
     -> View Msg
 view maybeUrl sharedModel model static =
-    let
-        nestedCategories =
-            Category.nest static.sharedData.categories
-    in
     { title = title static
     , body =
         [ Html.div [ Attr.class "grid" ]
@@ -145,35 +141,11 @@ view maybeUrl sharedModel model static =
                 )
             , Html.section []
                 [ Html.article []
-                    [ Html.ul []
-                        (nestedCategories
-                            |> List.map viewCategory
-                        )
-                    ]
+                    [ Category.viewList static.sharedData.categories ]
                 ]
             ]
         ]
     }
-
-
-viewCategory : NestedCategory -> Html Msg
-viewCategory (Category.NestedCategory category children) =
-    let
-        childUl =
-            if List.length children > 0 then
-                [ Html.ul []
-                    (children
-                        |> List.map viewCategory
-                    )
-                ]
-
-            else
-                []
-    in
-    Html.li []
-        (Category.toLink [] category
-            :: childUl
-        )
 
 
 

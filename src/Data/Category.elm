@@ -7,6 +7,7 @@ module Data.Category exposing
     , nest
     , toLink
     , toUrl
+    , viewList
     )
 
 import DataSource exposing (DataSource)
@@ -57,6 +58,18 @@ nest categories =
         |> List.map (nestDelegate categories)
 
 
+viewList : List Category -> Html msg
+viewList categories =
+    let
+        nestedCategories =
+            nest categories
+    in
+    Html.ul []
+        (nestedCategories
+            |> List.map viewCategory
+        )
+
+
 toLink : List (Html.Attribute msg) -> Category -> Html msg
 toLink attrs category =
     let
@@ -104,4 +117,24 @@ nestDelegate categories category =
         (categories
             |> List.filter (.parent >> (==) (Just category.slug))
             |> List.map (nestDelegate categories)
+        )
+
+
+viewCategory : NestedCategory -> Html msg
+viewCategory (NestedCategory category children) =
+    let
+        childUl =
+            if List.length children > 0 then
+                [ Html.ul []
+                    (children
+                        |> List.map viewCategory
+                    )
+                ]
+
+            else
+                []
+    in
+    Html.li []
+        (toLink [] category
+            :: childUl
         )
