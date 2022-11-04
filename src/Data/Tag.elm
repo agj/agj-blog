@@ -57,18 +57,22 @@ toLink tagsToAddTo attrs tag =
     let
         aEl =
             Html.a
-                (Attr.href (toUrl tag [])
-                    :: attrs
+                ([ Attr.href (toUrl tag [])
+                 , Attr.class "tag"
+                 ]
+                    ++ attrs
                 )
                 [ Html.text tag.name ]
     in
     case tagsToAddTo of
         moreTag :: moreTags ->
-            Html.span []
+            Html.span [ Attr.class "tag" ]
                 [ aEl
-                , Html.text " "
-                , Html.a [ Attr.href (toUrl tag (moreTag :: moreTags)) ]
-                    [ Html.text "(+)" ]
+                , Html.a
+                    [ Attr.href (toUrl tag (moreTag :: moreTags))
+                    , Attr.attribute "role" "button"
+                    ]
+                    [ Html.text "+" ]
                 ]
 
         [] ->
@@ -110,10 +114,7 @@ listView tagsInView posts tags =
                     (toFloat (count - minCount) / toFloat (maxCount - minCount) * 0.7)
                         + 0.3
             in
-            [ Attr.style "white-space" "nowrap"
-            , Attr.style "opacity" (String.fromFloat opacity)
-            , Attr.title ("Posts: " ++ String.fromInt count)
-            ]
+            [ Attr.style "opacity" (String.fromFloat opacity) ]
     in
     tagsCount
         |> List.map (\( tag, count ) -> toLink tagsInView (tagElAttrs count) tag)

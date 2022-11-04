@@ -1,1 +1,17 @@
 @import "https://unpkg.com/@picocss/pico@latest/css/pico.min.css";
+
+.tag {
+  white-space: nowrap;
+}
+
+.tag [role="button"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  padding: 0;
+  overflow: hidden;
+  vertical-align: text-bottom;
+  line-height: 1;
+  color: var(--secondary);
+  background-color: var(--muted-border-color);
+  border: none;
+}
