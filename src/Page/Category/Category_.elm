@@ -3,17 +3,14 @@ module Page.Category.Category_ exposing (Data, Model, Msg, page)
 import Data.Category as Category exposing (Category)
 import Data.PostList
 import DataSource exposing (DataSource)
-import DataSource.File
 import Head
 import Html
 import List.Extra as List
-import OptimizedDecoder as Decode exposing (Decoder)
-import Page exposing (Page, PageWithState, StaticPayload)
+import Page exposing (Page, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Shared
 import Site
 import View exposing (View)
-import Yaml.Decode
 
 
 page : Page RouteParams Data
@@ -87,10 +84,7 @@ view maybeUrl sharedModel static =
 
         posts =
             static.sharedData.posts
-                |> List.filter
-                    (\post ->
-                        List.any ((==) category.slug) post.frontmatter.categories
-                    )
+                |> List.filter (.frontmatter >> .categories >> List.member category.slug)
 
         postViews =
             Data.PostList.view static.sharedData.categories posts

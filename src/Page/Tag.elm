@@ -1,20 +1,16 @@
 module Page.Tag exposing (..)
 
 import Browser.Navigation
-import Data.Category as Category
-import Data.Date as Date
-import Data.Post as Post exposing (Post)
+import Custom.List as List
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
 import DataSource exposing (DataSource)
-import DataSource.File
-import DataSource.Glob as Glob exposing (Glob)
 import Dict exposing (Dict)
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attr
 import List.Extra as List
-import Page exposing (Page, PageWithState, StaticPayload)
+import Page exposing (PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Path exposing (Path)
 import QueryParams exposing (QueryParams)
@@ -50,7 +46,7 @@ init maybePageUrl sharedModel static =
 
         queryTags =
             static.sharedData.tags
-                |> List.filter (\t -> List.any ((==) t.slug) queryTagSlugs)
+                |> List.filter (.slug >> List.memberOf queryTagSlugs)
     in
     ( { queryTags = queryTags }, Cmd.none )
 
@@ -126,16 +122,12 @@ view :
     -> View Msg
 view maybeUrl sharedModel model static =
     let
-        tagInPost post tag =
-            post.frontmatter.tags
-                |> List.any ((==) tag.slug)
-
         posts =
             static.sharedData.posts
                 |> List.filter
                     (\post ->
                         model.queryTags
-                            |> List.all (tagInPost post)
+                            |> List.all (.slug >> List.memberOf post.frontmatter.tags)
                     )
 
         postViews =
@@ -146,10 +138,9 @@ view maybeUrl sharedModel model static =
                 |> List.andThen (.frontmatter >> .tags)
                 |> List.unique
                 |> List.map (Tag.get static.sharedData.tags)
-                |> List.filter
-                    ((\tag -> List.member tag model.queryTags) >> not)
+                |> List.filter (List.memberOf model.queryTags >> not)
 
-        titleEls =
+        titleChildren =
             if List.length model.queryTags > 0 then
                 [ Html.text "Tags: "
                 , Html.em []
@@ -166,7 +157,7 @@ view maybeUrl sharedModel model static =
     { title = title static
     , body =
         [ Html.h1 []
-            titleEls
+            titleChildren
         , Html.div [ Attr.class "grid" ]
             [ Html.section []
                 postViews
