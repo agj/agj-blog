@@ -148,11 +148,25 @@ view maybeUrl sharedModel model static =
                 |> List.map (Tag.get static.sharedData.tags)
                 |> List.filter
                     ((\tag -> List.member tag model.queryTags) >> not)
+
+        titleEls =
+            if List.length model.queryTags > 0 then
+                [ Html.text "Tags: "
+                , Html.em []
+                    [ model.queryTags
+                        |> List.map .name
+                        |> String.join ", "
+                        |> Html.text
+                    ]
+                ]
+
+            else
+                [ Html.text "Tags" ]
     in
     { title = title static
     , body =
         [ Html.h1 []
-            [ Html.text "Tags" ]
+            titleEls
         , Html.div [ Attr.class "grid" ]
             [ Html.section []
                 postViews
