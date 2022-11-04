@@ -102,11 +102,31 @@ view maybeUrl sharedModel static =
                 |> List.map (Category.toLink [])
                 |> List.intersperse (Html.text ", ")
 
+        categoriesTextEls =
+            if List.length static.data.frontmatter.categories > 0 then
+                [ Html.text "Categories: "
+                , Html.em [] categoryEls
+                , Html.text ". "
+                ]
+
+            else
+                [ Html.text "No categories. " ]
+
         tagEls =
             static.data.frontmatter.tags
                 |> List.map (Tag.get static.sharedData.tags)
                 |> List.map (Tag.toLink [] [])
                 |> List.intersperse (Html.text ", ")
+
+        tagsTextEls =
+            if List.length static.data.frontmatter.tags > 0 then
+                [ Html.text "Tags: "
+                , Html.em [] tagEls
+                , Html.text "."
+                ]
+
+            else
+                [ Html.text "No tags." ]
     in
     { title = title static
     , body =
@@ -115,12 +135,10 @@ view maybeUrl sharedModel static =
             (Just
                 (Html.p []
                     [ Html.small []
-                        [ Html.text (date ++ ". Categories: ")
-                        , Html.em [] categoryEls
-                        , Html.text ". Tags: "
-                        , Html.em [] tagEls
-                        , Html.text "."
-                        ]
+                        (Html.text (date ++ ". ")
+                            :: categoriesTextEls
+                            ++ tagsTextEls
+                        )
                     ]
                 )
             )
