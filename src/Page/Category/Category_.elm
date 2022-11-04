@@ -1,6 +1,7 @@
 module Page.Category.Category_ exposing (Data, Model, Msg, page)
 
 import Data.Category as Category exposing (Category)
+import Data.PageHeader as PageHeader
 import Data.PostList
 import DataSource exposing (DataSource)
 import Head
@@ -90,27 +91,18 @@ view maybeUrl sharedModel static =
             Data.PostList.view static.sharedData.categories posts
 
         titleEl =
-            Html.h1 []
-                [ Html.text "Category: "
-                , Html.em []
-                    [ Html.text category.name ]
-                ]
+            [ Html.text "Category: "
+            , Html.em []
+                [ Html.text category.name ]
+            ]
 
-        wrapperEl =
-            case category.description of
-                Just desc ->
-                    Html.node "hgroup"
-                        []
-                        [ titleEl
-                        , Html.p []
-                            [ Html.text desc ]
-                        ]
-
-                Nothing ->
-                    titleEl
+        descriptionEl =
+            category.description
+                |> Maybe.map
+                    (\desc -> Html.p [] [ Html.text desc ])
     in
     { title = title static
     , body =
-        wrapperEl
+        PageHeader.view titleEl descriptionEl
             :: postViews
     }

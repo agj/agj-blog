@@ -2,6 +2,7 @@ module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page)
 
 import Data.Category as Category
 import Data.Date as Date
+import Data.PageHeader as PageHeader
 import Data.Post as Post exposing (Post)
 import Data.Tag as Tag
 import DataSource exposing (DataSource)
@@ -109,19 +110,19 @@ view maybeUrl sharedModel static =
     in
     { title = title static
     , body =
-        Html.node "hgroup"
-            []
-            [ Html.h1 []
-                [ Html.text static.data.frontmatter.title ]
-            , Html.p []
-                [ Html.small []
-                    [ Html.text (date ++ ". Categories: ")
-                    , Html.em [] categoryEls
-                    , Html.text ". Tags: "
-                    , Html.em [] tagEls
-                    , Html.text "."
+        PageHeader.view
+            [ Html.text static.data.frontmatter.title ]
+            (Just
+                (Html.p []
+                    [ Html.small []
+                        [ Html.text (date ++ ". Categories: ")
+                        , Html.em [] categoryEls
+                        , Html.text ". Tags: "
+                        , Html.em [] tagEls
+                        , Html.text "."
+                        ]
                     ]
-                ]
-            ]
+                )
+            )
             :: static.data.content
     }

@@ -2,6 +2,7 @@ module Page.Index exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
 import Data.Category as Category exposing (Category, NestedCategory)
+import Data.PageHeader as PageHeader
 import Data.Post as Post
 import Data.PostList
 import Data.Tag as Tag
@@ -133,7 +134,8 @@ view :
 view maybeUrl sharedModel model static =
     { title = title static
     , body =
-        [ Html.div [ Attr.class "grid" ]
+        [ PageHeader.view [ Html.text "agj's blog" ] Nothing
+        , Html.div [ Attr.class "grid" ]
             [ Html.section []
                 (Data.PostList.view
                     static.sharedData.categories

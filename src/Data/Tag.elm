@@ -1,5 +1,6 @@
 module Data.Tag exposing
     ( Tag
+    , baseUrl
     , dataSource
     , error
     , get
@@ -31,6 +32,11 @@ dataSource =
         |> DataSource.map (Result.withDefault [])
 
 
+baseUrl : String
+baseUrl =
+    "/tag/"
+
+
 toUrl : Tag -> List Tag -> String
 toUrl firstTag moreTags =
     let
@@ -41,7 +47,8 @@ toUrl firstTag moreTags =
                 |> List.sort
                 |> String.join "&t="
     in
-    "/tag/?t={slugs}"
+    "{baseUrl}?t={slugs}"
+        |> String.replace "{baseUrl}" baseUrl
         |> String.replace "{slugs}" slugs
 
 

@@ -2,6 +2,7 @@ module Page.Tag exposing (..)
 
 import Browser.Navigation
 import Custom.List as List
+import Data.PageHeader as PageHeader
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
 import DataSource exposing (DataSource)
@@ -172,8 +173,7 @@ view maybeUrl sharedModel model static =
     in
     { title = title static
     , body =
-        [ Html.h1 []
-            titleChildren
+        [ PageHeader.view titleChildren Nothing
         , Html.div [ Attr.class "grid" ]
             ((if List.length model.queryTags > 0 then
                 [ Html.section [] postViews ]
