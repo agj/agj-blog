@@ -140,6 +140,12 @@ view maybeUrl sharedModel model static =
 
         postViews =
             Data.PostList.view static.sharedData.categories posts
+
+        subTags =
+            posts
+                |> List.andThen (.frontmatter >> .tags)
+                |> List.unique
+                |> List.map (Tag.get static.sharedData.tags)
     in
     { title = title static
     , body =
@@ -151,7 +157,7 @@ view maybeUrl sharedModel model static =
             , Html.section []
                 [ Html.article []
                     [ Html.p []
-                        (Tag.listView static.sharedData.posts static.sharedData.tags)
+                        (Tag.listView static.sharedData.posts subTags)
                     ]
                 ]
             ]
