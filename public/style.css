@@ -8,10 +8,19 @@
   width: 1.1rem;
   height: 1.1rem;
   padding: 0;
-  overflow: hidden;
   vertical-align: text-bottom;
   line-height: 1;
   color: var(--secondary);
   background-color: var(--muted-border-color);
   border: none;
+}
+
+/* Fix weird stuff in tooltip */
+[data-tooltip]::before {
+  line-height: var(--line-height);
+}
+
+a.removable:hover {
+  color: var(--del-color);
+  text-decoration: line-through;
 }

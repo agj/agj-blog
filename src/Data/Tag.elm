@@ -72,6 +72,7 @@ toLink tagsToAddTo attrs tag =
                 , Html.a
                     [ Attr.href (toUrl tag (moreTag :: moreTags))
                     , Attr.attribute "role" "button"
+                    , Attr.attribute "data-tooltip" "Add to filter"
                     ]
                     [ Html.text "+" ]
                 ]

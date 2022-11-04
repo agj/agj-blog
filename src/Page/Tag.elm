@@ -144,11 +144,24 @@ view maybeUrl sharedModel model static =
             if List.length model.queryTags > 0 then
                 [ Html.text "Tags: "
                 , Html.em []
-                    [ model.queryTags
-                        |> List.map .name
-                        |> String.join ", "
-                        |> Html.text
-                    ]
+                    (model.queryTags
+                        |> List.map
+                            (\tag ->
+                                case model.queryTags |> List.filter ((/=) tag) of
+                                    tag1 :: tagRest ->
+                                        Html.a
+                                            [ Attr.class "removable"
+                                            , Attr.class "contrast"
+                                            , Attr.href (Tag.toUrl tag1 tagRest)
+                                            , Attr.attribute "data-tooltip" "Remove from filter"
+                                            ]
+                                            [ Html.text tag.name ]
+
+                                    [] ->
+                                        Html.text tag.name
+                            )
+                        |> List.intersperse (Html.text ", ")
+                    )
                 ]
 
             else
