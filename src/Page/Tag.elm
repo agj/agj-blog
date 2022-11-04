@@ -141,17 +141,21 @@ view maybeUrl sharedModel model static =
                 |> List.filter (List.memberOf model.queryTags >> not)
 
         tagToEl tag =
-            case List.remove tag model.queryTags of
-                otherTag1 :: otherTagsRest ->
-                    Html.a
-                        [ Attr.class "removable contrast"
-                        , Attr.href (Tag.toUrl otherTag1 otherTagsRest)
-                        , Attr.attribute "data-tooltip" "Remove from filter"
-                        ]
-                        [ Html.text tag.name ]
+            let
+                url =
+                    case List.remove tag model.queryTags of
+                        otherTag1 :: otherTagsRest ->
+                            Tag.toUrl otherTag1 otherTagsRest
 
-                [] ->
-                    Html.text tag.name
+                        [] ->
+                            Tag.baseUrl
+            in
+            Html.a
+                [ Attr.class "removable contrast"
+                , Attr.href url
+                , Attr.attribute "data-tooltip" "Remove from filter"
+                ]
+                [ Html.text tag.name ]
 
         titleChildren =
             if List.length model.queryTags > 0 then
