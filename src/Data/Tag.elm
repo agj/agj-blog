@@ -68,6 +68,7 @@ toLink tagsToAddTo attrs tag =
         moreTag :: moreTags ->
             Html.span [ Attr.class "tag" ]
                 [ aEl
+                , Html.text " "
                 , Html.a
                     [ Attr.href (toUrl tag (moreTag :: moreTags))
                     , Attr.attribute "role" "button"
