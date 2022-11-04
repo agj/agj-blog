@@ -38,6 +38,7 @@ toUrl firstTag moreTags =
             firstTag
                 :: moreTags
                 |> List.map .slug
+                |> List.sort
                 |> String.join "&t="
     in
     "/tag/?t={slugs}"
@@ -51,17 +52,31 @@ get tags slug =
         |> Maybe.withDefault error
 
 
-toLink : List (Html.Attribute msg) -> Tag -> Html msg
-toLink attrs tag =
-    Html.a
-        (Attr.href (toUrl tag [])
-            :: attrs
-        )
-        [ Html.text tag.name ]
+toLink : List Tag -> List (Html.Attribute msg) -> Tag -> Html msg
+toLink tagsToAddTo attrs tag =
+    let
+        aEl =
+            Html.a
+                (Attr.href (toUrl tag [])
+                    :: attrs
+                )
+                [ Html.text tag.name ]
+    in
+    case tagsToAddTo of
+        moreTag :: moreTags ->
+            Html.span []
+                [ aEl
+                , Html.text " "
+                , Html.a [ Attr.href (toUrl tag (moreTag :: moreTags)) ]
+                    [ Html.text "(+)" ]
+                ]
+
+        [] ->
+            aEl
 
 
-listView : List Post.GlobMatchFrontmatter -> List Tag -> List (Html msg)
-listView posts tags =
+listView : List Tag -> List Post.GlobMatchFrontmatter -> List Tag -> List (Html msg)
+listView tagsInView posts tags =
     let
         tagsCount =
             tags
@@ -101,7 +116,7 @@ listView posts tags =
             ]
     in
     tagsCount
-        |> List.map (\( tag, count ) -> toLink (tagElAttrs count) tag)
+        |> List.map (\( tag, count ) -> toLink tagsInView (tagElAttrs count) tag)
         |> List.intersperse (Html.text ", ")
 
 

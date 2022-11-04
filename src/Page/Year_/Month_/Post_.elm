@@ -104,7 +104,7 @@ view maybeUrl sharedModel static =
         tagEls =
             static.data.frontmatter.tags
                 |> List.map (Tag.get static.sharedData.tags)
-                |> List.map (Tag.toLink [])
+                |> List.map (Tag.toLink [] [])
                 |> List.intersperse (Html.text ", ")
     in
     { title = title static
