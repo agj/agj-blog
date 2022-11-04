@@ -90,10 +90,10 @@ view :
 view maybeUrl sharedModel static =
     let
         date =
-            "{year} {month} {date}"
-                |> String.replace "{year}" static.routeParams.year
-                |> String.replace "{month}" (Date.monthNumberToShortName (String.toInt static.routeParams.month |> Maybe.withDefault 0))
-                |> String.replace "{date}" (String.fromInt static.data.frontmatter.date)
+            Date.formatShortDate
+                static.routeParams.year
+                (String.toInt static.routeParams.month |> Maybe.withDefault 0)
+                static.data.frontmatter.date
 
         categoryEls =
             static.data.frontmatter.categories
@@ -115,10 +115,7 @@ view maybeUrl sharedModel static =
                 [ Html.text static.data.frontmatter.title ]
             , Html.p []
                 [ Html.small []
-                    [ Html.text
-                        (date
-                            ++ ". Categories: "
-                        )
+                    [ Html.text (date ++ ". Categories: ")
                     , Html.em [] categoryEls
                     , Html.text ". Tags: "
                     , Html.em [] tagEls

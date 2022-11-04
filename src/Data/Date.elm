@@ -1,6 +1,14 @@
 module Data.Date exposing (..)
 
 
+formatShortDate : String -> Int -> Int -> String
+formatShortDate year month date =
+    "{year}, {month} {date}"
+        |> String.replace "{year}" year
+        |> String.replace "{month}" (monthNumberToShortName month)
+        |> String.replace "{date}" (String.fromInt date)
+
+
 monthNumberToShortName : Int -> String
 monthNumberToShortName num =
     case num of
