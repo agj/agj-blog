@@ -126,16 +126,16 @@ view :
     -> View Msg
 view maybeUrl sharedModel model static =
     let
-        tagIsSelected tag =
-            model.queryTags
-                |> List.any (.slug >> (==) tag)
+        tagInPost post tag =
+            post.frontmatter.tags
+                |> List.any ((==) tag.slug)
 
         posts =
             static.sharedData.posts
                 |> List.filter
                     (\post ->
-                        post.frontmatter.tags
-                            |> List.any tagIsSelected
+                        model.queryTags
+                            |> List.all (tagInPost post)
                     )
 
         postViews =
