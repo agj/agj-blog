@@ -26,24 +26,22 @@ view categories posts =
         getTime gist =
             gist.year ++ gist.month ++ getDateHour gist
 
-        gistsByMonth =
+        gatherUnder : (a -> comparable) -> List a -> List ( comparable, List a )
+        gatherUnder toComparable list =
+            list
+                |> List.gatherEqualsBy toComparable
+                |> List.map (\( first, rest ) -> ( toComparable first, first :: rest ))
+
+        gistsByYearAndMonth : List ( String, List ( String, List Post.GlobMatchFrontmatter ) )
+        gistsByYearAndMonth =
             posts
-                |> List.gatherEqualsBy (\gist -> gist.year ++ gist.month)
-                |> List.sortBy (Tuple.first >> getTime)
-                |> List.map
-                    (\( firstGist, rest ) ->
-                        ( "{year}, {month}"
-                            |> String.replace "{year}" firstGist.year
-                            |> String.replace "{month}" (Date.monthNumberToFullName (firstGist.month |> String.toInt |> Maybe.withDefault 0))
-                        , firstGist
-                            :: rest
-                            |> List.sortBy getTime
-                            |> List.reverse
-                        )
-                    )
+                |> gatherUnder .year
+                |> List.sortBy Tuple.first
+                |> List.map (Tuple.mapSecond (gatherUnder .month >> List.sortBy Tuple.first >> List.reverse))
+                |> List.map (Tuple.mapSecond (List.map (Tuple.mapSecond (List.sortBy getTime >> List.reverse))))
     in
-    gistsByMonth
-        |> List.map (viewGistMonth categories)
+    gistsByYearAndMonth
+        |> List.map (viewGistYear categories)
         |> List.foldl (++) []
 
 
@@ -51,11 +49,19 @@ view categories posts =
 -- INTERNAL
 
 
+viewGistYear : List Category -> ( String, List ( String, List Post.GlobMatchFrontmatter ) ) -> List (Html msg)
+viewGistYear categories ( year, gistMonths ) =
+    Html.h3 [] [ Html.text year ]
+        :: (gistMonths
+                |> List.andThen (viewGistMonth categories)
+           )
+
+
 viewGistMonth : List Category -> ( String, List Post.GlobMatchFrontmatter ) -> List (Html msg)
 viewGistMonth categories ( month, gists ) =
     [ Html.p []
         [ Html.strong []
-            [ Html.text month
+            [ Html.text (Date.monthNumberToFullName (String.toInt month |> Maybe.withDefault 0))
             ]
         ]
     , Html.ul []

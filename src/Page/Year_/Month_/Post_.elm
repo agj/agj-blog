@@ -8,6 +8,7 @@ import Data.Tag as Tag
 import DataSource exposing (DataSource)
 import Head
 import Html exposing (Html)
+import Html.Attributes as Attr
 import Page exposing (Page, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Shared
@@ -135,8 +136,12 @@ view maybeUrl sharedModel static =
             (Just
                 (Html.p []
                     [ Html.small []
-                        (Html.text (date ++ ". ")
-                            :: categoriesTextEls
+                        ([ Html.text ("Posted {date}, on " |> String.replace "{date}" date)
+                         , Html.a [ Attr.href "/" ]
+                            [ Html.text "agj's blog" ]
+                         , Html.text ". "
+                         ]
+                            ++ categoriesTextEls
                             ++ tagsTextEls
                         )
                     ]
