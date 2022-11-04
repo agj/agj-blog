@@ -3,6 +3,7 @@ module Data.Post exposing
     , GlobMatch
     , GlobMatchFrontmatter
     , Post
+    , globMatchFrontmatterToUrl
     , listDataSource
     , listWithFrontmatterDataSource
     , singleDataSource
@@ -112,6 +113,14 @@ singleDataSource year month post =
             |> String.replace "{month}" month
             |> String.replace "{post}" post
         )
+
+
+globMatchFrontmatterToUrl : GlobMatchFrontmatter -> String
+globMatchFrontmatterToUrl gist =
+    "/{year}/{month}/{post}"
+        |> String.replace "{year}" gist.year
+        |> String.replace "{month}" gist.month
+        |> String.replace "{post}" gist.post
 
 
 

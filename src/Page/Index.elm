@@ -54,7 +54,7 @@ init maybePageUrl sharedModel static =
         maybePostRedirectCommand =
             maybeRequestedPostId
                 |> Maybe.andThen findPostGistById
-                |> Maybe.map postGistToUrl
+                |> Maybe.map Post.globMatchFrontmatterToUrl
                 |> Maybe.map Browser.Navigation.load
     in
     ( {}
@@ -157,15 +157,3 @@ view maybeUrl sharedModel model static =
             ]
         ]
     }
-
-
-
--- UTILITIES
-
-
-postGistToUrl : Post.GlobMatchFrontmatter -> String
-postGistToUrl gist =
-    "/{year}/{month}/{post}"
-        |> String.replace "{year}" gist.year
-        |> String.replace "{month}" gist.month
-        |> String.replace "{post}" gist.post

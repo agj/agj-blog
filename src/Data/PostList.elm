@@ -78,7 +78,7 @@ viewGist categories gist =
     in
     Html.li []
         [ Html.text dateText
-        , Html.a [ Attr.href (postGistToUrl gist) ]
+        , Html.a [ Attr.href (Post.globMatchFrontmatterToUrl gist) ]
             [ Html.strong []
                 [ Html.text gist.frontmatter.title ]
             ]
@@ -91,24 +91,3 @@ viewGist categories gist =
                 ++ [ Html.text ")" ]
             )
         ]
-
-
-viewInlineCategory : Category -> Html msg
-viewInlineCategory category =
-    Html.a
-        [ Attr.class "secondary"
-        , Attr.href (Category.toUrl category)
-        ]
-        [ Html.text category.name ]
-
-
-
--- UTILITIES
-
-
-postGistToUrl : Post.GlobMatchFrontmatter -> String
-postGistToUrl gist =
-    "/{year}/{month}/{post}"
-        |> String.replace "{year}" gist.year
-        |> String.replace "{month}" gist.month
-        |> String.replace "{post}" gist.post
