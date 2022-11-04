@@ -1,5 +1,6 @@
 module Data.PostList exposing (view)
 
+import Custom.List as List
 import Data.Category as Category exposing (Category)
 import Data.Date as Date
 import Data.Post as Post
@@ -26,18 +27,12 @@ view categories posts =
         getTime gist =
             gist.year ++ gist.month ++ getDateHour gist
 
-        gatherUnder : (a -> comparable) -> List a -> List ( comparable, List a )
-        gatherUnder toComparable list =
-            list
-                |> List.gatherEqualsBy toComparable
-                |> List.map (\( first, rest ) -> ( toComparable first, first :: rest ))
-
         gistsByYearAndMonth : List ( String, List ( String, List Post.GlobMatchFrontmatter ) )
         gistsByYearAndMonth =
             posts
-                |> gatherUnder .year
+                |> List.gatherUnder .year
                 |> List.sortBy Tuple.first
-                |> List.map (Tuple.mapSecond (gatherUnder .month >> List.sortBy Tuple.first >> List.reverse))
+                |> List.map (Tuple.mapSecond (List.gatherUnder .month >> List.sortBy Tuple.first >> List.reverse))
                 |> List.map (Tuple.mapSecond (List.map (Tuple.mapSecond (List.sortBy getTime >> List.reverse))))
     in
     gistsByYearAndMonth
