@@ -171,14 +171,19 @@ view maybeUrl sharedModel model static =
         [ Html.h1 []
             titleChildren
         , Html.div [ Attr.class "grid" ]
-            [ Html.section []
-                postViews
-            , Html.section []
-                [ Html.article []
-                    [ Html.p []
-                        (Tag.listView model.queryTags static.sharedData.posts subTags)
-                    ]
-                ]
-            ]
+            ((if List.length model.queryTags > 0 then
+                [ Html.section [] postViews ]
+
+              else
+                []
+             )
+                ++ [ Html.section []
+                        [ Html.article []
+                            [ Html.p []
+                                (Tag.listView model.queryTags static.sharedData.posts subTags)
+                            ]
+                        ]
+                   ]
+            )
         ]
     }
