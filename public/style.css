@@ -1,5 +1,6 @@
 @import "https://unpkg.com/@picocss/pico@latest/css/pico.min.css";
 
+.category,
 .tag {
   white-space: nowrap;
 }
@@ -15,12 +16,12 @@
   border: none;
 }
 
-/* Fix weird stuff in tooltip */
-[data-tooltip]::before {
-  line-height: var(--line-height);
-}
-
 a.removable:hover {
   color: var(--del-color);
   text-decoration: line-through;
+}
+
+/* Fix weird stuff in tooltip */
+[data-tooltip]::before {
+  line-height: var(--line-height);
 }

@@ -83,8 +83,10 @@ toLink attrs category =
                     attrs
     in
     Html.a
-        (Attr.href (toUrl category)
-            :: descriptionAttr
+        ([ Attr.href (toUrl category)
+         , Attr.class "category"
+         ]
+            ++ descriptionAttr
         )
         [ Html.text category.name ]
 
