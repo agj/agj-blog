@@ -38,7 +38,7 @@ toUrl firstTag moreTags =
             firstTag
                 :: moreTags
                 |> List.map .slug
-                |> String.join ","
+                |> String.join "&t="
     in
     "/tag/?t={slugs}"
         |> String.replace "{slugs}" slugs
