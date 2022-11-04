@@ -27,7 +27,7 @@ page =
         { head = head
         , data = data
         }
-        |> Page.buildWithSharedState
+        |> Page.buildWithLocalState
             { init = init
             , update = update
             , subscriptions = subscriptions
@@ -85,17 +85,17 @@ update :
     -> StaticPayload Data {}
     -> Msg
     -> Model
-    -> ( Model, Cmd Msg, Maybe Shared.Msg )
+    -> ( Model, Cmd Msg )
 update pageUrl navKey sharedModel static msg model =
-    ( model, Cmd.none, Nothing )
+    ( model, Cmd.none )
 
 
 
 -- SUBSCRIPTIONS
 
 
-subscriptions : Maybe PageUrl -> {} -> Path -> Model -> Shared.Model -> Sub Msg
-subscriptions maybePageUrl _ path model sharedModel =
+subscriptions : Maybe PageUrl -> {} -> Path -> Model -> Sub Msg
+subscriptions maybePageUrl _ path model =
     Sub.none
 
 
