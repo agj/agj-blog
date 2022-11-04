@@ -137,7 +137,6 @@ view maybeUrl sharedModel model static =
                         post.frontmatter.tags
                             |> List.any tagIsSelected
                     )
-                |> Debug.log "posts"
 
         postViews =
             Data.PostList.view static.sharedData.categories posts
