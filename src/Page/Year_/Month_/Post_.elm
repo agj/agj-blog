@@ -3,6 +3,7 @@ module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page)
 import Data.Category as Category
 import Data.Date as Date
 import Data.Post as Post exposing (Post)
+import Data.Tag as Tag
 import DataSource exposing (DataSource)
 import Head
 import Html exposing (Html)
@@ -99,6 +100,12 @@ view maybeUrl sharedModel static =
                 |> List.map (Category.get static.sharedData.categories)
                 |> List.map (Category.toLink [])
                 |> List.intersperse (Html.text ", ")
+
+        tagEls =
+            static.data.frontmatter.tags
+                |> List.map (Tag.get static.sharedData.tags)
+                |> List.map (Tag.toLink [])
+                |> List.intersperse (Html.text ", ")
     in
     { title = title static
     , body =
@@ -114,8 +121,7 @@ view maybeUrl sharedModel static =
                         )
                     , Html.em [] categoryEls
                     , Html.text ". Tags: "
-                    , Html.em []
-                        [ Html.text (String.join ", " static.data.frontmatter.tags) ]
+                    , Html.em [] tagEls
                     , Html.text "."
                     ]
                 ]
