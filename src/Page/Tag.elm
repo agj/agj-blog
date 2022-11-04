@@ -146,6 +146,8 @@ view maybeUrl sharedModel model static =
                 |> List.andThen (.frontmatter >> .tags)
                 |> List.unique
                 |> List.map (Tag.get static.sharedData.tags)
+                |> List.filter
+                    ((\tag -> List.member tag model.queryTags) >> not)
     in
     { title = title static
     , body =
