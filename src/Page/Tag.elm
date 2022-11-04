@@ -173,7 +173,15 @@ view maybeUrl sharedModel model static =
     in
     { title = title static
     , body =
-        [ PageHeader.view titleChildren Nothing
+        [ PageHeader.view titleChildren
+            (Just
+                (Html.p []
+                    [ Html.text "Back to "
+                    , Html.a [ Attr.href "/" ] [ Html.text "the index" ]
+                    , Html.text "."
+                    ]
+                )
+            )
         , Html.div [ Attr.class "grid" ]
             ((if List.length model.queryTags > 0 then
                 [ Html.section [] postViews ]

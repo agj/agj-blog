@@ -6,6 +6,7 @@ import Data.PostList
 import DataSource exposing (DataSource)
 import Head
 import Html
+import Html.Attributes as Attr
 import List.Extra as List
 import Page exposing (Page, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
@@ -96,13 +97,24 @@ view maybeUrl sharedModel static =
                 [ Html.text category.name ]
             ]
 
+        backToIndexEls =
+            [ Html.text "Back to "
+            , Html.a [ Attr.href "/" ] [ Html.text "the index" ]
+            , Html.text "."
+            ]
+
         descriptionEl =
             category.description
                 |> Maybe.map
-                    (\desc -> Html.p [] [ Html.text desc ])
+                    (\desc ->
+                        [ Html.text (desc ++ " ") ]
+                            ++ backToIndexEls
+                    )
+                |> Maybe.withDefault backToIndexEls
+                |> Html.p []
     in
     { title = title static
     , body =
-        PageHeader.view titleEl descriptionEl
+        PageHeader.view titleEl (Just descriptionEl)
             :: postViews
     }
