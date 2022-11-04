@@ -4,13 +4,16 @@ import Browser.Navigation
 import Data.Category as Category
 import Data.Date as Date
 import Data.Post as Post exposing (Post)
-import Data.Tag as Tag
+import Data.PostList
+import Data.Tag as Tag exposing (Tag)
 import DataSource exposing (DataSource)
 import DataSource.File
 import DataSource.Glob as Glob exposing (Glob)
 import Dict exposing (Dict)
 import Head
 import Html exposing (Html)
+import Html.Attributes as Attr
+import List.Extra as List
 import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Path exposing (Path)
@@ -37,7 +40,19 @@ page =
 
 init : Maybe PageUrl -> Shared.Model -> StaticPayload Data {} -> ( Model, Cmd Msg )
 init maybePageUrl sharedModel static =
-    ( {}, Cmd.none )
+    let
+        queryTagSlugs =
+            maybePageUrl
+                |> Maybe.andThen .query
+                |> Maybe.map QueryParams.toDict
+                |> Maybe.andThen (Dict.get "t")
+                |> Maybe.withDefault []
+
+        queryTags =
+            static.sharedData.tags
+                |> List.filter (\t -> List.any ((==) t.slug) queryTagSlugs)
+    in
+    ( { queryTags = queryTags }, Cmd.none )
 
 
 
@@ -58,7 +73,8 @@ data =
 
 
 type alias Model =
-    {}
+    { queryTags : List Tag
+    }
 
 
 type alias Msg =
@@ -74,7 +90,7 @@ update :
     -> Model
     -> ( Model, Cmd Msg, Maybe Shared.Msg )
 update pageUrl navKey sharedModel static msg model =
-    ( {}, Cmd.none, Nothing )
+    ( model, Cmd.none, Nothing )
 
 
 
@@ -110,19 +126,35 @@ view :
     -> View Msg
 view maybeUrl sharedModel model static =
     let
-        tags =
-            maybeUrl
-                |> Debug.log "url"
-                |> Maybe.andThen .query
-                |> Maybe.map QueryParams.toDict
-                |> Maybe.andThen (Dict.get "t")
-                |> Debug.log "tags"
+        tagIsSelected tag =
+            model.queryTags
+                |> List.any (.slug >> (==) tag)
+
+        posts =
+            static.sharedData.posts
+                |> List.filter
+                    (\post ->
+                        post.frontmatter.tags
+                            |> List.any tagIsSelected
+                    )
+                |> Debug.log "posts"
+
+        postViews =
+            Data.PostList.view static.sharedData.categories posts
     in
     { title = title static
     , body =
         [ Html.h1 []
             [ Html.text "Tags" ]
-        , Html.p []
-            (Tag.listView static.sharedData.posts static.sharedData.tags)
+        , Html.div [ Attr.class "grid" ]
+            [ Html.section []
+                postViews
+            , Html.section []
+                [ Html.article []
+                    [ Html.p []
+                        (Tag.listView static.sharedData.posts static.sharedData.tags)
+                    ]
+                ]
+            ]
         ]
     }
