@@ -3,6 +3,7 @@ module CustomMarkup exposing (..)
 import CustomMarkup.LanguageBreak
 import CustomMarkup.VideoEmbed
 import Html exposing (Html)
+import Html.Attributes as Attr
 import Markdown.Block exposing (Block)
 import Markdown.Html
 import Markdown.Renderer
@@ -24,6 +25,7 @@ renderer =
                     |> resultToHtml CustomMarkup.LanguageBreak.toHtml
                 ]
         , heading = renderHeading
+        , image = renderImage
     }
 
 
@@ -83,3 +85,24 @@ renderHeading { level, rawText, children } =
             Html.p []
                 [ Html.strong [] children
                 ]
+
+
+renderImage : { alt : String, src : String, title : Maybe String } -> Html msg
+renderImage { alt, src, title } =
+    let
+        figcaption =
+            case title of
+                Just t ->
+                    [ Html.figcaption [] [ Html.text t ] ]
+
+                Nothing ->
+                    []
+    in
+    Html.figure []
+        (Html.img
+            [ Attr.src src
+            , Attr.alt alt
+            ]
+            []
+            :: figcaption
+        )

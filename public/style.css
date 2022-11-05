@@ -21,6 +21,10 @@ a.removable:hover {
   text-decoration: line-through;
 }
 
+figure {
+  text-align: center;
+}
+
 /* Fix weird stuff in tooltip */
 [data-tooltip]::before {
   line-height: var(--line-height);
