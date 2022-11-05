@@ -36,9 +36,9 @@ renderer =
 toHtml : VideoEmbed -> dropped -> Html msg
 toHtml videoEmbed _ =
     let
-        makeIframe theSrc =
+        makeEl src =
             [ Html.iframe
-                [ Attr.src theSrc
+                [ Attr.src src
                 , Attr.attribute "frameborder" "0"
                 , Attr.attribute "allowfullscreen" "allowfullscreen"
                 , Attr.style "width" ((videoEmbed.width |> String.fromInt) ++ "px")
@@ -56,11 +56,10 @@ toHtml videoEmbed _ =
                         , { key = "portrait", value = "0" }
                         ]
                 in
-                makeIframe
-                    ("https://player.vimeo.com/video/"
-                        ++ videoEmbed.id
-                        ++ "?"
-                        ++ parseParameters params
+                makeEl
+                    ("https://player.vimeo.com/video/{id}?{params}"
+                        |> String.replace "{id}" videoEmbed.id
+                        |> String.replace "{params}" (parseParameters params)
                     )
 
             Youtube ->
@@ -69,11 +68,10 @@ toHtml videoEmbed _ =
                         [ { key = "rel", value = "0" }
                         ]
                 in
-                makeIframe
-                    ("https://www.youtube-nocookie.com/embed/"
-                        ++ videoEmbed.id
-                        ++ "?"
-                        ++ parseParameters params
+                makeEl
+                    ("https://www.youtube-nocookie.com/embed/{id}?{params}"
+                        |> String.replace "{id}" videoEmbed.id
+                        |> String.replace "{params}" (parseParameters params)
                     )
         )
 
