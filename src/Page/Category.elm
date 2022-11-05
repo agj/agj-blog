@@ -1,16 +1,12 @@
 module Page.Category exposing (Data, Model, Msg, page)
 
 import Data.Category as Category
-import Data.Date as Date
 import Data.PageHeader as PageHeader
-import Data.Post as Post exposing (Post)
 import DataSource exposing (DataSource)
-import DataSource.File
-import DataSource.Glob as Glob exposing (Glob)
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attr
-import Page exposing (Page, PageWithState, StaticPayload)
+import Page exposing (Page, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Shared
 import Site

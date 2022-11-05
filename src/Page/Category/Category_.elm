@@ -33,6 +33,10 @@ type alias Msg =
     Never
 
 
+
+-- ROUTES
+
+
 type alias RouteParams =
     { category : String }
 
@@ -106,10 +110,7 @@ view maybeUrl sharedModel static =
         descriptionEl =
             category.description
                 |> Maybe.map
-                    (\desc ->
-                        [ Html.text (desc ++ " ") ]
-                            ++ backToIndexEls
-                    )
+                    (\desc -> Html.text (desc ++ " ") :: backToIndexEls)
                 |> Maybe.withDefault backToIndexEls
                 |> Html.p []
     in

@@ -1,4 +1,4 @@
-module Page.Tag exposing (..)
+module Page.Tag exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
 import Custom.List as List
