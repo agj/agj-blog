@@ -24,4 +24,33 @@ These tracks are all from 2009 at the newest. Since those days I haven't been ma
 
 <!-- more -->
 
-[playlist artists="false" images="false" ids="899,900,901,902,903,904,905"]
+<audio-player title="agj – Fade">
+  <track
+    title="Coin-op"
+    src="/files/2014/03-fade-ep/01-Coin-op.mp3"
+  />
+  <track
+    title="Volcano (Cloud of Ghosts cover)"
+    src="/files/2014/03-fade-ep/02-Volcano-Cloud-of-Ghosts-cover.mp3"
+  />
+  <track
+    title="Crush"
+    src="/files/2014/03-fade-ep/03-Crush.mp3"
+  />
+  <track
+    title="The untold story"
+    src="/files/2014/03-fade-ep/04-The-untold-story.mp3"
+  />
+  <track
+    title="Esa noche"
+    src="/files/2014/03-fade-ep/05-Esa-noche.mp3"
+  />
+  <track
+    title="Fúnebre"
+    src="/files/2014/03-fade-ep/06-Fúnebre.mp3"
+  />
+  <track
+    title="Ivette"
+    src="/files/2014/03-fade-ep/07-Ivette.mp3"
+  />
+</audio-player>

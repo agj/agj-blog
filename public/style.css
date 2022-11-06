@@ -25,6 +25,30 @@ figure {
   text-align: center;
 }
 
+article.audio-player {
+  max-width: 20rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--spacing);
+}
+
+article.audio-player header {
+  margin: calc(var(--spacing) * -1) calc(var(--spacing) * -1) var(--spacing)
+    calc(var(--spacing) * -1);
+  padding: calc(var(--spacing) * 0.7) var(--spacing);
+  font-weight: bolder;
+}
+
+figure.track {
+  margin-bottom: calc(var(--spacing) * 0.5);
+  text-align: start;
+}
+
+figure.track audio {
+  display: block;
+  width: 100%;
+}
+
 /* Fix weird stuff in tooltip */
 [data-tooltip]::before {
   line-height: var(--line-height);

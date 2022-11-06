@@ -1,5 +1,7 @@
 module CustomMarkup exposing (..)
 
+import CustomMarkup.AudioPlayer
+import CustomMarkup.AudioPlayer.Track
 import CustomMarkup.LanguageBreak
 import CustomMarkup.VideoEmbed
 import Html exposing (Html)
@@ -23,6 +25,10 @@ renderer =
                     |> resultToHtml CustomMarkup.VideoEmbed.toHtml
                 , CustomMarkup.LanguageBreak.renderer
                     |> resultToHtml CustomMarkup.LanguageBreak.toHtml
+                , CustomMarkup.AudioPlayer.renderer
+                    |> Markdown.Html.map CustomMarkup.AudioPlayer.toHtml
+                , CustomMarkup.AudioPlayer.Track.renderer
+                    |> Markdown.Html.map CustomMarkup.AudioPlayer.Track.toHtml
                 ]
         , heading = renderHeading
         , image = renderImage
