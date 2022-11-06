@@ -47,6 +47,10 @@ init maybePageUrl sharedModel static =
                 |> Maybe.andThen List.head
                 |> Maybe.andThen String.toInt
 
+        maybeUrlFragment =
+            maybePageUrl
+                |> Maybe.andThen .fragment
+
         findPostGistById id =
             static.sharedData.posts
                 |> List.find (\pg -> pg.frontmatter.id == Just id)
@@ -55,6 +59,15 @@ init maybePageUrl sharedModel static =
             maybeRequestedPostId
                 |> Maybe.andThen findPostGistById
                 |> Maybe.map Post.globMatchFrontmatterToUrl
+                |> Maybe.map
+                    (\url ->
+                        case maybeUrlFragment of
+                            Just fragment ->
+                                url ++ "#" ++ fragment
+
+                            Nothing ->
+                                url
+                    )
                 |> Maybe.map Browser.Navigation.load
     in
     ( {}
