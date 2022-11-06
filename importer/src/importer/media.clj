@@ -1,6 +1,7 @@
 (ns importer.media
   (:require [clojure.java.io :as io]
-            [importer.utils :as utils]))
+            [importer.utils :as utils]
+            [clojure.pprint :refer [pprint]]))
 
 (defn attachment-xml->medium [attachment-xml]
   (let [url (utils/get-tag-text :wp:attachment_url attachment-xml)
@@ -13,28 +14,34 @@
      :filename (nth url-matches 1)
      :related-post (nth link-matches 3)}))
 
-(defn output-single-medium [medium]
+(defn wordpress-xml->media [wordpress-xml]
+  (->> wordpress-xml
+       (filter #(and (= (:tag %)
+                        :item)
+                     (= (utils/get-tag-text :wp:post_type %)
+                        "attachment")))
+       (map attachment-xml->medium)))
+
+(defn output-single-medium [medium do-live]
   (let [output-filename (str "../../files/"
                              (:year medium) "/"
                              (:month medium) "-"
                              (:related-post medium) "/"
                              (:filename medium))]
-    (io/make-parents output-filename)
     (println (str "Output: " output-filename))
-    (with-open [in (io/input-stream (:url medium))
-                out (io/output-stream output-filename)]
-      (io/copy in out))))
+    (if do-live
+      (do (io/make-parents output-filename)
+          (with-open [in (io/input-stream (:url medium))
+                      out (io/output-stream output-filename)]
+            (io/copy in out)))
+      (do (pprint medium)
+          (println "")))))
 
 
 ;; Main
 
-(defn output-media [wordpress-xml]
-  (let [attachment-xmls (->> wordpress-xml
-                             (filter #(and (= (:tag %)
-                                              :item)
-                                           (= (utils/get-tag-text :wp:post_type %)
-                                              "attachment"))))
-        media (map attachment-xml->medium attachment-xmls)]
+(defn output-media [wordpress-xml do-live]
+  (let [media (wordpress-xml->media wordpress-xml)]
     (doseq [medium media]
-      (output-single-medium medium))))
+      (output-single-medium medium do-live))))
 
