@@ -33,7 +33,9 @@
     (match [command]
       ["posts"] (posts/output-posts wordpress-xml)
       ["taxonomy"] (taxonomy/output-taxonomy wordpress-xml)
-      :else (println "No recognized command entered."))))
+      :else (do
+              (println "Run with one of the following commands to generate the corresponding blog data:")
+              (println "    posts, taxonomy")))))
 
 
 
