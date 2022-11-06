@@ -1,6 +1,5 @@
 (ns importer.media
   (:require [clojure.java.io :as io]
-            [clojure.core.match :refer [match]]
             [importer.utils :as utils]))
 
 (defn attachment-xml->medium [attachment-xml]
@@ -17,7 +16,7 @@
 (defn output-single-medium [medium]
   (let [output-filename (str "../../files/"
                              (:year medium) "/"
-                             (:month medium) "/"
+                             (:month medium) "-"
                              (:related-post medium) "/"
                              (:filename medium))]
     (io/make-parents output-filename)
