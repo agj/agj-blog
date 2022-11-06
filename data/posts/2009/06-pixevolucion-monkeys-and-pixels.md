@@ -17,9 +17,9 @@ tags:
 language: eng
 ---
 
-[![Monkey games](http://blog.agj.cl/wp-content/uploads/2009/06/monkeygames.jpg "Monkey games")](http://piclog.agj.cl/index.php?showimage=49)
+[![Monkey games](/files/2009/06-pixevolucion-monkeys-and-pixels/monkeygames.jpg "Monkey games")](//piclog.agj.cl/index.php?showimage=49)
 
-In 2006, for my workshop course in that year's first semester, I created [a graphic work](http://piclog.agj.cl/index.php?showimage=49) that ironized technology and how the Monkey King (humanity) wreaks havoc on Earth through its lack of restraint and its egocentrism. The next semester I was to base an animation on that work.
+In 2006, for my workshop course in that year's first semester, I created [a graphic work](//piclog.agj.cl/index.php?showimage=49) that ironized technology and how the Monkey King (humanity) wreaks havoc on Earth through its lack of restraint and its egocentrism. The next semester I was to base an animation on that work.
 
 <video-embed service="vimeo" id="1259501" width="500" height="357" />
 

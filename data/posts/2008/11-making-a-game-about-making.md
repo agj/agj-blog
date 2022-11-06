@@ -20,7 +20,7 @@ tags:
 language: eng
 ---
 
-In [a previous post](http://blog.agj.cl/2008/10/13/ambitions-of-pushing-the-envelope/) I explained what motivated me to make the game I am currently making as my final project in college. In this entry I will actually describe what I have achieved so far, and my plans for what's to come. If you so wish, you may [**play the game**](http://www.agj.cl/files/games/viscomp1/), incomplete as it is, before reading what follows. If you do, I'd be very interested in hearing about your experience, how you approached the game without knowing exactly what it was about, what could have been clearer or better.
+In [a previous post](/2008/10/13/ambitions-of-pushing-the-envelope/) I explained what motivated me to make the game I am currently making as my final project in college. In this entry I will actually describe what I have achieved so far, and my plans for what's to come. If you so wish, you may [**play the game**](//www.agj.cl/files/games/viscomp1/), incomplete as it is, before reading what follows. If you do, I'd be very interested in hearing about your experience, how you approached the game without knowing exactly what it was about, what could have been clearer or better.
 
 What I sought, as I explained in that other post, was to create a game whose main objective is not to rack up points, but to create a visual composition. This is a game about creativity, indeed; a subset of games that, I have found, is not very largely represented. ((I counted 14 games I could qualify as requiring creative input in the top 100 games of a series of specialized publications, as compiled by [Kirk Israel](http://kisrael.com/vgames/powerlist/).)) Kenichi Nishi [said something in an interview](http://www.cubed3.com/news/7456) that I quote here because I consider to be extremely significant:
 
@@ -30,11 +30,11 @@ This is why I started to consider my idea more important than at first. Although
 
 Personally, I am more of a supporter of holistic rather than reductionist approaches to analysis, but in this particular case (and in many others) it is much simpler to compartmentalize the data---especially given that I am hardly a mathematician, or even a programmer, so it simply made my work a lot easier. I realize that to this point I'm still talking abstractly, so let me show you the game proper.
 
-![Screenshot](http://blog.agj.cl/wp-content/uploads/2008/11/screena.png "Game of visual composition screenshot")
+![Screenshot](/files/2008/11-making-a-game-about-making/screena.png "Game of visual composition screenshot")
 
 That is what it currently looks like. In the center, but leaning toward the top and left, is the _canvas_: a grid where the player creates his composition. To the right is the _carousel_; sort of a conveyor belt of colored groups of circles, that the player can grab at any time and drop on the canvas. In a bar at the bottom there are a series of pictograms of differing sizes: they are actually dynamic, and change depending on the current characteristics of the composition, as perceived by the game (right now the algorithms that calculate this are not very finely tuned). Each pictogram changes to either a neutral, high or low graphic depending on the value: For instance, the fire icon indicates that the colors are mostly warm, and it would change to a snowflake if it was the opposite. Its comparatively small size means that it is not leaning that much toward warmth. The pictograms still need some work for them to be easier to understand, since, as I said in that previous post of mine, this game will use no words, so they need to be self-sufficient. Finally, in the bottom right is the time counter, which, when depleted, will prompt the game to show a results screen, which is pictured below.<!-- more -->
 
-![Screenshot](http://blog.agj.cl/wp-content/uploads/2008/11/screenb.png "Game of visual composition screenshot")
+![Screenshot](/files/2008/11-making-a-game-about-making/screenb.png "Game of visual composition screenshot")
 
 Other than removing elements that are not needed anymore, one of the things that has changed here is that the pictograms got a line drawn around them. A full circle means a full mark; the third pictogram, indicating asymmetry, has a top value, so that shining effect is drawn to bring attention to it. The meaning behind this is an attempt to cue the player into noticing what his composition is best described as: in this case, as asymmetric. Had it been completely symmetric (i.e. the opposite of the current value), the visual result would have been the same. I based this idea around the famous expressionistic adage, best described by Gaugin's own words:
 
@@ -53,4 +53,4 @@ That is the current state, and the future, of my game. Other planned features in
 	- More parameters.
 	- Indications overlaid on the composition for each parameter, during the results screen. For instance, if the composition was found to be symmetric, hovering over that pictogram will show, on top of the canvas, what the axis (or axes) of symmetry is/are.
 
-Remember that you can [**play the game**](http://www.agj.cl/files/games/viscomp1/) in its current state if you wish. I'd be grateful for any comments you may have on it.
+Remember that you can [**play the game**](//www.agj.cl/files/games/viscomp1/) in its current state if you wish. I'd be grateful for any comments you may have on it.

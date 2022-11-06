@@ -21,8 +21,8 @@ I've completed a new videogame—another entry in [another TIGSource competition
 
 I've coined the term 'narrative exploration' to describe Viewpoints, because the very core of the concept is about exploring, but not a physical space, like in, say, _Metroid_, but, instead, a space of different possible stories—a narrative space. The concept itself was shamelessly ripped from Terry Cavanagh's [_Pathways_](http://distractionware.com/blog/?p=650) —a short game I can wholeheartedly recommend—, though his execution is different from mine (I'm not quite that flagrant).
 
-![Viewpoints screenshot](http://blog.agj.cl/wp-content/uploads/2009/04/viewpointsscreen_small.png "Viewpoints screenshot")
+![Viewpoints screenshot](/files/2009/04-viewpoints/viewpointsscreen_small.png "Viewpoints screenshot")
 
-[**Play _Viewpoints_ in your browser**](http://www.agj.cl/files/games/viewpoints/) (requires Flash)
+[**Play _Viewpoints_ in your browser**](//www.agj.cl/files/games/viewpoints/) (requires Flash)
 
-Also, for this past April Fools', I made a variation of Viewpoints and released it as if it were the finished game for the competition. I took the Out Run and Sega inspiration further, and created something quite ridiculous. I call it [_**Winner**_](http://www.agj.cl/files/games/winner/). (It may be worth mentioning that some of the contents of this variation were taken straight from Sega-made games.)
+Also, for this past April Fools', I made a variation of Viewpoints and released it as if it were the finished game for the competition. I took the Out Run and Sega inspiration further, and created something quite ridiculous. I call it [_**Winner**_](//www.agj.cl/files/games/winner/). (It may be worth mentioning that some of the contents of this variation were taken straight from Sega-made games.)

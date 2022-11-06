@@ -13,8 +13,8 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2010/07/drawingscreenshot.png "Drawing thingie for KOTM screenshot")
+![image](/files/2010/07-drawing-thing-for-kotm/drawingscreenshot.png "Drawing thingie for KOTM screenshot")
 
 In the second hour of yesterday's KOTM I made this Flash drawing thing.
 
-[**Give it a try**](http://www.agj.cl/files/games/kotmjuly2010.swf)
+[**Give it a try**](//www.agj.cl/files/games/kotmjuly2010.swf)

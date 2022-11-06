@@ -2,7 +2,6 @@
   (:gen-class)
   (:require [clojure.xml :as xml]
             [clojure.java.io :as io]
-            [hickory.core :as hickory]
             [clojure.string :as str]
             [clojure.core.match :refer [match]]
             [importer.utils :as utils]
@@ -75,15 +74,16 @@
    (->> ["http://blog.agj.cl/2009/01/campodecolor-got-me-out-of-college/#more-118"
          "http://www.agj.cl/files/games/campodecolor_memoria.pdf"
          "http://blog.agj.cl/wp-content/uploads/2009/04/heartlogo1.png"
-         "http://piclog.agj.cl/?picture=89"]
+         "http://piclog.agj.cl/?picture=89"
+         "http://blog.agj.cl/wp-content/uploads/2008/12/01-Traffic.mp3"]
         (map (fn [url]
                (let [blog-match (re-matches #".*://blog[.]agj[.]cl(.*)" url)
                      agj-cl-match (re-matches #".*:(//.*[.]agj[.]cl.*)" url)
                      wp-content-match (re-matches #".*://blog[.]agj[.]cl/wp-content/uploads/(\d+)/(\d+)/(.*)" url)]
                  (or (if wp-content-match
-                       (str "/blog.agj.cl/files/"
+                       (str "/files/"
                             (get wp-content-match 1) "/"
-                            (get wp-content-match 2) "-"
+                            (get wp-content-match 2) "/"
                             (get wp-content-match 3))
                        nil)
                      (let [blog-url (get blog-match 1)]

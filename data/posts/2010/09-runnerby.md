@@ -15,15 +15,15 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2010/09/runnerbyscreen.png "Runnerby screenshot")
+![image](/files/2010/09-runnerby/runnerbyscreen.png "Runnerby screenshot")
 
 (It was about time I posted this.)
 
-Perhaps you remember a Ludum Dare entry I called [Climbrunner](http://blog.agj.cl/2009/12/climbrunner/)---well, this game is an evolution of that idea. Here, you run around a tricky series of screens, up the walls and ceilings, only with the ability to jump to avoid the obstacles that get in your way. There's no dying, just lots of cursing over missed jumps and having to do it all over again. It's a short game, but if you think it was fun once you first finish it, there's still a second path you can try.
+Perhaps you remember a Ludum Dare entry I called [Climbrunner](/2009/12/climbrunner/)---well, this game is an evolution of that idea. Here, you run around a tricky series of screens, up the walls and ceilings, only with the ability to jump to avoid the obstacles that get in your way. There's no dying, just lots of cursing over missed jumps and having to do it all over again. It's a short game, but if you think it was fun once you first finish it, there's still a second path you can try.
 
 All you need to know to play it is that you jump with the spacebar.
 
-**[Play _Runnerby_](http://www.agj.cl/files/games/runnerby/)** (Flash)<!-- more -->
+**[Play _Runnerby_](//www.agj.cl/files/games/runnerby/)** (Flash)<!-- more -->
 
 It's a single player game, but is intended (not to a very interesting result) to be played together with other people, passing the controller around. This is why the level design has lots of 'sticky' places: parts that keep you in a loop until you decide to jump out, so you can safely hand over the controls. It is also how I rationalized the frustration aspect, reminding of a time in which, as a kid, I played video games with friends or my cousins, and we would take turns playing/wincing at the 'obvious' mistakes the others were making as they played.
 

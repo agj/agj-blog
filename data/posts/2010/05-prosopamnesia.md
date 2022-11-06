@@ -16,10 +16,10 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2010/05/prosopamnesiascreen.png "Prosopamnesia screenshot")
+![image](/files/2010/05-prosopamnesia/prosopamnesiascreen.png "Prosopamnesia screenshot")
 
-After [Wirewalk](http://blog.agj.cl/tag/wirewalk/), I felt inspired to do more work using images acquired through web searches. Yes, I failed to mention it when I released that one, but the images are obtained at run-time through Google Images. I'm rather proud of this particular result:
+After [Wirewalk](/tag/wirewalk/), I felt inspired to do more work using images acquired through web searches. Yes, I failed to mention it when I released that one, but the images are obtained at run-time through Google Images. I'm rather proud of this particular result:
 
-**_[Prosopamnesia](http://www.agj.cl/files/games/prosopamnesia/)_** (Flash)
+**_[Prosopamnesia](//www.agj.cl/files/games/prosopamnesia/)_** (Flash)
 
 It was made for The Games Collective [negative capability pageant](http://www.thegamescollective.org/index.php/topic,44.0.html). For sound, I used the [port](http://code.google.com/p/as3sfxr/) of DrPetter's [sfxr](http://www.drpetter.se/project_sfxr.html) to AS3, by Thomas Vian. Also used the [Google API AS3 library](http://code.google.com/p/googleas3api/) by Joris Timmerman, as for Wirewalk.

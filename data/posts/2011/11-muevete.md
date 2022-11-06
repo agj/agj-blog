@@ -20,7 +20,7 @@ language: eng
 
 <video-embed service="vimeo" id="32240154" width="500" height="281" />
 
-[Español](http://blog.agj.cl/2011/11/muevete/#language)
+[Español](/2011/11/muevete/#language)
 
 This post should have been written in September, but laziness kept me. The video you see above I only got around to finishing last night. Depicted in the video is an art installation for [Centro Cultural Palacio La Moneda](http://www.ccplm.cl/)'s freshly opened art and technology space. I undertook programming duties in the project which I was invited to by Sebastián Skoknic and Francisco Fuentes.
 

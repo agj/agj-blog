@@ -19,7 +19,7 @@ language: eng
 
 <video-embed service="vimeo" id="6445520" width="500" height="375" />
 
-[Español](http://blog.agj.cl/2009/09/pillow-fable/#more-362)
+[Español](/2009/09/pillow-fable/#language)
 
 I made this video for a local competition of short format videos, called [Nanometrajes](http://www.nanometrajes.cl/). Sadly, I couldn't come up with anything to make, until it was already only a few days until the deadline, so I came up with a simple plan. I didn't have a video camera (the one I use usually is my dad's), so I'd have to animate. I decided to use my photo camera to capture the zooming shots you see in the video, taking two steps between each frame. Since I didn't have much of a story or context, I decided to make these oneiric, and basically make it all the interpretation of a dream. That's how I came up with the narration, which, translated, goes as follow:
 

@@ -14,7 +14,7 @@ tags:
 language: eng
 ---
 
-[Español](http://blog.agj.cl/?p=8#more-8)
+[Español](/?p=8#language)
 
 I read some thread on some forum, which was about the webcomics that posters had been involved in. Comparing all the varied styles I thought "I'd like to write a webcomic once too. Too bad that I suck at drawing comics, and also at being persistent." But the answer to my problem was right before my eyes, and realization suddenly and dramatically hit: "I should make a round-robin webcomic!"
 

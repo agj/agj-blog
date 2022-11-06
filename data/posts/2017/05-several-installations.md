@@ -20,7 +20,7 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2017/05/mp2017setsuei.jpg)
+![image](/files/2017/05-several-installations/mp2017setsuei.jpg)
 
 The yearly schedule in the New Media program I attended revolves around two public exhibitions in which we show our works: the summer Open Studio and the winter Media Practice. Most of the work done for the exhibition itself is also done by us students, in fact (the brochure and poster design, the exhibit design, tending to visitors, public relations, etc.) So we all split the work and let each focus on different tasks.<!-- more -->
 
@@ -58,4 +58,4 @@ Ideas I implemented include modifications to [the native Racket library _pict_](
 
 So far I had learned a lot but was still drawing a blank on where to take my programming language. I was working on the language without having something concrete I wanted to use it on. So I devised a plan to develop my Nendo Project that involved creating mini-languages for specific tasks: a _musical instrument language_ to be used live for creating music, and a _synaesthetic language_ that would turn a single piece of code into two different outputs, visual and auditory. In between both I had devised to create an installation that would allow me to get a feel for the relation between image and sound. Solving these tasks would hopefully allow me to gain insight into the sort of programming language design that I was pursuing, which I could then develop upon (taking whatever discoveries I made in the process and applying them in the design of a new language). So this was a very roundabout —and possibly unfruitful— way of getting to my objective, but I felt it necessary. However, I was heavily misunderstood by the professors, who would focus on the aesthetic and conceptual merit of these tasks in themselves. In the end I was compelled to abandon the project altogether.
 
-I was left out of that year's summer exhibition (together with six other in my year, out of twelve.) I embarked upon a new direction, a subject easier to grasp for someone not technically-inclined: not computer, but human languages. And so we arrive at where my experience in Japan ends, my graduation project proper, which I already posted about last month: [Come to think of language.](http://blog.agj.cl/2017/04/come-to-think-of-language/)
+I was left out of that year's summer exhibition (together with six other in my year, out of twelve.) I embarked upon a new direction, a subject easier to grasp for someone not technically-inclined: not computer, but human languages. And so we arrive at where my experience in Japan ends, my graduation project proper, which I already posted about last month: [Come to think of language.](/2017/04/come-to-think-of-language/)

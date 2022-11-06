@@ -15,9 +15,9 @@ Probably the most interesting course I took while in university was Rodrigo Ampu
 
 The whole class took a trip to the Museo Naval y Marítimo de Valparaíso (Valparaíso Sea and Navy Museum), where we took a look at their exhibitions, and were asked to conceptualize one new exhibition space. Two classmates, Natalia and Juan Pablo, and I, spent all those months butting heads and working overnight. I'm pretty sure we were on the brink of hating eachother. I've never been very good at teamwork, but the three of us ended up quite invested in our work and in our chosen subject, so we had long arguments. While most of our classmates' proposals were about showing the underwater fauna of Chile, we arrived at the idea of displaying the ugly side; that is, all the damage that us humans are causing the underwater fauna and flora, with statistics and shocking images.
 
-It all started with a brainstorming session we had one day, after we got our butts kicked in class. We were taking a very conservative approach, so we were asked to be bold and completely rethink our stance. During this brainstorm we came up with four radical concepts, two of which I sketched: the ones we called ['clinical'](http://piclog.agj.cl/index.php?showimage=58) and ['house of horrors'](http://piclog.agj.cl/index.php?showimage=59).
+It all started with a brainstorming session we had one day, after we got our butts kicked in class. We were taking a very conservative approach, so we were asked to be bold and completely rethink our stance. During this brainstorm we came up with four radical concepts, two of which I sketched: the ones we called ['clinical'](//piclog.agj.cl/index.php?showimage=58) and ['house of horrors'](//piclog.agj.cl/index.php?showimage=59).
 
-![Ojo al pez concept sketch](http://blog.agj.cl/wp-content/uploads/2009/08/ojoalpezsketch.jpg "Ojo al pez concept sketch")
+![Ojo al pez concept sketch](/files/2009/08-fish-in-a-museum/ojoalpezsketch.jpg "Ojo al pez concept sketch")
 
 <!-- more -->These concepts were radical enough that we were told to tone them down. They focused on aesthetics, particularly of the gut-wrenching kind. We wanted to deliver a horrific message, and we wanted to do it through the senses first.
 
@@ -25,4 +25,4 @@ What we finally arrived at was much a more sobered-down take on the subject. We 
 
 <video-embed service="vimeo" id="1261075" width="500" height="377" />
 
-Above, a crudely realized tour of the space of the exhibition, which we called _Ojo al pez_ (_Eye on the fish_). Here is [the poster board that was exhibited at the end of the semester](http://piclog.agj.cl/index.php?showimage=56) (in Spanish), detailing much of the ideas, and our approach. Also, here are [some more preliminary sketches](http://piclog.agj.cl/index.php?showimage=60), and [one poster with data](http://piclog.agj.cl/index.php?showimage=57) for the exhibition.
+Above, a crudely realized tour of the space of the exhibition, which we called _Ojo al pez_ (_Eye on the fish_). Here is [the poster board that was exhibited at the end of the semester](//piclog.agj.cl/index.php?showimage=56) (in Spanish), detailing much of the ideas, and our approach. Also, here are [some more preliminary sketches](//piclog.agj.cl/index.php?showimage=60), and [one poster with data](//piclog.agj.cl/index.php?showimage=57) for the exhibition.

@@ -14,8 +14,8 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2010/03/tumblecopterscreen.png "Tumblecopter screenshot")
+![image](/files/2010/03-tumblecopter/tumblecopterscreen.png "Tumblecopter screenshot")
 
-For last weekend's [Klik of the Month](http://blog.agj.cl/tag/kotm/) I only managed to get an older game project started, but couldn't finish anything. So it was neat to be invited by [Stephen](http://www.increpare.com/) to partake in an [impromptu KOTM](http://www.glorioustrainwrecks.com/node/1160) today. I made a game in which you can't really control a helicopter.
+For last weekend's [Klik of the Month](/tag/kotm/) I only managed to get an older game project started, but couldn't finish anything. So it was neat to be invited by [Stephen](http://www.increpare.com/) to partake in an [impromptu KOTM](http://www.glorioustrainwrecks.com/node/1160) today. I made a game in which you can't really control a helicopter.
 
-[**Download _Tumblecopter_**](http://www.agj.cl/files/games/tumblecopter.zip) (Windows)
+[**Download _Tumblecopter_**](//www.agj.cl/files/games/tumblecopter.zip) (Windows)

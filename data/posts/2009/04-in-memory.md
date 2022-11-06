@@ -17,4 +17,4 @@ language: eng
 
 In the tradition of writing a new post for every new front page design I make, I guess I need to write this. My late feline friend, Cleo, passed away yesterday. I spent half my life with her at my side. So, I made a simple new design in her memory.
 
-[The previous design has been archived](http://www.agj.cl/files/archive/front2009-2/).
+[The previous design has been archived](//www.agj.cl/files/archive/front2009-2/).

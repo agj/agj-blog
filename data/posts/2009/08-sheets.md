@@ -18,7 +18,7 @@ tags:
 language: eng
 ---
 
-![Sheets screenshot](http://blog.agj.cl/wp-content/uploads/2009/08/sheetsscreen.png "Sheets screenshot")
+![Sheets screenshot](/files/2009/08-sheets/sheetsscreen.png "Sheets screenshot")
 
 This latest TIGSource video game competition has a double theme: [adult/educational](http://tigsource.com/articles/2009/06/27/tigsource-presents-the-adult-educational-competition). I have to say, it's a fantastic combination. The idea was that entrants could create a game under one or both themes. I wish more entered games had used both simultaneously, but, well, not even I did that in the end.
 
@@ -28,4 +28,4 @@ Next came the question of how to make any game in a short enough amount of time.
 
 The game is text-only, but it does deal with subjects such as sex and rape, so it is meant for mature players.
 
-**[Play _Sheets_](http://www.agj.cl/files/games/sheets/)** (Flash)
+**[Play _Sheets_](//www.agj.cl/files/games/sheets/)** (Flash)

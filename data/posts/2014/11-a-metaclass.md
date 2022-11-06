@@ -16,7 +16,7 @@ tags:
 language: eng
 ---
 
-[![Kanji metaclass poster](http://blog.agj.cl/wp-content/uploads/2014/11/kanjimetaclass.png)](http://piclog.agj.cl/?picture=72)[Español](http://blog.agj.cl/2014/11/a-metaclass/#language)
+[![Kanji metaclass poster](/files/2014/11-a-metaclass/kanjimetaclass.png)](//piclog.agj.cl/?picture=72)[Español](/2014/11/a-metaclass/#language)
 
 I was invited by the center I formerly studied Japanese at ([Ceija](http://www.ceija.cl/), here in Santiago) to give a short workshop. It was an open invitation, as I could suggest what the theme for it would be. I decided long ago that I'm no good as a teacher, so I almost rejected the request, but finally decided to propose a non-traditional program in which I would not be a teacher but just someone who's been studying longer (a _senpai,_ as a Japanese person would put it,) and turn the classroom into a more level place for discussion and discovery. The themes to discuss would be the Japanese kanji writing system, and self-study. I called it _kanji metaclass,_ loosely using the 'meta' prefix the same way it's used in the word 'metadata': that is, to suggest recursiveness, learning about learning.
 

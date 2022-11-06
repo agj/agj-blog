@@ -10,9 +10,9 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2013/10/cordilleravis.jpg "Cordillera Vis")
+![image](/files/2013/10-tiles-visualizer/cordilleravis.jpg "Cordillera Vis")
 
-[Español](http://blog.agj.cl/2013/10/tiles-visualizer/#language)
+[Español](/2013/10/tiles-visualizer/#language)
 
 I was contracted to finish a work that had been started but never completed, [a floor and wall tiles in-context visualizer web app.](http://www.cordillera.cl/flash.php) You have a photo, and you can choose among the client's catalog of tiles to place them in the photo's walls and floors to see how they would look in a real setting. Although this work was almost finished, the source code had disappeared. Taking this as an opportunity, I revised the interaction design, ending up with a more focused and approachable app than what was originally conceived. I was originally only going to iron out the remaining programming wrinkles, but ended up doing the interaction design as well as a full code-up.
 

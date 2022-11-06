@@ -14,7 +14,7 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2013/10/ueda.jpg "Chuo-higashi, Ueda")
+![image](/files/2013/10-the-japanese-countryside/ueda.jpg "Chuo-higashi, Ueda")
 
 I just came back from Japan, after spending six months improving my Japanese there at a language school and generally enjoying being in such a culturally interesting environment. I made tons of friends, Japanese and from countless other countries; it was extremely stimulating.
 

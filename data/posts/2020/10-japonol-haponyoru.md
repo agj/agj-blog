@@ -13,9 +13,9 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2020/10/japoñol-profile.png)
+![image](/files/2020/10-japonol-haponyoru/japoñol-profile.png)
 
-[Español](http://blog.agj.cl/2020/10/japonol/)
+[Español](/2020/10/japonol/)
 
 日本での留学からチリに帰って来た頃、日本語がもう結構満足できる程度まで身に付いたという気がした。だから日本語と母語のスペイン語を組み合わせる企画できれば楽しいかもと思った。それで2年以上遅れて報告するが、2018年7月に [Japoñol](https://twitter.com/haponyoru) というツイッターを始めた。このアカウントでそれ以来ずっと両言語を使って呟いている。<!-- more -->
 

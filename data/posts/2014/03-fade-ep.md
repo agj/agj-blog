@@ -11,11 +11,11 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2014/03/cover01_400.jpg "Fade cover")
+![image](/files/2014/03-fade-ep/cover01_400.jpg "Fade cover")
 
 By mistake I opened the folder where I keep my music projects, and was struck by the sense of nostalgia. I browsed them, listened to all the tracks and unfinished bits thereof I made many years ago. I decided to string some of them, the more complete and the more listenable, into an EP, this one here I call _Fade._ It's only 15 minutes of lo-fi/bleep music, and it's probably not even worth a listen, but here, I release it nonetheless.
 
-[**Download _Fade_**](http://www.agj.cl/files/music/fade/fade.zip) (zip, mp3)**_
+[**Download _Fade_**](//www.agj.cl/files/music/fade/fade.zip) (zip, mp3)**_
 _**
 
 (Head into the post to listen without downloading.)

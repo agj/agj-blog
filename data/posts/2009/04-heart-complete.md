@@ -15,17 +15,17 @@ tags:
 language: eng
 ---
 
-![Heart logo](http://blog.agj.cl/wp-content/uploads/2009/04/heartlogo1.png "Heart logo")
+![Heart logo](/files/2009/04-heart-complete/heartlogo1.png "Heart logo")
 
-[_Heart_](http://blog.agj.cl/tag/heart/) is finished. It is a short, bleak game that questions one particular human ideal/cliché.
+[_Heart_](/tag/heart/) is finished. It is a short, bleak game that questions one particular human ideal/cliché.
 
-[**Play _Heart_**](http://www.agj.cl/files/games/heart/) (Flash)
+[**Play _Heart_**](//www.agj.cl/files/games/heart/) (Flash)
 
 The game was created originally for the [Ludum Dare competition](http://www.ludumdare.com/), and polished during the following week. Coded in Actionscript 3, using FlashDevelop as IDE and compiled using the Flex SDK. For the graphics I used Photoshop and Illustrator, and for the audio I used LMMS and Audacity.<!-- more -->
 
 I was originally going to take advantage of the circumstances to force me to learn [Python](http://www.python.org/), but that didn't go anywhere, and I ended up relying on the more familiar Actionscript 3, for better or worse. The theme, 'advancing wall of doom', wasn't very inspiring, but I was still able to cook an idea pretty fast (the first night). I believe I had the [Superbrothers](http://superbrothers.ca/) in mind when I came up with the visual style, and it is still pretty apparent from the final product. I like making very low-resolution pixel art, because of the forced geometrization and simplification that it entails, and also because it's quick to make in a computer, saving me time to devote to the coding, my main hurdle. I'm not a very fast or experienced coder, so I ended up using up most of the time on that part of the process (as it is apparent in [the video](http://www.vimeo.com/4235554)). I still enjoy coding, and particularly randomizing (procedurally generating) things as part of the process, so instead of hard-scripting everything, I left most to chance. This allowed me to concentrate on the general aesthetic rather than on the strict sequence of events, the latter of which I burdened the player with stitching together in his head.
 
-As opposed to my previous flash game, [_Viewpoints_](http://blog.agj.cl/tag/viewpoints/), this game's different playthroughs are cumulative; that means that there is no or little contradiction between one playthrough's events and the next's. The more the game is played, the more a player can piece together a story out of it. At one point I thought of letting the story unfold procedurally, by me creating much more random lines of text, thus allowing more varied and incoherent interpretations; traces of this idea can still be found in the [competition version](http://blog.agj.cl/2009/04/heart/), but I've removed those lines since then. The idea of glitching up the graphics came from this, but I liked the effect enough that I left it in, as it also contributes to the pathetic and distraught aesthetic that I tried to convey.
+As opposed to my previous flash game, [_Viewpoints_](/tag/viewpoints/), this game's different playthroughs are cumulative; that means that there is no or little contradiction between one playthrough's events and the next's. The more the game is played, the more a player can piece together a story out of it. At one point I thought of letting the story unfold procedurally, by me creating much more random lines of text, thus allowing more varied and incoherent interpretations; traces of this idea can still be found in the [competition version](/2009/04/heart/), but I've removed those lines since then. The idea of glitching up the graphics came from this, but I liked the effect enough that I left it in, as it also contributes to the pathetic and distraught aesthetic that I tried to convey.
 
 At first, the game was going to have a 'proper' ending; the character was going to face another character. At some point I even thought of having him meet a mirror of himself, but I didn't know where to take that. The ending that I left in was chosen both due to the time constraints and to my wishing to make the message more subtle. So, it's a non-explicit resolution that the player can interpret according to his own experience in the game.
 

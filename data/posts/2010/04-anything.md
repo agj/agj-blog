@@ -20,4 +20,4 @@ language: eng
 
 My first standard interactive fiction (text game that takes typed commands as input), created for the Klik of the Month. Powered by [Inform 7](http://inform7.com/); fueled by my general opinion on IF.
 
-**[Play _Anything_ on the web](http://parchment.googlecode.com/svn/trunk/parchment.html?story=http://www.agj.cl/files/games/anything-kotm/anything.z5)** (via [Parchment](http://code.google.com/p/parchment/); or download the [z-code file](http://www.agj.cl/files/games/anything-kotm/anything.z5), if you have an interpreter)
+**[Play _Anything_ on the web](//www.agj.cl/files/games/anything-kotm/anything.z5)** (via [Parchment](http://code.google.com/p/parchment/); or download the [z-code file](//www.agj.cl/files/games/anything-kotm/anything.z5), if you have an interpreter)

@@ -12,7 +12,7 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2020/01/portfolio.png)
+![image](/files/2020/01-new-portfolio-design/portfolio.png)
 
 Since I do so much different kinds of work, I wanted to have a portfolio that let me exhibit that variety as a strength, but without having the reader wade through a lot of chaff they're not interested in. For that reason I came up with [this new design](http://agj.cl/portfolio/), which has a short self-introduction littered with tappable keywords that bring up a list of related works. I'm using [Elm](https://elm-lang.org/) and [elm-ui](https://github.com/mdgriffith/elm-ui) for it, both of which are great. [The source code I also put up on Github](https://github.com/agj/portfolio).
 

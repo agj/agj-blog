@@ -25,6 +25,24 @@
 
 ;; Conversion
 
+(defn fix-url [post url]
+  (let [blog-match (re-matches #".*://blog[.]agj[.]cl(.*)" url)
+        agj-cl-match (re-matches #".*:(//.*[.]agj[.]cl.*)" url)
+        wp-content-match (re-matches #".*://blog[.]agj[.]cl/wp-content/uploads/(\d+)/(\d+)/(.*)" url)]
+    (or (if wp-content-match
+          (str "/files/"
+               (get wp-content-match 1) "/"
+               (get wp-content-match 2) "-"
+               (:slug post) "/"
+               (get wp-content-match 3))
+          nil)
+        (let [blog-url (get blog-match 1)]
+          (if blog-url
+            (str/replace blog-url #"#more-\d+" "#language")
+            nil))
+        (get agj-cl-match 1)
+        url)))
+
 (defn post-xml->post [post-xml]
   (let [title (utils/get-tag-text :title post-xml)]
     {:title title
@@ -46,9 +64,9 @@
 
 ;; Markdown generation
 
-(defn surround->md [before after el]
+(defn surround->md [post before after el]
   (str before
-       (->> el :content els->md)
+       (->> el :content (els->md post))
        after))
 
 (defn h*-tag? [tag]
@@ -57,13 +75,13 @@
     true
     false))
 
-(defn em->md [el]
-  (surround->md "_" "_" el))
+(defn em->md [post el]
+  (surround->md post "_" "_" el))
 
-(defn strong->md [el]
-  (surround->md "**" "**" el))
+(defn strong->md [post el]
+  (surround->md post "**" "**" el))
 
-(defn img->md [el]
+(defn img->md [post el]
   (let [alt (->> el :attrs :alt)
         title (->> el :attrs :title)]
     (str "!["
@@ -71,20 +89,20 @@
            "image"
            alt)
          "]("
-         (->> el :attrs :src)
+         (->> el :attrs :src (fix-url post))
          (if title
            (str " \"" title "\"")
            "")
          ")")))
 
-(defn a->md [el]
+(defn a->md [post el]
   (str "["
-       (->> el :content els->md)
+       (->> el :content (els->md post))
        "]("
-       (->> el :attrs :href)
+       (->> el :attrs :href (fix-url post))
        ")"))
 
-(defn h*->md [el]
+(defn h*->md [post el]
   (let [n (match [(:tag el)]
             [:h1] 1
             [:h2] 2
@@ -94,26 +112,26 @@
     (str "\n"
          (apply str (repeat n "#"))
          " "
-         (->> el :content first el->md)
+         (->> el :content first (els->md post))
          "\n")))
 
-(defn div->md [el]
+(defn div->md [post el]
   (if (= (->> el :attrs :class)
          "language")
     (str "\n"
          "<language-break />\n\n"
-         (->> el :content els->md))
-    (->> el :content els->md)))
+         (->> el :content (els->md post)))
+    (->> el :content (els->md post))))
 
-(defn span->md [el]
+(defn span->md [post el]
   (cond
-    (->> el :attrs :style (= "font-style: italic;")) (em->md el)
-    (->> el :attrs :class (= "postbody")) (->> el :content els->md)
-    (->> el :attrs :class (= "s1")) (->> el :content els->md)
+    (->> el :attrs :style (= "font-style: italic;")) (em->md post el)
+    (->> el :attrs :class (= "postbody")) (->> el :content (els->md post))
+    (->> el :attrs :class (= "s1")) (->> el :content (els->md post))
     :else "???"))
 
-(defn blockquote->md [el]
-  (let [parsed-content (->> el :content els->md)]
+(defn blockquote->md [post el]
+  (let [parsed-content (->> el :content (els->md post))]
     (str "\n"
          (->> parsed-content
               str/split-lines
@@ -121,7 +139,7 @@
               (str/join "\n"))
          "\n")))
 
-(defn ol->md [el]
+(defn ol->md [post el]
   (->> el
        :content
        (reduce (fn [result-count el]
@@ -130,23 +148,23 @@
                    (if (= (:tag el) :li)
                      [(conj result
                             (str (inc count) ". "
-                                 (->> el :content els->md)))
+                                 (->> el :content (#(els->md post %)))))
                       (inc count)]
-                     [(conj result (el->md el))
+                     [(conj result (el->md post el))
                       count])))
                [[] 0])
        first
        (apply str)))
 
-(defn ul->md [el]
+(defn ul->md [post el]
   (->> el
        :content
        (map (fn [el]
               (if (= (:tag el)
                      :li)
                 (str "- "
-                     (->> el :content els->md))
-                (el->md el))))
+                     (->> el :content (#(els->md post %))))
+                (el->md post el))))
        (apply str)))
 
 (defn video-el->url [el]
@@ -207,34 +225,36 @@
        "height=\"" (:height video) "\" "
        "/>"))
 
-(defn el->md [el]
+(defn el->md [post el]
   (match [(:tag el) (:type el)]
-    [:em _] (em->md el)
-    [:strong _] (strong->md el)
-    [:a _] (a->md el)
-    [:img _] (img->md el)
-    [:ul _]  (ul->md el)
-    [:ol _] (ol->md el)
-    [:blockquote _] (blockquote->md el)
-    [:del _] (surround->md "~~" "~~" el)
-    [:div _] (div->md el)
-    [:span _] (span->md el)
-    [:pre _] (surround->md "```\n" "\n```" el)
-    [_ :comment] (surround->md "<!-- " " -->" el)
+    [:em _] (em->md post el)
+    [:strong _] (strong->md post el)
+    [:a _] (a->md post el)
+    [:img _] (img->md post el)
+    [:ul _]  (ul->md post el)
+    [:ol _] (ol->md post el)
+    [:blockquote _] (blockquote->md post el)
+    [:del _] (surround->md post "~~" "~~" el)
+    [:div _] (div->md post el)
+    [:span _] (span->md post el)
+    [:pre _] (surround->md post "```\n" "\n```" el)
+    [_ :comment] (surround->md post "<!-- " " -->" el)
     [nil nil] el
     :else (cond
-            (h*-tag? (:tag el)) (h*->md el)
+            (h*-tag? (:tag el)) (h*->md post el)
             (el->video el) (video->md (el->video el))
             :else "???")))
 
-(defn els->md [els]
-  (->> els (map el->md) (apply str)))
+(defn els->md [post els]
+  (->> els
+       (map #(el->md post %))
+       (apply str)))
 
-(defn post-content->md [content]
-  (->> content
+(defn post->md [post]
+  (->> (:content post)
        hickory/parse-fragment
        (map hickory/as-hickory)
-       els->md
+       (els->md post)
        str/trim
        (#(str/replace % #"\n\n\n+" "\n\n"))))
 
@@ -252,7 +272,7 @@
     (str "---\n"
          (utils/data->yaml frontmatter-data)
          "---\n\n"
-         (->> post :content post-content->md)
+         (->> post post->md)
          "\n")))
 
 (defn post->path [post]

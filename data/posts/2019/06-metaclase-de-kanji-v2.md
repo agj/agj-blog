@@ -14,7 +14,7 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2019/06/metaclase.png)
+![image](/files/2019/06-metaclase-de-kanji-v2/metaclase.png)
 
 Este viernes pasado terminé la última clase de la más nueva iteración de mi taller _Metaclase de kanji_ en [Ceija](http://www.ceija.cl), que ya he hecho varias veces, pero en este formato es la segunda exitosa vez (excluyo una en que no hubo inscritos…). Este es un taller breve, de cuatro sesiones, orientado a estudiantes de japonés, y cuyo tema central es uno de los sistemas de escritura del japonés: el kanji. Por su volumen, su historia, su complejidad, y sus diversas facetas, es un tema habitualmente muy difícil de asir para los estudiantes del idioma. Por eso, mi objetivo con el taller no es enseñar a leer o escribir kanji, sino que hago una presentación de “metacontenidos” relativos al kanji, es decir, información que provea una base de conocimiento sobre el sistema que es el kanji, para que los asistentes se enfrenten mejor equipados al proceso de aprendizaje.<!-- more -->
 

@@ -19,6 +19,6 @@ I have made this blog look different from how it looked yesterday. It is also us
 
 The design is a relic from 2010 which I never finished implementing, because back then I didn't know much PHP. Now I decided to finish it, for the large part eschewing Wordpress's redundant, confusing, ill-documented and inflexible functions, which made me give up that time, and rolling my own code. Also for the first time I've tasted what it's like not pulling so many hairs in the process of getting letters and boxes where you want them to appear on the screen, thanks to [Less](http://lesscss.org/), an alternative to plain CSS.
 
-Below is a picture of how this blog no longer looks. And here is [the whole, long first page](http://blog.agj.cl/wp-content/uploads/2012/09/oldblogdesign.png).
+Below is a picture of how this blog no longer looks. And here is [the whole, long first page](/files/2012/09-this-blog-now-looks-different/oldblogdesign.png).
 
-![image](http://blog.agj.cl/wp-content/uploads/2012/09/oldblogsmall.png "Old blog design")
+![image](/files/2012/09-this-blog-now-looks-different/oldblogsmall.png "Old blog design")

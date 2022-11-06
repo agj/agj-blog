@@ -17,7 +17,7 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2018/10/newfront2.png)
+![image](/files/2018/10-front-page-design-update/newfront2.png)
 
 I kept the previous design ([archived here](http://agj.cl/files/archive/front2011-1/),) it turns out, for a whole eight years. I modified it slightly over that time, changing the words, the links, and the colors. Its main conceit (the text getting increasingly obscured with time) never changed, and while cute, is not very helpful to the visitor. I decided to change it to be simpler and nicer. My website in general has always reflected my contrary attitude somewhat, but I guess the front page should just do its job of introducing who I am and link to some relevant places, to anyone nice enough to want to know. Yes, I am aware of how obvious the previous statement is.
 

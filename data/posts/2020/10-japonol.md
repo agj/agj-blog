@@ -13,9 +13,9 @@ tags:
 language: eng
 ---
 
-![image](http://blog.agj.cl/wp-content/uploads/2020/10/japoñol-profile.png)
+![image](/files/2020/10-japonol/japoñol-profile.png)
 
-[日本語](http://blog.agj.cl/2020/10/japonol-haponyoru/)
+[日本語](/2020/10/japonol-haponyoru/)
 
 Cuando llegué de vuelta a Chile después de estudiar en Japón, sentí que ya me sentía cómodo con mi nivel de japonés. Entonces se me ocurrió la idea de hacer un proyecto que haga uso de ambos idiomas, japonés y español. Ya van dos años desde que lo empecé, así que el anuncio llega bastante tarde, pero en fin: en julio de 2018 empecé una cuenta de Twitter que se llama [“Japoñol”](https://twitter.com/haponyoru), donde hasta hoy sigo tuiteando en japonés y español.<!-- more -->
 
