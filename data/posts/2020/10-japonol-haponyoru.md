@@ -13,7 +13,7 @@ tags:
 language: eng
 ---
 
-![image](/files/2020/10-japonol-haponyoru/japoñol-profile.png)
+![image](/files/2020/10-japonol-haponyoru/japoñol-profile.png)
 
 [Español](/2020/10/japonol/)
 

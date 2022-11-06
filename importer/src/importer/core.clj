@@ -7,7 +7,8 @@
             [importer.utils :as utils]
             [importer.posts :as posts]
             [importer.taxonomy :as taxonomy]
-            [importer.media :as media]))
+            [importer.media :as media]
+            [clojure.pprint :refer [pprint]]))
 
 
 ;; Data
@@ -72,14 +73,19 @@
        ;
        )
 
-  (println
-   (->> ["http://blog.agj.cl/2009/01/campodecolor-got-me-out-of-college/#more-118"
-         "http://www.agj.cl/files/games/campodecolor_memoria.pdf"
-         "http://blog.agj.cl/wp-content/uploads/2009/04/heartlogo1.png"
-         "http://piclog.agj.cl/?picture=89"
-         "http://blog.agj.cl/wp-content/uploads/2008/12/01-Traffic.mp3"]
-        (map)
-        (str/join "\n")))
+  (->> ["http://blog.agj.cl/2009/01/campodecolor-got-me-out-of-college/#more-118"
+        "http://www.agj.cl/files/games/campodecolor_memoria.pdf"
+        "http://blog.agj.cl/wp-content/uploads/2009/04/heartlogo1.png"
+        "http://piclog.agj.cl/?picture=89"
+        "http://blog.agj.cl/wp-content/uploads/2008/12/01-Traffic.mp3"
+        "http://blog.agj.cl/wp-content/uploads/2020/10/japoñol-profile.png"]
+       (map (fn [medium-url]
+              (let [media (media/wordpress-xml->media wordpress-xml)
+                    normalized-url (utils/normalize medium-url)]
+                (utils/vector-find #(= (:url %) normalized-url)
+                                   media))))
+        ;; (str/join "\n")
+       pprint)
 
   ;;
   )

@@ -1,4 +1,6 @@
 (ns importer.utils
+  (:import (java.text Normalizer
+                      Normalizer$Form))
   (:require [java-time.api :as jt]
             [clj-yaml.core :as yaml]))
 
@@ -27,6 +29,9 @@
   (yaml/generate-string
    data
    :dumper-options {:flow-style :block}))
+
+(defn normalize [text]
+  (Normalizer/normalize text Normalizer$Form/NFC))
 
 
 ;; Data traversal

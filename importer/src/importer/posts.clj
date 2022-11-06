@@ -1,11 +1,11 @@
 (ns importer.posts
   (:require [clojure.java.io :as io]
-            [clj-yaml.core :as yaml]
             [clojure.core.match :refer [match]]
             [slugger.core :refer [->slug]]
             [hickory.core :as hickory]
             [clojure.string :as str]
-            [importer.utils :as utils]))
+            [importer.utils :as utils]
+            [importer.media :as media]))
 
 (declare els->md
          el->md)
@@ -26,9 +26,10 @@
 ;; Conversion
 
 (defn fix-url [post url]
-  (let [blog-match (re-matches #".*://blog[.]agj[.]cl(.*)" url)
-        agj-cl-match (re-matches #".*:(//.*[.]agj[.]cl.*)" url)
-        wp-content-match (re-matches #".*://blog[.]agj[.]cl/wp-content/uploads/(\d+)/(\d+)/(.*)" url)]
+  (let [normalized-url (utils/normalize url)
+        blog-match (re-matches #".*://blog[.]agj[.]cl(.*)" normalized-url)
+        agj-cl-match (re-matches #".*:(//.*[.]agj[.]cl.*)" normalized-url)
+        wp-content-match (re-matches #".*://blog[.]agj[.]cl/wp-content/uploads/(\d+)/(\d+)/(.*)" normalized-url)]
     (or (if wp-content-match
           (str "/files/"
                (get wp-content-match 1) "/"
@@ -41,15 +42,15 @@
             (str/replace blog-url #"#more-\d+" "#language")
             nil))
         (get agj-cl-match 1)
-        url)))
+        normalized-url)))
 
 (defn post-xml->post [post-xml]
   (let [title (utils/get-tag-text :title post-xml)]
     {:title title
      :id (utils/get-tag-text :wp:post_id post-xml)
-     :slug (or (utils/get-tag-text :wp:post_name post-xml)
-               (->slug title))
-     :url (utils/get-tag-text :link post-xml)
+     :slug (utils/normalize
+            (or (utils/get-tag-text :wp:post_name post-xml)
+                (->slug title)))
      :date (utils/parse-date (utils/get-tag-text :wp:post_date post-xml))
      :categories (get-taxonomy "category" post-xml)
      :tags (get-taxonomy "post_tag" post-xml)

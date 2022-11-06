@@ -4,9 +4,9 @@
             [clojure.pprint :refer [pprint]]))
 
 (defn attachment-xml->medium [attachment-xml]
-  (let [url (utils/get-tag-text :wp:attachment_url attachment-xml)
+  (let [url (->> attachment-xml (utils/get-tag-text :wp:attachment_url) utils/normalize)
         url-matches (re-matches #".*wp-content/uploads/\d+/\d+/(.*)" url)
-        link (utils/get-tag-text :link attachment-xml)
+        link (->> attachment-xml (utils/get-tag-text :link) utils/normalize)
         link-matches (re-matches #".*/(\d+)/(\d+)/([^/]+)/.*" link)]
     {:url url
      :year (nth link-matches 1)
