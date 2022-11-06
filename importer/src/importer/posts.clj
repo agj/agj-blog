@@ -22,20 +22,25 @@
               {:name (->> el :content first)
                :slug (:nicename (:attrs el))}))))
 
+(defn medium-url->medium [media medium-url]
+  (utils/vector-find #(= (:url %) medium-url)
+                     media))
+
 
 ;; Conversion
 
-(defn fix-url [post url]
+(defn fix-url [media url]
   (let [normalized-url (utils/normalize url)
         blog-match (re-matches #".*://blog[.]agj[.]cl(.*)" normalized-url)
         agj-cl-match (re-matches #".*:(//.*[.]agj[.]cl.*)" normalized-url)
         wp-content-match (re-matches #".*://blog[.]agj[.]cl/wp-content/uploads/(\d+)/(\d+)/(.*)" normalized-url)]
     (or (if wp-content-match
-          (str "/files/"
-               (get wp-content-match 1) "/"
-               (get wp-content-match 2) "-"
-               (:slug post) "/"
-               (get wp-content-match 3))
+          (let [medium (medium-url->medium media normalized-url)]
+            (str "/files/"
+                 (:year medium) "/"
+                 (:month medium) "-"
+                 (:related-post medium) "/"
+                 (:filename medium)))
           nil)
         (let [blog-url (get blog-match 1)]
           (if blog-url
@@ -65,9 +70,9 @@
 
 ;; Markdown generation
 
-(defn surround->md [post before after el]
+(defn surround->md [media before after el]
   (str before
-       (->> el :content (els->md post))
+       (->> el :content (els->md media))
        after))
 
 (defn h*-tag? [tag]
@@ -76,13 +81,13 @@
     true
     false))
 
-(defn em->md [post el]
-  (surround->md post "_" "_" el))
+(defn em->md [media el]
+  (surround->md media "_" "_" el))
 
-(defn strong->md [post el]
-  (surround->md post "**" "**" el))
+(defn strong->md [media el]
+  (surround->md media "**" "**" el))
 
-(defn img->md [post el]
+(defn img->md [media el]
   (let [alt (->> el :attrs :alt)
         title (->> el :attrs :title)]
     (str "!["
@@ -90,20 +95,20 @@
            "image"
            alt)
          "]("
-         (->> el :attrs :src (fix-url post))
+         (->> el :attrs :src (fix-url media))
          (if title
            (str " \"" title "\"")
            "")
          ")")))
 
-(defn a->md [post el]
+(defn a->md [media el]
   (str "["
-       (->> el :content (els->md post))
+       (->> el :content (els->md media))
        "]("
-       (->> el :attrs :href (fix-url post))
+       (->> el :attrs :href (fix-url media))
        ")"))
 
-(defn h*->md [post el]
+(defn h*->md [media el]
   (let [n (match [(:tag el)]
             [:h1] 1
             [:h2] 2
@@ -113,26 +118,26 @@
     (str "\n"
          (apply str (repeat n "#"))
          " "
-         (->> el :content first (els->md post))
+         (->> el :content first (els->md media))
          "\n")))
 
-(defn div->md [post el]
+(defn div->md [media el]
   (if (= (->> el :attrs :class)
          "language")
     (str "\n"
          "<language-break />\n\n"
-         (->> el :content (els->md post)))
-    (->> el :content (els->md post))))
+         (->> el :content (els->md media)))
+    (->> el :content (els->md media))))
 
-(defn span->md [post el]
+(defn span->md [media el]
   (cond
-    (->> el :attrs :style (= "font-style: italic;")) (em->md post el)
-    (->> el :attrs :class (= "postbody")) (->> el :content (els->md post))
-    (->> el :attrs :class (= "s1")) (->> el :content (els->md post))
+    (->> el :attrs :style (= "font-style: italic;")) (em->md media el)
+    (->> el :attrs :class (= "postbody")) (->> el :content (els->md media))
+    (->> el :attrs :class (= "s1")) (->> el :content (els->md media))
     :else "???"))
 
-(defn blockquote->md [post el]
-  (let [parsed-content (->> el :content (els->md post))]
+(defn blockquote->md [media el]
+  (let [parsed-content (->> el :content (els->md media))]
     (str "\n"
          (->> parsed-content
               str/split-lines
@@ -140,7 +145,7 @@
               (str/join "\n"))
          "\n")))
 
-(defn ol->md [post el]
+(defn ol->md [media el]
   (->> el
        :content
        (reduce (fn [result-count el]
@@ -149,23 +154,23 @@
                    (if (= (:tag el) :li)
                      [(conj result
                             (str (inc count) ". "
-                                 (->> el :content (#(els->md post %)))))
+                                 (->> el :content (#(els->md media %)))))
                       (inc count)]
-                     [(conj result (el->md post el))
+                     [(conj result (el->md media el))
                       count])))
                [[] 0])
        first
        (apply str)))
 
-(defn ul->md [post el]
+(defn ul->md [media el]
   (->> el
        :content
        (map (fn [el]
               (if (= (:tag el)
                      :li)
                 (str "- "
-                     (->> el :content (#(els->md post %))))
-                (el->md post el))))
+                     (->> el :content (#(els->md media %))))
+                (el->md media el))))
        (apply str)))
 
 (defn video-el->url [el]
@@ -226,43 +231,43 @@
        "height=\"" (:height video) "\" "
        "/>"))
 
-(defn el->md [post el]
+(defn el->md [media el]
   (match [(:tag el) (:type el)]
-    [:em _] (em->md post el)
-    [:strong _] (strong->md post el)
-    [:a _] (a->md post el)
-    [:img _] (img->md post el)
-    [:ul _]  (ul->md post el)
-    [:ol _] (ol->md post el)
-    [:blockquote _] (blockquote->md post el)
-    [:del _] (surround->md post "~~" "~~" el)
-    [:div _] (div->md post el)
-    [:span _] (span->md post el)
-    [:pre _] (surround->md post "```\n" "\n```" el)
-    [_ :comment] (surround->md post "<!-- " " -->" el)
+    [:em _] (em->md media el)
+    [:strong _] (strong->md media el)
+    [:a _] (a->md media el)
+    [:img _] (img->md media el)
+    [:ul _]  (ul->md media el)
+    [:ol _] (ol->md media el)
+    [:blockquote _] (blockquote->md media el)
+    [:del _] (surround->md media "~~" "~~" el)
+    [:div _] (div->md media el)
+    [:span _] (span->md media el)
+    [:pre _] (surround->md media "```\n" "\n```" el)
+    [_ :comment] (surround->md media "<!-- " " -->" el)
     [nil nil] el
     :else (cond
-            (h*-tag? (:tag el)) (h*->md post el)
+            (h*-tag? (:tag el)) (h*->md media el)
             (el->video el) (video->md (el->video el))
             :else "???")))
 
-(defn els->md [post els]
+(defn els->md [media els]
   (->> els
-       (map #(el->md post %))
+       (map #(el->md media %))
        (apply str)))
 
-(defn post->md [post]
+(defn post->md [media post]
   (->> (:content post)
        hickory/parse-fragment
        (map hickory/as-hickory)
-       (els->md post)
+       (els->md media)
        str/trim
        (#(str/replace % #"\n\n\n+" "\n\n"))))
 
 
 ;; Final processing
 
-(defn post->string [post]
+(defn post->string [media post]
   (let [frontmatter-data {:id (Integer/parseInt (:id post))
                           :title (:title post)
                           :date (->> post :date :date)
@@ -273,7 +278,7 @@
     (str "---\n"
          (utils/data->yaml frontmatter-data)
          "---\n\n"
-         (->> post post->md)
+         (post->md media post)
          "\n")))
 
 (defn post->path [post]
@@ -288,11 +293,11 @@
            "")
          ".md")))
 
-(defn output-post [post]
+(defn output-post [media post]
   (let [filename (str "../data/posts/" (post->path post))]
     (io/make-parents filename)
     (println (str "Output: " filename))
-    (spit filename (post->string post))))
+    (spit filename (post->string media post))))
 
 
 ;; Main
@@ -303,6 +308,7 @@
                                  (and (= (:tag item-xml) :item)
                                       (= (utils/get-tag-text :wp:post_type item-xml)
                                          "post")))))
-        posts (map post-xml->post posts-xml)]
+        posts (map post-xml->post posts-xml)
+        media (media/wordpress-xml->media wordpress-xml)]
     (doseq [post posts]
-      (output-post post))))
+      (output-post media post))))

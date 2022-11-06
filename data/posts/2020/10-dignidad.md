@@ -15,7 +15,7 @@ tags:
 language: eng
 ---
 
-![image](/files/2020/10-dignidad/dignidad.jpg)
+![image](/files/2020/10-dignity/dignidad.jpg)
 
 [English](/2020/10/dignity/)
 

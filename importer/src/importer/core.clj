@@ -79,11 +79,10 @@
         "http://piclog.agj.cl/?picture=89"
         "http://blog.agj.cl/wp-content/uploads/2008/12/01-Traffic.mp3"
         "http://blog.agj.cl/wp-content/uploads/2020/10/japoñol-profile.png"]
-       (map (fn [medium-url]
-              (let [media (media/wordpress-xml->media wordpress-xml)
-                    normalized-url (utils/normalize medium-url)]
-                (utils/vector-find #(= (:url %) normalized-url)
-                                   media))))
+       (map utils/normalize)
+       (map (fn [url]
+              (posts/medium-url->medium (media/wordpress-xml->media wordpress-xml)
+                                        url)))
         ;; (str/join "\n")
        pprint)
 
