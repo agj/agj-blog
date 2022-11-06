@@ -5,14 +5,14 @@
 
 (defn attachment-xml->medium [attachment-xml]
   (let [url (utils/get-tag-text :wp:attachment_url attachment-xml)
-        matches (re-matches #".*wp-content/uploads/(\d+)/(\d+)/(.*)" url)
-        link (utils/get-tag-text :link attachment-xml)]
+        url-matches (re-matches #".*wp-content/uploads/\d+/\d+/(.*)" url)
+        link (utils/get-tag-text :link attachment-xml)
+        link-matches (re-matches #".*/(\d+)/(\d+)/([^/]+)/.*" link)]
     {:url url
-     :year (nth matches 1)
-     :month (nth matches 2)
-     :filename (nth matches 3)
-     :related-post (nth (re-matches #".*\d+/\d+/([^/]+)/.*" link)
-                        1)}))
+     :year (nth link-matches 1)
+     :month (nth link-matches 2)
+     :filename (nth url-matches 1)
+     :related-post (nth link-matches 3)}))
 
 (defn output-single-medium [medium]
   (let [output-filename (str "../../files/"
