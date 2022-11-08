@@ -132,7 +132,7 @@ view maybeUrl sharedModel model static =
                     )
 
         postViews =
-            Data.PostList.view static.sharedData.categories posts
+            Data.PostList.view posts
 
         subTags =
             posts

@@ -9,8 +9,8 @@ import Html.Attributes as Attr
 import List.Extra as List
 
 
-view : List Category -> List Post.GlobMatchFrontmatter -> List (Html msg)
-view categories posts =
+view : List Post.GlobMatchFrontmatter -> List (Html msg)
+view posts =
     let
         padNumber : Int -> String
         padNumber num =
@@ -36,7 +36,7 @@ view categories posts =
                 |> List.map (Tuple.mapSecond (List.map (Tuple.mapSecond (List.sortBy getTime >> List.reverse))))
     in
     gistsByYearAndMonth
-        |> List.map (viewGistYear categories)
+        |> List.map viewGistYear
         |> List.foldl (++) []
 
 
@@ -44,16 +44,16 @@ view categories posts =
 -- INTERNAL
 
 
-viewGistYear : List Category -> ( String, List ( String, List Post.GlobMatchFrontmatter ) ) -> List (Html msg)
-viewGistYear categories ( year, gistMonths ) =
+viewGistYear : ( String, List ( String, List Post.GlobMatchFrontmatter ) ) -> List (Html msg)
+viewGistYear ( year, gistMonths ) =
     Html.h3 [] [ Html.text year ]
         :: (gistMonths
-                |> List.andThen (viewGistMonth categories)
+                |> List.andThen viewGistMonth
            )
 
 
-viewGistMonth : List Category -> ( String, List Post.GlobMatchFrontmatter ) -> List (Html msg)
-viewGistMonth categories ( month, gists ) =
+viewGistMonth : ( String, List Post.GlobMatchFrontmatter ) -> List (Html msg)
+viewGistMonth ( month, gists ) =
     [ Html.p []
         [ Html.strong []
             [ Html.text (Date.monthNumberToFullName (String.toInt month |> Maybe.withDefault 0))
@@ -61,13 +61,13 @@ viewGistMonth categories ( month, gists ) =
         ]
     , Html.ul []
         (gists
-            |> List.map (viewGist categories)
+            |> List.map viewGist
         )
     ]
 
 
-viewGist : List Category -> Post.GlobMatchFrontmatter -> Html msg
-viewGist categories gist =
+viewGist : Post.GlobMatchFrontmatter -> Html msg
+viewGist gist =
     let
         dateText =
             "{date} – "
@@ -75,7 +75,6 @@ viewGist categories gist =
 
         postCategories =
             gist.frontmatter.categories
-                |> List.map (Category.get categories)
     in
     Html.li []
         [ Html.text dateText

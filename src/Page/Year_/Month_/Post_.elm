@@ -99,7 +99,6 @@ view maybeUrl sharedModel static =
 
         categoryEls =
             static.data.frontmatter.categories
-                |> List.map (Category.get static.sharedData.categories)
                 |> List.map (Category.toLink [])
                 |> List.intersperse (Html.text ", ")
 

@@ -1,60 +1,215 @@
 module Data.Category exposing
     ( Category
     , NestedCategory(..)
-    , dataSource
-    , error
-    , get
+    , all
+    , decoder
+    , fromSlug
+    , getDescription
+    , getName
+    , getSlug
     , nest
     , toLink
     , toUrl
     , viewList
     )
 
-import DataSource exposing (DataSource)
-import DataSource.File
 import Html exposing (Html)
 import Html.Attributes as Attr
 import List.Extra as List
 import Maybe.Extra as Maybe
-import Yaml.Decode as Decode exposing (Decoder)
+import OptimizedDecoder as Decode exposing (Decoder)
 
 
-type alias Category =
-    { name : String
-    , slug : String
-    , description : Maybe String
-    , parent : Maybe String
-    }
+type Category
+    = Fiction
+    | Interactive
+    | Language
+    | Musings
+    | MyGames
+    | Opinion
+    | Projects
+    | Sound
+    | Video
+    | Visual
+    | Uncategorized
 
 
 type NestedCategory
     = NestedCategory Category (List NestedCategory)
 
 
-dataSource : DataSource (List Category)
-dataSource =
-    DataSource.File.rawFile "data/categories.yaml"
-        |> DataSource.map (Decode.fromString (Decode.list decoder))
-        |> DataSource.map (Result.withDefault [])
+all : List Category
+all =
+    [ Fiction
+    , Interactive
+    , Language
+    , Musings
+    , MyGames
+    , Opinion
+    , Projects
+    , Sound
+    , Video
+    , Visual
+    , Uncategorized
+    ]
+
+
+getSlug : Category -> String
+getSlug category =
+    case category of
+        Fiction ->
+            "fiction"
+
+        Interactive ->
+            "interactive"
+
+        Language ->
+            "language"
+
+        Musings ->
+            "musings"
+
+        MyGames ->
+            "my-games"
+
+        Opinion ->
+            "opinion"
+
+        Projects ->
+            "projects"
+
+        Sound ->
+            "sound"
+
+        Video ->
+            "videos"
+
+        Visual ->
+            "graphics"
+
+        Uncategorized ->
+            "uncategorized"
+
+
+fromSlug : String -> Result String Category
+fromSlug slug =
+    case slug of
+        "fiction" ->
+            Ok Fiction
+
+        "interactive" ->
+            Ok Interactive
+
+        "language" ->
+            Ok Language
+
+        "musings" ->
+            Ok Musings
+
+        "my-games" ->
+            Ok MyGames
+
+        "opinion" ->
+            Ok Opinion
+
+        "projects" ->
+            Ok Projects
+
+        "sound" ->
+            Ok Sound
+
+        "videos" ->
+            Ok Video
+
+        "graphics" ->
+            Ok Visual
+
+        "uncategorized" ->
+            Ok Uncategorized
+
+        _ ->
+            Err ("Category not found: " ++ slug)
+
+
+getName : Category -> String
+getName category =
+    case category of
+        Fiction ->
+            "Fiction"
+
+        Interactive ->
+            "Interactive"
+
+        Language ->
+            "Language"
+
+        Musings ->
+            "Musings"
+
+        MyGames ->
+            "My games"
+
+        Opinion ->
+            "Opinion"
+
+        Projects ->
+            "Projects"
+
+        Sound ->
+            "Sound"
+
+        Video ->
+            "Video"
+
+        Visual ->
+            "Visual"
+
+        Uncategorized ->
+            "Uncategorized"
+
+
+getDescription : Category -> Maybe String
+getDescription category =
+    case category of
+        Interactive ->
+            Just "Video games and other things."
+
+        Musings ->
+            Just "Random personal thoughts."
+
+        Sound ->
+            Just "Including music."
+
+        Video ->
+            Just "Animated and otherwise."
+
+        Visual ->
+            Just "Graphic design, illustrations and such."
+
+        _ ->
+            Nothing
+
+
+getParent : Category -> Maybe Category
+getParent category =
+    case category of
+        MyGames ->
+            Just Interactive
+
+        _ ->
+            Nothing
 
 
 toUrl : Category -> String
-toUrl { slug } =
+toUrl category =
     "/category/{slug}"
-        |> String.replace "{slug}" slug
-
-
-get : List Category -> String -> Category
-get categories slug =
-    categories
-        |> List.find (.slug >> (==) slug)
-        |> Maybe.withDefault error
+        |> String.replace "{slug}" (getSlug category)
 
 
 nest : List Category -> List NestedCategory
 nest categories =
     categories
-        |> List.filter (.parent >> Maybe.isNothing)
+        |> List.filter (getParent >> Maybe.isNothing)
         |> List.map (nestDelegate categories)
 
 
@@ -74,7 +229,7 @@ toLink : List (Html.Attribute msg) -> Category -> Html msg
 toLink attrs category =
     let
         descriptionAttr =
-            case category.description of
+            case getDescription category of
                 Just desc ->
                     Attr.title desc
                         :: attrs
@@ -88,36 +243,25 @@ toLink attrs category =
          ]
             ++ descriptionAttr
         )
-        [ Html.text category.name ]
+        [ Html.text (getName category) ]
 
 
-error : Category
-error =
-    { name = "ERROR"
-    , slug = "ERROR"
-    , description = Nothing
-    , parent = Nothing
-    }
+decoder : Decoder Category
+decoder =
+    Decode.string
+        |> Decode.map fromSlug
+        |> Decode.andThen Decode.fromResult
 
 
 
 -- INTERNAL
 
 
-decoder : Decoder Category
-decoder =
-    Decode.map4 Category
-        (Decode.field "name" Decode.string)
-        (Decode.field "slug" Decode.string)
-        (Decode.maybe (Decode.field "description" Decode.string))
-        (Decode.maybe (Decode.field "parent" Decode.string))
-
-
 nestDelegate : List Category -> Category -> NestedCategory
 nestDelegate categories category =
     NestedCategory category
         (categories
-            |> List.filter (.parent >> (==) (Just category.slug))
+            |> List.filter (getParent >> (==) (Just category))
             |> List.map (nestDelegate categories)
         )
 

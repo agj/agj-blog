@@ -43,8 +43,10 @@ type alias RouteParams =
 
 routes : DataSource (List RouteParams)
 routes =
-    Category.dataSource
-        |> DataSource.map (List.map (\{ slug } -> { category = slug }))
+    Category.all
+        |> List.map Category.getSlug
+        |> List.map (\slug -> { category = slug })
+        |> DataSource.succeed
 
 
 
@@ -84,38 +86,42 @@ view :
     -> StaticPayload Data RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
-    let
-        category =
-            Category.get static.sharedData.categories static.routeParams.category
+    case Category.fromSlug static.routeParams.category of
+        Err _ ->
+            { title = "Category not found!"
+            , body = []
+            }
 
-        posts =
-            static.sharedData.posts
-                |> List.filter (.frontmatter >> .categories >> List.member category.slug)
+        Ok category ->
+            let
+                posts =
+                    static.sharedData.posts
+                        |> List.filter (.frontmatter >> .categories >> List.member category)
 
-        postViews =
-            Data.PostList.view static.sharedData.categories posts
+                postViews =
+                    Data.PostList.view posts
 
-        titleEl =
-            [ Html.text "Category: "
-            , Html.em []
-                [ Html.text category.name ]
-            ]
+                titleEl =
+                    [ Html.text "Category: "
+                    , Html.em []
+                        [ Html.text (Category.getName category) ]
+                    ]
 
-        backToIndexEls =
-            [ Html.text "Back to "
-            , Html.a [ Attr.href "/" ] [ Html.text "the index" ]
-            , Html.text "."
-            ]
+                backToIndexEls =
+                    [ Html.text "Back to "
+                    , Html.a [ Attr.href "/" ] [ Html.text "the index" ]
+                    , Html.text "."
+                    ]
 
-        descriptionEl =
-            category.description
-                |> Maybe.map
-                    (\desc -> Html.text (desc ++ " ") :: backToIndexEls)
-                |> Maybe.withDefault backToIndexEls
-                |> Html.p []
-    in
-    { title = title static
-    , body =
-        PageHeader.view titleEl (Just descriptionEl)
-            :: postViews
-    }
+                descriptionEl =
+                    Category.getDescription category
+                        |> Maybe.map
+                            (\desc -> Html.text (desc ++ " ") :: backToIndexEls)
+                        |> Maybe.withDefault backToIndexEls
+                        |> Html.p []
+            in
+            { title = title static
+            , body =
+                PageHeader.view titleEl (Just descriptionEl)
+                    :: postViews
+            }

@@ -77,6 +77,6 @@ view maybeUrl sharedModel static =
                     ]
                 )
             )
-        , Category.viewList static.sharedData.categories
+        , Category.viewList Category.all
         ]
     }

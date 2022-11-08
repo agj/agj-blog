@@ -10,6 +10,7 @@ module Data.Post exposing
     )
 
 import CustomMarkup
+import Data.Category as Category exposing (Category)
 import Data.Language as Language exposing (Language)
 import DataSource exposing (DataSource)
 import DataSource.File
@@ -32,7 +33,7 @@ type alias Frontmatter =
     { id : Maybe Int
     , title : String
     , language : Language
-    , categories : List String
+    , categories : List Category
     , tags : List String
     , date : Int
     , hour : Maybe Int
@@ -148,7 +149,7 @@ frontmatterDecoder =
         |> Decode.required "id" (Decode.maybe Decode.int)
         |> Decode.required "title" Decode.string
         |> Decode.required "language" Language.decoder
-        |> Decode.required "categories" (Decode.list Decode.string)
+        |> Decode.required "categories" (Decode.list Category.decoder)
         |> Decode.required "tags" (Decode.list Decode.string)
         |> Decode.required "date" Decode.int
         |> Decode.required "hour" (Decode.maybe Decode.int)
