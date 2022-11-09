@@ -4,12 +4,12 @@ title: What (video) games are
 date: 24
 hour: 0
 categories:
-- my-games
-- opinion
+  - my-games
+  - musings
 tags:
-- heart
-- interactive
-- video-game
+  - heart
+  - interactive
+  - video-game
 language: eng
 ---
 

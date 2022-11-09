@@ -35,14 +35,6 @@ allNested : List NestedCategory
 allNested =
     [ NestedCategory
         (Category
-            { name = "Fiction"
-            , slug = "fiction"
-            , description = Nothing
-            }
-        )
-        []
-    , NestedCategory
-        (Category
             { name = "Interactive"
             , slug = "interactive"
             , description = Just "Video games and other things."
@@ -67,25 +59,17 @@ allNested =
         []
     , NestedCategory
         (Category
-            { name = "Musings"
-            , slug = "musings"
-            , description = Just "Random personal thoughts."
+            { name = "Video"
+            , slug = "videos"
+            , description = Just "Animated and otherwise."
             }
         )
         []
     , NestedCategory
         (Category
-            { name = "Opinion"
-            , slug = "opinion"
-            , description = Nothing
-            }
-        )
-        []
-    , NestedCategory
-        (Category
-            { name = "Projects"
-            , slug = "projects"
-            , description = Nothing
+            { name = "Visual"
+            , slug = "graphics"
+            , description = Just "Graphic design, illustrations and such."
             }
         )
         []
@@ -99,17 +83,17 @@ allNested =
         []
     , NestedCategory
         (Category
-            { name = "Video"
-            , slug = "videos"
-            , description = Just "Animated and otherwise."
+            { name = "Musings"
+            , slug = "musings"
+            , description = Just "Random personal thoughts."
             }
         )
         []
     , NestedCategory
         (Category
-            { name = "Visual"
-            , slug = "graphics"
-            , description = Just "Graphic design, illustrations and such."
+            { name = "Projects"
+            , slug = "projects"
+            , description = Nothing
             }
         )
         []

@@ -4,14 +4,13 @@ title: Dignidad
 date: 16
 hour: 21
 categories:
-- musings
-- opinion
-- graphics
+  - musings
+  - graphics
 tags:
-- espanol
-- graphic-design
-- illustration
-- video
+  - espanol
+  - graphic-design
+  - illustration
+  - video
 language: eng
 ---
 

@@ -4,13 +4,12 @@ title: Dignity
 date: 16
 hour: 20
 categories:
-- musings
-- opinion
-- graphics
+  - musings
+  - graphics
 tags:
-- graphic-design
-- illustration
-- video
+  - graphic-design
+  - illustration
+  - video
 language: eng
 ---
 

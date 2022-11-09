@@ -4,15 +4,15 @@ title: A 'metaclass'
 date: 11
 hour: 7
 categories:
-- language
-- musings
-- opinion
-- projects
+  - language
+  - musings
+  - musings
+  - projects
 tags:
-- espanol
-- japanese
-- language
-- metaclase-de-kanji
+  - espanol
+  - japanese
+  - language
+  - metaclase-de-kanji
 language: eng
 ---
 
@@ -28,16 +28,16 @@ So this class I'm about to finish offering this week reflects my views on educat
 
 So that is one of the things I've been up to. And to end this post, here's a little bullet-point manifesto I wrote for myself, to keep me focused on my goals for this workshop:
 
- 	1. The classroom is a place for active discussion, exploration, and exchange of knowledge and ideas by and for all.
- 	2. Our themes are Japanese kanji, self-study, and the intersection of the two.
- 	3. When leaving the classroom, study has just begun.
- 	4. A student questions, asks, errs, researches, teaches themselves, shares their knowledge.
- 	5. The teacher is but a guide.
- 	6. If one must teach, teach that which is elementary and general.
- 	7. Better than teaching is suggesting.
- 	8. Better than suggesting is asking.
- 	9. Better than asking is listening.
- 	10. Anything can be debated.
+1. The classroom is a place for active discussion, exploration, and exchange of knowledge and ideas by and for all.
+2. Our themes are Japanese kanji, self-study, and the intersection of the two.
+3. When leaving the classroom, study has just begun.
+4. A student questions, asks, errs, researches, teaches themselves, shares their knowledge.
+5. The teacher is but a guide.
+6. If one must teach, teach that which is elementary and general.
+7. Better than teaching is suggesting.
+8. Better than suggesting is asking.
+9. Better than asking is listening.
+10. Anything can be debated.
 
 <!-- more -->
 
@@ -53,13 +53,13 @@ Así que esta clase que estoy a punto de terminar de ofrecer esta semana refleja
 
 Y eso es una de las cosas que me han tenido ocupado. Para terminar este post, cierro con un pequeño manifiesto en formato de lista, que escribí para mantenerme enfocado en mis metas para este taller:
 
- 	1. La sala es un lugar de debate activo, de exploración e intercambio de conocimientos e ideas por parte de todos.
- 	2. Nuestros temas son el kanji, los métodos de autoaprendizaje, y el cruce entre esos dos.
- 	3. Al salir de la sala, el estudio acaba de empezar.
- 	4. Un estudiante cuestiona, pregunta, erra, investiga, se autoenseña, comparte sus conocimientos.
- 	5. El profesor no es más que un canalizador.
- 	6. Si hay que enseñar, enseñar sólo lo elemental y general.
- 	7. Mejor que enseñar es proponer.
- 	8. Mejor que proponer es preguntar.
- 	9. Mejor que preguntar es escuchar.
- 	10. Todo es debatible.
+1. La sala es un lugar de debate activo, de exploración e intercambio de conocimientos e ideas por parte de todos.
+2. Nuestros temas son el kanji, los métodos de autoaprendizaje, y el cruce entre esos dos.
+3. Al salir de la sala, el estudio acaba de empezar.
+4. Un estudiante cuestiona, pregunta, erra, investiga, se autoenseña, comparte sus conocimientos.
+5. El profesor no es más que un canalizador.
+6. Si hay que enseñar, enseñar sólo lo elemental y general.
+7. Mejor que enseñar es proponer.
+8. Mejor que proponer es preguntar.
+9. Mejor que preguntar es escuchar.
+10. Todo es debatible.
