@@ -12,6 +12,7 @@ module Data.Post exposing
 import CustomMarkup
 import Data.Category as Category exposing (Category)
 import Data.Language as Language exposing (Language)
+import Data.Tag as Tag exposing (Tag)
 import DataSource exposing (DataSource)
 import DataSource.File
 import DataSource.Glob as Glob exposing (Glob)
@@ -34,7 +35,7 @@ type alias Frontmatter =
     , title : String
     , language : Language
     , categories : List Category
-    , tags : List String
+    , tags : List Tag
     , date : Int
     , hour : Maybe Int
     }
@@ -150,6 +151,6 @@ frontmatterDecoder =
         |> Decode.required "title" Decode.string
         |> Decode.required "language" Language.decoder
         |> Decode.required "categories" (Decode.list Category.decoder)
-        |> Decode.required "tags" (Decode.list Decode.string)
+        |> Decode.required "tags" (Decode.list Tag.decoder)
         |> Decode.required "date" Decode.int
         |> Decode.required "hour" (Decode.maybe Decode.int)

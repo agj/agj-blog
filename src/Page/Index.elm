@@ -161,7 +161,7 @@ view maybeUrl sharedModel model static =
                     [ Html.h3 []
                         [ Html.text "Tags" ]
                     , Html.p []
-                        (Tag.listView [] static.sharedData.posts static.sharedData.tags)
+                        (Tag.listView [] static.sharedData.posts Tag.all)
                     ]
                 ]
             ]

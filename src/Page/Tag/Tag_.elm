@@ -40,8 +40,10 @@ type alias RouteParams =
 
 routes : DataSource (List RouteParams)
 routes =
-    Tag.dataSource
-        |> DataSource.map (List.map (\{ slug } -> { tag = slug }))
+    Tag.all
+        |> List.map Tag.getSlug
+        |> List.map (\slug -> { tag = slug })
+        |> DataSource.succeed
 
 
 
@@ -73,7 +75,7 @@ head static =
     [ Head.metaRedirect
         (Head.raw
             ("0; url="
-                ++ Tag.toUrl (Tag.get static.sharedData.tags static.routeParams.tag) []
+                ++ Tag.slugsToUrl static.routeParams.tag []
             )
         )
     ]

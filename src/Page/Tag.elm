@@ -15,6 +15,7 @@ import Page exposing (PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Path exposing (Path)
 import QueryParams exposing (QueryParams)
+import Result.Extra as Result
 import Shared
 import Site
 import Url.Builder exposing (QueryParameter)
@@ -38,16 +39,16 @@ page =
 init : Maybe PageUrl -> Shared.Model -> StaticPayload Data {} -> ( Model, Cmd Msg )
 init maybePageUrl sharedModel static =
     let
-        queryTagSlugs =
+        queryTags =
             maybePageUrl
                 |> Maybe.andThen .query
                 |> Maybe.map QueryParams.toDict
                 |> Maybe.andThen (Dict.get "t")
                 |> Maybe.withDefault []
-
-        queryTags =
-            static.sharedData.tags
-                |> List.filter (.slug >> List.memberOf queryTagSlugs)
+                |> List.map Tag.fromSlug
+                |> List.filter Result.isOk
+                |> Result.combine
+                |> Result.withDefault []
     in
     ( { queryTags = queryTags }, Cmd.none )
 
@@ -128,7 +129,7 @@ view maybeUrl sharedModel model static =
                 |> List.filter
                     (\post ->
                         model.queryTags
-                            |> List.all (.slug >> List.memberOf post.frontmatter.tags)
+                            |> List.all (List.memberOf post.frontmatter.tags)
                     )
 
         postViews =
@@ -138,7 +139,6 @@ view maybeUrl sharedModel model static =
             posts
                 |> List.andThen (.frontmatter >> .tags)
                 |> List.unique
-                |> List.map (Tag.get static.sharedData.tags)
                 |> List.filter (List.memberOf model.queryTags >> not)
 
         tagToEl tag =
@@ -156,7 +156,7 @@ view maybeUrl sharedModel model static =
                 , Attr.href url
                 , Attr.attribute "data-tooltip" "Remove from filter"
                 ]
-                [ Html.text tag.name ]
+                [ Html.text (Tag.getName tag) ]
 
         titleChildren =
             if List.length model.queryTags > 0 then

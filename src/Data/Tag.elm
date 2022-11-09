@@ -1,35 +1,608 @@
 module Data.Tag exposing
     ( Tag
+    , all
     , baseUrl
-    , dataSource
-    , error
-    , get
+    , decoder
+    , fromSlug
+    , getName
+    , getSlug
     , listView
+    , slugsToUrl
     , toLink
     , toUrl
     )
 
-import Data.Post as Post
 import DataSource exposing (DataSource)
-import DataSource.File
 import Html exposing (Html)
 import Html.Attributes as Attr
 import List.Extra as List
 import Maybe.Extra as Maybe
-import Yaml.Decode as Decode exposing (Decoder)
+import OptimizedDecoder as Decode exposing (Decoder)
 
 
-type alias Tag =
-    { name : String
-    , slug : String
-    }
+type Tag
+    = Tag
+        { name : String
+        , slug : String
+        }
 
 
-dataSource : DataSource (List Tag)
-dataSource =
-    DataSource.File.rawFile "data/tags.yaml"
-        |> DataSource.map (Decode.fromString (Decode.list decoder))
-        |> DataSource.map (Result.withDefault [])
+all : List Tag
+all =
+    [ Tag
+        { name = "(Sin asunto)"
+        , slug = "sin-asunto"
+        }
+    , Tag
+        { name = "Adobe AIR"
+        , slug = "adobe-air"
+        }
+    , Tag
+        { name = "album"
+        , slug = "album"
+        }
+    , Tag
+        { name = "animation"
+        , slug = "animation"
+        }
+    , Tag
+        { name = "anime"
+        , slug = "anime"
+        }
+    , Tag
+        { name = "Anything"
+        , slug = "anything"
+        }
+    , Tag
+        { name = "archive"
+        , slug = "archive"
+        }
+    , Tag
+        { name = "Asymmetric feedback"
+        , slug = "asymmetric-feedback"
+        }
+    , Tag
+        { name = "audio games"
+        , slug = "audio-games"
+        }
+    , Tag
+        { name = "bicycle"
+        , slug = "bicycle"
+        }
+    , Tag
+        { name = "blog"
+        , slug = "blog"
+        }
+    , Tag
+        { name = "book"
+        , slug = "book"
+        }
+    , Tag
+        { name = "Buranko"
+        , slug = "buranko"
+        }
+    , Tag
+        { name = "campodecolor"
+        , slug = "campodecolor"
+        }
+    , Tag
+        { name = "Cave Trip"
+        , slug = "cave-trip"
+        }
+    , Tag
+        { name = "CCPLM"
+        , slug = "ccplm"
+        }
+    , Tag
+        { name = "Chile"
+        , slug = "chile"
+        }
+    , Tag
+        { name = "cinema"
+        , slug = "cinema"
+        }
+    , Tag
+        { name = "Climbrunner"
+        , slug = "climbrunner"
+        }
+    , Tag
+        { name = "collaboration"
+        , slug = "collaboration"
+        }
+    , Tag
+        { name = "Come to think of language"
+        , slug = "come-to-think-of-language"
+        }
+    , Tag
+        { name = "comic"
+        , slug = "comic"
+        }
+    , Tag
+        { name = "competition"
+        , slug = "competition"
+        }
+    , Tag
+        { name = "composition"
+        , slug = "composition"
+        }
+    , Tag
+        { name = "conlang"
+        , slug = "conlang"
+        }
+    , Tag
+        { name = "Construct"
+        , slug = "construct"
+        }
+    , Tag
+        { name = "creativity"
+        , slug = "creativity"
+        }
+    , Tag
+        { name = "dot-into"
+        , slug = "dot-into"
+        }
+    , Tag
+        { name = "dream"
+        , slug = "dream"
+        }
+    , Tag
+        { name = "Elm"
+        , slug = "elm"
+        }
+    , Tag
+        { name = "Entretenimientos Diana"
+        , slug = "entretenimientos-diana"
+        }
+    , Tag
+        { name = "español"
+        , slug = "espanol"
+        }
+    , Tag
+        { name = "event"
+        , slug = "event"
+        }
+    , Tag
+        { name = "exhibition"
+        , slug = "exhibition"
+        }
+    , Tag
+        { name = "family"
+        , slug = "family"
+        }
+    , Tag
+        { name = "final year's project"
+        , slug = "final-years-project"
+        }
+    , Tag
+        { name = "Flash"
+        , slug = "flash"
+        }
+    , Tag
+        { name = "Flixel"
+        , slug = "flixel"
+        }
+    , Tag
+        { name = "Flower pattern"
+        , slug = "flower-pattern"
+        }
+    , Tag
+        { name = "for children"
+        , slug = "for-children"
+        }
+    , Tag
+        { name = "forum"
+        , slug = "forum"
+        }
+    , Tag
+        { name = "Frogs Drink Faces"
+        , slug = "frogs-drink-faces"
+        }
+    , Tag
+        { name = "front page design"
+        , slug = "front-page-design"
+        }
+    , Tag
+        { name = "function-promisifier"
+        , slug = "function-promisifier"
+        }
+    , Tag
+        { name = "Game Boy"
+        , slug = "game-boy"
+        }
+    , Tag
+        { name = "Game Boy Camera"
+        , slug = "game-boy-camera"
+        }
+    , Tag
+        { name = "game engine"
+        , slug = "game-engine"
+        }
+    , Tag
+        { name = "games aggregate"
+        , slug = "games-aggregate"
+        }
+    , Tag
+        { name = "Gently"
+        , slug = "gently"
+        }
+    , Tag
+        { name = "graphic design"
+        , slug = "graphic-design"
+        }
+    , Tag
+        { name = "GregWS"
+        , slug = "gregws"
+        }
+    , Tag
+        { name = "Halloween"
+        , slug = "halloween"
+        }
+    , Tag
+        { name = "HD"
+        , slug = "hd"
+        }
+    , Tag
+        { name = "Heart"
+        , slug = "heart"
+        }
+    , Tag
+        { name = "IGF"
+        , slug = "igf"
+        }
+    , Tag
+        { name = "illustration"
+        , slug = "illustration"
+        }
+    , Tag
+        { name = "industry"
+        , slug = "industry"
+        }
+    , Tag
+        { name = "Inform 7"
+        , slug = "inform-7"
+        }
+    , Tag
+        { name = "Interactive"
+        , slug = "interactive"
+        }
+    , Tag
+        { name = "interactive fiction"
+        , slug = "interactive-fiction"
+        }
+    , Tag
+        { name = "Intervalo lúcido del individuo inconsciente"
+        , slug = "intervalo-lucido-del-individuo-inconsciente"
+        }
+    , Tag
+        { name = "January"
+        , slug = "january"
+        }
+    , Tag
+        { name = "Japan"
+        , slug = "japan"
+        }
+    , Tag
+        { name = "japanese"
+        , slug = "japanese"
+        }
+    , Tag
+        { name = "Japoñol"
+        , slug = "japonol"
+        }
+    , Tag
+        { name = "javascript"
+        , slug = "javascript"
+        }
+    , Tag
+        { name = "Jugosa Cocina para Niños"
+        , slug = "jugosa-cocina-para-ninos"
+        }
+    , Tag
+        { name = "Knytt of the Month"
+        , slug = "knytt-of-the-month"
+        }
+    , Tag
+        { name = "Knytt Stories"
+        , slug = "knytt-stories"
+        }
+    , Tag
+        { name = "KOTM"
+        , slug = "kotm"
+        }
+    , Tag
+        { name = "language"
+        , slug = "language"
+        }
+    , Tag
+        { name = "library"
+        , slug = "library"
+        }
+    , Tag
+        { name = "literature"
+        , slug = "literature"
+        }
+    , Tag
+        { name = "lofi"
+        , slug = "lofi"
+        }
+    , Tag
+        { name = "Ludum Dare"
+        , slug = "ludum-dare"
+        }
+    , Tag
+        { name = "magazine"
+        , slug = "magazine"
+        }
+    , Tag
+        { name = "Metaclase de Kanji"
+        , slug = "metaclase-de-kanji"
+        }
+    , Tag
+        { name = "micro-story"
+        , slug = "micro-story"
+        }
+    , Tag
+        { name = "MooTools"
+        , slug = "mootools"
+        }
+    , Tag
+        { name = "motion graphics"
+        , slug = "motion-graphics"
+        }
+    , Tag
+        { name = "moving photo"
+        , slug = "moving-photo"
+        }
+    , Tag
+        { name = "Muévete"
+        , slug = "muevete"
+        }
+    , Tag
+        { name = "museography"
+        , slug = "museography"
+        }
+    , Tag
+        { name = "music video"
+        , slug = "music-video"
+        }
+    , Tag
+        { name = "Nendo project"
+        , slug = "nendo-project"
+        }
+    , Tag
+        { name = "NitroTracker"
+        , slug = "nitrotracker"
+        }
+    , Tag
+        { name = "openFrameworks"
+        , slug = "openframeworks"
+        }
+    , Tag
+        { name = "pen-and-paper game"
+        , slug = "pen-and-paper-game"
+        }
+    , Tag
+        { name = "perception"
+        , slug = "perception"
+        }
+    , Tag
+        { name = "photomotion"
+        , slug = "photomotion"
+        }
+    , Tag
+        { name = "PHP"
+        , slug = "php"
+        }
+    , Tag
+        { name = "Pirate Kart"
+        , slug = "pirate-kart"
+        }
+    , Tag
+        { name = "pixel art"
+        , slug = "pixel-art"
+        }
+    , Tag
+        { name = "portfolio"
+        , slug = "portfolio"
+        }
+    , Tag
+        { name = "post-mortem"
+        , slug = "post-mortem"
+        }
+    , Tag
+        { name = "Prosopamnesia"
+        , slug = "prosopamnesia"
+        }
+    , Tag
+        { name = "Racket"
+        , slug = "racket"
+        }
+    , Tag
+        { name = "release"
+        , slug = "release"
+        }
+    , Tag
+        { name = "Runnerby"
+        , slug = "runnerby"
+        }
+    , Tag
+        { name = "Santiago"
+        , slug = "santiago"
+        }
+    , Tag
+        { name = "Santiago en 100 palabras"
+        , slug = "santiago-en-100-palabras"
+        }
+    , Tag
+        { name = "Sega"
+        , slug = "sega"
+        }
+    , Tag
+        { name = "Sheets"
+        , slug = "sheets"
+        }
+    , Tag
+        { name = "short film"
+        , slug = "short-film"
+        }
+    , Tag
+        { name = "Sound"
+        , slug = "sound"
+        }
+    , Tag
+        { name = "sound design"
+        , slug = "sound-design"
+        }
+    , Tag
+        { name = "Spwords"
+        , slug = "spwords"
+        }
+    , Tag
+        { name = "story"
+        , slug = "story"
+        }
+    , Tag
+        { name = "storyboard"
+        , slug = "storyboard"
+        }
+    , Tag
+        { name = "Super Friendship Club"
+        , slug = "super-friendship-club"
+        }
+    , Tag
+        { name = "surrealism"
+        , slug = "surrealism"
+        }
+    , Tag
+        { name = "text game"
+        , slug = "text-game"
+        }
+    , Tag
+        { name = "The Ants Parade"
+        , slug = "the-ants-parade"
+        }
+    , Tag
+        { name = "The Color and the Leaves"
+        , slug = "the-color-and-the-leaves"
+        }
+    , Tag
+        { name = "The Games Collective"
+        , slug = "the-games-collective"
+        }
+    , Tag
+        { name = "The Lake"
+        , slug = "the-lake"
+        }
+    , Tag
+        { name = "The tea room"
+        , slug = "the-tea-room"
+        }
+    , Tag
+        { name = "TIGSource"
+        , slug = "tigsource"
+        }
+    , Tag
+        { name = "timelapse"
+        , slug = "timelapse"
+        }
+    , Tag
+        { name = "tracker"
+        , slug = "tracker"
+        }
+    , Tag
+        { name = "translation"
+        , slug = "translation"
+        }
+    , Tag
+        { name = "Tumblecopter"
+        , slug = "tumblecopter"
+        }
+    , Tag
+        { name = "Twine"
+        , slug = "twine"
+        }
+    , Tag
+        { name = "university"
+        , slug = "university"
+        }
+    , Tag
+        { name = "video"
+        , slug = "video"
+        }
+    , Tag
+        { name = "video game"
+        , slug = "video-game"
+        }
+    , Tag
+        { name = "Viewpoints"
+        , slug = "viewpoints"
+        }
+    , Tag
+        { name = "Vine"
+        , slug = "vine"
+        }
+    , Tag
+        { name = "virtual reality"
+        , slug = "virtual-reality"
+        }
+    , Tag
+        { name = "visual novel"
+        , slug = "visual-novel"
+        }
+    , Tag
+        { name = "Walker"
+        , slug = "walker"
+        }
+    , Tag
+        { name = "web"
+        , slug = "web"
+        }
+    , Tag
+        { name = "web 2.0"
+        , slug = "web-20"
+        }
+    , Tag
+        { name = "Weekly concern"
+        , slug = "weekly-concern"
+        }
+    , Tag
+        { name = "While telling with the eyes"
+        , slug = "while-telling-with-the-eyes"
+        }
+    , Tag
+        { name = "Wirewalk"
+        , slug = "wirewalk"
+        }
+    , Tag
+        { name = "Within"
+        , slug = "within"
+        }
+    , Tag
+        { name = "writing"
+        , slug = "writing"
+        }
+    , Tag
+        { name = "日本語"
+        , slug = "nihongo"
+        }
+    ]
+
+
+getSlug : Tag -> String
+getSlug (Tag { slug }) =
+    slug
+
+
+fromSlug : String -> Result String Tag
+fromSlug slug =
+    all
+        |> List.find (\(Tag tag) -> tag.slug == slug)
+        |> Result.fromMaybe ("Couldn't find tag: " ++ slug)
+
+
+getName : Tag -> String
+getName (Tag { name }) =
+    name
 
 
 baseUrl : String
@@ -39,24 +612,23 @@ baseUrl =
 
 toUrl : Tag -> List Tag -> String
 toUrl firstTag moreTags =
+    slugsToUrl
+        (getSlug firstTag)
+        (List.map getSlug moreTags)
+
+
+slugsToUrl : String -> List String -> String
+slugsToUrl firstSlug moreSlugs =
     let
         slugs =
-            firstTag
-                :: moreTags
-                |> List.map .slug
+            firstSlug
+                :: moreSlugs
                 |> List.sort
                 |> String.join "&t="
     in
     "{baseUrl}?t={slugs}"
         |> String.replace "{baseUrl}" baseUrl
         |> String.replace "{slugs}" slugs
-
-
-get : List Tag -> String -> Tag
-get tags slug =
-    tags
-        |> List.find (.slug >> (==) slug)
-        |> Maybe.withDefault error
 
 
 toLink : List Tag -> List (Html.Attribute msg) -> Tag -> Html msg
@@ -69,7 +641,7 @@ toLink tagsToAddTo attrs tag =
                  ]
                     ++ attrs
                 )
-                [ Html.text tag.name ]
+                [ Html.text (getName tag) ]
     in
     case tagsToAddTo of
         moreTag :: moreTags ->
@@ -88,18 +660,22 @@ toLink tagsToAddTo attrs tag =
             aEl
 
 
-listView : List Tag -> List Post.GlobMatchFrontmatter -> List Tag -> List (Html msg)
-listView tagsInView posts tags =
+listView :
+    List Tag
+    -> List { a | frontmatter : { b | tags : List Tag } }
+    -> List Tag
+    -> List (Html msg)
+listView selectedTags posts relatedTags =
     let
         tagsCount =
-            tags
+            relatedTags
                 |> List.map
                     (\tag ->
                         ( tag
                         , posts
                             |> List.filter
                                 (\post ->
-                                    List.any ((==) tag.slug) post.frontmatter.tags
+                                    List.any ((==) tag) post.frontmatter.tags
                                 )
                             |> List.length
                         )
@@ -126,23 +702,12 @@ listView tagsInView posts tags =
             [ Attr.style "opacity" (String.fromFloat opacity) ]
     in
     tagsCount
-        |> List.map (\( tag, count ) -> toLink tagsInView (tagElAttrs count) tag)
+        |> List.map (\( tag, count ) -> toLink selectedTags (tagElAttrs count) tag)
         |> List.intersperse (Html.text ", ")
-
-
-error : Tag
-error =
-    { name = "ERROR"
-    , slug = "ERROR"
-    }
-
-
-
--- INTERNAL
 
 
 decoder : Decoder Tag
 decoder =
-    Decode.map2 Tag
-        (Decode.field "name" Decode.string)
-        (Decode.field "slug" Decode.string)
+    Decode.string
+        |> Decode.map fromSlug
+        |> Decode.andThen Decode.fromResult

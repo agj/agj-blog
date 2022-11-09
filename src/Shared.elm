@@ -54,15 +54,13 @@ init navigationKey flags maybePagePath =
 
 type alias Data =
     { posts : List Post.GlobMatchFrontmatter
-    , tags : List Tag
     }
 
 
 data : DataSource Data
 data =
-    DataSource.map2 Data
+    DataSource.map Data
         Post.listWithFrontmatterDataSource
-        Tag.dataSource
 
 
 
