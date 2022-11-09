@@ -97,14 +97,6 @@ allNested =
             }
         )
         []
-    , NestedCategory
-        (Category
-            { name = "Uncategorized"
-            , slug = "uncategorized"
-            , description = Nothing
-            }
-        )
-        []
     ]
 
 
