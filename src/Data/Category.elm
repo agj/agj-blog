@@ -2,12 +2,12 @@ module Data.Category exposing
     ( Category
     , NestedCategory(..)
     , all
+    , allNested
     , decoder
     , fromSlug
     , getDescription
     , getName
     , getSlug
-    , nest
     , toLink
     , toUrl
     , viewList
@@ -16,7 +16,6 @@ module Data.Category exposing
 import Html exposing (Html)
 import Html.Attributes as Attr
 import List.Extra as List
-import Maybe.Extra as Maybe
 import OptimizedDecoder as Decode exposing (Decoder)
 
 
@@ -24,7 +23,6 @@ type Category
     = Category
         { name : String
         , slug : String
-        , parent : Maybe Category
         , description : Maybe String
         }
 
@@ -33,80 +31,102 @@ type NestedCategory
     = NestedCategory Category (List NestedCategory)
 
 
-categoryInteractive : Category
-categoryInteractive =
-    Category
-        { name = "Interactive"
-        , slug = "interactive"
-        , description = Just "Video games and other things."
-        , parent = Nothing
-        }
+allNested : List NestedCategory
+allNested =
+    [ NestedCategory
+        (Category
+            { name = "Fiction"
+            , slug = "fiction"
+            , description = Nothing
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Interactive"
+            , slug = "interactive"
+            , description = Just "Video games and other things."
+            }
+        )
+        [ NestedCategory
+            (Category
+                { name = "My games"
+                , slug = "my-games"
+                , description = Nothing
+                }
+            )
+            []
+        ]
+    , NestedCategory
+        (Category
+            { name = "Language"
+            , slug = "language"
+            , description = Nothing
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Musings"
+            , slug = "musings"
+            , description = Just "Random personal thoughts."
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Opinion"
+            , slug = "opinion"
+            , description = Nothing
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Projects"
+            , slug = "projects"
+            , description = Nothing
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Sound"
+            , slug = "sound"
+            , description = Just "Including music."
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Video"
+            , slug = "videos"
+            , description = Just "Animated and otherwise."
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Visual"
+            , slug = "graphics"
+            , description = Just "Graphic design, illustrations and such."
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Uncategorized"
+            , slug = "uncategorized"
+            , description = Nothing
+            }
+        )
+        []
+    ]
 
 
 all : List Category
 all =
-    [ Category
-        { name = "Fiction"
-        , slug = "fiction"
-        , description = Nothing
-        , parent = Nothing
-        }
-    , categoryInteractive
-    , Category
-        { name = "Language"
-        , slug = "language"
-        , description = Nothing
-        , parent = Nothing
-        }
-    , Category
-        { name = "Musings"
-        , slug = "musings"
-        , description = Just "Random personal thoughts."
-        , parent = Nothing
-        }
-    , Category
-        { name = "My games"
-        , slug = "my-games"
-        , description = Nothing
-        , parent = Just categoryInteractive
-        }
-    , Category
-        { name = "Opinion"
-        , slug = "opinion"
-        , description = Nothing
-        , parent = Nothing
-        }
-    , Category
-        { name = "Projects"
-        , slug = "projects"
-        , description = Nothing
-        , parent = Nothing
-        }
-    , Category
-        { name = "Sound"
-        , slug = "sound"
-        , description = Just "Including music."
-        , parent = Nothing
-        }
-    , Category
-        { name = "Video"
-        , slug = "videos"
-        , description = Just "Animated and otherwise."
-        , parent = Nothing
-        }
-    , Category
-        { name = "Visual"
-        , slug = "graphics"
-        , description = Just "Graphic design, illustrations and such."
-        , parent = Nothing
-        }
-    , Category
-        { name = "Uncategorized"
-        , slug = "uncategorized"
-        , description = Nothing
-        , parent = Nothing
-        }
-    ]
+    List.andThen unnest allNested
 
 
 getSlug : Category -> String
@@ -131,32 +151,16 @@ getDescription (Category { description }) =
     description
 
 
-getParent : Category -> Maybe Category
-getParent (Category { parent }) =
-    parent
-
-
 toUrl : Category -> String
 toUrl category =
     "/category/{slug}"
         |> String.replace "{slug}" (getSlug category)
 
 
-nest : List Category -> List NestedCategory
-nest categories =
-    categories
-        |> List.filter (getParent >> Maybe.isNothing)
-        |> List.map (nestDelegate categories)
-
-
 viewList : List Category -> Html msg
 viewList categories =
-    let
-        nestedCategories =
-            nest categories
-    in
     Html.ul []
-        (nestedCategories
+        (allNested
             |> List.map viewCategory
         )
 
@@ -193,13 +197,9 @@ decoder =
 -- INTERNAL
 
 
-nestDelegate : List Category -> Category -> NestedCategory
-nestDelegate categories category =
-    NestedCategory category
-        (categories
-            |> List.filter (getParent >> (==) (Just category))
-            |> List.map (nestDelegate categories)
-        )
+unnest : NestedCategory -> List Category
+unnest (NestedCategory category rest) =
+    category :: List.andThen unnest rest
 
 
 viewCategory : NestedCategory -> Html msg
