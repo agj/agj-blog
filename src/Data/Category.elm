@@ -21,183 +21,119 @@ import OptimizedDecoder as Decode exposing (Decoder)
 
 
 type Category
-    = Fiction
-    | Interactive
-    | Language
-    | Musings
-    | MyGames
-    | Opinion
-    | Projects
-    | Sound
-    | Video
-    | Visual
-    | Uncategorized
+    = Category
+        { name : String
+        , slug : String
+        , parent : Maybe Category
+        , description : Maybe String
+        }
 
 
 type NestedCategory
     = NestedCategory Category (List NestedCategory)
 
 
+categoryInteractive : Category
+categoryInteractive =
+    Category
+        { name = "Interactive"
+        , slug = "interactive"
+        , description = Just "Video games and other things."
+        , parent = Nothing
+        }
+
+
 all : List Category
 all =
-    [ Fiction
-    , Interactive
-    , Language
-    , Musings
-    , MyGames
-    , Opinion
-    , Projects
-    , Sound
-    , Video
-    , Visual
-    , Uncategorized
+    [ Category
+        { name = "Fiction"
+        , slug = "fiction"
+        , description = Nothing
+        , parent = Nothing
+        }
+    , categoryInteractive
+    , Category
+        { name = "Language"
+        , slug = "language"
+        , description = Nothing
+        , parent = Nothing
+        }
+    , Category
+        { name = "Musings"
+        , slug = "musings"
+        , description = Just "Random personal thoughts."
+        , parent = Nothing
+        }
+    , Category
+        { name = "My games"
+        , slug = "my-games"
+        , description = Nothing
+        , parent = Just categoryInteractive
+        }
+    , Category
+        { name = "Opinion"
+        , slug = "opinion"
+        , description = Nothing
+        , parent = Nothing
+        }
+    , Category
+        { name = "Projects"
+        , slug = "projects"
+        , description = Nothing
+        , parent = Nothing
+        }
+    , Category
+        { name = "Sound"
+        , slug = "sound"
+        , description = Just "Including music."
+        , parent = Nothing
+        }
+    , Category
+        { name = "Video"
+        , slug = "videos"
+        , description = Just "Animated and otherwise."
+        , parent = Nothing
+        }
+    , Category
+        { name = "Visual"
+        , slug = "graphics"
+        , description = Just "Graphic design, illustrations and such."
+        , parent = Nothing
+        }
+    , Category
+        { name = "Uncategorized"
+        , slug = "uncategorized"
+        , description = Nothing
+        , parent = Nothing
+        }
     ]
 
 
 getSlug : Category -> String
-getSlug category =
-    case category of
-        Fiction ->
-            "fiction"
-
-        Interactive ->
-            "interactive"
-
-        Language ->
-            "language"
-
-        Musings ->
-            "musings"
-
-        MyGames ->
-            "my-games"
-
-        Opinion ->
-            "opinion"
-
-        Projects ->
-            "projects"
-
-        Sound ->
-            "sound"
-
-        Video ->
-            "videos"
-
-        Visual ->
-            "graphics"
-
-        Uncategorized ->
-            "uncategorized"
+getSlug (Category { slug }) =
+    slug
 
 
 fromSlug : String -> Result String Category
 fromSlug slug =
-    case slug of
-        "fiction" ->
-            Ok Fiction
-
-        "interactive" ->
-            Ok Interactive
-
-        "language" ->
-            Ok Language
-
-        "musings" ->
-            Ok Musings
-
-        "my-games" ->
-            Ok MyGames
-
-        "opinion" ->
-            Ok Opinion
-
-        "projects" ->
-            Ok Projects
-
-        "sound" ->
-            Ok Sound
-
-        "videos" ->
-            Ok Video
-
-        "graphics" ->
-            Ok Visual
-
-        "uncategorized" ->
-            Ok Uncategorized
-
-        _ ->
-            Err ("Category not found: " ++ slug)
+    all
+        |> List.find (\(Category category) -> category.slug == slug)
+        |> Result.fromMaybe ("Couldn't find category: " ++ slug)
 
 
 getName : Category -> String
-getName category =
-    case category of
-        Fiction ->
-            "Fiction"
-
-        Interactive ->
-            "Interactive"
-
-        Language ->
-            "Language"
-
-        Musings ->
-            "Musings"
-
-        MyGames ->
-            "My games"
-
-        Opinion ->
-            "Opinion"
-
-        Projects ->
-            "Projects"
-
-        Sound ->
-            "Sound"
-
-        Video ->
-            "Video"
-
-        Visual ->
-            "Visual"
-
-        Uncategorized ->
-            "Uncategorized"
+getName (Category { name }) =
+    name
 
 
 getDescription : Category -> Maybe String
-getDescription category =
-    case category of
-        Interactive ->
-            Just "Video games and other things."
-
-        Musings ->
-            Just "Random personal thoughts."
-
-        Sound ->
-            Just "Including music."
-
-        Video ->
-            Just "Animated and otherwise."
-
-        Visual ->
-            Just "Graphic design, illustrations and such."
-
-        _ ->
-            Nothing
+getDescription (Category { description }) =
+    description
 
 
 getParent : Category -> Maybe Category
-getParent category =
-    case category of
-        MyGames ->
-            Just Interactive
-
-        _ ->
-            Nothing
+getParent (Category { parent }) =
+    parent
 
 
 toUrl : Category -> String
