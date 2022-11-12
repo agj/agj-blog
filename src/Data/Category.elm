@@ -31,75 +31,6 @@ type NestedCategory
     = NestedCategory Category (List NestedCategory)
 
 
-allNested : List NestedCategory
-allNested =
-    [ NestedCategory
-        (Category
-            { name = "Interactive"
-            , slug = "interactive"
-            , description = Just "Video games and other things."
-            }
-        )
-        [ NestedCategory
-            (Category
-                { name = "My games"
-                , slug = "my-games"
-                , description = Nothing
-                }
-            )
-            []
-        ]
-    , NestedCategory
-        (Category
-            { name = "Language"
-            , slug = "language"
-            , description = Nothing
-            }
-        )
-        []
-    , NestedCategory
-        (Category
-            { name = "Video"
-            , slug = "videos"
-            , description = Just "Animated and otherwise."
-            }
-        )
-        []
-    , NestedCategory
-        (Category
-            { name = "Visual"
-            , slug = "graphics"
-            , description = Just "Graphic design, illustrations and such."
-            }
-        )
-        []
-    , NestedCategory
-        (Category
-            { name = "Sound"
-            , slug = "sound"
-            , description = Just "Including music."
-            }
-        )
-        []
-    , NestedCategory
-        (Category
-            { name = "Musings"
-            , slug = "musings"
-            , description = Just "Random personal thoughts."
-            }
-        )
-        []
-    , NestedCategory
-        (Category
-            { name = "Projects"
-            , slug = "projects"
-            , description = Nothing
-            }
-        )
-        []
-    ]
-
-
 all : List Category
 all =
     List.andThen unnest allNested
@@ -196,3 +127,76 @@ viewCategory (NestedCategory category children) =
         (toLink [] category
             :: childUl
         )
+
+
+
+-- CATEGORIES
+
+
+allNested : List NestedCategory
+allNested =
+    [ NestedCategory
+        (Category
+            { name = "Interactive"
+            , slug = "interactive"
+            , description = Just "Video games and other things."
+            }
+        )
+        [ NestedCategory
+            (Category
+                { name = "My games"
+                , slug = "my-games"
+                , description = Nothing
+                }
+            )
+            []
+        ]
+    , NestedCategory
+        (Category
+            { name = "Language"
+            , slug = "language"
+            , description = Nothing
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Video"
+            , slug = "videos"
+            , description = Just "Animated and otherwise."
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Visual"
+            , slug = "graphics"
+            , description = Just "Graphic design, illustrations and such."
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Sound"
+            , slug = "sound"
+            , description = Just "Including music."
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Musings"
+            , slug = "musings"
+            , description = Just "Random personal thoughts."
+            }
+        )
+        []
+    , NestedCategory
+        (Category
+            { name = "Projects"
+            , slug = "projects"
+            , description = Nothing
+            }
+        )
+        []
+    ]

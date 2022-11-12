@@ -27,6 +27,135 @@ type Tag
         }
 
 
+getSlug : Tag -> String
+getSlug (Tag { slug }) =
+    slug
+
+
+fromSlug : String -> Result String Tag
+fromSlug slug =
+    all
+        |> List.find (\(Tag tag) -> tag.slug == slug)
+        |> Result.fromMaybe ("Couldn't find tag: " ++ slug)
+
+
+getName : Tag -> String
+getName (Tag { name }) =
+    name
+
+
+baseUrl : String
+baseUrl =
+    "/tag/"
+
+
+toUrl : Tag -> List Tag -> String
+toUrl firstTag moreTags =
+    slugsToUrl
+        (getSlug firstTag)
+        (List.map getSlug moreTags)
+
+
+slugsToUrl : String -> List String -> String
+slugsToUrl firstSlug moreSlugs =
+    let
+        slugs =
+            firstSlug
+                :: moreSlugs
+                |> List.sort
+                |> String.join "&t="
+    in
+    "{baseUrl}?t={slugs}"
+        |> String.replace "{baseUrl}" baseUrl
+        |> String.replace "{slugs}" slugs
+
+
+toLink : List Tag -> List (Html.Attribute msg) -> Tag -> Html msg
+toLink tagsToAddTo attrs tag =
+    let
+        aEl =
+            Html.a
+                ([ Attr.href (toUrl tag [])
+                 , Attr.class "tag"
+                 ]
+                    ++ attrs
+                )
+                [ Html.text (getName tag) ]
+    in
+    case tagsToAddTo of
+        moreTag :: moreTags ->
+            Html.span [ Attr.class "tag" ]
+                [ aEl
+                , Html.text " "
+                , Html.a
+                    [ Attr.href (toUrl tag (moreTag :: moreTags))
+                    , Attr.attribute "role" "button"
+                    , Attr.attribute "data-tooltip" "Add to filter"
+                    ]
+                    [ Html.text "+" ]
+                ]
+
+        [] ->
+            aEl
+
+
+listView :
+    List Tag
+    -> List { a | frontmatter : { b | tags : List Tag } }
+    -> List Tag
+    -> List (Html msg)
+listView selectedTags posts relatedTags =
+    let
+        tagsCount =
+            relatedTags
+                |> List.map
+                    (\tag ->
+                        ( tag
+                        , posts
+                            |> List.filter
+                                (\post ->
+                                    List.any ((==) tag) post.frontmatter.tags
+                                )
+                            |> List.length
+                        )
+                    )
+
+        maxCount =
+            tagsCount
+                |> List.map Tuple.second
+                |> List.maximum
+                |> Maybe.withDefault 0
+
+        minCount =
+            tagsCount
+                |> List.map Tuple.second
+                |> List.minimum
+                |> Maybe.withDefault 0
+
+        tagElAttrs count =
+            let
+                opacity =
+                    (toFloat (count - minCount) / toFloat (maxCount - minCount) * 0.7)
+                        + 0.3
+            in
+            [ Attr.style "opacity" (String.fromFloat opacity) ]
+    in
+    tagsCount
+        |> List.map (\( tag, count ) -> toLink selectedTags (tagElAttrs count) tag)
+        |> List.intersperse (Html.text ", ")
+
+
+decoder : Decoder Tag
+decoder =
+    Decode.string
+        |> Decode.map fromSlug
+        |> Decode.andThen Decode.fromResult
+
+
+
+-- TAGS
+
+
 all : List Tag
 all =
     [ Tag
@@ -586,128 +715,3 @@ all =
         , slug = "nihongo"
         }
     ]
-
-
-getSlug : Tag -> String
-getSlug (Tag { slug }) =
-    slug
-
-
-fromSlug : String -> Result String Tag
-fromSlug slug =
-    all
-        |> List.find (\(Tag tag) -> tag.slug == slug)
-        |> Result.fromMaybe ("Couldn't find tag: " ++ slug)
-
-
-getName : Tag -> String
-getName (Tag { name }) =
-    name
-
-
-baseUrl : String
-baseUrl =
-    "/tag/"
-
-
-toUrl : Tag -> List Tag -> String
-toUrl firstTag moreTags =
-    slugsToUrl
-        (getSlug firstTag)
-        (List.map getSlug moreTags)
-
-
-slugsToUrl : String -> List String -> String
-slugsToUrl firstSlug moreSlugs =
-    let
-        slugs =
-            firstSlug
-                :: moreSlugs
-                |> List.sort
-                |> String.join "&t="
-    in
-    "{baseUrl}?t={slugs}"
-        |> String.replace "{baseUrl}" baseUrl
-        |> String.replace "{slugs}" slugs
-
-
-toLink : List Tag -> List (Html.Attribute msg) -> Tag -> Html msg
-toLink tagsToAddTo attrs tag =
-    let
-        aEl =
-            Html.a
-                ([ Attr.href (toUrl tag [])
-                 , Attr.class "tag"
-                 ]
-                    ++ attrs
-                )
-                [ Html.text (getName tag) ]
-    in
-    case tagsToAddTo of
-        moreTag :: moreTags ->
-            Html.span [ Attr.class "tag" ]
-                [ aEl
-                , Html.text " "
-                , Html.a
-                    [ Attr.href (toUrl tag (moreTag :: moreTags))
-                    , Attr.attribute "role" "button"
-                    , Attr.attribute "data-tooltip" "Add to filter"
-                    ]
-                    [ Html.text "+" ]
-                ]
-
-        [] ->
-            aEl
-
-
-listView :
-    List Tag
-    -> List { a | frontmatter : { b | tags : List Tag } }
-    -> List Tag
-    -> List (Html msg)
-listView selectedTags posts relatedTags =
-    let
-        tagsCount =
-            relatedTags
-                |> List.map
-                    (\tag ->
-                        ( tag
-                        , posts
-                            |> List.filter
-                                (\post ->
-                                    List.any ((==) tag) post.frontmatter.tags
-                                )
-                            |> List.length
-                        )
-                    )
-
-        maxCount =
-            tagsCount
-                |> List.map Tuple.second
-                |> List.maximum
-                |> Maybe.withDefault 0
-
-        minCount =
-            tagsCount
-                |> List.map Tuple.second
-                |> List.minimum
-                |> Maybe.withDefault 0
-
-        tagElAttrs count =
-            let
-                opacity =
-                    (toFloat (count - minCount) / toFloat (maxCount - minCount) * 0.7)
-                        + 0.3
-            in
-            [ Attr.style "opacity" (String.fromFloat opacity) ]
-    in
-    tagsCount
-        |> List.map (\( tag, count ) -> toLink selectedTags (tagElAttrs count) tag)
-        |> List.intersperse (Html.text ", ")
-
-
-decoder : Decoder Tag
-decoder =
-    Decode.string
-        |> Decode.map fromSlug
-        |> Decode.andThen Decode.fromResult
