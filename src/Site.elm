@@ -74,19 +74,7 @@ windowTitle pageTitle =
 
 pageMeta : String -> List Head.Tag
 pageMeta title =
-    Seo.summary
-        { canonicalUrlOverride = Nothing
-        , siteName = name
-        , image =
-            { url = Pages.Url.external "TODO"
-            , alt = name
-            , dimensions = Nothing
-            , mimeType = Nothing
-            }
-        , description = description
-        , locale = Nothing
-        , title = title
-        }
+    metaBase title
         |> Seo.website
 
 
@@ -100,19 +88,7 @@ postMeta :
     }
     -> List Head.Tag
 postMeta info =
-    Seo.summary
-        { canonicalUrlOverride = Nothing
-        , siteName = name
-        , image =
-            { url = Pages.Url.external "TODO"
-            , alt = name
-            , dimensions = Nothing
-            , mimeType = Nothing
-            }
-        , description = description
-        , locale = Nothing
-        , title = info.title
-        }
+    metaBase info.title
         |> Seo.article
             { publishedTime = Just (Date.formatIso8601Date info.year info.month info.date)
             , modifiedTime = Nothing
@@ -124,3 +100,20 @@ postMeta info =
                     |> List.map Tag.getSlug
             , expirationTime = Nothing
             }
+
+
+metaBase : String -> Seo.Common
+metaBase title =
+    Seo.summary
+        { canonicalUrlOverride = Nothing
+        , siteName = name
+        , image =
+            { url = Pages.Url.external "TODO"
+            , alt = name
+            , dimensions = Nothing
+            , mimeType = Nothing
+            }
+        , description = description
+        , locale = Nothing
+        , title = title
+        }
