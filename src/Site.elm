@@ -37,8 +37,7 @@ data =
 
 head : Data -> List Head.Tag
 head static =
-    [ Head.sitemapLink "/sitemap.xml"
-    ]
+    []
 
 
 manifest : Data -> Manifest.Config
