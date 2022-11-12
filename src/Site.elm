@@ -1,5 +1,13 @@
-module Site exposing (config, meta, windowTitle)
+module Site exposing
+    ( config
+    , pageMeta
+    , postMeta
+    , windowTitle
+    )
 
+import Data.Category as Category exposing (Category)
+import Data.Date as Date
+import Data.Tag as Tag exposing (Tag)
 import DataSource
 import Head
 import Head.Seo as Seo
@@ -16,7 +24,7 @@ type alias Data =
 config : SiteConfig Data
 config =
     { data = data
-    , canonicalUrl = "https://elm-pages.com"
+    , canonicalUrl = "http://agj.cl/blog"
     , manifest = manifest
     , head = head
     }
@@ -36,8 +44,8 @@ head static =
 manifest : Data -> Manifest.Config
 manifest static =
     Manifest.init
-        { name = "Site Name"
-        , description = "Description"
+        { name = name
+        , description = description
         , startUrl = Route.Index |> Route.toPath
         , icons = []
         }
@@ -47,25 +55,72 @@ manifest static =
 -- CUSTOMIZED
 
 
+name : String
+name =
+    "agj's blog"
+
+
+description : String
+description =
+    "Writing about coding weird things, strange thoughts and more random nonsense."
+
+
 windowTitle : String -> String
 windowTitle pageTitle =
-    "{pageTitle} [agj's blog]"
+    "{pageTitle} [{siteName}]"
         |> String.replace "{pageTitle}" pageTitle
+        |> String.replace "{siteName}" name
 
 
-meta : String -> List Head.Tag
-meta title =
+pageMeta : String -> List Head.Tag
+pageMeta title =
     Seo.summary
         { canonicalUrlOverride = Nothing
-        , siteName = "agj's blog"
+        , siteName = name
         , image =
             { url = Pages.Url.external "TODO"
-            , alt = "agj's blog"
+            , alt = name
             , dimensions = Nothing
             , mimeType = Nothing
             }
-        , description = "Writing about coding weird things, strange thoughts and more random nonsense."
+        , description = description
         , locale = Nothing
         , title = title
         }
         |> Seo.website
+
+
+postMeta :
+    { title : String
+    , year : String
+    , month : Int
+    , date : Int
+    , mainCategory : Maybe Category
+    , tags : List Tag
+    }
+    -> List Head.Tag
+postMeta info =
+    Seo.summary
+        { canonicalUrlOverride = Nothing
+        , siteName = name
+        , image =
+            { url = Pages.Url.external "TODO"
+            , alt = name
+            , dimensions = Nothing
+            , mimeType = Nothing
+            }
+        , description = description
+        , locale = Nothing
+        , title = info.title
+        }
+        |> Seo.article
+            { publishedTime = Just (Date.formatIso8601Date info.year info.month info.date)
+            , modifiedTime = Nothing
+            , section =
+                info.mainCategory
+                    |> Maybe.map Category.getSlug
+            , tags =
+                info.tags
+                    |> List.map Tag.getSlug
+            , expirationTime = Nothing
+            }

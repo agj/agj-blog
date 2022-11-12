@@ -113,7 +113,7 @@ head :
     StaticPayload Data {}
     -> List Head.Tag
 head static =
-    Site.meta (title static)
+    Site.pageMeta (title static)
 
 
 view :

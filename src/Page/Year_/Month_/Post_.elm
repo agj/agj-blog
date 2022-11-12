@@ -81,7 +81,16 @@ head :
     StaticPayload Data RouteParams
     -> List Head.Tag
 head static =
-    Site.meta (title static)
+    Site.postMeta
+        { title = title static
+        , year = static.routeParams.year
+        , month = String.toInt static.routeParams.month |> Maybe.withDefault 0
+        , date = static.data.frontmatter.date
+        , tags = static.data.frontmatter.tags
+        , mainCategory =
+            static.data.frontmatter.categories
+                |> List.head
+        }
 
 
 view :
