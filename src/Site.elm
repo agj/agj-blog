@@ -37,7 +37,8 @@ data =
 
 head : Data -> List Head.Tag
 head static =
-    []
+    [ Head.metaProperty "twitter:site" (Head.raw "@alegrilli")
+    ]
 
 
 manifest : Data -> Manifest.Config
