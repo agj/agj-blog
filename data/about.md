@@ -8,7 +8,7 @@ You may contact me by email via ale¶agj.cl, or explore my website from [the roo
 # Español
 
 Este es el blog de Ale Grilli, donde pongo mis creaciones, principalmente de corte experimental, incluyendo trabajos de tipo interactivo y audiovisual.
-Lamentablemente escribo casi siempre en inglés, pero [aquí están todos los posts que he escrito en español][/tag/?=espanol].
+Lamentablemente escribo casi siempre en inglés, pero [aquí están todos los posts que he escrito en español](/tag/?tag=espanol).
 Puedes contactarme por email en ale¶agj.cl, o también puedes explorar mi sitio web desde [la portada][home].
 
 # 日本語
