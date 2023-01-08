@@ -1,4 +1,7 @@
 
+install:
+	pnpm install
+
 dev:
 	elm-pages dev
 
