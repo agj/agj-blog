@@ -1,9 +1,9 @@
 
 install:
-	pnpm install
+	pnpm install && npx elm-tooling install
 
 dev:
-	elm-pages dev
+	npx elm-pages dev
 
 build:
-	elm-pages build
+	npx elm-pages build
