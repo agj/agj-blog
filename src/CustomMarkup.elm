@@ -49,8 +49,8 @@ toHtml markdown =
 
 
 type Tag
-    = El
-    | Image
+    = Block
+    | Inline
 
 
 elmUiRenderer : Markdown.Renderer.Renderer ( Ui.Element msg, Tag )
@@ -60,15 +60,15 @@ elmUiRenderer =
         getChildren =
             List.map Tuple.first
     in
-    { blockQuote = \children -> ( Ui.row [] (getChildren children), El )
-    , codeBlock = \{ body, language } -> ( Ui.text body, El )
-    , codeSpan = \code -> ( Ui.text code, El )
+    { blockQuote = \children -> ( Ui.row [] (getChildren children), Block )
+    , codeBlock = \{ body, language } -> ( Ui.text body, Block )
+    , codeSpan = \code -> ( Ui.text code, Inline )
     , emphasis =
         \children ->
             ( Ui.paragraph [ UiFont.italic ] (getChildren children)
-            , El
+            , Inline
             )
-    , hardLineBreak = ( Ui.text "\n", El )
+    , hardLineBreak = ( Ui.text "\n", Block )
     , heading =
         \{ level, rawText, children } ->
             let
@@ -94,7 +94,7 @@ elmUiRenderer =
             in
             ( constructor (getChildren children)
                 |> View.TextBlock.view
-            , El
+            , Block
             )
     , html =
         Markdown.Html.oneOf
@@ -106,14 +106,14 @@ elmUiRenderer =
                 |> Markdown.Html.map
                     (\ap children ->
                         ( CustomMarkup.AudioPlayer.toElmUi ap (getChildren children)
-                        , El
+                        , Block
                         )
                     )
             , CustomMarkup.AudioPlayer.Track.renderer
                 |> Markdown.Html.map
                     (\track _ ->
                         ( CustomMarkup.AudioPlayer.Track.toElmUi track ()
-                        , El
+                        , Block
                         )
                     )
             ]
@@ -122,7 +122,7 @@ elmUiRenderer =
             ( Ui.image [] { src = src, description = alt }
                 |> View.Figure.figure
                 |> View.Figure.view
-            , Image
+            , Block
             )
     , link =
         \{ title, destination } children ->
@@ -131,48 +131,48 @@ elmUiRenderer =
                 , label =
                     Ui.paragraph [] (getChildren children)
                 }
-            , El
+            , Inline
             )
     , orderedList =
         \startNumber items ->
             ( items
                 |> List.map (getChildren >> Ui.paragraph [])
                 |> Ui.column []
-            , El
+            , Block
             )
     , paragraph =
         \children ->
             case children of
-                [ ( child, Image ) ] ->
-                    ( child, El )
+                [ ( child, Block ) ] ->
+                    ( child, Block )
 
                 _ ->
                     ( View.TextBlock.paragraph (getChildren children)
                         |> View.TextBlock.view
-                    , El
+                    , Block
                     )
     , strikethrough =
         \children ->
             ( Ui.paragraph [ UiFont.strike ] (getChildren children)
-            , El
+            , Inline
             )
     , strong =
         \children ->
             ( Ui.paragraph [ UiFont.bold ] (getChildren children)
-            , El
+            , Inline
             )
     , table =
         \children ->
             ( Ui.column [] (getChildren children)
-            , El
+            , Block
             )
-    , tableBody = \children -> ( Ui.column [] (getChildren children), El )
-    , tableCell = \mAlignment children -> ( Ui.paragraph [] (getChildren children), El )
-    , tableHeader = \children -> ( Ui.column [] (getChildren children), El )
-    , tableHeaderCell = \mAlignment children -> ( Ui.row [] (getChildren children), El )
-    , tableRow = \children -> ( Ui.row [] (getChildren children), El )
-    , text = \text -> ( Ui.text text, El )
-    , thematicBreak = ( Ui.text "---", El )
+    , tableBody = \children -> ( Ui.column [] (getChildren children), Block )
+    , tableCell = \mAlignment children -> ( Ui.paragraph [] (getChildren children), Block )
+    , tableHeader = \children -> ( Ui.column [] (getChildren children), Block )
+    , tableHeaderCell = \mAlignment children -> ( Ui.row [] (getChildren children), Block )
+    , tableRow = \children -> ( Ui.row [] (getChildren children), Block )
+    , text = \text -> ( Ui.text text, Inline )
+    , thematicBreak = ( Ui.text "---", Block )
     , unorderedList =
         \items ->
             ( Ui.column []
@@ -184,7 +184,7 @@ elmUiRenderer =
                                     Ui.paragraph [] (getChildren children)
                         )
                 )
-            , El
+            , Block
             )
     }
 
@@ -197,8 +197,16 @@ resultToElmUi partialToHtml resultRenderer =
     resultRenderer
         |> Markdown.Html.map
             (Result.mapBoth
-                (\err _ -> ( Ui.column [] (renderErrorMessageAsElmUi err), El ))
-                (\a children -> ( partialToHtml a (List.map Tuple.first children), El ))
+                (\err _ ->
+                    ( Ui.column [] (renderErrorMessageAsElmUi err)
+                    , Block
+                    )
+                )
+                (\a children ->
+                    ( partialToHtml a (List.map Tuple.first children)
+                    , Block
+                    )
+                )
             )
         |> Markdown.Html.map Result.merge
 
