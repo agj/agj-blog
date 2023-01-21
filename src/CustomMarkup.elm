@@ -17,6 +17,7 @@ import Markdown.Html
 import Markdown.Parser
 import Markdown.Renderer
 import Result.Extra as Result
+import View.Figure
 import View.TextBlock
 
 
@@ -26,6 +27,7 @@ toElmUi markdown =
         |> Markdown.Parser.parse
         |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
         |> Result.andThen (Markdown.Renderer.render elmUiRenderer)
+        |> Result.map (List.map Tuple.first)
         |> Result.mapError renderErrorMessageAsElmUi
         |> Result.merge
         |> Ui.column []
@@ -46,13 +48,26 @@ toHtml markdown =
 -- Elm UI Rendering
 
 
-elmUiRenderer : Markdown.Renderer.Renderer (Ui.Element msg)
+type Tag
+    = El
+
+
+elmUiRenderer : Markdown.Renderer.Renderer ( Ui.Element msg, Tag )
 elmUiRenderer =
-    { blockQuote = Ui.row []
-    , codeBlock = \{ body, language } -> Ui.text body
-    , codeSpan = Ui.text
-    , emphasis = Ui.paragraph [ UiFont.italic ]
-    , hardLineBreak = Ui.text "\n"
+    let
+        getChildren : List ( Ui.Element msg, Tag ) -> List (Ui.Element msg)
+        getChildren =
+            List.map Tuple.first
+    in
+    { blockQuote = \children -> ( Ui.row [] (getChildren children), El )
+    , codeBlock = \{ body, language } -> ( Ui.text body, El )
+    , codeSpan = \code -> ( Ui.text code, El )
+    , emphasis =
+        \children ->
+            ( Ui.paragraph [ UiFont.italic ] (getChildren children)
+            , El
+            )
+    , hardLineBreak = ( Ui.text "\n", El )
     , heading =
         \{ level, rawText, children } ->
             let
@@ -76,8 +91,10 @@ elmUiRenderer =
                         Markdown.Block.H6 ->
                             View.TextBlock.heading6
             in
-            constructor children
+            ( constructor (getChildren children)
                 |> View.TextBlock.view
+            , El
+            )
     , html =
         Markdown.Html.oneOf
             [ CustomMarkup.VideoEmbed.renderer
@@ -85,61 +102,97 @@ elmUiRenderer =
             , CustomMarkup.LanguageBreak.renderer
                 |> resultToElmUi CustomMarkup.LanguageBreak.toElmUi
             , CustomMarkup.AudioPlayer.renderer
-                |> Markdown.Html.map CustomMarkup.AudioPlayer.toElmUi
+                |> Markdown.Html.map
+                    (\ap children ->
+                        ( CustomMarkup.AudioPlayer.toElmUi ap (getChildren children)
+                        , El
+                        )
+                    )
             , CustomMarkup.AudioPlayer.Track.renderer
-                |> Markdown.Html.map CustomMarkup.AudioPlayer.Track.toElmUi
+                |> Markdown.Html.map
+                    (\track _ ->
+                        ( CustomMarkup.AudioPlayer.Track.toElmUi track ()
+                        , El
+                        )
+                    )
             ]
-    , image = \{ alt, src, title } -> Ui.image [] { src = src, description = alt }
+    , image =
+        \{ alt, src, title } ->
+            ( Ui.image [] { src = src, description = alt }
+                |> View.Figure.figure
+                |> View.Figure.view
+            , El
+            )
     , link =
         \{ title, destination } children ->
-            Ui.link []
+            ( Ui.link []
                 { url = destination
                 , label =
-                    Ui.paragraph [] children
+                    Ui.paragraph [] (getChildren children)
                 }
+            , El
+            )
     , orderedList =
         \startNumber items ->
-            items
-                |> List.map (Ui.paragraph [])
+            ( items
+                |> List.map (getChildren >> Ui.paragraph [])
                 |> Ui.column []
+            , El
+            )
     , paragraph =
         \children ->
-            View.TextBlock.paragraph children
+            ( View.TextBlock.paragraph (getChildren children)
                 |> View.TextBlock.view
-    , strikethrough = Ui.paragraph [ UiFont.strike ]
-    , strong = Ui.paragraph [ UiFont.bold ]
-    , table = Ui.column []
-    , tableBody = Ui.column []
-    , tableCell = \mAlignment children -> Ui.paragraph [] children
-    , tableHeader = Ui.column []
-    , tableHeaderCell = \mAlignment children -> Ui.row [] children
-    , tableRow = Ui.row []
-    , text = Ui.text
-    , thematicBreak = Ui.text "---"
+            , El
+            )
+    , strikethrough =
+        \children ->
+            ( Ui.paragraph [ UiFont.strike ] (getChildren children)
+            , El
+            )
+    , strong =
+        \children ->
+            ( Ui.paragraph [ UiFont.bold ] (getChildren children)
+            , El
+            )
+    , table =
+        \children ->
+            ( Ui.column [] (getChildren children)
+            , El
+            )
+    , tableBody = \children -> ( Ui.column [] (getChildren children), El )
+    , tableCell = \mAlignment children -> ( Ui.paragraph [] (getChildren children), El )
+    , tableHeader = \children -> ( Ui.column [] (getChildren children), El )
+    , tableHeaderCell = \mAlignment children -> ( Ui.row [] (getChildren children), El )
+    , tableRow = \children -> ( Ui.row [] (getChildren children), El )
+    , text = \text -> ( Ui.text text, El )
+    , thematicBreak = ( Ui.text "---", El )
     , unorderedList =
         \items ->
-            Ui.column []
+            ( Ui.column []
                 (items
                     |> List.map
                         (\item ->
                             case item of
                                 Markdown.Block.ListItem task children ->
-                                    Ui.paragraph [] children
+                                    Ui.paragraph [] (getChildren children)
                         )
                 )
+            , El
+            )
     }
 
 
 resultToElmUi :
     (a -> List (Ui.Element msg) -> Ui.Element msg)
     -> Markdown.Html.Renderer (Result String a)
-    -> Markdown.Html.Renderer (List (Ui.Element msg) -> Ui.Element msg)
+    -> Markdown.Html.Renderer (List ( Ui.Element msg, Tag ) -> ( Ui.Element msg, Tag ))
 resultToElmUi partialToHtml resultRenderer =
     resultRenderer
         |> Markdown.Html.map
             (Result.mapBoth
-                (\err _ -> Ui.column [] (renderErrorMessageAsElmUi err))
-                partialToHtml
+                (\err _ -> ( Ui.column [] (renderErrorMessageAsElmUi err), El ))
+                (\a children -> ( partialToHtml a (List.map Tuple.first children), El ))
             )
         |> Markdown.Html.map Result.merge
 
