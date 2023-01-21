@@ -22,8 +22,8 @@ renderer =
         |> Markdown.Html.withOptionalAttribute "language"
 
 
-toElmUi : LanguageBreak -> dropped -> Ui.Element msg
-toElmUi languageBreak _ =
+toElmUi : LanguageBreak -> Ui.Element msg
+toElmUi languageBreak =
     toHtml languageBreak ()
         |> Ui.html
 

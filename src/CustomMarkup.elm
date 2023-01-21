@@ -101,9 +101,9 @@ elmUiRenderer =
     , html =
         Markdown.Html.oneOf
             [ CustomMarkup.VideoEmbed.renderer
-                |> resultToElmUi CustomMarkup.VideoEmbed.toElmUi
+                |> resultToElmUi (CustomMarkup.VideoEmbed.toElmUi >> always)
             , CustomMarkup.LanguageBreak.renderer
-                |> resultToElmUi CustomMarkup.LanguageBreak.toElmUi
+                |> resultToElmUi (CustomMarkup.LanguageBreak.toElmUi >> always)
             , CustomMarkup.AudioPlayer.renderer
                 |> Markdown.Html.map
                     (\ap elTagPairs ->
@@ -114,7 +114,7 @@ elmUiRenderer =
             , CustomMarkup.AudioPlayer.Track.renderer
                 |> Markdown.Html.map
                     (\track _ ->
-                        ( CustomMarkup.AudioPlayer.Track.toElmUi track ()
+                        ( CustomMarkup.AudioPlayer.Track.toElmUi track
                         , Block
                         )
                     )

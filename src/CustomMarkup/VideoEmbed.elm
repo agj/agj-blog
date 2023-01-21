@@ -36,8 +36,8 @@ renderer =
         |> Markdown.Html.withAttribute "height"
 
 
-toElmUi : VideoEmbed -> dropped -> Ui.Element msg
-toElmUi videoEmbed _ =
+toElmUi : VideoEmbed -> Ui.Element msg
+toElmUi videoEmbed =
     let
         src =
             case videoEmbed.service of

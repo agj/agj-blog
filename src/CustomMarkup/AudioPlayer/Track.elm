@@ -25,8 +25,8 @@ renderer =
         |> Markdown.Html.withAttribute "src"
 
 
-toElmUi : Track -> dropped -> Ui.Element msg
-toElmUi track _ =
+toElmUi : Track -> Ui.Element msg
+toElmUi track =
     toHtml track ()
         |> Ui.html
 
