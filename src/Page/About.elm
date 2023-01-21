@@ -4,6 +4,7 @@ import CustomMarkup
 import Data.PageHeader as PageHeader
 import DataSource exposing (DataSource)
 import DataSource.File
+import Element as Ui
 import Head
 import Head.Seo as Seo
 import Html exposing (Html)
@@ -97,5 +98,7 @@ view maybeUrl sharedModel static =
                     ]
                 )
             )
-            :: CustomMarkup.toHtml static.data.markdown
+            :: [ CustomMarkup.toElmUi static.data.markdown
+                    |> Ui.layout []
+               ]
     }

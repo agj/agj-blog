@@ -7,6 +7,7 @@ import Data.PageHeader as PageHeader
 import Data.Post as Post exposing (Post)
 import Data.Tag as Tag
 import DataSource exposing (DataSource)
+import Element as Ui
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attr
@@ -141,7 +142,8 @@ view maybeUrl sharedModel static =
                 [ Html.text "No tags." ]
 
         contentHtml =
-            CustomMarkup.toHtml static.data.markdown
+            CustomMarkup.toElmUi static.data.markdown
+                |> Ui.layout []
     in
     { title = title static
     , body =
@@ -161,5 +163,5 @@ view maybeUrl sharedModel static =
                     ]
                 )
             )
-            :: contentHtml
+            :: [ contentHtml ]
     }
