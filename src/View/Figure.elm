@@ -34,7 +34,7 @@ view : Figure msg -> Ui.Element msg
 view (Figure config) =
     Ui.el
         [ Ui.padding Style.spacing.size2
-        , UiBackground.color (Color.toElmUi Style.color.highlightLight)
+        , UiBackground.color (Color.toElmUi Style.color.secondaryLight)
         , Ui.centerX
         ]
         config.content

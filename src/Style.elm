@@ -15,12 +15,12 @@ color =
     , primaryDark =
         colorPrimary
             |> Color.Manipulate.darken 0.5
-    , highlight = colorHighlight
-    , highlightDark =
-        colorHighlight
+    , secondary = colorSecondary
+    , secondaryDark =
+        colorSecondary
             |> Color.Manipulate.darken 0.5
-    , highlightLight =
-        colorHighlight
+    , secondaryLight =
+        colorSecondary
             |> Color.Manipulate.lighten 0.4
             |> Color.Manipulate.desaturate 0.5
     }
@@ -51,7 +51,7 @@ colorPrimary =
     rgb 0xFF 0x00 0xCC
 
 
-colorHighlight =
+colorSecondary =
     rgb 0x00 0xEB 0xFF
 
 
