@@ -48,24 +48,26 @@ toHtml markdown =
 -- Elm UI Rendering
 
 
-type Tag
+{-| Identifies characteristics of an Elm UI element for use while parsing markdown.
+-}
+type ElmUiTag
     = Block
     | Inline
 
 
-elmUiRenderer : Markdown.Renderer.Renderer ( Ui.Element msg, Tag )
+elmUiRenderer : Markdown.Renderer.Renderer ( Ui.Element msg, ElmUiTag )
 elmUiRenderer =
     let
-        getChildren : List ( Ui.Element msg, Tag ) -> List (Ui.Element msg)
-        getChildren =
+        getEls : List ( Ui.Element msg, ElmUiTag ) -> List (Ui.Element msg)
+        getEls =
             List.map Tuple.first
     in
-    { blockQuote = \childTags -> ( Ui.row [] (getChildren childTags), Block )
+    { blockQuote = \elTagPairs -> ( Ui.row [] (getEls elTagPairs), Block )
     , codeBlock = \{ body, language } -> ( Ui.text body, Block )
     , codeSpan = \code -> ( Ui.text code, Inline )
     , emphasis =
-        \childTags ->
-            ( Ui.paragraph [ UiFont.italic ] (getChildren childTags)
+        \elTagPairs ->
+            ( Ui.paragraph [ UiFont.italic ] (getEls elTagPairs)
             , Inline
             )
     , hardLineBreak = ( Ui.text "\n", Block )
@@ -92,7 +94,7 @@ elmUiRenderer =
                         Markdown.Block.H6 ->
                             View.TextBlock.heading6
             in
-            ( constructor (getChildren children)
+            ( constructor (getEls children)
                 |> View.TextBlock.view
             , Block
             )
@@ -104,8 +106,8 @@ elmUiRenderer =
                 |> resultToElmUi CustomMarkup.LanguageBreak.toElmUi
             , CustomMarkup.AudioPlayer.renderer
                 |> Markdown.Html.map
-                    (\ap childTags ->
-                        ( CustomMarkup.AudioPlayer.toElmUi ap (getChildren childTags)
+                    (\ap elTagPairs ->
+                        ( CustomMarkup.AudioPlayer.toElmUi ap (getEls elTagPairs)
                         , Block
                         )
                     )
@@ -125,52 +127,52 @@ elmUiRenderer =
             , Block
             )
     , link =
-        \{ title, destination } childTags ->
+        \{ title, destination } elTagPairs ->
             ( Ui.link []
                 { url = destination
                 , label =
-                    Ui.paragraph [] (getChildren childTags)
+                    Ui.paragraph [] (getEls elTagPairs)
                 }
             , Inline
             )
     , orderedList =
         \startNumber items ->
             ( items
-                |> List.map (getChildren >> Ui.paragraph [])
+                |> List.map (getEls >> Ui.paragraph [])
                 |> Ui.column []
             , Block
             )
     , paragraph =
-        \childTags ->
-            case childTags of
+        \elTagPairs ->
+            case elTagPairs of
                 [ ( child, Block ) ] ->
                     ( child, Block )
 
                 _ ->
-                    ( View.TextBlock.paragraph (getChildren childTags)
+                    ( View.TextBlock.paragraph (getEls elTagPairs)
                         |> View.TextBlock.view
                     , Block
                     )
     , strikethrough =
-        \childTags ->
-            ( Ui.paragraph [ UiFont.strike ] (getChildren childTags)
+        \elTagPairs ->
+            ( Ui.paragraph [ UiFont.strike ] (getEls elTagPairs)
             , Inline
             )
     , strong =
-        \childTags ->
-            ( Ui.paragraph [ UiFont.bold ] (getChildren childTags)
+        \elTagPairs ->
+            ( Ui.paragraph [ UiFont.bold ] (getEls elTagPairs)
             , Inline
             )
     , table =
-        \childTags ->
-            ( Ui.column [] (getChildren childTags)
+        \elTagPairs ->
+            ( Ui.column [] (getEls elTagPairs)
             , Block
             )
-    , tableBody = \childTags -> ( Ui.column [] (getChildren childTags), Block )
-    , tableCell = \mAlignment childTags -> ( Ui.paragraph [] (getChildren childTags), Block )
-    , tableHeader = \childTags -> ( Ui.column [] (getChildren childTags), Block )
-    , tableHeaderCell = \mAlignment childTags -> ( Ui.row [] (getChildren childTags), Block )
-    , tableRow = \childTags -> ( Ui.row [] (getChildren childTags), Block )
+    , tableBody = \elTagPairs -> ( Ui.column [] (getEls elTagPairs), Block )
+    , tableCell = \mAlignment elTagPairs -> ( Ui.paragraph [] (getEls elTagPairs), Block )
+    , tableHeader = \elTagPairs -> ( Ui.column [] (getEls elTagPairs), Block )
+    , tableHeaderCell = \mAlignment elTagPairs -> ( Ui.row [] (getEls elTagPairs), Block )
+    , tableRow = \elTagPairs -> ( Ui.row [] (getEls elTagPairs), Block )
     , text = \text -> ( Ui.text text, Inline )
     , thematicBreak = ( Ui.text "---", Block )
     , unorderedList =
@@ -178,8 +180,8 @@ elmUiRenderer =
             ( Ui.column []
                 (items
                     |> List.map
-                        (\(Markdown.Block.ListItem task childTags) ->
-                            Ui.paragraph [] (getChildren childTags)
+                        (\(Markdown.Block.ListItem task elTagPairs) ->
+                            Ui.paragraph [] (getEls elTagPairs)
                         )
                 )
             , Block
@@ -190,7 +192,7 @@ elmUiRenderer =
 resultToElmUi :
     (a -> List (Ui.Element msg) -> Ui.Element msg)
     -> Markdown.Html.Renderer (Result String a)
-    -> Markdown.Html.Renderer (List ( Ui.Element msg, Tag ) -> ( Ui.Element msg, Tag ))
+    -> Markdown.Html.Renderer (List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
 resultToElmUi partialToHtml resultRenderer =
     resultRenderer
         |> Markdown.Html.map
