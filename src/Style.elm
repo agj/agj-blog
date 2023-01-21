@@ -6,11 +6,23 @@ module Style exposing
     )
 
 import Color exposing (Color)
+import Color.Manipulate
 
 
 color =
-    { main100 = rgb 0x14 0x16 0x1A
-    , highlight50 = rgb 0x9F 0x1D 0x39
+    { layout = colorLayout
+    , primary = colorPrimary
+    , primaryDark =
+        colorPrimary
+            |> Color.Manipulate.darken 0.5
+    , highlight = colorHighlight
+    , highlightDark =
+        colorHighlight
+            |> Color.Manipulate.darken 0.5
+    , highlightLight =
+        colorHighlight
+            |> Color.Manipulate.lighten 0.4
+            |> Color.Manipulate.desaturate 0.5
     }
 
 
@@ -29,6 +41,18 @@ spacing =
 
 
 -- TYPOGRAPHY
+
+
+colorLayout =
+    rgb 0x00 0x00 0x00
+
+
+colorPrimary =
+    rgb 0xFF 0x00 0xCC
+
+
+colorHighlight =
+    rgb 0x00 0xEB 0xFF
 
 
 textSize =

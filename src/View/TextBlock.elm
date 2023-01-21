@@ -107,7 +107,7 @@ heading level children =
 baseStyles : List (Ui.Attribute msg)
 baseStyles =
     [ Ui.paddingXY 0 10
-    , UiFont.color (Color.toElmUi Style.color.main100)
+    , UiFont.color (Color.toElmUi Style.color.layout)
     , UiFont.size Style.textSize.m
     , Ui.spacing (Style.interline.m Style.textSize.m)
     ]
