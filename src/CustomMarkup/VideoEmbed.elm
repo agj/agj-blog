@@ -11,6 +11,7 @@ import Element as Ui
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Markdown.Html
+import View.Figure
 
 
 type alias VideoEmbed =
@@ -37,8 +38,42 @@ renderer =
 
 toElmUi : VideoEmbed -> dropped -> Ui.Element msg
 toElmUi videoEmbed _ =
-    toHtml videoEmbed ()
-        |> Ui.html
+    let
+        src =
+            case videoEmbed.service of
+                Vimeo ->
+                    let
+                        params =
+                            [ { key = "byline", value = "0" }
+                            , { key = "portrait", value = "0" }
+                            ]
+                    in
+                    "https://player.vimeo.com/video/{id}?{params}"
+                        |> String.replace "{id}" videoEmbed.id
+                        |> String.replace "{params}" (parseParameters params)
+
+                Youtube ->
+                    let
+                        params =
+                            [ { key = "rel", value = "0" }
+                            ]
+                    in
+                    "https://www.youtube-nocookie.com/embed/{id}?{params}"
+                        |> String.replace "{id}" videoEmbed.id
+                        |> String.replace "{params}" (parseParameters params)
+
+        iframe =
+            Html.iframe
+                [ Attr.src src
+                , Attr.attribute "frameborder" "0"
+                , Attr.attribute "allowfullscreen" "allowfullscreen"
+                , Attr.style "width" ((videoEmbed.width |> String.fromInt) ++ "px")
+                , Attr.style "height" ((videoEmbed.height |> String.fromInt) ++ "px")
+                ]
+                []
+    in
+    View.Figure.figure (Ui.html iframe)
+        |> View.Figure.view
 
 
 toHtml : VideoEmbed -> dropped -> Html msg
