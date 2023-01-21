@@ -41,47 +41,12 @@ type ElmUiTag
 
 renderer : Markdown.Renderer.Renderer ( Ui.Element msg, ElmUiTag )
 renderer =
-    let
-        getEls : List ( Ui.Element msg, ElmUiTag ) -> List (Ui.Element msg)
-        getEls =
-            List.map Tuple.first
-    in
     { blockQuote = \elTagPairs -> ( Ui.row [] (getEls elTagPairs), Block )
     , codeBlock = \{ body, language } -> ( Ui.text body, Block )
     , codeSpan = \code -> ( Ui.text code, Inline )
-    , emphasis =
-        \elTagPairs ->
-            ( Ui.paragraph [ UiFont.italic ] (getEls elTagPairs)
-            , Inline
-            )
+    , emphasis = renderInlineWithStyle UiFont.italic
     , hardLineBreak = ( Ui.text "\n", Block )
-    , heading =
-        \{ level, rawText, children } ->
-            let
-                constructor =
-                    case level of
-                        Markdown.Block.H1 ->
-                            View.TextBlock.heading1
-
-                        Markdown.Block.H2 ->
-                            View.TextBlock.heading2
-
-                        Markdown.Block.H3 ->
-                            View.TextBlock.heading3
-
-                        Markdown.Block.H4 ->
-                            View.TextBlock.heading4
-
-                        Markdown.Block.H5 ->
-                            View.TextBlock.heading5
-
-                        Markdown.Block.H6 ->
-                            View.TextBlock.heading6
-            in
-            ( constructor (getEls children)
-                |> View.TextBlock.view
-            , Block
-            )
+    , heading = renderHeading
     , html =
         Markdown.Html.oneOf
             [ CustomMarkup.VideoEmbed.renderer
@@ -116,27 +81,9 @@ renderer =
                 |> Ui.column []
             , Block
             )
-    , paragraph =
-        \elTagPairs ->
-            case elTagPairs of
-                [ ( child, Block ) ] ->
-                    ( child, Block )
-
-                _ ->
-                    ( View.TextBlock.paragraph (getEls elTagPairs)
-                        |> View.TextBlock.view
-                    , Block
-                    )
-    , strikethrough =
-        \elTagPairs ->
-            ( Ui.paragraph [ UiFont.strike ] (getEls elTagPairs)
-            , Inline
-            )
-    , strong =
-        \elTagPairs ->
-            ( Ui.paragraph [ UiFont.bold ] (getEls elTagPairs)
-            , Inline
-            )
+    , paragraph = renderParagraph
+    , strikethrough = renderInlineWithStyle UiFont.strike
+    , strong = renderInlineWithStyle UiFont.bold
     , table =
         \elTagPairs ->
             ( Ui.column [] (getEls elTagPairs)
@@ -163,6 +110,60 @@ renderer =
     }
 
 
+renderInlineWithStyle : Ui.Attribute msg -> List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag )
+renderInlineWithStyle attr elTagPairs =
+    ( Ui.paragraph [ attr ] (getEls elTagPairs)
+    , Inline
+    )
+
+
+renderParagraph : List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag )
+renderParagraph elTagPairs =
+    case elTagPairs of
+        [ ( child, Block ) ] ->
+            ( child, Block )
+
+        _ ->
+            ( View.TextBlock.paragraph (getEls elTagPairs)
+                |> View.TextBlock.view
+            , Block
+            )
+
+
+renderHeading :
+    { level : Markdown.Block.HeadingLevel
+    , rawText : String
+    , children : List ( Ui.Element msg, ElmUiTag )
+    }
+    -> ( Ui.Element msg, ElmUiTag )
+renderHeading { level, rawText, children } =
+    let
+        constructor =
+            case level of
+                Markdown.Block.H1 ->
+                    View.TextBlock.heading1
+
+                Markdown.Block.H2 ->
+                    View.TextBlock.heading2
+
+                Markdown.Block.H3 ->
+                    View.TextBlock.heading3
+
+                Markdown.Block.H4 ->
+                    View.TextBlock.heading4
+
+                Markdown.Block.H5 ->
+                    View.TextBlock.heading5
+
+                Markdown.Block.H6 ->
+                    View.TextBlock.heading6
+    in
+    ( constructor (getEls children)
+        |> View.TextBlock.view
+    , Block
+    )
+
+
 renderCustom :
     (a -> List (Ui.Element msg) -> Ui.Element msg)
     -> Markdown.Html.Renderer a
@@ -171,7 +172,7 @@ renderCustom toElmUi_ customRenderer =
     customRenderer
         |> Markdown.Html.map
             (\value elTagPairs ->
-                ( toElmUi_ value (List.map Tuple.first elTagPairs)
+                ( toElmUi_ value (getEls elTagPairs)
                 , Block
                 )
             )
@@ -191,7 +192,7 @@ renderFailableCustom okToElmUi customRenderer =
                     )
                 )
                 (\okResult elTagPairs ->
-                    ( okToElmUi okResult (List.map Tuple.first elTagPairs)
+                    ( okToElmUi okResult (getEls elTagPairs)
                     , Block
                     )
                 )
@@ -205,3 +206,8 @@ renderErrorMessage error =
         [ Ui.text "Parsing error:" ]
     , Ui.text error
     ]
+
+
+getEls : List ( Ui.Element msg, ElmUiTag ) -> List (Ui.Element msg)
+getEls =
+    List.map Tuple.first
