@@ -60,12 +60,12 @@ elmUiRenderer =
         getChildren =
             List.map Tuple.first
     in
-    { blockQuote = \children -> ( Ui.row [] (getChildren children), Block )
+    { blockQuote = \childTags -> ( Ui.row [] (getChildren childTags), Block )
     , codeBlock = \{ body, language } -> ( Ui.text body, Block )
     , codeSpan = \code -> ( Ui.text code, Inline )
     , emphasis =
-        \children ->
-            ( Ui.paragraph [ UiFont.italic ] (getChildren children)
+        \childTags ->
+            ( Ui.paragraph [ UiFont.italic ] (getChildren childTags)
             , Inline
             )
     , hardLineBreak = ( Ui.text "\n", Block )
@@ -104,8 +104,8 @@ elmUiRenderer =
                 |> resultToElmUi CustomMarkup.LanguageBreak.toElmUi
             , CustomMarkup.AudioPlayer.renderer
                 |> Markdown.Html.map
-                    (\ap children ->
-                        ( CustomMarkup.AudioPlayer.toElmUi ap (getChildren children)
+                    (\ap childTags ->
+                        ( CustomMarkup.AudioPlayer.toElmUi ap (getChildren childTags)
                         , Block
                         )
                     )
@@ -125,11 +125,11 @@ elmUiRenderer =
             , Block
             )
     , link =
-        \{ title, destination } children ->
+        \{ title, destination } childTags ->
             ( Ui.link []
                 { url = destination
                 , label =
-                    Ui.paragraph [] (getChildren children)
+                    Ui.paragraph [] (getChildren childTags)
                 }
             , Inline
             )
@@ -141,36 +141,36 @@ elmUiRenderer =
             , Block
             )
     , paragraph =
-        \children ->
-            case children of
+        \childTags ->
+            case childTags of
                 [ ( child, Block ) ] ->
                     ( child, Block )
 
                 _ ->
-                    ( View.TextBlock.paragraph (getChildren children)
+                    ( View.TextBlock.paragraph (getChildren childTags)
                         |> View.TextBlock.view
                     , Block
                     )
     , strikethrough =
-        \children ->
-            ( Ui.paragraph [ UiFont.strike ] (getChildren children)
+        \childTags ->
+            ( Ui.paragraph [ UiFont.strike ] (getChildren childTags)
             , Inline
             )
     , strong =
-        \children ->
-            ( Ui.paragraph [ UiFont.bold ] (getChildren children)
+        \childTags ->
+            ( Ui.paragraph [ UiFont.bold ] (getChildren childTags)
             , Inline
             )
     , table =
-        \children ->
-            ( Ui.column [] (getChildren children)
+        \childTags ->
+            ( Ui.column [] (getChildren childTags)
             , Block
             )
-    , tableBody = \children -> ( Ui.column [] (getChildren children), Block )
-    , tableCell = \mAlignment children -> ( Ui.paragraph [] (getChildren children), Block )
-    , tableHeader = \children -> ( Ui.column [] (getChildren children), Block )
-    , tableHeaderCell = \mAlignment children -> ( Ui.row [] (getChildren children), Block )
-    , tableRow = \children -> ( Ui.row [] (getChildren children), Block )
+    , tableBody = \childTags -> ( Ui.column [] (getChildren childTags), Block )
+    , tableCell = \mAlignment childTags -> ( Ui.paragraph [] (getChildren childTags), Block )
+    , tableHeader = \childTags -> ( Ui.column [] (getChildren childTags), Block )
+    , tableHeaderCell = \mAlignment childTags -> ( Ui.row [] (getChildren childTags), Block )
+    , tableRow = \childTags -> ( Ui.row [] (getChildren childTags), Block )
     , text = \text -> ( Ui.text text, Inline )
     , thematicBreak = ( Ui.text "---", Block )
     , unorderedList =
@@ -178,10 +178,8 @@ elmUiRenderer =
             ( Ui.column []
                 (items
                     |> List.map
-                        (\item ->
-                            case item of
-                                Markdown.Block.ListItem task children ->
-                                    Ui.paragraph [] (getChildren children)
+                        (\(Markdown.Block.ListItem task childTags) ->
+                            Ui.paragraph [] (getChildren childTags)
                         )
                 )
             , Block
