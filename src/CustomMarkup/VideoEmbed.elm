@@ -3,9 +3,11 @@ module CustomMarkup.VideoEmbed exposing
     , VideoService(..)
     , renderer
     , stringToVideoService
+    , toElmUi
     , toHtml
     )
 
+import Element as Ui
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Markdown.Html
@@ -31,6 +33,12 @@ renderer =
         |> Markdown.Html.withAttribute "id"
         |> Markdown.Html.withAttribute "width"
         |> Markdown.Html.withAttribute "height"
+
+
+toElmUi : VideoEmbed -> dropped -> Ui.Element msg
+toElmUi videoEmbed _ =
+    toHtml videoEmbed ()
+        |> Ui.html
 
 
 toHtml : VideoEmbed -> dropped -> Html msg

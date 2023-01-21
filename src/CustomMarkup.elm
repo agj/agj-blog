@@ -1,9 +1,14 @@
-module CustomMarkup exposing (toHtml)
+module CustomMarkup exposing
+    ( toElmUi
+    , toHtml
+    )
 
 import CustomMarkup.AudioPlayer
 import CustomMarkup.AudioPlayer.Track exposing (Track)
 import CustomMarkup.LanguageBreak
 import CustomMarkup.VideoEmbed
+import Element as Ui
+import Element.Font as UiFont
 import Html exposing (Html)
 import Html.Attributes as Attr
 import List.Extra as List
@@ -14,22 +19,117 @@ import Markdown.Renderer
 import Result.Extra as Result
 
 
+toElmUi : String -> Ui.Element msg
+toElmUi markdown =
+    markdown
+        |> Markdown.Parser.parse
+        |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
+        |> Result.andThen (Markdown.Renderer.render elmUiRenderer)
+        |> Result.mapError renderErrorMessageAsElmUi
+        |> Result.merge
+        |> Ui.column []
+
+
 toHtml : String -> List (Html msg)
 toHtml markdown =
     markdown
         |> Markdown.Parser.parse
         |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
-        |> Result.andThen (Markdown.Renderer.render renderer)
-        |> Result.mapError renderErrorMessage
+        |> Result.andThen (Markdown.Renderer.render htmlRenderer)
+        |> Result.mapError renderErrorMessageAsHtml
         |> Result.merge
 
 
 
 -- INTERNAL
+-- Elm UI Rendering
 
 
-renderer : Markdown.Renderer.Renderer (Html msg)
-renderer =
+elmUiRenderer : Markdown.Renderer.Renderer (Ui.Element msg)
+elmUiRenderer =
+    { blockQuote = Ui.row []
+    , codeBlock = \{ body, language } -> Ui.text body
+    , codeSpan = Ui.text
+    , emphasis = Ui.paragraph [ UiFont.italic ]
+    , hardLineBreak = Ui.text "\n"
+    , heading = \{ level, rawText, children } -> Ui.paragraph [] children
+    , html =
+        Markdown.Html.oneOf
+            [ CustomMarkup.VideoEmbed.renderer
+                |> resultToElmUi CustomMarkup.VideoEmbed.toElmUi
+            , CustomMarkup.LanguageBreak.renderer
+                |> resultToElmUi CustomMarkup.LanguageBreak.toElmUi
+            , CustomMarkup.AudioPlayer.renderer
+                |> Markdown.Html.map CustomMarkup.AudioPlayer.toElmUi
+            , CustomMarkup.AudioPlayer.Track.renderer
+                |> Markdown.Html.map CustomMarkup.AudioPlayer.Track.toElmUi
+            ]
+    , image = \{ alt, src, title } -> Ui.image [] { src = src, description = alt }
+    , link =
+        \{ title, destination } children ->
+            Ui.link []
+                { url = destination
+                , label =
+                    Ui.paragraph [] children
+                }
+    , orderedList =
+        \startNumber items ->
+            items
+                |> List.map (Ui.paragraph [])
+                |> Ui.column []
+    , paragraph = Ui.paragraph []
+    , strikethrough = Ui.paragraph [ UiFont.strike ]
+    , strong = Ui.paragraph [ UiFont.bold ]
+    , table = Ui.column []
+    , tableBody = Ui.column []
+    , tableCell = \mAlignment children -> Ui.paragraph [] children
+    , tableHeader = Ui.column []
+    , tableHeaderCell = \mAlignment children -> Ui.row [] children
+    , tableRow = Ui.row []
+    , text = Ui.text
+    , thematicBreak = Ui.text "---"
+    , unorderedList =
+        \items ->
+            Ui.column []
+                (items
+                    |> List.map
+                        (\item ->
+                            case item of
+                                Markdown.Block.ListItem task children ->
+                                    Ui.paragraph [] children
+                        )
+                )
+    }
+
+
+resultToElmUi :
+    (a -> List (Ui.Element msg) -> Ui.Element msg)
+    -> Markdown.Html.Renderer (Result String a)
+    -> Markdown.Html.Renderer (List (Ui.Element msg) -> Ui.Element msg)
+resultToElmUi partialToHtml resultRenderer =
+    resultRenderer
+        |> Markdown.Html.map
+            (Result.mapBoth
+                (\err _ -> Ui.column [] (renderErrorMessageAsElmUi err))
+                partialToHtml
+            )
+        |> Markdown.Html.map Result.merge
+
+
+renderErrorMessageAsElmUi : String -> List (Ui.Element msg)
+renderErrorMessageAsElmUi error =
+    [ Ui.paragraph []
+        [ Ui.text "Parsing error:" ]
+    , Ui.text error
+    ]
+
+
+
+-- HTML Rendering
+
+
+htmlRenderer : Markdown.Renderer.Renderer (Html msg)
+htmlRenderer =
     let
         defRenderer =
             Markdown.Renderer.defaultHtmlRenderer
@@ -51,8 +151,8 @@ renderer =
     }
 
 
-renderErrorMessage : String -> List (Html msg)
-renderErrorMessage error =
+renderErrorMessageAsHtml : String -> List (Html msg)
+renderErrorMessageAsHtml error =
     [ Html.p []
         [ Html.text "Parsing error:"
         ]
@@ -70,7 +170,7 @@ resultToHtml partialToHtml resultRenderer =
     resultRenderer
         |> Markdown.Html.map
             (Result.mapBoth
-                (\err _ -> Html.div [] (renderErrorMessage err))
+                (\err _ -> Html.div [] (renderErrorMessageAsHtml err))
                 partialToHtml
             )
         |> Markdown.Html.map Result.merge
