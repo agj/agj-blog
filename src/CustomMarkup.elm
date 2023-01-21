@@ -21,9 +21,9 @@ toElmUi markdown =
     markdown
         |> Markdown.Parser.parse
         |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
-        |> Result.andThen (Markdown.Renderer.render elmUiRenderer)
+        |> Result.andThen (Markdown.Renderer.render renderer)
         |> Result.map (List.map Tuple.first)
-        |> Result.mapError renderErrorMessageAsElmUi
+        |> Result.mapError renderErrorMessage
         |> Result.merge
         |> Ui.column []
 
@@ -39,8 +39,8 @@ type ElmUiTag
     | Inline
 
 
-elmUiRenderer : Markdown.Renderer.Renderer ( Ui.Element msg, ElmUiTag )
-elmUiRenderer =
+renderer : Markdown.Renderer.Renderer ( Ui.Element msg, ElmUiTag )
+renderer =
     let
         getEls : List ( Ui.Element msg, ElmUiTag ) -> List (Ui.Element msg)
         getEls =
@@ -85,13 +85,13 @@ elmUiRenderer =
     , html =
         Markdown.Html.oneOf
             [ CustomMarkup.VideoEmbed.renderer
-                |> renderFailableToElmUi (CustomMarkup.VideoEmbed.toElmUi >> always)
+                |> renderFailableCustom (CustomMarkup.VideoEmbed.toElmUi >> always)
             , CustomMarkup.LanguageBreak.renderer
-                |> renderFailableToElmUi (CustomMarkup.LanguageBreak.toElmUi >> always)
+                |> renderFailableCustom (CustomMarkup.LanguageBreak.toElmUi >> always)
             , CustomMarkup.AudioPlayer.renderer
-                |> renderToElmUi CustomMarkup.AudioPlayer.toElmUi
+                |> renderCustom CustomMarkup.AudioPlayer.toElmUi
             , CustomMarkup.AudioPlayer.Track.renderer
-                |> renderToElmUi (CustomMarkup.AudioPlayer.Track.toElmUi >> always)
+                |> renderCustom (CustomMarkup.AudioPlayer.Track.toElmUi >> always)
             ]
     , image =
         \{ alt, src, title } ->
@@ -163,12 +163,12 @@ elmUiRenderer =
     }
 
 
-renderToElmUi :
+renderCustom :
     (a -> List (Ui.Element msg) -> Ui.Element msg)
     -> Markdown.Html.Renderer a
     -> Markdown.Html.Renderer (List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
-renderToElmUi toElmUi_ renderer =
-    renderer
+renderCustom toElmUi_ customRenderer =
+    customRenderer
         |> Markdown.Html.map
             (\value elTagPairs ->
                 ( toElmUi_ value (List.map Tuple.first elTagPairs)
@@ -177,16 +177,16 @@ renderToElmUi toElmUi_ renderer =
             )
 
 
-renderFailableToElmUi :
+renderFailableCustom :
     (a -> List (Ui.Element msg) -> Ui.Element msg)
     -> Markdown.Html.Renderer (Result String a)
     -> Markdown.Html.Renderer (List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
-renderFailableToElmUi okToElmUi renderer =
-    renderer
+renderFailableCustom okToElmUi customRenderer =
+    customRenderer
         |> Markdown.Html.map
             (Result.mapBoth
                 (\err _ ->
-                    ( Ui.column [] (renderErrorMessageAsElmUi err)
+                    ( Ui.column [] (renderErrorMessage err)
                     , Block
                     )
                 )
@@ -199,8 +199,8 @@ renderFailableToElmUi okToElmUi renderer =
         |> Markdown.Html.map Result.merge
 
 
-renderErrorMessageAsElmUi : String -> List (Ui.Element msg)
-renderErrorMessageAsElmUi error =
+renderErrorMessage : String -> List (Ui.Element msg)
+renderErrorMessage error =
     [ Ui.paragraph []
         [ Ui.text "Parsing error:" ]
     , Ui.text error
