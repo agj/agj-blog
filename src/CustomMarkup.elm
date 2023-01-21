@@ -17,6 +17,7 @@ import Markdown.Html
 import Markdown.Parser
 import Markdown.Renderer
 import Result.Extra as Result
+import View.TextBlock
 
 
 toElmUi : String -> Ui.Element msg
@@ -52,7 +53,31 @@ elmUiRenderer =
     , codeSpan = Ui.text
     , emphasis = Ui.paragraph [ UiFont.italic ]
     , hardLineBreak = Ui.text "\n"
-    , heading = \{ level, rawText, children } -> Ui.paragraph [] children
+    , heading =
+        \{ level, rawText, children } ->
+            let
+                constructor =
+                    case level of
+                        Markdown.Block.H1 ->
+                            View.TextBlock.heading1
+
+                        Markdown.Block.H2 ->
+                            View.TextBlock.heading2
+
+                        Markdown.Block.H3 ->
+                            View.TextBlock.heading3
+
+                        Markdown.Block.H4 ->
+                            View.TextBlock.heading4
+
+                        Markdown.Block.H5 ->
+                            View.TextBlock.heading5
+
+                        Markdown.Block.H6 ->
+                            View.TextBlock.heading6
+            in
+            constructor children
+                |> View.TextBlock.view
     , html =
         Markdown.Html.oneOf
             [ CustomMarkup.VideoEmbed.renderer
@@ -77,7 +102,10 @@ elmUiRenderer =
             items
                 |> List.map (Ui.paragraph [])
                 |> Ui.column []
-    , paragraph = Ui.paragraph []
+    , paragraph =
+        \children ->
+            View.TextBlock.paragraph children
+                |> View.TextBlock.view
     , strikethrough = Ui.paragraph [ UiFont.strike ]
     , strong = Ui.paragraph [ UiFont.bold ]
     , table = Ui.column []
