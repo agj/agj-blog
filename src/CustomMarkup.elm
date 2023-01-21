@@ -50,6 +50,7 @@ toHtml markdown =
 
 type Tag
     = El
+    | Image
 
 
 elmUiRenderer : Markdown.Renderer.Renderer ( Ui.Element msg, Tag )
@@ -121,7 +122,7 @@ elmUiRenderer =
             ( Ui.image [] { src = src, description = alt }
                 |> View.Figure.figure
                 |> View.Figure.view
-            , El
+            , Image
             )
     , link =
         \{ title, destination } children ->
@@ -141,10 +142,15 @@ elmUiRenderer =
             )
     , paragraph =
         \children ->
-            ( View.TextBlock.paragraph (getChildren children)
-                |> View.TextBlock.view
-            , El
-            )
+            case children of
+                [ ( child, Image ) ] ->
+                    ( child, El )
+
+                _ ->
+                    ( View.TextBlock.paragraph (getChildren children)
+                        |> View.TextBlock.view
+                    , El
+                    )
     , strikethrough =
         \children ->
             ( Ui.paragraph [ UiFont.strike ] (getChildren children)
