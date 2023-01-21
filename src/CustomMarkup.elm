@@ -1,15 +1,31 @@
-module CustomMarkup exposing (..)
+module CustomMarkup exposing (toHtml)
 
 import CustomMarkup.AudioPlayer
-import CustomMarkup.AudioPlayer.Track
+import CustomMarkup.AudioPlayer.Track exposing (Track)
 import CustomMarkup.LanguageBreak
 import CustomMarkup.VideoEmbed
 import Html exposing (Html)
 import Html.Attributes as Attr
-import Markdown.Block exposing (Block)
+import List.Extra as List
+import Markdown.Block
 import Markdown.Html
+import Markdown.Parser
 import Markdown.Renderer
 import Result.Extra as Result
+
+
+toHtml : String -> List (Html msg)
+toHtml markdown =
+    markdown
+        |> Markdown.Parser.parse
+        |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
+        |> Result.andThen (Markdown.Renderer.render renderer)
+        |> Result.mapError renderErrorMessage
+        |> Result.merge
+
+
+
+-- INTERNAL
 
 
 renderer : Markdown.Renderer.Renderer (Html msg)
@@ -46,20 +62,16 @@ renderErrorMessage error =
     ]
 
 
-
--- INTERNAL
-
-
 resultToHtml :
     (a -> List (Html msg) -> Html msg)
     -> Markdown.Html.Renderer (Result String a)
     -> Markdown.Html.Renderer (List (Html msg) -> Html msg)
-resultToHtml toHtml resultRenderer =
+resultToHtml partialToHtml resultRenderer =
     resultRenderer
         |> Markdown.Html.map
             (Result.mapBoth
                 (\err _ -> Html.div [] (renderErrorMessage err))
-                toHtml
+                partialToHtml
             )
         |> Markdown.Html.map Result.merge
 
