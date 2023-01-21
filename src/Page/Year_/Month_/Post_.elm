@@ -1,5 +1,6 @@
 module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page)
 
+import CustomMarkup
 import Data.Category as Category
 import Data.Date as Date
 import Data.PageHeader as PageHeader
@@ -60,12 +61,15 @@ routes =
 
 
 type alias Data =
-    Post Msg
+    Post
 
 
 data : RouteParams -> DataSource Data
 data routeParams =
-    Post.singleDataSource routeParams.year routeParams.month routeParams.post
+    Post.singleDataSource
+        routeParams.year
+        routeParams.month
+        routeParams.post
 
 
 
@@ -135,6 +139,9 @@ view maybeUrl sharedModel static =
 
             else
                 [ Html.text "No tags." ]
+
+        contentHtml =
+            CustomMarkup.toHtml static.data.markdown
     in
     { title = title static
     , body =
@@ -154,5 +161,5 @@ view maybeUrl sharedModel static =
                     ]
                 )
             )
-            :: static.data.content
+            :: contentHtml
     }

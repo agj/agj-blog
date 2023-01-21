@@ -47,7 +47,7 @@ type alias RouteParams =
 
 
 type alias Data =
-    { content : List (Html Msg)
+    { markdown : String
     , title : String
     }
 
@@ -59,16 +59,7 @@ data =
 
 decoder : String -> Decoder Data
 decoder content =
-    let
-        parsedContent =
-            content
-                |> Markdown.Parser.parse
-                |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
-                |> Result.andThen (Markdown.Renderer.render CustomMarkup.renderer)
-                |> Result.mapError CustomMarkup.renderErrorMessage
-                |> Result.merge
-    in
-    Decode.succeed (Data parsedContent)
+    Decode.succeed (Data content)
         |> Decode.required "title" Decode.string
 
 
@@ -106,5 +97,5 @@ view maybeUrl sharedModel static =
                     ]
                 )
             )
-            :: static.data.content
+            :: CustomMarkup.toHtml static.data.markdown
     }
