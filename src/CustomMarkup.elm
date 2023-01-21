@@ -2,6 +2,7 @@ module CustomMarkup exposing (toElmUi)
 
 import CustomMarkup.AudioPlayer
 import CustomMarkup.AudioPlayer.Track exposing (Track)
+import CustomMarkup.ElmUiTag as ElmUiTag exposing (ElmUiTag)
 import CustomMarkup.LanguageBreak
 import CustomMarkup.VideoEmbed
 import Element as Ui
@@ -32,20 +33,13 @@ toElmUi markdown =
 -- INTERNAL
 
 
-{-| Identifies characteristics of an Elm UI element for use while parsing markdown.
--}
-type ElmUiTag
-    = Block
-    | Inline
-
-
 renderer : Markdown.Renderer.Renderer ( Ui.Element msg, ElmUiTag )
 renderer =
-    { blockQuote = \elTagPairs -> ( Ui.row [] (getEls elTagPairs), Block )
-    , codeBlock = \{ body, language } -> ( Ui.text body, Block )
-    , codeSpan = \code -> ( Ui.text code, Inline )
+    { blockQuote = \elTagPairs -> ( Ui.row [] (getEls elTagPairs), ElmUiTag.Block )
+    , codeBlock = \{ body, language } -> ( Ui.text body, ElmUiTag.Block )
+    , codeSpan = \code -> ( Ui.text code, ElmUiTag.Inline )
     , emphasis = renderInlineWithStyle UiFont.italic
-    , hardLineBreak = ( Ui.text "\n", Block )
+    , hardLineBreak = ( Ui.text "\n", ElmUiTag.Block )
     , heading = renderHeading
     , html =
         Markdown.Html.oneOf
@@ -63,7 +57,7 @@ renderer =
             ( Ui.image [] { src = src, description = alt }
                 |> View.Figure.figure
                 |> View.Figure.view
-            , Block
+            , ElmUiTag.Block
             )
     , link =
         \{ title, destination } elTagPairs ->
@@ -72,14 +66,14 @@ renderer =
                 , label =
                     Ui.paragraph [] (getEls elTagPairs)
                 }
-            , Inline
+            , ElmUiTag.Inline
             )
     , orderedList =
         \startNumber items ->
             ( items
                 |> List.map (getEls >> Ui.paragraph [])
                 |> Ui.column []
-            , Block
+            , ElmUiTag.Block
             )
     , paragraph = renderParagraph
     , strikethrough = renderInlineWithStyle UiFont.strike
@@ -87,15 +81,15 @@ renderer =
     , table =
         \elTagPairs ->
             ( Ui.column [] (getEls elTagPairs)
-            , Block
+            , ElmUiTag.Block
             )
-    , tableBody = \elTagPairs -> ( Ui.column [] (getEls elTagPairs), Block )
-    , tableCell = \mAlignment elTagPairs -> ( Ui.paragraph [] (getEls elTagPairs), Block )
-    , tableHeader = \elTagPairs -> ( Ui.column [] (getEls elTagPairs), Block )
-    , tableHeaderCell = \mAlignment elTagPairs -> ( Ui.row [] (getEls elTagPairs), Block )
-    , tableRow = \elTagPairs -> ( Ui.row [] (getEls elTagPairs), Block )
-    , text = \text -> ( Ui.text text, Inline )
-    , thematicBreak = ( Ui.text "---", Block )
+    , tableBody = \elTagPairs -> ( Ui.column [] (getEls elTagPairs), ElmUiTag.Block )
+    , tableCell = \mAlignment elTagPairs -> ( Ui.paragraph [] (getEls elTagPairs), ElmUiTag.Block )
+    , tableHeader = \elTagPairs -> ( Ui.column [] (getEls elTagPairs), ElmUiTag.Block )
+    , tableHeaderCell = \mAlignment elTagPairs -> ( Ui.row [] (getEls elTagPairs), ElmUiTag.Block )
+    , tableRow = \elTagPairs -> ( Ui.row [] (getEls elTagPairs), ElmUiTag.Block )
+    , text = \text -> ( Ui.text text, ElmUiTag.Inline )
+    , thematicBreak = ( Ui.text "---", ElmUiTag.Block )
     , unorderedList =
         \items ->
             ( Ui.column []
@@ -105,7 +99,7 @@ renderer =
                             Ui.paragraph [] (getEls elTagPairs)
                         )
                 )
-            , Block
+            , ElmUiTag.Block
             )
     }
 
@@ -113,20 +107,20 @@ renderer =
 renderInlineWithStyle : Ui.Attribute msg -> List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag )
 renderInlineWithStyle attr elTagPairs =
     ( Ui.paragraph [ attr ] (getEls elTagPairs)
-    , Inline
+    , ElmUiTag.Inline
     )
 
 
 renderParagraph : List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag )
 renderParagraph elTagPairs =
     case elTagPairs of
-        [ ( child, Block ) ] ->
-            ( child, Block )
+        [ ( child, ElmUiTag.Block ) ] ->
+            ( child, ElmUiTag.Block )
 
         _ ->
             ( View.TextBlock.paragraph (getEls elTagPairs)
                 |> View.TextBlock.view
-            , Block
+            , ElmUiTag.Block
             )
 
 
@@ -160,7 +154,7 @@ renderHeading { level, rawText, children } =
     in
     ( constructor (getEls children)
         |> View.TextBlock.view
-    , Block
+    , ElmUiTag.Block
     )
 
 
@@ -173,7 +167,7 @@ renderCustom toElmUi_ customRenderer =
         |> Markdown.Html.map
             (\value elTagPairs ->
                 ( toElmUi_ value (getEls elTagPairs)
-                , Block
+                , ElmUiTag.Block
                 )
             )
 
@@ -188,12 +182,12 @@ renderFailableCustom okToElmUi customRenderer =
             (Result.mapBoth
                 (\err _ ->
                     ( Ui.column [] (renderErrorMessage err)
-                    , Block
+                    , ElmUiTag.Block
                     )
                 )
                 (\okResult elTagPairs ->
                     ( okToElmUi okResult (getEls elTagPairs)
-                    , Block
+                    , ElmUiTag.Block
                     )
                 )
             )
