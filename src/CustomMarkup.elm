@@ -101,23 +101,13 @@ elmUiRenderer =
     , html =
         Markdown.Html.oneOf
             [ CustomMarkup.VideoEmbed.renderer
-                |> resultToElmUi (CustomMarkup.VideoEmbed.toElmUi >> always)
+                |> renderFailableToElmUi (CustomMarkup.VideoEmbed.toElmUi >> always)
             , CustomMarkup.LanguageBreak.renderer
-                |> resultToElmUi (CustomMarkup.LanguageBreak.toElmUi >> always)
+                |> renderFailableToElmUi (CustomMarkup.LanguageBreak.toElmUi >> always)
             , CustomMarkup.AudioPlayer.renderer
-                |> Markdown.Html.map
-                    (\ap elTagPairs ->
-                        ( CustomMarkup.AudioPlayer.toElmUi ap (getEls elTagPairs)
-                        , Block
-                        )
-                    )
+                |> renderToElmUi CustomMarkup.AudioPlayer.toElmUi
             , CustomMarkup.AudioPlayer.Track.renderer
-                |> Markdown.Html.map
-                    (\track _ ->
-                        ( CustomMarkup.AudioPlayer.Track.toElmUi track
-                        , Block
-                        )
-                    )
+                |> renderToElmUi (CustomMarkup.AudioPlayer.Track.toElmUi >> always)
             ]
     , image =
         \{ alt, src, title } ->
@@ -189,12 +179,26 @@ elmUiRenderer =
     }
 
 
-resultToElmUi :
+renderToElmUi :
+    (a -> List (Ui.Element msg) -> Ui.Element msg)
+    -> Markdown.Html.Renderer a
+    -> Markdown.Html.Renderer (List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
+renderToElmUi toElmUi_ renderer =
+    renderer
+        |> Markdown.Html.map
+            (\value elTagPairs ->
+                ( toElmUi_ value (List.map Tuple.first elTagPairs)
+                , Block
+                )
+            )
+
+
+renderFailableToElmUi :
     (a -> List (Ui.Element msg) -> Ui.Element msg)
     -> Markdown.Html.Renderer (Result String a)
     -> Markdown.Html.Renderer (List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
-resultToElmUi partialToHtml resultRenderer =
-    resultRenderer
+renderFailableToElmUi okToElmUi renderer =
+    renderer
         |> Markdown.Html.map
             (Result.mapBoth
                 (\err _ ->
@@ -202,8 +206,8 @@ resultToElmUi partialToHtml resultRenderer =
                     , Block
                     )
                 )
-                (\a children ->
-                    ( partialToHtml a (List.map Tuple.first children)
+                (\okResult elTagPairs ->
+                    ( okToElmUi okResult (List.map Tuple.first elTagPairs)
                     , Block
                     )
                 )
