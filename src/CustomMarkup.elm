@@ -159,21 +159,19 @@ renderHeading { level, rawText, children } =
 
 
 renderCustom :
-    (a -> List (Ui.Element msg) -> Ui.Element msg)
+    (a -> List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
     -> Markdown.Html.Renderer a
     -> Markdown.Html.Renderer (List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
 renderCustom toElmUi_ customRenderer =
     customRenderer
         |> Markdown.Html.map
             (\value elTagPairs ->
-                ( toElmUi_ value (getEls elTagPairs)
-                , ElmUiTag.Block
-                )
+                toElmUi_ value elTagPairs
             )
 
 
 renderFailableCustom :
-    (a -> List (Ui.Element msg) -> Ui.Element msg)
+    (a -> List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
     -> Markdown.Html.Renderer (Result String a)
     -> Markdown.Html.Renderer (List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
 renderFailableCustom okToElmUi customRenderer =
@@ -186,9 +184,7 @@ renderFailableCustom okToElmUi customRenderer =
                     )
                 )
                 (\okResult elTagPairs ->
-                    ( okToElmUi okResult (getEls elTagPairs)
-                    , ElmUiTag.Block
-                    )
+                    okToElmUi okResult elTagPairs
                 )
             )
         |> Markdown.Html.map Result.merge

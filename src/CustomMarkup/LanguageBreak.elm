@@ -4,6 +4,7 @@ module CustomMarkup.LanguageBreak exposing
     , toHtml
     )
 
+import CustomMarkup.ElmUiTag exposing (ElmUiTag)
 import Data.Language as Language exposing (Language)
 import Element as Ui
 import Html exposing (Html)
@@ -22,10 +23,12 @@ renderer =
         |> Markdown.Html.withOptionalAttribute "language"
 
 
-toElmUi : LanguageBreak -> Ui.Element msg
+toElmUi : LanguageBreak -> ( Ui.Element msg, ElmUiTag )
 toElmUi languageBreak =
-    toHtml languageBreak ()
+    ( toHtml languageBreak ()
         |> Ui.html
+    , CustomMarkup.ElmUiTag.Block
+    )
 
 
 toHtml : LanguageBreak -> dropped -> Html msg

@@ -2,13 +2,10 @@ module CustomMarkup.AudioPlayer.Track exposing
     ( Track
     , renderer
     , toElmUi
-    , toHtml
     )
 
-import CustomMarkup.AudioPlayer exposing (AudioPlayer)
+import CustomMarkup.ElmUiTag exposing (ElmUiTag)
 import Element as Ui
-import Html exposing (Html)
-import Html.Attributes as Attr
 import Markdown.Html
 
 
@@ -25,20 +22,6 @@ renderer =
         |> Markdown.Html.withAttribute "src"
 
 
-toElmUi : Track -> Ui.Element msg
+toElmUi : Track -> ( Ui.Element msg, ElmUiTag )
 toElmUi track =
-    toHtml track ()
-        |> Ui.html
-
-
-toHtml : Track -> dropped -> Html msg
-toHtml track _ =
-    Html.figure [ Attr.class "track" ]
-        [ Html.figcaption [] [ Html.text track.title ]
-        , Html.audio
-            [ Attr.controls True
-            , Attr.src track.src
-            , Attr.preload "none"
-            ]
-            []
-        ]
+    ( Ui.none, CustomMarkup.ElmUiTag.Custom (CustomMarkup.ElmUiTag.AudioPlayerTrack track) )
