@@ -47,10 +47,34 @@ renderer =
                 |> renderFailableCustom (CustomMarkup.VideoEmbed.toElmUi >> always)
             , CustomMarkup.LanguageBreak.renderer
                 |> renderFailableCustom (CustomMarkup.LanguageBreak.toElmUi >> always)
-            , CustomMarkup.AudioPlayer.renderer
-                |> renderCustom CustomMarkup.AudioPlayer.toElmUi
             , CustomMarkup.AudioPlayer.Track.renderer
-                |> renderCustom (CustomMarkup.AudioPlayer.Track.toElmUi >> always)
+                |> Markdown.Html.map
+                    (\track _ ->
+                        ( Ui.none
+                        , ElmUiTag.Custom (ElmUiTag.AudioPlayerTrack track)
+                        )
+                    )
+            , CustomMarkup.AudioPlayer.renderer
+                |> Markdown.Html.map
+                    (\audioPlayer children ->
+                        let
+                            tracks =
+                                children
+                                    |> List.map Tuple.second
+                                    |> List.filterMap
+                                        (\tag ->
+                                            case tag of
+                                                ElmUiTag.Custom (ElmUiTag.AudioPlayerTrack track) ->
+                                                    Just track
+
+                                                _ ->
+                                                    Nothing
+                                        )
+                        in
+                        ( CustomMarkup.AudioPlayer.toElmUi audioPlayer tracks
+                        , ElmUiTag.Block
+                        )
+                    )
             ]
     , image =
         \{ alt, src, title } ->

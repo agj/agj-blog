@@ -6,7 +6,6 @@ module CustomMarkup.AudioPlayer exposing
     )
 
 import CustomMarkup.AudioPlayer.Track exposing (Track)
-import CustomMarkup.ElmUiTag exposing (ElmUiTag)
 import Element as Ui
 import Html exposing (Html)
 import Html.Attributes as Attr
@@ -24,32 +23,18 @@ renderer =
         |> Markdown.Html.withAttribute "title"
 
 
-toElmUi : AudioPlayer -> List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag )
-toElmUi audioPlayer elTrackPairs =
+toElmUi : AudioPlayer -> List Track -> Ui.Element msg
+toElmUi audioPlayer tracks =
     let
-        tracks =
-            List.map Tuple.second elTrackPairs
-
         trackEls =
             tracks
-                |> List.filterMap
-                    (\tag ->
-                        case tag of
-                            CustomMarkup.ElmUiTag.Custom (CustomMarkup.ElmUiTag.AudioPlayerTrack track) ->
-                                Just track
-
-                            _ ->
-                                Nothing
-                    )
                 |> List.map trackToHtml
     in
-    ( Html.article [ Attr.class "audio-player" ]
+    Html.article [ Attr.class "audio-player" ]
         (Html.header [] [ Html.text audioPlayer.title ]
             :: trackEls
         )
         |> Ui.html
-    , CustomMarkup.ElmUiTag.Block
-    )
 
 
 toHtml : AudioPlayer -> List (Html msg) -> Html msg
