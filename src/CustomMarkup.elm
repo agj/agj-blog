@@ -48,32 +48,23 @@ renderer =
             , CustomMarkup.LanguageBreak.renderer
                 |> renderFailableCustom (CustomMarkup.LanguageBreak.toElmUi >> always)
             , CustomMarkup.AudioPlayer.Track.renderer
-                |> Markdown.Html.map
-                    (\track _ ->
-                        ( Ui.none
-                        , ElmUiTag.Custom (ElmUiTag.AudioPlayerTrack track)
-                        )
-                    )
+                |> renderCustomTag Ui.none (\track _ -> ElmUiTag.Custom (ElmUiTag.AudioPlayerTrack track))
             , CustomMarkup.AudioPlayer.renderer
+                |> renderCustomElement ElmUiTag.Block CustomMarkup.AudioPlayer.toElmUi
                 |> Markdown.Html.map
-                    (\audioPlayer children ->
-                        let
-                            tracks =
-                                children
-                                    |> List.map Tuple.second
-                                    |> List.filterMap
-                                        (\tag ->
-                                            case tag of
-                                                ElmUiTag.Custom (ElmUiTag.AudioPlayerTrack track) ->
-                                                    Just track
+                    (\toElmUi_ children ->
+                        children
+                            |> List.map Tuple.second
+                            |> List.filterMap
+                                (\tag ->
+                                    case tag of
+                                        ElmUiTag.Custom (ElmUiTag.AudioPlayerTrack track) ->
+                                            Just track
 
-                                                _ ->
-                                                    Nothing
-                                        )
-                        in
-                        ( CustomMarkup.AudioPlayer.toElmUi audioPlayer tracks
-                        , ElmUiTag.Block
-                        )
+                                        _ ->
+                                            Nothing
+                                )
+                            |> toElmUi_
                     )
             ]
     , image =
@@ -182,15 +173,33 @@ renderHeading { level, rawText, children } =
     )
 
 
-renderCustom :
-    (a -> List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
+renderCustomElement :
+    ElmUiTag
+    -> (a -> b -> Ui.Element msg)
     -> Markdown.Html.Renderer a
-    -> Markdown.Html.Renderer (List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
-renderCustom toElmUi_ customRenderer =
+    -> Markdown.Html.Renderer (b -> ( Ui.Element msg, ElmUiTag ))
+renderCustomElement elmUiTag toElmUi_ customRenderer =
     customRenderer
         |> Markdown.Html.map
-            (\value elTagPairs ->
-                toElmUi_ value elTagPairs
+            (\value children ->
+                ( toElmUi_ value children
+                , elmUiTag
+                )
+            )
+
+
+renderCustomTag :
+    Ui.Element msg
+    -> (a -> b -> ElmUiTag)
+    -> Markdown.Html.Renderer a
+    -> Markdown.Html.Renderer (b -> ( Ui.Element msg, ElmUiTag ))
+renderCustomTag element toElmUiTag customRenderer =
+    customRenderer
+        |> Markdown.Html.map
+            (\value children ->
+                ( element
+                , toElmUiTag value children
+                )
             )
 
 
