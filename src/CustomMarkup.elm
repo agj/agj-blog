@@ -44,9 +44,9 @@ renderer =
     , html =
         Markdown.Html.oneOf
             [ CustomMarkup.VideoEmbed.renderer
-                |> renderFailableCustom (CustomMarkup.VideoEmbed.toElmUi >> always)
+                |> mapFailableCustom ElmUiTag.Block CustomMarkup.VideoEmbed.toElmUi
             , CustomMarkup.LanguageBreak.renderer
-                |> renderFailableCustom (CustomMarkup.LanguageBreak.toElmUi >> always)
+                |> mapFailableCustom ElmUiTag.Block CustomMarkup.LanguageBreak.toElmUi
             , CustomMarkup.AudioPlayer.Track.renderer
                 |> Markdown.Html.map
                     (\track _ ->
@@ -182,11 +182,12 @@ renderHeading { level, rawText, children } =
     )
 
 
-renderFailableCustom :
-    (a -> List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
+mapFailableCustom :
+    ElmUiTag
+    -> (a -> Ui.Element msg)
     -> Markdown.Html.Renderer (Result String a)
-    -> Markdown.Html.Renderer (List ( Ui.Element msg, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
-renderFailableCustom okToElmUi customRenderer =
+    -> Markdown.Html.Renderer (List b -> ( Ui.Element msg, ElmUiTag ))
+mapFailableCustom elmUiTag okToElmUi customRenderer =
     customRenderer
         |> Markdown.Html.map
             (Result.mapBoth
@@ -195,8 +196,10 @@ renderFailableCustom okToElmUi customRenderer =
                     , ElmUiTag.Block
                     )
                 )
-                (\okResult elTagPairs ->
-                    okToElmUi okResult elTagPairs
+                (\okResult _ ->
+                    ( okToElmUi okResult
+                    , elmUiTag
+                    )
                 )
             )
         |> Markdown.Html.map Result.merge

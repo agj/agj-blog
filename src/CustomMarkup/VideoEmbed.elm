@@ -37,7 +37,7 @@ renderer =
         |> Markdown.Html.withAttribute "height"
 
 
-toElmUi : VideoEmbed -> ( Ui.Element msg, ElmUiTag )
+toElmUi : VideoEmbed -> Ui.Element msg
 toElmUi videoEmbed =
     let
         src =
@@ -73,10 +73,8 @@ toElmUi videoEmbed =
                 ]
                 []
     in
-    ( View.Figure.figure (Ui.html iframe)
+    View.Figure.figure (Ui.html iframe)
         |> View.Figure.view
-    , CustomMarkup.ElmUiTag.Block
-    )
 
 
 toHtml : VideoEmbed -> dropped -> Html msg

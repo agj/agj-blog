@@ -23,12 +23,10 @@ renderer =
         |> Markdown.Html.withOptionalAttribute "language"
 
 
-toElmUi : LanguageBreak -> ( Ui.Element msg, ElmUiTag )
+toElmUi : LanguageBreak -> Ui.Element msg
 toElmUi languageBreak =
-    ( toHtml languageBreak ()
+    toHtml languageBreak ()
         |> Ui.html
-    , CustomMarkup.ElmUiTag.Block
-    )
 
 
 toHtml : LanguageBreak -> dropped -> Html msg
