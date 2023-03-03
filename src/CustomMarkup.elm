@@ -44,37 +44,23 @@ renderer =
     , html =
         Markdown.Html.oneOf
             [ CustomMarkup.VideoEmbed.renderer
-                |> mapFailableCustom ElmUiTag.Block CustomMarkup.VideoEmbed.toElmUi
+                |> renderFailableCustom ElmUiTag.Block CustomMarkup.VideoEmbed.toElmUi
             , CustomMarkup.LanguageBreak.renderer
-                |> mapFailableCustom ElmUiTag.Block CustomMarkup.LanguageBreak.toElmUi
+                |> renderFailableCustom ElmUiTag.Block CustomMarkup.LanguageBreak.toElmUi
             , CustomMarkup.AudioPlayer.Track.renderer
-                |> Markdown.Html.map
-                    (\track _ ->
-                        ( Ui.none
-                        , ElmUiTag.Custom (ElmUiTag.AudioPlayerTrack track)
-                        )
-                    )
+                |> renderNonRenderingCustom (ElmUiTag.AudioPlayerTrack >> ElmUiTag.Custom)
             , CustomMarkup.AudioPlayer.renderer
-                |> Markdown.Html.map
-                    (\audioPlayer children ->
-                        let
-                            tracks =
-                                children
-                                    |> List.map Tuple.second
-                                    |> List.filterMap
-                                        (\tag ->
-                                            case tag of
-                                                ElmUiTag.Custom (ElmUiTag.AudioPlayerTrack track) ->
-                                                    Just track
+                |> renderCustomWithCustomChildren
+                    ElmUiTag.Block
+                    (\tag ->
+                        case tag of
+                            ElmUiTag.Custom (ElmUiTag.AudioPlayerTrack track) ->
+                                Just track
 
-                                                _ ->
-                                                    Nothing
-                                        )
-                        in
-                        ( CustomMarkup.AudioPlayer.toElmUi audioPlayer tracks
-                        , ElmUiTag.Block
-                        )
+                            _ ->
+                                Nothing
                     )
+                    CustomMarkup.AudioPlayer.toElmUi
             ]
     , image =
         \{ alt, src, title } ->
@@ -182,12 +168,12 @@ renderHeading { level, rawText, children } =
     )
 
 
-mapFailableCustom :
+renderFailableCustom :
     ElmUiTag
     -> (a -> Ui.Element msg)
     -> Markdown.Html.Renderer (Result String a)
     -> Markdown.Html.Renderer (List b -> ( Ui.Element msg, ElmUiTag ))
-mapFailableCustom elmUiTag okToElmUi customRenderer =
+renderFailableCustom elmUiTag okToElmUi customRenderer =
     customRenderer
         |> Markdown.Html.map
             (Result.mapBoth
@@ -203,6 +189,42 @@ mapFailableCustom elmUiTag okToElmUi customRenderer =
                 )
             )
         |> Markdown.Html.map Result.merge
+
+
+renderNonRenderingCustom :
+    (a -> ElmUiTag)
+    -> Markdown.Html.Renderer a
+    -> Markdown.Html.Renderer (List b -> ( Ui.Element msg, ElmUiTag ))
+renderNonRenderingCustom toElmUiTag customRenderer =
+    customRenderer
+        |> Markdown.Html.map
+            (\value _ ->
+                ( Ui.none
+                , toElmUiTag value
+                )
+            )
+
+
+renderCustomWithCustomChildren :
+    ElmUiTag
+    -> (ElmUiTag -> Maybe child)
+    -> (value -> List child -> Ui.Element msg)
+    -> Markdown.Html.Renderer value
+    -> Markdown.Html.Renderer (List ( a, ElmUiTag ) -> ( Ui.Element msg, ElmUiTag ))
+renderCustomWithCustomChildren elmUiTag tagToChild toElmUi_ customRenderer =
+    customRenderer
+        |> Markdown.Html.map
+            (\value childrenTuple ->
+                let
+                    children =
+                        childrenTuple
+                            |> List.map Tuple.second
+                            |> List.filterMap tagToChild
+                in
+                ( toElmUi_ value children
+                , elmUiTag
+                )
+            )
 
 
 renderErrorMessage : String -> List (Ui.Element msg)
