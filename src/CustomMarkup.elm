@@ -48,17 +48,14 @@ renderer =
             , CustomMarkup.LanguageBreak.renderer
                 |> renderFailableCustom ElmUiTag.Block CustomMarkup.LanguageBreak.toElmUi
             , CustomMarkup.AudioPlayer.Track.renderer
-                |> renderNonRenderingCustom (ElmUiTag.AudioPlayerTrack >> ElmUiTag.Custom)
+                |> renderAsTagCustom ElmUiTag.AudioPlayerTrack
             , CustomMarkup.AudioPlayer.renderer
                 |> renderCustomWithCustomChildren
                     ElmUiTag.Block
-                    (\tag ->
-                        case tag of
-                            ElmUiTag.Custom (ElmUiTag.AudioPlayerTrack track) ->
+                    (\metadata ->
+                        case metadata of
+                            ElmUiTag.AudioPlayerTrack track ->
                                 Just track
-
-                            _ ->
-                                Nothing
                     )
                     CustomMarkup.AudioPlayer.toElmUi
             ]
@@ -181,29 +178,41 @@ renderFailableCustom toElmUiTag okToElmUi customRenderer =
         |> Markdown.Html.map Result.merge
 
 
-renderNonRenderingCustom :
-    (a -> ElmUiTag msg)
+renderAsTagCustom :
+    (a -> ElmUiTag.Metadata)
     -> Markdown.Html.Renderer a
     -> Markdown.Html.Renderer (List b -> ElmUiTag msg)
-renderNonRenderingCustom toElmUiTag customRenderer =
+renderAsTagCustom toMetadata customRenderer =
     customRenderer
-        |> Markdown.Html.map (\value _ -> toElmUiTag value)
+        |> Markdown.Html.map
+            (\value _ ->
+                toMetadata value
+                    |> ElmUiTag.Custom
+            )
 
 
 renderCustomWithCustomChildren :
     (Ui.Element msg -> ElmUiTag msg)
-    -> (ElmUiTag msg -> Maybe child)
+    -> (ElmUiTag.Metadata -> Maybe child)
     -> (value -> List child -> Ui.Element msg)
     -> Markdown.Html.Renderer value
     -> Markdown.Html.Renderer (List (ElmUiTag msg) -> ElmUiTag msg)
-renderCustomWithCustomChildren toElmUiTag tagToChild toElmUi_ customRenderer =
+renderCustomWithCustomChildren toElmUiTag metadataToChild toElmUi_ customRenderer =
     customRenderer
         |> Markdown.Html.map
             (\value childrenTags ->
                 let
                     children =
                         childrenTags
-                            |> List.filterMap tagToChild
+                            |> List.filterMap
+                                (\tag ->
+                                    case tag of
+                                        ElmUiTag.Custom metadata ->
+                                            metadataToChild metadata
+
+                                        _ ->
+                                            Nothing
+                                )
                 in
                 toElmUi_ value children
                     |> toElmUiTag
