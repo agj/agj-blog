@@ -25,8 +25,15 @@ renderer =
         |> Markdown.Html.withAttribute "title"
 
 
-toElmUi : AudioPlayer -> List Track -> Ui.Element msg
-toElmUi audioPlayer tracks =
+toElmUi :
+    { playingTrack : Maybe Track
+    , onStopTrack : Maybe msg
+    , onPlayPauseTrack : Maybe msg
+    }
+    -> AudioPlayer
+    -> List Track
+    -> Ui.Element msg
+toElmUi config audioPlayer tracks =
     Ui.column
         [ UiBackground.color (Style.color.layout05 |> Color.toElmUi)
         ]

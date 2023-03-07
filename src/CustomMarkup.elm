@@ -17,12 +17,19 @@ import View.Figure
 import View.TextBlock
 
 
-toElmUi : String -> Ui.Element msg
-toElmUi markdown =
+toElmUi :
+    { playingTrack : Maybe Track
+    , onSelectTrack : Maybe (Track -> msg)
+    , onStopTrack : Maybe msg
+    , onPlayPauseTrack : Maybe msg
+    }
+    -> String
+    -> Ui.Element msg
+toElmUi config markdown =
     markdown
         |> Markdown.Parser.parse
         |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
-        |> Result.andThen (Markdown.Renderer.render renderer)
+        |> Result.andThen (Markdown.Renderer.render (renderer config))
         |> Result.map getElements
         |> Result.mapError renderErrorMessage
         |> Result.merge
@@ -33,8 +40,14 @@ toElmUi markdown =
 -- INTERNAL
 
 
-renderer : Markdown.Renderer.Renderer (ElmUiTag msg)
-renderer =
+renderer :
+    { playingTrack : Maybe Track
+    , onSelectTrack : Maybe (Track -> msg)
+    , onStopTrack : Maybe msg
+    , onPlayPauseTrack : Maybe msg
+    }
+    -> Markdown.Renderer.Renderer (ElmUiTag msg)
+renderer config =
     { blockQuote = \tags -> Ui.row [] (getInlines tags) |> ElmUiTag.Block
     , codeBlock = \{ body, language } -> Ui.text body |> ElmUiTag.Block
     , codeSpan = \code -> Ui.text code |> ElmUiTag.Inline
@@ -57,7 +70,12 @@ renderer =
                             ElmUiTag.AudioPlayerTrack track ->
                                 Just track
                     )
-                    CustomMarkup.AudioPlayer.toElmUi
+                    (CustomMarkup.AudioPlayer.toElmUi
+                        { playingTrack = config.playingTrack
+                        , onStopTrack = config.onStopTrack
+                        , onPlayPauseTrack = config.onPlayPauseTrack
+                        }
+                    )
             ]
     , image =
         \{ alt, src, title } ->

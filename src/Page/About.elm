@@ -98,7 +98,13 @@ view maybeUrl sharedModel static =
                     ]
                 )
             )
-            :: [ CustomMarkup.toElmUi static.data.markdown
+            :: [ CustomMarkup.toElmUi
+                    { playingTrack = Nothing
+                    , onSelectTrack = Nothing
+                    , onStopTrack = Nothing
+                    , onPlayPauseTrack = Nothing
+                    }
+                    static.data.markdown
                     |> Ui.layout []
                ]
     }

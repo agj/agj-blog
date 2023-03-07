@@ -1,6 +1,8 @@
 module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page)
 
+import Browser.Navigation
 import CustomMarkup
+import CustomMarkup.AudioPlayer.Track exposing (Track)
 import Data.Category as Category
 import Data.Date as Date
 import Data.PageHeader as PageHeader
@@ -11,29 +13,38 @@ import Element as Ui
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attr
-import Page exposing (Page, StaticPayload)
+import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
+import Path exposing (Path)
 import Shared
 import Site
 import View exposing (View)
 
 
-page : Page RouteParams Data
+page : PageWithState RouteParams Data Model Msg
 page =
     Page.prerender
         { head = head
         , routes = routes
         , data = data
         }
-        |> Page.buildNoState { view = view }
+        |> Page.buildWithLocalState
+            { view = view
+            , init = init
+            , update = update
+            , subscriptions = subscriptions
+            }
 
 
-type alias Model =
-    ()
+init : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> ( Model, Cmd Msg )
+init pageUrl sharedModel staticPayload =
+    ( { playingTrack = Nothing }
+    , Cmd.none
+    )
 
 
-type alias Msg =
-    Never
+
+-- ROUTES
 
 
 type alias RouteParams =
@@ -74,6 +85,43 @@ data routeParams =
 
 
 
+-- UPDATE
+
+
+type alias Model =
+    { playingTrack : Maybe Track }
+
+
+type Msg
+    = SelectedTrack Track
+
+
+update :
+    PageUrl
+    -> Maybe Browser.Navigation.Key
+    -> Shared.Model
+    -> StaticPayload Data RouteParams
+    -> Msg
+    -> Model
+    -> ( Model, Cmd Msg )
+update pageUrl navigationKey sharedModel staticPayload msg model =
+    case msg of
+        SelectedTrack track ->
+            ( { playingTrack = Just track }
+            , Cmd.none
+            )
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Maybe PageUrl -> RouteParams -> Path -> Model -> Sub templateMsg
+subscriptions pageUrl routeParams path model =
+    Sub.none
+
+
+
 -- VIEW
 
 
@@ -101,9 +149,10 @@ head static =
 view :
     Maybe PageUrl
     -> Shared.Model
+    -> Model
     -> StaticPayload Data RouteParams
     -> View Msg
-view maybeUrl sharedModel static =
+view maybeUrl sharedModel model static =
     let
         date =
             Date.formatShortDate
@@ -142,7 +191,13 @@ view maybeUrl sharedModel static =
                 [ Html.text "No tags." ]
 
         contentHtml =
-            CustomMarkup.toElmUi static.data.markdown
+            CustomMarkup.toElmUi
+                { playingTrack = model.playingTrack
+                , onSelectTrack = Just SelectedTrack
+                , onStopTrack = Nothing
+                , onPlayPauseTrack = Nothing
+                }
+                static.data.markdown
                 |> Ui.layout []
     in
     { title = title static
