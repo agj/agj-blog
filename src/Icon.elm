@@ -1,4 +1,13 @@
-module Icon exposing (..)
+module Icon exposing
+    ( Icon
+    , Size(..)
+    , fastForward
+    , none
+    , pause
+    , play
+    , rewind
+    , stop
+    )
 
 import Element as Ui
 import Heroicons.Solid
@@ -44,6 +53,16 @@ stop size =
         |> style size
 
 
+none : Icon msg
+none size =
+    Html.div
+        [ HtmlAttr.style "width" (sizeToEms size)
+        , HtmlAttr.style "height" (sizeToEms size)
+        ]
+        []
+        |> Ui.html
+
+
 
 -- INTERNAL
 
@@ -51,6 +70,13 @@ stop size =
 style : Size -> (List (Attribute msg) -> Html msg) -> Ui.Element msg
 style size icon =
     icon
-        [ HtmlAttr.style "width" "1em"
+        [ HtmlAttr.style "width" (sizeToEms size)
         ]
         |> Ui.html
+
+
+sizeToEms : Size -> String
+sizeToEms size =
+    case size of
+        Medium ->
+            "1em"
