@@ -34,6 +34,12 @@ type State
     | Paused Track
 
 
+type TrackStatus
+    = PlayingTrack
+    | PausedTrack
+    | InactiveTrack
+
+
 initialState : State
 initialState =
     Stopped
@@ -53,7 +59,13 @@ toElmUi state config audioPlayer tracks =
         [ Ui.text audioPlayer.title
         , Ui.column []
             (tracks
-                |> List.map (trackToElmUi state config)
+                |> List.map
+                    (\track ->
+                        trackToElmUi
+                            config
+                            (getTrackStatus state track)
+                            track
+                    )
             )
         ]
 
@@ -62,17 +74,50 @@ toElmUi state config audioPlayer tracks =
 -- INTERNAL
 
 
-trackToElmUi : State -> Config msg -> Track -> Ui.Element msg
-trackToElmUi state config track =
+trackToElmUi : Config msg -> TrackStatus -> Track -> Ui.Element msg
+trackToElmUi config status track =
+    let
+        icon =
+            case status of
+                PlayingTrack ->
+                    Icon.pause
+
+                PausedTrack ->
+                    Icon.play
+
+                InactiveTrack ->
+                    Icon.none
+    in
     UiInput.button
         [ UiBorder.rounded 0
         , UiBackground.color (Style.color.transparent |> Color.toElmUi)
         , Ui.width Ui.fill
         ]
-        { onPress = Nothing
+        { onPress = Just (config.onStateUpdated (Playing track))
         , label =
             Ui.row []
-                [ Icon.none Icon.Medium
+                [ icon Icon.Medium
                 , Ui.text track.title
                 ]
         }
+
+
+getTrackStatus : State -> Track -> TrackStatus
+getTrackStatus state track =
+    case state of
+        Playing playingTrack ->
+            if playingTrack == track then
+                PlayingTrack
+
+            else
+                InactiveTrack
+
+        Paused pausedTrack ->
+            if pausedTrack == track then
+                PausedTrack
+
+            else
+                InactiveTrack
+
+        Stopped ->
+            InactiveTrack
