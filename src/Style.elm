@@ -55,6 +55,7 @@ color =
     , primary05 =
         colorPrimary
             |> Color.Manipulate.lighten 0.9
+    , transparent = Color.rgba 1 1 1 0
     }
 
 
