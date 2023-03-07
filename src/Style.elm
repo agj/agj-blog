@@ -23,6 +23,38 @@ color =
         colorSecondary
             |> Color.Manipulate.lighten 0.4
             |> Color.Manipulate.desaturate 0.5
+    , layout50 = colorLayout
+    , layout40 =
+        colorLayout
+            |> Color.Manipulate.lighten 0.2
+    , layout30 =
+        colorLayout
+            |> Color.Manipulate.lighten 0.4
+    , layout20 =
+        colorLayout
+            |> Color.Manipulate.lighten 0.6
+    , layout10 =
+        colorLayout
+            |> Color.Manipulate.lighten 0.8
+    , layout05 =
+        colorLayout
+            |> Color.Manipulate.lighten 0.9
+    , primary50 = colorPrimary
+    , primary40 =
+        colorPrimary
+            |> Color.Manipulate.lighten 0.2
+    , primary30 =
+        colorPrimary
+            |> Color.Manipulate.lighten 0.4
+    , primary20 =
+        colorPrimary
+            |> Color.Manipulate.lighten 0.6
+    , primary10 =
+        colorPrimary
+            |> Color.Manipulate.lighten 0.8
+    , primary05 =
+        colorPrimary
+            |> Color.Manipulate.lighten 0.9
     }
 
 
