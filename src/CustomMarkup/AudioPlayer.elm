@@ -4,10 +4,14 @@ module CustomMarkup.AudioPlayer exposing
     , toElmUi
     )
 
+import Custom.Color as Color
 import CustomMarkup.AudioPlayer.Track exposing (Track)
 import Element as Ui
+import Element.Background as UiBackground
+import Element.Border as UiBorder
 import Icon
 import Markdown.Html
+import Style
 
 
 type alias AudioPlayer =
@@ -23,7 +27,9 @@ renderer =
 
 toElmUi : AudioPlayer -> List Track -> Ui.Element msg
 toElmUi audioPlayer tracks =
-    Ui.column []
+    Ui.column
+        [ UiBackground.color (Style.color.layout05 |> Color.toElmUi)
+        ]
         [ Ui.text audioPlayer.title
         , Ui.column []
             (tracks
