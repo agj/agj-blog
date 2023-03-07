@@ -2,13 +2,11 @@ module CustomMarkup.AudioPlayer exposing
     ( AudioPlayer
     , renderer
     , toElmUi
-    , toHtml
     )
 
 import CustomMarkup.AudioPlayer.Track exposing (Track)
 import Element as Ui
-import Html exposing (Html)
-import Html.Attributes as Attr
+import Icon
 import Markdown.Html
 
 
@@ -25,38 +23,22 @@ renderer =
 
 toElmUi : AudioPlayer -> List Track -> Ui.Element msg
 toElmUi audioPlayer tracks =
-    let
-        trackEls =
-            tracks
-                |> List.map trackToHtml
-    in
-    Html.article [ Attr.class "audio-player" ]
-        (Html.header [] [ Html.text audioPlayer.title ]
-            :: trackEls
-        )
-        |> Ui.html
-
-
-toHtml : AudioPlayer -> List (Html msg) -> Html msg
-toHtml audioPlayer children =
-    Html.article [ Attr.class "audio-player" ]
-        (Html.header [] [ Html.text audioPlayer.title ]
-            :: children
-        )
+    Ui.column []
+        [ Ui.text audioPlayer.title
+        , Ui.column []
+            (tracks
+                |> List.map trackToElmUi
+            )
+        ]
 
 
 
 -- INTERNAL
 
 
-trackToHtml : Track -> Html msg
-trackToHtml track =
-    Html.figure [ Attr.class "track" ]
-        [ Html.figcaption [] [ Html.text track.title ]
-        , Html.audio
-            [ Attr.controls True
-            , Attr.src track.src
-            , Attr.preload "none"
-            ]
-            []
+trackToElmUi : Track -> Ui.Element msg
+trackToElmUi track =
+    Ui.row []
+        [ Icon.play Icon.Medium
+        , Ui.text track.title
         ]
