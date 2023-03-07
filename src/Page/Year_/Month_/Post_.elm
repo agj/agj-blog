@@ -2,6 +2,7 @@ module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
 import CustomMarkup
+import CustomMarkup.AudioPlayer
 import CustomMarkup.AudioPlayer.Track exposing (Track)
 import Data.Category as Category
 import Data.Date as Date
@@ -38,7 +39,7 @@ page =
 
 init : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> ( Model, Cmd Msg )
 init pageUrl sharedModel staticPayload =
-    ( { playingTrack = Nothing }
+    ( { audioPlayerState = CustomMarkup.AudioPlayer.initialState }
     , Cmd.none
     )
 
@@ -89,11 +90,11 @@ data routeParams =
 
 
 type alias Model =
-    { playingTrack : Maybe Track }
+    { audioPlayerState : CustomMarkup.AudioPlayer.State }
 
 
 type Msg
-    = SelectedTrack Track
+    = AudioPlayerStateUpdated CustomMarkup.AudioPlayer.State
 
 
 update :
@@ -106,8 +107,8 @@ update :
     -> ( Model, Cmd Msg )
 update pageUrl navigationKey sharedModel staticPayload msg model =
     case msg of
-        SelectedTrack track ->
-            ( { playingTrack = Just track }
+        AudioPlayerStateUpdated state ->
+            ( { audioPlayerState = state }
             , Cmd.none
             )
 
@@ -192,10 +193,11 @@ view maybeUrl sharedModel model static =
 
         contentHtml =
             CustomMarkup.toElmUi
-                { playingTrack = model.playingTrack
-                , onSelectTrack = Just SelectedTrack
-                , onStopTrack = Nothing
-                , onPlayPauseTrack = Nothing
+                { audioPlayer =
+                    Just
+                        { audioPlayerState = model.audioPlayerState
+                        , onAudioPlayerStateUpdated = AudioPlayerStateUpdated
+                        }
                 }
                 static.data.markdown
                 |> Ui.layout []

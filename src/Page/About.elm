@@ -1,6 +1,7 @@
 module Page.About exposing (Data, Model, Msg, page)
 
 import CustomMarkup
+import CustomMarkup.AudioPlayer
 import Data.PageHeader as PageHeader
 import DataSource exposing (DataSource)
 import DataSource.File
@@ -99,11 +100,7 @@ view maybeUrl sharedModel static =
                 )
             )
             :: [ CustomMarkup.toElmUi
-                    { playingTrack = Nothing
-                    , onSelectTrack = Nothing
-                    , onStopTrack = Nothing
-                    , onPlayPauseTrack = Nothing
-                    }
+                    { audioPlayer = Nothing }
                     static.data.markdown
                     |> Ui.layout []
                ]

@@ -17,14 +17,16 @@ import View.Figure
 import View.TextBlock
 
 
-toElmUi :
-    { playingTrack : Maybe Track
-    , onSelectTrack : Maybe (Track -> msg)
-    , onStopTrack : Maybe msg
-    , onPlayPauseTrack : Maybe msg
+type alias Config msg =
+    { audioPlayer :
+        Maybe
+            { audioPlayerState : CustomMarkup.AudioPlayer.State
+            , onAudioPlayerStateUpdated : CustomMarkup.AudioPlayer.State -> msg
+            }
     }
-    -> String
-    -> Ui.Element msg
+
+
+toElmUi : Config msg -> String -> Ui.Element msg
 toElmUi config markdown =
     markdown
         |> Markdown.Parser.parse
@@ -40,43 +42,45 @@ toElmUi config markdown =
 -- INTERNAL
 
 
-renderer :
-    { playingTrack : Maybe Track
-    , onSelectTrack : Maybe (Track -> msg)
-    , onStopTrack : Maybe msg
-    , onPlayPauseTrack : Maybe msg
-    }
-    -> Markdown.Renderer.Renderer (ElmUiTag msg)
+renderer : Config msg -> Markdown.Renderer.Renderer (ElmUiTag msg)
 renderer config =
+    let
+        audioPlayerRenderers =
+            case config.audioPlayer of
+                Just { audioPlayerState, onAudioPlayerStateUpdated } ->
+                    [ CustomMarkup.AudioPlayer.Track.renderer
+                        |> renderAsTagCustom ElmUiTag.AudioPlayerTrack
+                    , CustomMarkup.AudioPlayer.renderer
+                        |> renderCustomWithCustomChildren
+                            ElmUiTag.Block
+                            (\metadata ->
+                                case metadata of
+                                    ElmUiTag.AudioPlayerTrack track ->
+                                        Just track
+                            )
+                            (CustomMarkup.AudioPlayer.toElmUi
+                                audioPlayerState
+                                { onStateUpdated = onAudioPlayerStateUpdated }
+                            )
+                    ]
+
+                Nothing ->
+                    []
+
+        otherCustomRenderers =
+            [ CustomMarkup.VideoEmbed.renderer
+                |> renderFailableCustom ElmUiTag.Block CustomMarkup.VideoEmbed.toElmUi
+            , CustomMarkup.LanguageBreak.renderer
+                |> renderFailableCustom ElmUiTag.Block CustomMarkup.LanguageBreak.toElmUi
+            ]
+    in
     { blockQuote = \tags -> Ui.row [] (getInlines tags) |> ElmUiTag.Block
     , codeBlock = \{ body, language } -> Ui.text body |> ElmUiTag.Block
     , codeSpan = \code -> Ui.text code |> ElmUiTag.Inline
     , emphasis = renderInlineWithStyle UiFont.italic
     , hardLineBreak = Ui.text "\n" |> ElmUiTag.Block
     , heading = renderHeading
-    , html =
-        Markdown.Html.oneOf
-            [ CustomMarkup.VideoEmbed.renderer
-                |> renderFailableCustom ElmUiTag.Block CustomMarkup.VideoEmbed.toElmUi
-            , CustomMarkup.LanguageBreak.renderer
-                |> renderFailableCustom ElmUiTag.Block CustomMarkup.LanguageBreak.toElmUi
-            , CustomMarkup.AudioPlayer.Track.renderer
-                |> renderAsTagCustom ElmUiTag.AudioPlayerTrack
-            , CustomMarkup.AudioPlayer.renderer
-                |> renderCustomWithCustomChildren
-                    ElmUiTag.Block
-                    (\metadata ->
-                        case metadata of
-                            ElmUiTag.AudioPlayerTrack track ->
-                                Just track
-                    )
-                    (CustomMarkup.AudioPlayer.toElmUi
-                        { playingTrack = config.playingTrack
-                        , onStopTrack = config.onStopTrack
-                        , onPlayPauseTrack = config.onPlayPauseTrack
-                        }
-                    )
-            ]
+    , html = Markdown.Html.oneOf (otherCustomRenderers ++ audioPlayerRenderers)
     , image =
         \{ alt, src, title } ->
             Ui.image [] { src = src, description = alt }

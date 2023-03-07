@@ -1,5 +1,8 @@
 module CustomMarkup.AudioPlayer exposing
     ( AudioPlayer
+    , Config
+    , State
+    , initialState
     , renderer
     , toElmUi
     )
@@ -21,10 +24,19 @@ type alias AudioPlayer =
 
 
 type alias Config msg =
-    { playingTrack : Maybe Track
-    , onStopTrack : Maybe msg
-    , onPlayPauseTrack : Maybe msg
+    { onStateUpdated : State -> msg
     }
+
+
+type State
+    = Stopped
+    | Playing Track
+    | Paused Track
+
+
+initialState : State
+initialState =
+    Stopped
 
 
 renderer : Markdown.Html.Renderer AudioPlayer
@@ -33,15 +45,15 @@ renderer =
         |> Markdown.Html.withAttribute "title"
 
 
-toElmUi : Config msg -> AudioPlayer -> List Track -> Ui.Element msg
-toElmUi config audioPlayer tracks =
+toElmUi : State -> Config msg -> AudioPlayer -> List Track -> Ui.Element msg
+toElmUi state config audioPlayer tracks =
     Ui.column
         [ UiBackground.color (Style.color.layout05 |> Color.toElmUi)
         ]
         [ Ui.text audioPlayer.title
         , Ui.column []
             (tracks
-                |> List.map (trackToElmUi config)
+                |> List.map (trackToElmUi state config)
             )
         ]
 
@@ -50,8 +62,8 @@ toElmUi config audioPlayer tracks =
 -- INTERNAL
 
 
-trackToElmUi : Config msg -> Track -> Ui.Element msg
-trackToElmUi config track =
+trackToElmUi : State -> Config msg -> Track -> Ui.Element msg
+trackToElmUi state config track =
     UiInput.button
         [ UiBorder.rounded 0
         , UiBackground.color (Style.color.transparent |> Color.toElmUi)
