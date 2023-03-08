@@ -61,6 +61,7 @@ none size =
         ]
         []
         |> Ui.html
+        |> Ui.el []
 
 
 
@@ -73,6 +74,7 @@ style size icon =
         [ HtmlAttr.style "width" (sizeToEms size)
         ]
         |> Ui.html
+        |> Ui.el []
 
 
 sizeToEms : Size -> String
