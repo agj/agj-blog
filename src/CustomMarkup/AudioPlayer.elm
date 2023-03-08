@@ -12,6 +12,7 @@ import CustomMarkup.AudioPlayer.Track exposing (Track)
 import Element as Ui
 import Element.Background as UiBackground
 import Element.Border as UiBorder
+import Element.Font as UiFont
 import Element.Input as UiInput
 import Icon
 import Markdown.Html
@@ -87,15 +88,47 @@ trackToElmUi config status track =
 
                 InactiveTrack ->
                     Icon.none
+
+        ( fontColor, backgroundColor ) =
+            case status of
+                PlayingTrack ->
+                    ( Style.color.white
+                    , Style.color.secondary50
+                    )
+
+                PausedTrack ->
+                    ( Style.color.white
+                    , Style.color.secondary50
+                    )
+
+                InactiveTrack ->
+                    ( Style.color.layout50
+                    , Style.color.transparent
+                    )
+
+        newStateOnPress =
+            case status of
+                PlayingTrack ->
+                    Paused track
+
+                PausedTrack ->
+                    Playing track
+
+                InactiveTrack ->
+                    Playing track
     in
     UiInput.button
         [ UiBorder.rounded 0
-        , UiBackground.color (Style.color.transparent |> Color.toElmUi)
+        , UiBackground.color (backgroundColor |> Color.toElmUi)
+        , UiFont.color (fontColor |> Color.toElmUi)
         , Ui.width Ui.fill
+        , Ui.paddingXY Style.spacing.size3 Style.spacing.size2
         ]
-        { onPress = Just (config.onStateUpdated (Playing track))
+        { onPress = Just (config.onStateUpdated newStateOnPress)
         , label =
-            Ui.row []
+            Ui.row
+                [ Ui.spacing Style.spacing.size1
+                ]
                 [ icon Icon.Medium
                 , Ui.text track.title
                 ]
