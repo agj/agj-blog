@@ -55,7 +55,24 @@ color =
     , primary05 =
         colorPrimary
             |> Color.Manipulate.lighten 0.9
+    , secondary50 = colorSecondary
+    , secondary40 =
+        colorSecondary
+            |> Color.Manipulate.lighten 0.2
+    , secondary30 =
+        colorSecondary
+            |> Color.Manipulate.lighten 0.4
+    , secondary20 =
+        colorSecondary
+            |> Color.Manipulate.lighten 0.6
+    , secondary10 =
+        colorSecondary
+            |> Color.Manipulate.lighten 0.8
+    , secondary05 =
+        colorSecondary
+            |> Color.Manipulate.lighten 0.9
     , transparent = Color.rgba 1 1 1 0
+    , white = Color.rgb 1 1 1
     }
 
 
