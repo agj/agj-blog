@@ -30,6 +30,16 @@ type alias Config msg =
 
 
 type State
+    = State StateInternal
+
+
+type alias StateInternal =
+    { playState : PlayState
+    , hovered : Maybe Track
+    }
+
+
+type PlayState
     = Stopped
     | Playing Track
     | Paused Track
@@ -43,7 +53,10 @@ type TrackStatus
 
 initialState : State
 initialState =
-    Stopped
+    State
+        { playState = Stopped
+        , hovered = Nothing
+        }
 
 
 renderer : Markdown.Html.Renderer AudioPlayer
@@ -53,7 +66,7 @@ renderer =
 
 
 toElmUi : State -> Config msg -> AudioPlayer -> List Track -> Ui.Element msg
-toElmUi state config audioPlayer tracks =
+toElmUi (State state) config audioPlayer tracks =
     case tracks of
         firstTrack :: _ ->
             Ui.column
@@ -65,6 +78,7 @@ toElmUi state config audioPlayer tracks =
                         |> List.map
                             (\track ->
                                 trackToElmUi
+                                    state
                                     config
                                     (getTrackStatus state track)
                                     track
@@ -80,11 +94,11 @@ toElmUi state config audioPlayer tracks =
 -- INTERNAL
 
 
-titleToElmUi : State -> Config msg -> Track -> String -> Ui.Element msg
+titleToElmUi : StateInternal -> Config msg -> Track -> String -> Ui.Element msg
 titleToElmUi state config firstTrack title =
     let
-        ( newStateOnPress, icon ) =
-            case state of
+        ( newPlayStateOnPress, icon ) =
+            case state.playState of
                 Playing _ ->
                     ( Stopped
                     , Icon.stop
@@ -107,7 +121,7 @@ titleToElmUi state config firstTrack title =
         , Ui.width Ui.fill
         , Ui.paddingXY Style.spacing.size3 Style.spacing.size2
         ]
-        { onPress = Just (config.onStateUpdated newStateOnPress)
+        { onPress = Just (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
         , label =
             Ui.row
                 [ Ui.spacing Style.spacing.size1
@@ -118,47 +132,31 @@ titleToElmUi state config firstTrack title =
         }
 
 
-trackToElmUi : Config msg -> TrackStatus -> Track -> Ui.Element msg
-trackToElmUi config status track =
+trackToElmUi : StateInternal -> Config msg -> TrackStatus -> Track -> Ui.Element msg
+trackToElmUi state config status track =
     let
-        icon =
+        { icon, fontColor, backgroundColor, newPlayStateOnPress } =
             case status of
                 PlayingTrack ->
-                    Icon.pause
+                    { fontColor = Style.color.white
+                    , backgroundColor = Style.color.secondary50
+                    , icon = Icon.pause
+                    , newPlayStateOnPress = Paused track
+                    }
 
                 PausedTrack ->
-                    Icon.play
+                    { fontColor = Style.color.white
+                    , backgroundColor = Style.color.secondary50
+                    , icon = Icon.play
+                    , newPlayStateOnPress = Playing track
+                    }
 
                 InactiveTrack ->
-                    Icon.none
-
-        ( fontColor, backgroundColor ) =
-            case status of
-                PlayingTrack ->
-                    ( Style.color.white
-                    , Style.color.secondary50
-                    )
-
-                PausedTrack ->
-                    ( Style.color.white
-                    , Style.color.secondary50
-                    )
-
-                InactiveTrack ->
-                    ( Style.color.layout50
-                    , Style.color.transparent
-                    )
-
-        newStateOnPress =
-            case status of
-                PlayingTrack ->
-                    Paused track
-
-                PausedTrack ->
-                    Playing track
-
-                InactiveTrack ->
-                    Playing track
+                    { fontColor = Style.color.layout50
+                    , backgroundColor = Style.color.transparent
+                    , icon = Icon.none
+                    , newPlayStateOnPress = Playing track
+                    }
     in
     UiInput.button
         [ UiBorder.rounded 0
@@ -167,7 +165,7 @@ trackToElmUi config status track =
         , Ui.width Ui.fill
         , Ui.paddingXY Style.spacing.size3 Style.spacing.size2
         ]
-        { onPress = Just (config.onStateUpdated newStateOnPress)
+        { onPress = Just (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
         , label =
             Ui.row
                 [ Ui.spacing Style.spacing.size1
@@ -178,9 +176,9 @@ trackToElmUi config status track =
         }
 
 
-getTrackStatus : State -> Track -> TrackStatus
+getTrackStatus : StateInternal -> Track -> TrackStatus
 getTrackStatus state track =
-    case state of
+    case state.playState of
         Playing playingTrack ->
             if playingTrack == track then
                 PlayingTrack
