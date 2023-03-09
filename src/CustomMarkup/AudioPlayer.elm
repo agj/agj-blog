@@ -76,13 +76,7 @@ toElmUi (State state) config audioPlayer tracks =
                 , Ui.column []
                     (tracks
                         |> List.map
-                            (\track ->
-                                trackToElmUi
-                                    state
-                                    config
-                                    (getTrackStatus state track)
-                                    track
-                            )
+                            (\track -> trackToElmUi state config track)
                     )
                 ]
 
@@ -132,9 +126,12 @@ titleToElmUi state config firstTrack title =
         }
 
 
-trackToElmUi : StateInternal -> Config msg -> TrackStatus -> Track -> Ui.Element msg
-trackToElmUi state config status track =
+trackToElmUi : StateInternal -> Config msg -> Track -> Ui.Element msg
+trackToElmUi state config track =
     let
+        status =
+            getTrackStatus state track
+
         { icon, fontColor, backgroundColor, newPlayStateOnPress } =
             case status of
                 PlayingTrack ->
