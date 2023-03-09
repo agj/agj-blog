@@ -12,6 +12,7 @@ import CustomMarkup.AudioPlayer.Track exposing (Track)
 import Element as Ui
 import Element.Background as UiBackground
 import Element.Border as UiBorder
+import Element.Events as UiEvents
 import Element.Font as UiFont
 import Element.Input as UiInput
 import Icon
@@ -132,13 +133,19 @@ trackToElmUi state config track =
         status =
             getTrackStatus state track
 
-        { icon, fontColor, backgroundColor, newPlayStateOnPress } =
+        hoverEvents =
+            [ UiEvents.onMouseLeave (config.onStateUpdated (State { state | hovered = Nothing }))
+            , UiEvents.onMouseEnter (config.onStateUpdated (State { state | hovered = Just track }))
+            ]
+
+        { icon, fontColor, backgroundColor, newPlayStateOnPress, events } =
             case status of
                 PlayingTrack ->
                     { fontColor = Style.color.white
                     , backgroundColor = Style.color.secondary50
                     , icon = Icon.pause
                     , newPlayStateOnPress = Paused track
+                    , events = []
                     }
 
                 PausedTrack ->
@@ -146,22 +153,36 @@ trackToElmUi state config track =
                     , backgroundColor = Style.color.secondary50
                     , icon = Icon.play
                     , newPlayStateOnPress = Playing track
+                    , events = []
                     }
 
                 InactiveTrack ->
                     { fontColor = Style.color.layout50
-                    , backgroundColor = Style.color.transparent
-                    , icon = Icon.none
+                    , backgroundColor =
+                        if state.hovered == Just track then
+                            Style.color.secondary05
+
+                        else
+                            Style.color.transparent
+                    , icon =
+                        if state.hovered == Just track then
+                            Icon.play
+
+                        else
+                            Icon.none
                     , newPlayStateOnPress = Playing track
+                    , events = hoverEvents
                     }
+
+        buttonStyles =
+            [ UiBorder.rounded 0
+            , UiBackground.color (backgroundColor |> Color.toElmUi)
+            , UiFont.color (fontColor |> Color.toElmUi)
+            , Ui.width Ui.fill
+            , Ui.paddingXY Style.spacing.size3 Style.spacing.size2
+            ]
     in
-    UiInput.button
-        [ UiBorder.rounded 0
-        , UiBackground.color (backgroundColor |> Color.toElmUi)
-        , UiFont.color (fontColor |> Color.toElmUi)
-        , Ui.width Ui.fill
-        , Ui.paddingXY Style.spacing.size3 Style.spacing.size2
-        ]
+    UiInput.button (buttonStyles ++ events)
         { onPress = Just (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
         , label =
             Ui.row
