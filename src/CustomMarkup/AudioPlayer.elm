@@ -54,25 +54,68 @@ renderer =
 
 toElmUi : State -> Config msg -> AudioPlayer -> List Track -> Ui.Element msg
 toElmUi state config audioPlayer tracks =
-    Ui.column
-        [ UiBackground.color (Style.color.layout05 |> Color.toElmUi)
-        ]
-        [ Ui.text audioPlayer.title
-        , Ui.column []
-            (tracks
-                |> List.map
-                    (\track ->
-                        trackToElmUi
-                            config
-                            (getTrackStatus state track)
-                            track
+    case tracks of
+        firstTrack :: _ ->
+            Ui.column
+                [ UiBackground.color (Style.color.layout05 |> Color.toElmUi)
+                ]
+                [ titleToElmUi state config firstTrack audioPlayer.title
+                , Ui.column []
+                    (tracks
+                        |> List.map
+                            (\track ->
+                                trackToElmUi
+                                    config
+                                    (getTrackStatus state track)
+                                    track
+                            )
                     )
-            )
-        ]
+                ]
+
+        [] ->
+            Ui.none
 
 
 
 -- INTERNAL
+
+
+titleToElmUi : State -> Config msg -> Track -> String -> Ui.Element msg
+titleToElmUi state config firstTrack title =
+    let
+        ( newStateOnPress, icon ) =
+            case state of
+                Playing _ ->
+                    ( Stopped
+                    , Icon.stop
+                    )
+
+                Paused _ ->
+                    ( Stopped
+                    , Icon.stop
+                    )
+
+                Stopped ->
+                    ( Playing firstTrack
+                    , Icon.play
+                    )
+    in
+    UiInput.button
+        [ UiBorder.rounded 0
+        , UiBackground.color (Style.color.layout40 |> Color.toElmUi)
+        , UiFont.color (Style.color.white |> Color.toElmUi)
+        , Ui.width Ui.fill
+        , Ui.paddingXY Style.spacing.size3 Style.spacing.size2
+        ]
+        { onPress = Just (config.onStateUpdated newStateOnPress)
+        , label =
+            Ui.row
+                [ Ui.spacing Style.spacing.size1
+                ]
+                [ icon Icon.Medium
+                , Ui.text title
+                ]
+        }
 
 
 trackToElmUi : Config msg -> TrackStatus -> Track -> Ui.Element msg
