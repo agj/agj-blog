@@ -45,9 +45,14 @@ customElements.define('audio-player', class AudioPlayerElement extends HTMLEleme
     const currentTime = this.getAttribute('current-time');
 
     const currentSrc = this.audioElement.getAttribute('src');
+    const currentCurrentTime = this.audioElement.currentTime;
 
     if (src !== currentSrc) {
       this.audioElement.setAttribute('src', src);
+    }
+
+    if (Math.abs(currentTime - currentCurrentTime) > 2) {
+      this.audioElement.currentTime = currentTime;
     }
 
     if (playing === 'true') {

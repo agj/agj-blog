@@ -57,6 +57,11 @@ type alias PlayingTrackState =
     }
 
 
+initialPlayingTrackState : PlayingTrackState
+initialPlayingTrackState =
+    { currentTime = 0, duration = 0 }
+
+
 type TrackStatus
     = PlayingTrack
     | PausedTrack
@@ -116,7 +121,7 @@ titleToElmUi state config firstTrack title =
                     )
 
                 Stopped ->
-                    ( Playing firstTrack { currentTime = 0, duration = 0 }
+                    ( Playing firstTrack initialPlayingTrackState
                     , Icon.play
                     )
     in
@@ -149,16 +154,9 @@ trackToElmUi state config track =
             , UiEvents.onMouseEnter (config.onStateUpdated (State { state | hovered = Just track }))
             ]
 
-        playState =
-            case state.playState of
-                Playing _ ps ->
-                    ps
-
-                Paused _ ps ->
-                    ps
-
-                Stopped ->
-                    { currentTime = 0, duration = 0 }
+        playingTrackState =
+            getPlayingTrackState state.playState
+                |> Maybe.withDefault initialPlayingTrackState
 
         { icon, fontColor, backgroundColor, newPlayStateOnPress, events } =
             case status of
@@ -166,7 +164,7 @@ trackToElmUi state config track =
                     { fontColor = Style.color.white
                     , backgroundColor = Style.color.secondary50
                     , icon = Icon.pause
-                    , newPlayStateOnPress = Paused track playState
+                    , newPlayStateOnPress = Paused track playingTrackState
                     , events = []
                     }
 
@@ -174,7 +172,7 @@ trackToElmUi state config track =
                     { fontColor = Style.color.white
                     , backgroundColor = Style.color.secondary50
                     , icon = Icon.play
-                    , newPlayStateOnPress = Playing track playState
+                    , newPlayStateOnPress = Playing track playingTrackState
                     , events = []
                     }
 
@@ -192,7 +190,7 @@ trackToElmUi state config track =
 
                         else
                             Icon.none
-                    , newPlayStateOnPress = Playing track playState
+                    , newPlayStateOnPress = Playing track initialPlayingTrackState
                     , events = hoverEvents
                     }
 
@@ -209,6 +207,7 @@ trackToElmUi state config track =
                 audioPlayerElement
                     { src = track.src
                     , isPlaying = status == PlayingTrack
+                    , currentTime = playingTrackState.currentTime
                     , onStateUpdated = config.onStateUpdated
                     , state = state
                     }
@@ -253,13 +252,15 @@ getTrackStatus state track =
 audioPlayerElement :
     { src : String
     , isPlaying : Bool
+    , currentTime : Float
     , onStateUpdated : State -> msg
     , state : StateInternal
     }
     -> Ui.Element msg
-audioPlayerElement { src, isPlaying, onStateUpdated, state } =
+audioPlayerElement { src, isPlaying, currentTime, onStateUpdated, state } =
     Html.node "audio-player"
         [ Html.Attributes.attribute "src" src
+        , Html.Attributes.attribute "current-time" (String.fromFloat currentTime)
         , Html.Attributes.attribute "playing"
             (if isPlaying then
                 "true"
@@ -272,6 +273,19 @@ audioPlayerElement { src, isPlaying, onStateUpdated, state } =
         ]
         []
         |> Ui.html
+
+
+getPlayingTrackState : PlayState -> Maybe PlayingTrackState
+getPlayingTrackState playState =
+    case playState of
+        Playing _ playingTrackState ->
+            Just playingTrackState
+
+        Paused _ playingTrackState ->
+            Just playingTrackState
+
+        Stopped ->
+            Nothing
 
 
 playingTrackStateMsgDecoder : { state : StateInternal, onStateUpdated : State -> msg } -> Decoder msg
