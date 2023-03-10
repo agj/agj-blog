@@ -15,6 +15,9 @@ import Element.Border as UiBorder
 import Element.Events as UiEvents
 import Element.Font as UiFont
 import Element.Input as UiInput
+import Element.Keyed as UiKeyed
+import Html
+import Html.Attributes
 import Icon
 import Markdown.Html
 import Style
@@ -181,15 +184,34 @@ trackToElmUi state config track =
             , Ui.width Ui.fill
             , Ui.paddingXY Style.spacing.size3 Style.spacing.size2
             ]
+
+        audioPlayerElement =
+            if status == PlayingTrack || status == PausedTrack then
+                Html.node "audio-player"
+                    [ Html.Attributes.attribute "src" track.src
+                    , Html.Attributes.attribute "playing"
+                        (if status == PlayingTrack then
+                            "true"
+
+                         else
+                            "false"
+                        )
+                    ]
+                    []
+                    |> Ui.html
+
+            else
+                Ui.none
     in
     UiInput.button (buttonStyles ++ events)
         { onPress = Just (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
         , label =
-            Ui.row
+            UiKeyed.row
                 [ Ui.spacing Style.spacing.size1
                 ]
-                [ icon Icon.Medium
-                , Ui.text track.title
+                [ ( "icon", icon Icon.Medium )
+                , ( "title", Ui.text track.title )
+                , ( "audio", audioPlayerElement )
                 ]
         }
 
