@@ -146,7 +146,7 @@ titleToElmUi state config firstTrack title =
 trackToElmUi : StateInternal -> Config msg -> Track -> Ui.Element msg
 trackToElmUi state config track =
     let
-        status =
+        trackStatus =
             getTrackStatus state track
 
         playingTrackState =
@@ -159,7 +159,7 @@ trackToElmUi state config track =
             ]
 
         { icon, fontColor, backgroundColor, newPlayStateOnPress, events } =
-            case status of
+            case trackStatus of
                 TrackPlaying ->
                     { fontColor = Style.color.white
                     , backgroundColor = Style.color.secondary50
@@ -203,10 +203,10 @@ trackToElmUi state config track =
             ]
 
         audioPlayerEl =
-            if status == TrackPlaying || status == TrackPaused then
+            if trackStatus == TrackPlaying || trackStatus == TrackPaused then
                 audioPlayerElement
                     { src = track.src
-                    , isPlaying = status == TrackPlaying
+                    , isPlaying = trackStatus == TrackPlaying
                     , currentTime = playingTrackState.currentTime
                     , onStateUpdated = config.onStateUpdated
                     , state = state
@@ -226,27 +226,6 @@ trackToElmUi state config track =
                 , audioPlayerEl
                 ]
         }
-
-
-getTrackStatus : StateInternal -> Track -> TrackStatus
-getTrackStatus state track =
-    case state.playState of
-        PlayingState playingTrack _ ->
-            if playingTrack == track then
-                TrackPlaying
-
-            else
-                TrackInactive
-
-        PausedState pausedTrack _ ->
-            if pausedTrack == track then
-                TrackPaused
-
-            else
-                TrackInactive
-
-        StoppedState ->
-            TrackInactive
 
 
 audioPlayerElement :
@@ -273,6 +252,27 @@ audioPlayerElement { src, isPlaying, currentTime, onStateUpdated, state } =
         ]
         []
         |> Ui.html
+
+
+getTrackStatus : StateInternal -> Track -> TrackStatus
+getTrackStatus state track =
+    case state.playState of
+        PlayingState playingTrack _ ->
+            if playingTrack == track then
+                TrackPlaying
+
+            else
+                TrackInactive
+
+        PausedState pausedTrack _ ->
+            if pausedTrack == track then
+                TrackPaused
+
+            else
+                TrackInactive
+
+        StoppedState ->
+            TrackInactive
 
 
 getPlayingTrackState : PlayState -> Maybe PlayingTrackState
