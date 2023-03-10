@@ -206,12 +206,12 @@ trackToElmUi state config track =
     UiInput.button (buttonStyles ++ events)
         { onPress = Just (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
         , label =
-            UiKeyed.row
+            Ui.row
                 [ Ui.spacing Style.spacing.size1
                 ]
-                [ ( "icon", icon Icon.Medium )
-                , ( "title", Ui.text track.title )
-                , ( "audio", audioPlayerElement )
+                [ icon Icon.Medium
+                , Ui.text track.title
+                , audioPlayerElement
                 ]
         }
 
