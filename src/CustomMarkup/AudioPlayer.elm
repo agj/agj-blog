@@ -185,20 +185,12 @@ trackToElmUi state config track =
             , Ui.paddingXY Style.spacing.size3 Style.spacing.size2
             ]
 
-        audioPlayerElement =
+        audioPlayerEl =
             if status == PlayingTrack || status == PausedTrack then
-                Html.node "audio-player"
-                    [ Html.Attributes.attribute "src" track.src
-                    , Html.Attributes.attribute "playing"
-                        (if status == PlayingTrack then
-                            "true"
-
-                         else
-                            "false"
-                        )
-                    ]
-                    []
-                    |> Ui.html
+                audioPlayerElement
+                    { src = track.src
+                    , isPlaying = status == PlayingTrack
+                    }
 
             else
                 Ui.none
@@ -211,7 +203,7 @@ trackToElmUi state config track =
                 ]
                 [ icon Icon.Medium
                 , Ui.text track.title
-                , audioPlayerElement
+                , audioPlayerEl
                 ]
         }
 
@@ -235,3 +227,23 @@ getTrackStatus state track =
 
         Stopped ->
             InactiveTrack
+
+
+audioPlayerElement :
+    { src : String
+    , isPlaying : Bool
+    }
+    -> Ui.Element msg
+audioPlayerElement { src, isPlaying } =
+    Html.node "audio-player"
+        [ Html.Attributes.attribute "src" src
+        , Html.Attributes.attribute "playing"
+            (if isPlaying then
+                "true"
+
+             else
+                "false"
+            )
+        ]
+        []
+        |> Ui.html
