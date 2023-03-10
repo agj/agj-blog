@@ -18,7 +18,9 @@ import Element.Input as UiInput
 import Element.Keyed as UiKeyed
 import Html
 import Html.Attributes
+import Html.Events
 import Icon
+import Json.Decode as Decode exposing (Decoder)
 import Markdown.Html
 import Style
 
@@ -45,8 +47,14 @@ type alias StateInternal =
 
 type PlayState
     = Stopped
-    | Playing Track
-    | Paused Track
+    | Playing Track PlayingTrackState
+    | Paused Track PlayingTrackState
+
+
+type alias PlayingTrackState =
+    { currentTime : Float
+    , duration : Float
+    }
 
 
 type TrackStatus
@@ -97,18 +105,18 @@ titleToElmUi state config firstTrack title =
     let
         ( newPlayStateOnPress, icon ) =
             case state.playState of
-                Playing _ ->
+                Playing _ _ ->
                     ( Stopped
                     , Icon.stop
                     )
 
-                Paused _ ->
+                Paused _ _ ->
                     ( Stopped
                     , Icon.stop
                     )
 
                 Stopped ->
-                    ( Playing firstTrack
+                    ( Playing firstTrack { currentTime = 0, duration = 0 }
                     , Icon.play
                     )
     in
@@ -141,13 +149,24 @@ trackToElmUi state config track =
             , UiEvents.onMouseEnter (config.onStateUpdated (State { state | hovered = Just track }))
             ]
 
+        playState =
+            case state.playState of
+                Playing _ ps ->
+                    ps
+
+                Paused _ ps ->
+                    ps
+
+                Stopped ->
+                    { currentTime = 0, duration = 0 }
+
         { icon, fontColor, backgroundColor, newPlayStateOnPress, events } =
             case status of
                 PlayingTrack ->
                     { fontColor = Style.color.white
                     , backgroundColor = Style.color.secondary50
                     , icon = Icon.pause
-                    , newPlayStateOnPress = Paused track
+                    , newPlayStateOnPress = Paused track playState
                     , events = []
                     }
 
@@ -155,7 +174,7 @@ trackToElmUi state config track =
                     { fontColor = Style.color.white
                     , backgroundColor = Style.color.secondary50
                     , icon = Icon.play
-                    , newPlayStateOnPress = Playing track
+                    , newPlayStateOnPress = Playing track playState
                     , events = []
                     }
 
@@ -173,7 +192,7 @@ trackToElmUi state config track =
 
                         else
                             Icon.none
-                    , newPlayStateOnPress = Playing track
+                    , newPlayStateOnPress = Playing track playState
                     , events = hoverEvents
                     }
 
@@ -190,6 +209,8 @@ trackToElmUi state config track =
                 audioPlayerElement
                     { src = track.src
                     , isPlaying = status == PlayingTrack
+                    , onStateUpdated = config.onStateUpdated
+                    , state = state
                     }
 
             else
@@ -211,14 +232,14 @@ trackToElmUi state config track =
 getTrackStatus : StateInternal -> Track -> TrackStatus
 getTrackStatus state track =
     case state.playState of
-        Playing playingTrack ->
+        Playing playingTrack _ ->
             if playingTrack == track then
                 PlayingTrack
 
             else
                 InactiveTrack
 
-        Paused pausedTrack ->
+        Paused pausedTrack _ ->
             if pausedTrack == track then
                 PausedTrack
 
@@ -232,9 +253,11 @@ getTrackStatus state track =
 audioPlayerElement :
     { src : String
     , isPlaying : Bool
+    , onStateUpdated : State -> msg
+    , state : StateInternal
     }
     -> Ui.Element msg
-audioPlayerElement { src, isPlaying } =
+audioPlayerElement { src, isPlaying, onStateUpdated, state } =
     Html.node "audio-player"
         [ Html.Attributes.attribute "src" src
         , Html.Attributes.attribute "playing"
@@ -244,6 +267,36 @@ audioPlayerElement { src, isPlaying } =
              else
                 "false"
             )
+        , Html.Events.on "timeupdate"
+            (playingTrackStateMsgDecoder { state = state, onStateUpdated = onStateUpdated })
         ]
         []
         |> Ui.html
+
+
+playingTrackStateMsgDecoder : { state : StateInternal, onStateUpdated : State -> msg } -> Decoder msg
+playingTrackStateMsgDecoder { state, onStateUpdated } =
+    playingTrackStateDecoder
+        |> Decode.map
+            (\newPlayingTrackState ->
+                case state.playState of
+                    Playing track _ ->
+                        Playing track newPlayingTrackState
+
+                    Paused track _ ->
+                        Paused track newPlayingTrackState
+
+                    Stopped ->
+                        state.playState
+            )
+        |> Decode.map
+            (\newPlayState ->
+                onStateUpdated (State { state | playState = newPlayState })
+            )
+
+
+playingTrackStateDecoder : Decoder PlayingTrackState
+playingTrackStateDecoder =
+    Decode.map2 PlayingTrackState
+        (Decode.at [ "detail", "currentTime" ] Decode.float)
+        (Decode.at [ "detail", "duration" ] Decode.float)

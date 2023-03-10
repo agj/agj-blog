@@ -10,6 +10,17 @@ customElements.define('audio-player', class AudioPlayerElement extends HTMLEleme
 
   connectedCallback() {
     this.audioElement = new Audio();
+
+    this.onTimeUpdate = (event) => {
+      this.dispatchEvent(new CustomEvent('timeupdate', {
+        detail: {
+          currentTime: this.audioElement.currentTime,
+          duration: this.audioElement.duration
+        },
+      }));
+    };
+    this.audioElement.addEventListener('timeupdate', this.onTimeUpdate);
+
     this.appendChild(this.audioElement);
     this.update();
   }
@@ -20,6 +31,7 @@ customElements.define('audio-player', class AudioPlayerElement extends HTMLEleme
 
   disconnectedCallback() {
     this.audioElement?.stop?.();
+    this.audioElement?.removeEventListener('timeupdate', this.onTimeUpdate);
     this.audioElement = null;
   }
 
