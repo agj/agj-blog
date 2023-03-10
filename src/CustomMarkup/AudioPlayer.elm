@@ -46,9 +46,9 @@ type alias StateInternal =
 
 
 type PlayState
-    = Stopped
-    | Playing Track PlayingTrackState
-    | Paused Track PlayingTrackState
+    = StoppedState
+    | PlayingState Track PlayingTrackState
+    | PausedState Track PlayingTrackState
 
 
 type alias PlayingTrackState =
@@ -57,21 +57,16 @@ type alias PlayingTrackState =
     }
 
 
-initialPlayingTrackState : PlayingTrackState
-initialPlayingTrackState =
-    { currentTime = 0, duration = 0 }
-
-
 type TrackStatus
-    = PlayingTrack
-    | PausedTrack
-    | InactiveTrack
+    = TrackPlaying
+    | TrackPaused
+    | TrackInactive
 
 
 initialState : State
 initialState =
     State
-        { playState = Stopped
+        { playState = StoppedState
         , hovered = Nothing
         }
 
@@ -105,23 +100,28 @@ toElmUi (State state) config audioPlayer tracks =
 -- INTERNAL
 
 
+initialPlayingTrackState : PlayingTrackState
+initialPlayingTrackState =
+    { currentTime = 0, duration = 0 }
+
+
 titleToElmUi : StateInternal -> Config msg -> Track -> String -> Ui.Element msg
 titleToElmUi state config firstTrack title =
     let
         ( newPlayStateOnPress, icon ) =
             case state.playState of
-                Playing _ _ ->
-                    ( Stopped
+                PlayingState _ _ ->
+                    ( StoppedState
                     , Icon.stop
                     )
 
-                Paused _ _ ->
-                    ( Stopped
+                PausedState _ _ ->
+                    ( StoppedState
                     , Icon.stop
                     )
 
-                Stopped ->
-                    ( Playing firstTrack initialPlayingTrackState
+                StoppedState ->
+                    ( PlayingState firstTrack initialPlayingTrackState
                     , Icon.play
                     )
     in
@@ -149,34 +149,34 @@ trackToElmUi state config track =
         status =
             getTrackStatus state track
 
+        playingTrackState =
+            getPlayingTrackState state.playState
+                |> Maybe.withDefault initialPlayingTrackState
+
         hoverEvents =
             [ UiEvents.onMouseLeave (config.onStateUpdated (State { state | hovered = Nothing }))
             , UiEvents.onMouseEnter (config.onStateUpdated (State { state | hovered = Just track }))
             ]
 
-        playingTrackState =
-            getPlayingTrackState state.playState
-                |> Maybe.withDefault initialPlayingTrackState
-
         { icon, fontColor, backgroundColor, newPlayStateOnPress, events } =
             case status of
-                PlayingTrack ->
+                TrackPlaying ->
                     { fontColor = Style.color.white
                     , backgroundColor = Style.color.secondary50
                     , icon = Icon.pause
-                    , newPlayStateOnPress = Paused track playingTrackState
+                    , newPlayStateOnPress = PausedState track playingTrackState
                     , events = []
                     }
 
-                PausedTrack ->
+                TrackPaused ->
                     { fontColor = Style.color.white
                     , backgroundColor = Style.color.secondary50
                     , icon = Icon.play
-                    , newPlayStateOnPress = Playing track playingTrackState
+                    , newPlayStateOnPress = PlayingState track playingTrackState
                     , events = []
                     }
 
-                InactiveTrack ->
+                TrackInactive ->
                     { fontColor = Style.color.layout50
                     , backgroundColor =
                         if state.hovered == Just track then
@@ -190,7 +190,7 @@ trackToElmUi state config track =
 
                         else
                             Icon.none
-                    , newPlayStateOnPress = Playing track initialPlayingTrackState
+                    , newPlayStateOnPress = PlayingState track initialPlayingTrackState
                     , events = hoverEvents
                     }
 
@@ -203,10 +203,10 @@ trackToElmUi state config track =
             ]
 
         audioPlayerEl =
-            if status == PlayingTrack || status == PausedTrack then
+            if status == TrackPlaying || status == TrackPaused then
                 audioPlayerElement
                     { src = track.src
-                    , isPlaying = status == PlayingTrack
+                    , isPlaying = status == TrackPlaying
                     , currentTime = playingTrackState.currentTime
                     , onStateUpdated = config.onStateUpdated
                     , state = state
@@ -231,22 +231,22 @@ trackToElmUi state config track =
 getTrackStatus : StateInternal -> Track -> TrackStatus
 getTrackStatus state track =
     case state.playState of
-        Playing playingTrack _ ->
+        PlayingState playingTrack _ ->
             if playingTrack == track then
-                PlayingTrack
+                TrackPlaying
 
             else
-                InactiveTrack
+                TrackInactive
 
-        Paused pausedTrack _ ->
+        PausedState pausedTrack _ ->
             if pausedTrack == track then
-                PausedTrack
+                TrackPaused
 
             else
-                InactiveTrack
+                TrackInactive
 
-        Stopped ->
-            InactiveTrack
+        StoppedState ->
+            TrackInactive
 
 
 audioPlayerElement :
@@ -278,13 +278,13 @@ audioPlayerElement { src, isPlaying, currentTime, onStateUpdated, state } =
 getPlayingTrackState : PlayState -> Maybe PlayingTrackState
 getPlayingTrackState playState =
     case playState of
-        Playing _ playingTrackState ->
+        PlayingState _ playingTrackState ->
             Just playingTrackState
 
-        Paused _ playingTrackState ->
+        PausedState _ playingTrackState ->
             Just playingTrackState
 
-        Stopped ->
+        StoppedState ->
             Nothing
 
 
@@ -294,13 +294,13 @@ playingTrackStateMsgDecoder { state, onStateUpdated } =
         |> Decode.map
             (\newPlayingTrackState ->
                 case state.playState of
-                    Playing track _ ->
-                        Playing track newPlayingTrackState
+                    PlayingState track _ ->
+                        PlayingState track newPlayingTrackState
 
-                    Paused track _ ->
-                        Paused track newPlayingTrackState
+                    PausedState track _ ->
+                        PausedState track newPlayingTrackState
 
-                    Stopped ->
+                    StoppedState ->
                         state.playState
             )
         |> Decode.map
