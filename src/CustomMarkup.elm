@@ -1,5 +1,6 @@
 module CustomMarkup exposing (toElmUi)
 
+import Custom.Color as Color
 import CustomMarkup.AudioPlayer
 import CustomMarkup.AudioPlayer.Track exposing (Track)
 import CustomMarkup.ElmUiTag as ElmUiTag exposing (ElmUiTag)
@@ -7,14 +8,16 @@ import CustomMarkup.LanguageBreak
 import CustomMarkup.VideoEmbed
 import Element as Ui
 import Element.Font as UiFont
+import Element.Region as UiRegion
+import Html.Attributes
 import List.Extra as List
 import Markdown.Block
 import Markdown.Html
 import Markdown.Parser
 import Markdown.Renderer
 import Result.Extra as Result
+import Style
 import View.Figure
-import View.TextBlock
 
 
 type alias Config msg =
@@ -141,9 +144,22 @@ renderParagraph tags =
             ElmUiTag.Block element
 
         _ ->
-            View.TextBlock.paragraph (getInlines tags)
-                |> View.TextBlock.view
+            Ui.paragraph
+                (baseBlockStyles
+                    ++ [ Ui.paddingXY 0 Style.spacing.size3
+                       ]
+                )
+                (getInlines tags)
                 |> ElmUiTag.Block
+
+
+baseBlockStyles : List (Ui.Attribute msg)
+baseBlockStyles =
+    [ Ui.paddingXY 0 10
+    , UiFont.color (Color.toElmUi Style.color.layout)
+    , UiFont.size Style.textSize.m
+    , Ui.spacing (Style.interline.m Style.textSize.m)
+    ]
 
 
 renderHeading :
@@ -152,30 +168,47 @@ renderHeading :
     , children : List (ElmUiTag msg)
     }
     -> ElmUiTag msg
-renderHeading { level, rawText, children } =
+renderHeading { level, children } =
     let
-        constructor =
+        styles =
             case level of
                 Markdown.Block.H1 ->
-                    View.TextBlock.heading1
+                    [ UiFont.size Style.textSize.xxl ]
 
                 Markdown.Block.H2 ->
-                    View.TextBlock.heading2
+                    [ UiFont.size Style.textSize.xl
+                    , Ui.htmlAttribute (Html.Attributes.style "text-transform" "uppercase")
+                    ]
 
                 Markdown.Block.H3 ->
-                    View.TextBlock.heading3
+                    [ UiFont.size Style.textSize.xl ]
 
                 Markdown.Block.H4 ->
-                    View.TextBlock.heading4
+                    [ UiFont.size Style.textSize.l
+                    , Ui.htmlAttribute (Html.Attributes.style "text-transform" "uppercase")
+                    ]
 
                 Markdown.Block.H5 ->
-                    View.TextBlock.heading5
+                    [ UiFont.size Style.textSize.l ]
 
                 Markdown.Block.H6 ->
-                    View.TextBlock.heading6
+                    [ UiFont.size Style.textSize.m
+                    , UiFont.bold
+                    ]
     in
-    constructor (getInlines children)
-        |> View.TextBlock.view
+    Ui.paragraph
+        (baseBlockStyles
+            ++ [ UiRegion.heading (Markdown.Block.headingLevelToInt level)
+               , Ui.paddingEach
+                    { top = Style.spacing.size4
+                    , bottom = Style.spacing.size3
+                    , left = 0
+                    , right = 0
+                    }
+               ]
+            ++ styles
+        )
+        (getInlines children)
         |> ElmUiTag.Block
 
 
