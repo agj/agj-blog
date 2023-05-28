@@ -1,5 +1,6 @@
 
 init: ## Load the dependencies.
+	@echo "You may type 'exit' to return to the regular shell.\n"
 	nix develop
 
 dev: ## Run development server.
