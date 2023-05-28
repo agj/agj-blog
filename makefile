@@ -1,9 +1,12 @@
 
-dev: ## Run development server.
+dev: init ## Run development server.
 	elm-pages dev
 
-build: ## Build for release.
+build: init ## Build for release.
 	elm-pages build
+
+init: ## Start the Nix shell.
+	nix develop
 
 
 
