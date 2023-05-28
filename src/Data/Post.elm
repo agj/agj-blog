@@ -9,7 +9,6 @@ module Data.Post exposing
     , singleDataSource
     )
 
-import CustomMarkup
 import Data.Category as Category exposing (Category)
 import Data.Language as Language exposing (Language)
 import Data.Tag as Tag exposing (Tag)
@@ -17,15 +16,12 @@ import DataSource exposing (DataSource)
 import DataSource.File
 import DataSource.Glob as Glob exposing (Glob)
 import Html exposing (Html)
-import Markdown.Parser
-import Markdown.Renderer
 import OptimizedDecoder as Decode exposing (Decoder)
 import OptimizedDecoder.Pipeline as Decode
-import Result.Extra as Result
 
 
-type alias Post msg =
-    { content : List (Html msg)
+type alias Post =
+    { markdown : String
     , frontmatter : Frontmatter
     }
 
@@ -107,7 +103,11 @@ listWithFrontmatterDataSource =
         |> DataSource.andThen (List.map processPost >> DataSource.combine)
 
 
-singleDataSource : String -> String -> String -> DataSource (Post msg)
+singleDataSource :
+    String
+    -> String
+    -> String
+    -> DataSource Post
 singleDataSource year month post =
     DataSource.File.bodyWithFrontmatter postDecoder
         ("data/posts/{year}/{month}-{post}.md"
@@ -129,19 +129,10 @@ globMatchFrontmatterToUrl gist =
 -- INTERNAL
 
 
-postDecoder : String -> Decoder (Post msg)
-postDecoder content =
-    let
-        parsedContent =
-            content
-                |> Markdown.Parser.parse
-                |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
-                |> Result.andThen (Markdown.Renderer.render CustomMarkup.renderer)
-                |> Result.mapError CustomMarkup.renderErrorMessage
-                |> Result.merge
-    in
+postDecoder : String -> Decoder Post
+postDecoder markdown =
     frontmatterDecoder
-        |> Decode.map (Post parsedContent)
+        |> Decode.map (Post markdown)
 
 
 frontmatterDecoder : Decoder Frontmatter

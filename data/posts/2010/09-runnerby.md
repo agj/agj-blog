@@ -29,7 +29,7 @@ It's a single player game, but is intended (not to a very interesting result) to
 
 I didn't really take it where I wanted it to go, as my ambition clashed with my lazy attitude about creating the content. I submitted it to [Gamma IV](http://www.kokoromi.org/gamma4/) (despite it not fitting into the 5-minutes-per-session rule) with no positive result, and then tried [Indiecade](http://www.indiecade.com/) just because I really wanted it to find its way to a large event, again to no success. What it was supposed to be was a much larger world, with each screen offering challenges to reach each of the exits (at least two per screen). The reward for the challenges would not be a destination (a goal), but exploration itself: discovering what lies further into the game world. Since this was intended for an event with a massive attendance, I wanted the world to feel different depending on your whereabouts; then, whenever you glanced at the screen where the game was being played continuously for the duration of the event, you'd see someplace new. The actual finished game is really just an imperfect compromise, an abortion of these ambitions, so I'm not surprised it didn't do well.
 
-## Credits
+# Credits
 
 	- Uses Adam Saltsman's [Flixel](http://flixel.org/).
 	- Sounds by [ltibbits](http://www.freesound.org/usersViewSingle.php?id=49141), [RealRhodesSounds](http://www.freesound.org/usersViewSingle.php?id=7740), and [teleport8](http://www.freesound.org/usersViewSingle.php?id=62541).

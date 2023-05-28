@@ -34,58 +34,58 @@ If you think that having this digital thing sitting there in your harddrive is n
 <audio-player title="The Color and the Leaves – Tree">
   <track
     title="Traffic"
-    src="files/2008/12-the-color-and-the-leaves/01-Traffic.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/01-Traffic.mp3"
   />
   <track
     title="Let's Learn Planets"
-    src="files/2008/12-the-color-and-the-leaves/02-Lets-Learn-Planets.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/02-Lets-Learn-Planets.mp3"
   />
   <track
     title="Giant and the Cat"
-    src="files/2008/12-the-color-and-the-leaves/03-Giant-and-the-Cat.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/03-Giant-and-the-Cat.mp3"
   />
   <track
     title="Conspiración"
-    src="files/2008/12-the-color-and-the-leaves/04-Conspiracion.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/04-Conspiracion.mp3"
   />
   <track
     title="Houseplants"
-    src="files/2008/12-the-color-and-the-leaves/05-Houseplants.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/05-Houseplants.mp3"
   />
   <track
     title="Cat and Dog Song"
-    src="files/2008/12-the-color-and-the-leaves/06-Cat-and-Dog-Song.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/06-Cat-and-Dog-Song.mp3"
   />
   <track
     title="That Place, Again"
-    src="files/2008/12-the-color-and-the-leaves/07-That-Place-Again.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/07-That-Place-Again.mp3"
   />
   <track
     title="Achtung (One Two)"
-    src="files/2008/12-the-color-and-the-leaves/08-Achtung-One-Two.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/08-Achtung-One-Two.mp3"
   />
   <track
     title="Today"
-    src="files/2008/12-the-color-and-the-leaves/09-Today.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/09-Today.mp3"
   />
   <track
     title="Caveman"
-    src="files/2008/12-the-color-and-the-leaves/10-Caveman.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/10-Caveman.mp3"
   />
   <track
     title="When the Elephants Would Parade"
-    src="files/2008/12-the-color-and-the-leaves/11-When-the-Elephants-Would-Parade.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/11-When-the-Elephants-Would-Parade.mp3"
   />
   <track
     title="Rain in Reverse"
-    src="files/2008/12-the-color-and-the-leaves/12-Rain-in-Reverse.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/12-Rain-in-Reverse.mp3"
   />
   <track
     title="Kitchen Jams With Baking Hams"
-    src="files/2008/12-the-color-and-the-leaves/13-Kitchen-Jams-With-Baking-Hams.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/13-Kitchen-Jams-With-Baking-Hams.mp3"
   />
   <track
     title="Dark Room, Morning Coffee"
-    src="files/2008/12-the-color-and-the-leaves/14-Dark-Room-Morning-Coffee.mp3"
+    src="/files/2008/12-the-color-and-the-leaves/14-Dark-Room-Morning-Coffee.mp3"
   />
 </audio-player>
