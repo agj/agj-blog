@@ -1,12 +1,14 @@
 
-dev: install ## Run development server.
-	npx elm-pages dev
+init: ## Load the dependencies.
+	@echo "You may type 'exit' to return to the regular shell.\n"
+# Wish I knew how to use $SHELL here so I didn't have to hardcode it.
+	nix develop -c zsh
 
-build: install ## Build for release.
-	npx elm-pages build
+dev: ## Run development server.
+	elm-pages dev
 
-install: ## Only install dependencies.
-	pnpm install && npx elm-tooling install
+build: ## Build for release.
+	elm-pages build
 
 
 
@@ -14,6 +16,6 @@ install: ## Only install dependencies.
 # See: https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 .DEFAULT_GOAL := help
