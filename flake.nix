@@ -23,6 +23,7 @@
             elmPackages.elm-optimize-level-2
             elmPackages.elm-pages
             elmPackages.elm-review
+            leiningen
           ];
         };
       }
