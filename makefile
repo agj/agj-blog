@@ -1,8 +1,7 @@
 
 init: ## Load the dependencies.
 	@echo "You may type 'exit' to return to the regular shell.\n"
-# Wish I knew how to use $SHELL here so I didn't have to hardcode it.
-	nix develop -c zsh
+	nix develop -c "$$SHELL"
 
 dev: ## Run development server.
 	elm-pages dev
