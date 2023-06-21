@@ -15,9 +15,8 @@ elm-stuff/
 node_modules/
 npm-debug.log
 
-# Racket
-compiled/
-*.rkt~
-
 # Editors
 .vscode/
+
+# direnv
+.direnv/
