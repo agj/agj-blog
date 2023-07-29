@@ -200,7 +200,7 @@ trackToElmUi state config track =
 
         buttonStyles =
             [ UiBorder.rounded 0
-            , UiBackground.color (backgroundColor |> Color.toElmUi)
+            , UiBackground.color (Style.color.transparent |> Color.toElmUi)
             , UiFont.color (fontColor |> Color.toElmUi)
             , Ui.width Ui.fill
             , Ui.paddingXY Style.spacing.size3 Style.spacing.size2
@@ -231,32 +231,41 @@ trackToElmUi state config track =
                         , audioPlayerEl
                         ]
                 }
-    in
-    if trackStatus == TrackPlaying || trackStatus == TrackPaused then
-        Ui.column [ Ui.width Ui.fill ]
-            [ buttonEl
-            , Ui.html (trackBar playingTrackState)
-            ]
 
-    else
-        buttonEl
+        columnEls =
+            if trackStatus == TrackPlaying || trackStatus == TrackPaused then
+                [ buttonEl
+                , Ui.html (trackBar playingTrackState)
+                ]
+
+            else
+                [ buttonEl ]
+    in
+    Ui.column
+        [ Ui.width Ui.fill
+        , UiBackground.color (backgroundColor |> Color.toElmUi)
+        ]
+        columnEls
 
 
 trackBar : PlayingTrackState -> Html msg
 trackBar { currentTime, duration } =
+    let
+        progress =
+            Svg.rect
+                [ Svg.x (Svg.px 0)
+                , Svg.y (Svg.px 0)
+                , Svg.width (Svg.percent (currentTime / duration * 100))
+                , Svg.height (Svg.percent 100)
+                , Svg.fill (Svg.Paint Style.color.layout)
+                ]
+                []
+    in
     Svg.svg
         [ Svg.width (Svg.percent 100)
         , Svg.height (Svg.px 10)
         ]
-        [ Svg.rect
-            [ Svg.x (Svg.px 0)
-            , Svg.y (Svg.px 0)
-            , Svg.width (Svg.percent (currentTime / duration * 100))
-            , Svg.height (Svg.percent 100)
-            , Svg.fill (Svg.Paint Style.color.layout)
-            ]
-            []
-        ]
+        [ progress ]
 
 
 audioPlayerElement :
