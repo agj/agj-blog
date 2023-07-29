@@ -157,6 +157,9 @@ trackToElmUi state config track =
             getPlayingTrackState state.playState
                 |> Maybe.withDefault initialPlayingTrackState
 
+        isSelected =
+            trackStatus == TrackPlaying || trackStatus == TrackPaused
+
         hoverEvents =
             [ UiEvents.onMouseLeave (config.onStateUpdated (State { state | hovered = Nothing }))
             , UiEvents.onMouseEnter (config.onStateUpdated (State { state | hovered = Just track }))
@@ -203,11 +206,21 @@ trackToElmUi state config track =
             , UiBackground.color (Style.color.transparent |> Color.toElmUi)
             , UiFont.color (fontColor |> Color.toElmUi)
             , Ui.width Ui.fill
-            , Ui.paddingXY Style.spacing.size3 Style.spacing.size2
+            , Ui.paddingEach
+                { left = Style.spacing.size3
+                , right = Style.spacing.size3
+                , top = Style.spacing.size2
+                , bottom =
+                    if isSelected then
+                        0
+
+                    else
+                        Style.spacing.size2
+                }
             ]
 
         audioPlayerEl =
-            if trackStatus == TrackPlaying || trackStatus == TrackPaused then
+            if isSelected then
                 audioPlayerElement
                     { src = track.src
                     , isPlaying = trackStatus == TrackPlaying
@@ -232,31 +245,30 @@ trackToElmUi state config track =
                         ]
                 }
 
+        seekPosToNewState : Float -> State
+        seekPosToNewState seekPos =
+            case trackStatus of
+                TrackPlaying ->
+                    State
+                        { state
+                            | playState =
+                                PlayingState track
+                                    { playingTrackState | currentTime = playingTrackState.duration * seekPos }
+                        }
+
+                TrackPaused ->
+                    State
+                        { state
+                            | playState =
+                                PausedState track
+                                    { playingTrackState | currentTime = playingTrackState.duration * seekPos }
+                        }
+
+                TrackInactive ->
+                    State state
+
         columnEls =
-            if trackStatus == TrackPlaying || trackStatus == TrackPaused then
-                let
-                    seekPosToNewState : Float -> State
-                    seekPosToNewState seekPos =
-                        case trackStatus of
-                            TrackPlaying ->
-                                State
-                                    { state
-                                        | playState =
-                                            PlayingState track
-                                                { playingTrackState | currentTime = playingTrackState.duration * seekPos }
-                                    }
-
-                            TrackPaused ->
-                                State
-                                    { state
-                                        | playState =
-                                            PausedState track
-                                                { playingTrackState | currentTime = playingTrackState.duration * seekPos }
-                                    }
-
-                            TrackInactive ->
-                                State state
-                in
+            if isSelected then
                 [ buttonEl
                 , trackBar playingTrackState
                     |> Ui.map (seekPosToNewState >> config.onStateUpdated)
@@ -278,9 +290,9 @@ trackBar { currentTime, duration } =
         progress =
             Svg.rect
                 [ Svg.x (Svg.px 0)
-                , Svg.y (Svg.px 0)
+                , Svg.y (Svg.percent 30)
                 , Svg.width (Svg.percent (currentTime / duration * 100))
-                , Svg.height (Svg.percent 100)
+                , Svg.height (Svg.percent 70)
                 , Svg.fill (Svg.Paint Style.color.layout)
                 ]
                 []
@@ -292,7 +304,7 @@ trackBar { currentTime, duration } =
         ]
         (Svg.svg
             [ Svg.width (Svg.percent 100)
-            , Svg.height (Svg.px 10)
+            , Svg.height (Svg.px Style.spacing.size2)
             ]
             [ progress ]
             |> Ui.html
