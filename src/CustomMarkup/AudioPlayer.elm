@@ -234,8 +234,32 @@ trackToElmUi state config track =
 
         columnEls =
             if trackStatus == TrackPlaying || trackStatus == TrackPaused then
+                let
+                    seekPosToNewState : Float -> State
+                    seekPosToNewState seekPos =
+                        case trackStatus of
+                            TrackPlaying ->
+                                State
+                                    { state
+                                        | playState =
+                                            PlayingState track
+                                                { playingTrackState | currentTime = playingTrackState.duration * seekPos }
+                                    }
+
+                            TrackPaused ->
+                                State
+                                    { state
+                                        | playState =
+                                            PausedState track
+                                                { playingTrackState | currentTime = playingTrackState.duration * seekPos }
+                                    }
+
+                            TrackInactive ->
+                                State state
+                in
                 [ buttonEl
-                , Ui.html (trackBar playingTrackState)
+                , trackBar playingTrackState
+                    |> Ui.map (seekPosToNewState >> config.onStateUpdated)
                 ]
 
             else
@@ -248,7 +272,7 @@ trackToElmUi state config track =
         columnEls
 
 
-trackBar : PlayingTrackState -> Html msg
+trackBar : PlayingTrackState -> Ui.Element Float
 trackBar { currentTime, duration } =
     let
         progress =
@@ -261,11 +285,25 @@ trackBar { currentTime, duration } =
                 ]
                 []
     in
-    Svg.svg
-        [ Svg.width (Svg.percent 100)
-        , Svg.height (Svg.px 10)
+    Ui.el
+        [ Ui.width Ui.fill
+        , Html.Events.on "mousedown" trackMouseEventSeekPositionDecoder
+            |> Ui.htmlAttribute
         ]
-        [ progress ]
+        (Svg.svg
+            [ Svg.width (Svg.percent 100)
+            , Svg.height (Svg.px 10)
+            ]
+            [ progress ]
+            |> Ui.html
+        )
+
+
+trackMouseEventSeekPositionDecoder : Decoder Float
+trackMouseEventSeekPositionDecoder =
+    Decode.map2 (\offsetX targetWidth -> offsetX / targetWidth)
+        (Decode.at [ "offsetX" ] Decode.float)
+        (Decode.at [ "currentTarget", "offsetWidth" ] Decode.float)
 
 
 audioPlayerElement :
