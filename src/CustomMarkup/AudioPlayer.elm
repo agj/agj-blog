@@ -7,6 +7,7 @@ module CustomMarkup.AudioPlayer exposing
     , toElmUi
     )
 
+import Color exposing (Color)
 import Custom.Color as Color
 import CustomMarkup.AudioPlayer.Track exposing (Track)
 import Element as Ui
@@ -16,13 +17,16 @@ import Element.Events as UiEvents
 import Element.Font as UiFont
 import Element.Input as UiInput
 import Element.Keyed as UiKeyed
-import Html
+import Html exposing (Html)
 import Html.Attributes
 import Html.Events
 import Icon
 import Json.Decode as Decode exposing (Decoder)
 import Markdown.Html
 import Style
+import TypedSvg as Svg
+import TypedSvg.Attributes as Svg
+import TypedSvg.Types as Svg
 
 
 type alias AudioPlayer =
@@ -214,18 +218,45 @@ trackToElmUi state config track =
 
             else
                 Ui.none
+
+        buttonEl =
+            UiInput.button (buttonStyles ++ events)
+                { onPress = Just (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
+                , label =
+                    Ui.row
+                        [ Ui.spacing Style.spacing.size1
+                        ]
+                        [ icon Icon.Medium
+                        , Ui.text track.title
+                        , audioPlayerEl
+                        ]
+                }
     in
-    UiInput.button (buttonStyles ++ events)
-        { onPress = Just (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
-        , label =
-            Ui.row
-                [ Ui.spacing Style.spacing.size1
-                ]
-                [ icon Icon.Medium
-                , Ui.text track.title
-                , audioPlayerEl
-                ]
-        }
+    if trackStatus == TrackPlaying || trackStatus == TrackPaused then
+        Ui.column [ Ui.width Ui.fill ]
+            [ buttonEl
+            , Ui.html (trackBar playingTrackState)
+            ]
+
+    else
+        buttonEl
+
+
+trackBar : PlayingTrackState -> Html msg
+trackBar { currentTime, duration } =
+    Svg.svg
+        [ Svg.width (Svg.percent 100)
+        , Svg.height (Svg.px 10)
+        ]
+        [ Svg.rect
+            [ Svg.x (Svg.px 0)
+            , Svg.y (Svg.px 0)
+            , Svg.width (Svg.percent (currentTime / duration * 100))
+            , Svg.height (Svg.percent 100)
+            , Svg.fill (Svg.Paint Style.color.layout)
+            ]
+            []
+        ]
 
 
 audioPlayerElement :
