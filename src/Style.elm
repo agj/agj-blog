@@ -12,66 +12,28 @@ import Color.Manipulate
 
 color =
     { layout = colorLayout
-    , primary = colorPrimary
-    , primaryDark =
-        colorPrimary
-            |> Color.Manipulate.darken 0.5
-    , secondary = colorSecondary
-    , secondaryDark =
-        colorSecondary
-            |> Color.Manipulate.darken 0.5
-    , secondaryLight =
-        colorSecondary
-            |> Color.Manipulate.lighten 0.4
-            |> Color.Manipulate.desaturate 0.5
     , layout50 = colorLayout
-    , layout40 =
-        colorLayout
-            |> Color.Manipulate.lighten 0.2
-    , layout30 =
-        colorLayout
-            |> Color.Manipulate.lighten 0.4
-    , layout20 =
-        colorLayout
-            |> Color.Manipulate.lighten 0.6
-    , layout10 =
-        colorLayout
-            |> Color.Manipulate.lighten 0.8
-    , layout05 =
-        colorLayout
-            |> Color.Manipulate.lighten 0.9
+    , layout40 = colorLayout |> lighten 0.2
+    , layout30 = colorLayout |> lighten 0.4
+    , layout20 = colorLayout |> lighten 0.6
+    , layout10 = colorLayout |> lighten 0.8
+    , layout05 = colorLayout |> lighten 0.9
     , primary50 = colorPrimary
-    , primary40 =
-        colorPrimary
-            |> Color.Manipulate.lighten 0.2
-    , primary30 =
-        colorPrimary
-            |> Color.Manipulate.lighten 0.4
-    , primary20 =
-        colorPrimary
-            |> Color.Manipulate.lighten 0.6
-    , primary10 =
-        colorPrimary
-            |> Color.Manipulate.lighten 0.8
-    , primary05 =
-        colorPrimary
-            |> Color.Manipulate.lighten 0.9
+    , primary40 = colorPrimary |> lighten 0.2
+    , primary30 = colorPrimary |> lighten 0.4
+    , primary20 = colorPrimary |> lighten 0.6
+    , primary10 = colorPrimary |> lighten 0.8
+    , primary05 = colorPrimary |> lighten 0.9
+    , secondary90 = colorSecondary |> darken 0.8
+    , secondary80 = colorSecondary |> darken 0.6
+    , secondary70 = colorSecondary |> darken 0.4
+    , secondary60 = colorSecondary |> darken 0.2
     , secondary50 = colorSecondary
-    , secondary40 =
-        colorSecondary
-            |> Color.Manipulate.lighten 0.2
-    , secondary30 =
-        colorSecondary
-            |> Color.Manipulate.lighten 0.4
-    , secondary20 =
-        colorSecondary
-            |> Color.Manipulate.lighten 0.6
-    , secondary10 =
-        colorSecondary
-            |> Color.Manipulate.lighten 0.8
-    , secondary05 =
-        colorSecondary
-            |> Color.Manipulate.lighten 0.9
+    , secondary40 = colorSecondary |> lighten 0.2
+    , secondary30 = colorSecondary |> lighten 0.4
+    , secondary20 = colorSecondary |> lighten 0.6
+    , secondary10 = colorSecondary |> lighten 0.8
+    , secondary05 = colorSecondary |> lighten 0.9
     , transparent = Color.rgba 1 1 1 0
     , white = Color.rgb 1 1 1
     }
@@ -144,3 +106,18 @@ calculateInterline factor textSize_ =
 calculateInterblock : Int -> Int -> (Int -> Int) -> Int
 calculateInterblock paddingToAdd textSize_ interline_ =
     round (toFloat (interline_ textSize_) / 2) + paddingToAdd
+
+
+lighten : Float -> Color -> Color
+lighten amount color_ =
+    color_
+        |> Color.Manipulate.scaleHsl
+            { saturationScale = 0
+            , lightnessScale = amount
+            , alphaScale = 0
+            }
+
+
+darken : Float -> Color -> Color
+darken amount =
+    lighten -amount
