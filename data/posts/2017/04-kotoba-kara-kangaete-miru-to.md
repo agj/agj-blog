@@ -4,19 +4,19 @@ title: ことばから考えてみると
 date: 28
 hour: 21
 categories:
-- language
-- projects
-- videos
-- graphics
+  - language
+  - projects
+  - videos
+  - graphics
 tags:
-- come-to-think-of-language
-- conlang
-- japan
-- language
-- release
-- university
-- video
-- nihongo
+  - come-to-think-of-language
+  - conlang
+  - japan
+  - language
+  - release
+  - university
+  - video
+  - nihongo
 language: eng
 ---
 
@@ -38,31 +38,21 @@ language: eng
 
 <video-embed service="vimeo" id="201826714" width="500" height="281" />
 
-作品解説と実物へのリンクを以下にまとめました。それ以外、[終了展の際に作ったWebページ](http://agj.cl/go/mp2017/)もあります。
+作品解説と実物へのリンクを以下にまとめました。それ以外、[終了展の際に作った Web ページ](http://agj.cl/go/mp2017/)もあります。
 
 # 作品
 
- 	- 作品解説
-
- 	- [PDF形式でダウンロード](http://agj.cl/files/other/kotokan/kotokan_kaisetsu_20170220.pdf)
-
- 	-  絵本
-
- 	- [PDF形式でダウンロード](http://agj.cl/files/other/kotokan/kotokan_ehon_20170114.pdf)
-
- 	- 「パズルポエトリー」ポストカード
-
- 	- [PDF形式でダウンロード](http://agj.cl/files/other/kotokan/kotokan_puzzlepoetry_postcard_20170420.pdf)
-
- 	- 積み木の映像
-
- 	- 漫画
-
- 	- [映像](https://vimeo.com/199388496)
- 	- [台本（PDF）](http://agj.cl/files/other/kotokan/kotokan_tsumiki_manga_daihon.pdf)
- 	- [文字表（PDF）](http://agj.cl/files/other/kotokan/kotokan_tsumiki_manga_goi.pdf)
-
- 	- チョコ（試作）
-
- 	- [映像](https://vimeo.com/198562469)
- 	- [台本（PDF）](http://agj.cl/files/other/kotokan/kotokan_tsumiki_choco_daihon.pdf)
+- 作品解説
+  - [PDF 形式でダウンロード](http://agj.cl/files/other/kotokan/kotokan_kaisetsu_20170220.pdf)
+- 絵本
+  - [PDF 形式でダウンロード](http://agj.cl/files/other/kotokan/kotokan_ehon_20170114.pdf)
+- 「パズルポエトリー」ポストカード
+  - [PDF 形式でダウンロード](http://agj.cl/files/other/kotokan/kotokan_puzzlepoetry_postcard_20170420.pdf)
+- 積み木の映像
+  - 漫画
+    - [映像](https://vimeo.com/199388496)
+    - [台本（PDF）](http://agj.cl/files/other/kotokan/kotokan_tsumiki_manga_daihon.pdf)
+    - [文字表（PDF）](http://agj.cl/files/other/kotokan/kotokan_tsumiki_manga_goi.pdf)
+  - チョコ（試作）
+    - [映像](https://vimeo.com/198562469)
+    - [台本（PDF）](http://agj.cl/files/other/kotokan/kotokan_tsumiki_choco_daihon.pdf)
