@@ -1,15 +1,15 @@
-module CustomMarkup.LanguageBreak exposing
+module View.LanguageBreak exposing
     ( renderer
-    , toElmUi
-    , toHtml
+    , view
     )
 
+import Custom.Color as Color
 import CustomMarkup.ElmUiTag exposing (ElmUiTag)
 import Data.Language as Language exposing (Language)
 import Element as Ui
-import Html exposing (Html)
-import Html.Attributes as Attr
+import Element.Background as UiBackground
 import Markdown.Html
+import Style
 
 
 type alias LanguageBreak =
@@ -23,16 +23,22 @@ renderer =
         |> Markdown.Html.withOptionalAttribute "language"
 
 
-toElmUi : LanguageBreak -> Ui.Element msg
-toElmUi languageBreak =
-    toHtml languageBreak ()
-        |> Ui.html
-
-
-toHtml : LanguageBreak -> dropped -> Html msg
-toHtml languageBreak _ =
-    Html.hr [ Attr.id "language" ]
-        []
+view : LanguageBreak -> Ui.Element msg
+view languageBreak =
+    let
+        rule =
+            Ui.el
+                [ Ui.width Ui.fill
+                , Ui.height (Ui.px 1)
+                , UiBackground.color (Style.color.secondary50 |> Color.toElmUi)
+                ]
+                Ui.none
+    in
+    Ui.el
+        [ Ui.width Ui.fill
+        , Ui.paddingXY 0 Style.spacing.size5
+        ]
+        rule
 
 
 

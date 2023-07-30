@@ -2,7 +2,6 @@ module CustomMarkup exposing (toElmUi)
 
 import Custom.Color as Color
 import CustomMarkup.ElmUiTag as ElmUiTag exposing (ElmUiTag)
-import CustomMarkup.LanguageBreak
 import Element as Ui
 import Element.Font as UiFont
 import Element.Region as UiRegion
@@ -17,6 +16,7 @@ import Style
 import View.AudioPlayer
 import View.AudioPlayer.Track exposing (Track)
 import View.Figure
+import View.LanguageBreak
 import View.VideoEmbed
 
 
@@ -77,8 +77,8 @@ renderer config =
         otherCustomRenderers =
             [ View.VideoEmbed.renderer
                 |> renderFailableCustom ElmUiTag.Block View.VideoEmbed.view
-            , CustomMarkup.LanguageBreak.renderer
-                |> renderFailableCustom ElmUiTag.Block CustomMarkup.LanguageBreak.toElmUi
+            , View.LanguageBreak.renderer
+                |> renderFailableCustom ElmUiTag.Block View.LanguageBreak.view
             ]
     in
     { blockQuote = \tags -> Ui.row [] (getInlines tags) |> ElmUiTag.Block
