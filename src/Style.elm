@@ -1,5 +1,6 @@
 module Style exposing
     ( color
+    , interblock
     , interline
     , spacing
     , textSize
@@ -118,6 +119,12 @@ interline =
     }
 
 
+interblock =
+    { zero = calculateInterblock 0
+    , m = calculateInterblock spacing.size3
+    }
+
+
 
 -- INTERNAL
 
@@ -132,3 +139,8 @@ calculateInterline factor textSize_ =
     toFloat textSize_
         * factor
         |> round
+
+
+calculateInterblock : Int -> Int -> (Int -> Int) -> Int
+calculateInterblock paddingToAdd textSize_ interline_ =
+    round (toFloat (interline_ textSize_) / 2) + paddingToAdd

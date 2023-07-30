@@ -138,47 +138,63 @@ renderInlineWithStyle attr tags =
 
 renderParagraph : List (ElmUiTag msg) -> ElmUiTag msg
 renderParagraph tags =
-    asParagraphEl tags
+    tags
+        |> asParagraphEl { interblock = Just Style.interblock.m }
         |> ElmUiTag.Block
 
 
-asParagraphEl : List (ElmUiTag msg) -> Ui.Element msg
-asParagraphEl tags =
+asParagraphEl : { interblock : Maybe (Int -> (Int -> Int) -> Int) } -> List (ElmUiTag msg) -> Ui.Element msg
+asParagraphEl config tags =
+    let
+        styles =
+            case config.interblock of
+                Just interblock ->
+                    baseBlockStyles
+                        ++ [ Ui.paddingXY 0 (interblock Style.textSize.m Style.interline.m)
+                           ]
+
+                Nothing ->
+                    baseBlockStyles
+    in
     case tags of
         [ ElmUiTag.Block element ] ->
             element
 
         _ ->
-            Ui.paragraph
-                (baseBlockStyles
-                    ++ [ Ui.paddingXY 0 Style.spacing.size3
-                       ]
-                )
-                (getInlines tags)
+            Ui.paragraph styles (getInlines tags)
 
 
 renderOrderedList : Int -> List (List (ElmUiTag msg)) -> ElmUiTag msg
 renderOrderedList startNumber items =
     let
+        styles =
+            baseBlockStyles
+                ++ [ Ui.paddingXY 0 (Style.interblock.zero Style.textSize.m Style.interline.m) ]
+
         addNumber number paragraph =
-            Ui.row []
+            Ui.row styles
                 [ Ui.el
                     [ Ui.width (Ui.px Style.spacing.size6)
+                    , Ui.alignTop
                     ]
                     (Ui.text (String.fromInt number ++ "."))
                 , paragraph
                 ]
     in
     items
-        |> List.indexedMap (\index item -> asParagraphEl item |> addNumber (index + startNumber))
-        |> Ui.column []
+        |> List.indexedMap
+            (\index item ->
+                item
+                    |> asParagraphEl { interblock = Nothing }
+                    |> addNumber (index + startNumber)
+            )
+        |> Ui.column [ Ui.paddingXY 0 (Style.interblock.m Style.textSize.m Style.interline.m) ]
         |> ElmUiTag.Block
 
 
 baseBlockStyles : List (Ui.Attribute msg)
 baseBlockStyles =
-    [ Ui.paddingXY 0 10
-    , UiFont.color (Color.toElmUi Style.color.layout)
+    [ UiFont.color (Color.toElmUi Style.color.layout)
     , UiFont.size Style.textSize.m
     , Ui.spacing (Style.interline.m Style.textSize.m)
     ]
