@@ -38,7 +38,7 @@ toElmUi config markdown =
         |> Result.map getElements
         |> Result.mapError renderErrorMessage
         |> Result.merge
-        |> Ui.column []
+        |> wrapElmUiBlocks
 
 
 
@@ -136,9 +136,18 @@ renderLink { title, destination } tags =
 
 renderParagraph : List (ElmUiTag msg) -> ElmUiTag msg
 renderParagraph tags =
-    tags
-        |> asParagraphEl { interblock = Just Style.interblock.m }
-        |> ElmUiTag.Block
+    case tags of
+        [ ElmUiTag.Block element ] ->
+            ElmUiTag.Block element
+
+        _ ->
+            Ui.paragraph
+                (baseBlockStyles
+                    ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
+                       ]
+                )
+                (getInlines tags)
+                |> ElmUiTag.Block
 
 
 asParagraphEl : { interblock : Maybe (Int -> (Int -> Int) -> Int) } -> List (ElmUiTag msg) -> Ui.Element msg
@@ -192,6 +201,14 @@ renderOrderedList startNumber items =
 
 renderUnorderedList : List (Markdown.Block.ListItem (ElmUiTag msg)) -> ElmUiTag msg
 renderUnorderedList items =
+    items
+        |> List.map renderUnorderedListItem
+        |> Ui.column [ Ui.paddingXY 0 (Style.interblock.m Style.textSize.m Style.interline.m) ]
+        |> ElmUiTag.Block
+
+
+renderUnorderedListItem : Markdown.Block.ListItem (ElmUiTag msg) -> Ui.Element msg
+renderUnorderedListItem (Markdown.Block.ListItem task tags) =
     let
         styles =
             baseBlockStyles
@@ -207,15 +224,9 @@ renderUnorderedList items =
                 , paragraph
                 ]
     in
-    items
-        |> List.map
-            (\(Markdown.Block.ListItem task tags) ->
-                tags
-                    |> asParagraphEl { interblock = Nothing }
-                    |> addBullet
-            )
-        |> Ui.column [ Ui.paddingXY 0 (Style.interblock.m Style.textSize.m Style.interline.m) ]
-        |> ElmUiTag.Block
+    tags
+        |> asParagraphEl { interblock = Nothing }
+        |> addBullet
 
 
 baseBlockStyles : List (Ui.Attribute msg)
@@ -370,6 +381,20 @@ getBlocks =
                 _ ->
                     Nothing
         )
+
+
+wrapBlocks : List (ElmUiTag msg) -> ElmUiTag msg
+wrapBlocks tags =
+    tags
+        |> getBlocks
+        |> wrapElmUiBlocks
+        |> ElmUiTag.Block
+
+
+wrapElmUiBlocks : List (Ui.Element msg) -> Ui.Element msg
+wrapElmUiBlocks els =
+    Ui.column [ Ui.spacing Style.spacing.size3 ]
+        els
 
 
 getElements : List (ElmUiTag msg) -> List (Ui.Element msg)
