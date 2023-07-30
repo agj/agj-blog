@@ -97,10 +97,10 @@ view (State state) (AudioPlayerWithConfig audioPlayer config) =
                         currentTrackPlayState
 
                     else
-                        Track.notPlayingPlayState
+                        Track.stoppedPlayState
 
                 NoTrackSelected ->
-                    Track.notPlayingPlayState
+                    Track.stoppedPlayState
 
         trackConfig : Track -> Track.Config msg
         trackConfig track =

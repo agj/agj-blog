@@ -2,9 +2,9 @@ module View.AudioPlayer.Track exposing
     ( Config
     , PlayState
     , Track
-    , notPlayingPlayState
     , playingPlayState
     , renderer
+    , stoppedPlayState
     , view
     , withConfig
     )
@@ -47,7 +47,7 @@ type alias Config msg =
 
 
 type PlayState
-    = StateNotPlaying
+    = StateStopped
     | StatePlaying Playhead
     | StatePaused Playhead
 
@@ -56,16 +56,6 @@ type alias Playhead =
     { currentTime : Float
     , duration : Float
     }
-
-
-notPlayingPlayState : PlayState
-notPlayingPlayState =
-    StateNotPlaying
-
-
-playingPlayState : PlayState
-playingPlayState =
-    StatePlaying initialPlayhead
 
 
 renderer : Markdown.Html.Renderer Track
@@ -91,7 +81,7 @@ view (TrackWithConfig track config) =
                 StatePaused ph ->
                     ( True, False, ph )
 
-                StateNotPlaying ->
+                StateStopped ->
                     ( False, False, initialPlayhead )
 
         hoverEvents =
@@ -117,7 +107,7 @@ view (TrackWithConfig track config) =
                     , events = []
                     }
 
-                StateNotPlaying ->
+                StateStopped ->
                     { fontColor = Style.color.layout50
                     , backgroundColor =
                         if config.hovered then
@@ -188,8 +178,8 @@ view (TrackWithConfig track config) =
                 StatePaused ph ->
                     StatePaused { ph | currentTime = ph.duration * seekPos }
 
-                StateNotPlaying ->
-                    StateNotPlaying
+                StateStopped ->
+                    StateStopped
 
         columnEls =
             if isSelected then
@@ -206,6 +196,20 @@ view (TrackWithConfig track config) =
         , UiBackground.color (backgroundColor |> Color.toElmUi)
         ]
         columnEls
+
+
+stoppedPlayState : PlayState
+stoppedPlayState =
+    StateStopped
+
+
+playingPlayState : PlayState
+playingPlayState =
+    StatePlaying initialPlayhead
+
+
+
+-- INTERNAL
 
 
 seekBarView : Playhead -> Ui.Element Float
@@ -283,8 +287,8 @@ playingTrackStateMsgDecoder { playState, onPlayStateChanged } =
                     StatePaused _ ->
                         StatePaused newPlayhead
 
-                    StateNotPlaying ->
-                        StateNotPlaying
+                    StateStopped ->
+                        StateStopped
             )
         |> Decode.map onPlayStateChanged
 
