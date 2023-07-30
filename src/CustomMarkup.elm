@@ -94,14 +94,7 @@ renderer config =
                 |> View.Figure.figure
                 |> View.Figure.view
                 |> ElmUiTag.Block
-    , link =
-        \{ title, destination } tags ->
-            Ui.link []
-                { url = destination
-                , label =
-                    Ui.paragraph [] (getInlines tags)
-                }
-                |> ElmUiTag.Inline
+    , link = renderLink
     , orderedList = renderOrderedList
     , paragraph = renderParagraph
     , strikethrough = renderInlineWithStyle UiFont.strike
@@ -133,6 +126,20 @@ renderer config =
 renderInlineWithStyle : Ui.Attribute msg -> List (ElmUiTag msg) -> ElmUiTag msg
 renderInlineWithStyle attr tags =
     Ui.paragraph [ attr ] (getInlines tags)
+        |> ElmUiTag.Inline
+
+
+renderLink : { title : Maybe String, destination : String } -> List (ElmUiTag msg) -> ElmUiTag msg
+renderLink { title, destination } tags =
+    Ui.link []
+        { url = destination
+        , label =
+            Ui.paragraph
+                [ UiFont.underline
+                , UiFont.color (Style.color.secondary70 |> Color.toElmUi)
+                ]
+                (getInlines tags)
+        }
         |> ElmUiTag.Inline
 
 
