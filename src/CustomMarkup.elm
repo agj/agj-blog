@@ -3,7 +3,6 @@ module CustomMarkup exposing (toElmUi)
 import Custom.Color as Color
 import CustomMarkup.ElmUiTag as ElmUiTag exposing (ElmUiTag)
 import CustomMarkup.LanguageBreak
-import CustomMarkup.VideoEmbed
 import Element as Ui
 import Element.Font as UiFont
 import Element.Region as UiRegion
@@ -18,6 +17,7 @@ import Style
 import View.AudioPlayer
 import View.AudioPlayer.Track exposing (Track)
 import View.Figure
+import View.VideoEmbed
 
 
 type alias Config msg =
@@ -75,8 +75,8 @@ renderer config =
                     []
 
         otherCustomRenderers =
-            [ CustomMarkup.VideoEmbed.renderer
-                |> renderFailableCustom ElmUiTag.Block CustomMarkup.VideoEmbed.toElmUi
+            [ View.VideoEmbed.renderer
+                |> renderFailableCustom ElmUiTag.Block View.VideoEmbed.view
             , CustomMarkup.LanguageBreak.renderer
                 |> renderFailableCustom ElmUiTag.Block CustomMarkup.LanguageBreak.toElmUi
             ]
