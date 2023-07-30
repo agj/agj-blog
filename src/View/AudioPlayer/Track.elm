@@ -1,5 +1,5 @@
 module View.AudioPlayer.Track exposing
-    ( State
+    ( Config
     , Track
     , renderer
     , view
@@ -36,17 +36,10 @@ type TrackWithConfig msg
 
 
 type alias Config msg =
-    { onStateUpdated : State -> msg
-    }
-
-
-type State
-    = State State_
-
-
-type alias State_ =
     { playState : PlayState
     , hovered : Bool
+    , onHoverChanged : Bool -> msg
+    , onPlayStateChanged : PlayState -> msg
     }
 
 
@@ -74,11 +67,11 @@ withConfig config track =
     TrackWithConfig track config
 
 
-view : State -> TrackWithConfig msg -> Ui.Element msg
-view (State state) (TrackWithConfig track config) =
+view : TrackWithConfig msg -> Ui.Element msg
+view (TrackWithConfig track config) =
     let
         ( isSelected, isPlaying, playhead ) =
-            case state.playState of
+            case config.playState of
                 StatePlaying ph ->
                     ( True, True, ph )
 
@@ -89,12 +82,12 @@ view (State state) (TrackWithConfig track config) =
                     ( False, False, initialPlayhead )
 
         hoverEvents =
-            [ UiEvents.onMouseLeave (config.onStateUpdated (State { state | hovered = False }))
-            , UiEvents.onMouseEnter (config.onStateUpdated (State { state | hovered = True }))
+            [ UiEvents.onMouseLeave (config.onHoverChanged False)
+            , UiEvents.onMouseEnter (config.onHoverChanged True)
             ]
 
         { icon, fontColor, backgroundColor, newPlayStateOnPress, events } =
-            case state.playState of
+            case config.playState of
                 StatePlaying ph ->
                     { fontColor = Style.color.white
                     , backgroundColor = Style.color.secondary50
@@ -114,13 +107,13 @@ view (State state) (TrackWithConfig track config) =
                 StateNotPlaying ->
                     { fontColor = Style.color.layout50
                     , backgroundColor =
-                        if state.hovered then
+                        if config.hovered then
                             Style.color.secondary05
 
                         else
                             Style.color.transparent
                     , icon =
-                        if state.hovered then
+                        if config.hovered then
                             Icon.play
 
                         else
@@ -153,8 +146,8 @@ view (State state) (TrackWithConfig track config) =
                     { src = track.src
                     , isPlaying = isPlaying
                     , currentTime = playhead.currentTime
-                    , onStateUpdated = config.onStateUpdated
-                    , state = state
+                    , onPlayStateChanged = config.onPlayStateChanged
+                    , playState = config.playState
                     }
 
             else
@@ -162,7 +155,7 @@ view (State state) (TrackWithConfig track config) =
 
         buttonEl =
             UiInput.button (buttonStyles ++ events)
-                { onPress = Just (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
+                { onPress = Just (config.onPlayStateChanged newPlayStateOnPress)
                 , label =
                     Ui.row
                         [ Ui.spacing Style.spacing.size1
@@ -173,27 +166,23 @@ view (State state) (TrackWithConfig track config) =
                         ]
                 }
 
-        seekPosToNewState : Float -> State
+        seekPosToNewState : Float -> PlayState
         seekPosToNewState seekPos =
-            let
-                newPlayState =
-                    case state.playState of
-                        StatePlaying ph ->
-                            StatePlaying { ph | currentTime = ph.duration * seekPos }
+            case config.playState of
+                StatePlaying ph ->
+                    StatePlaying { ph | currentTime = ph.duration * seekPos }
 
-                        StatePaused ph ->
-                            StatePaused { ph | currentTime = ph.duration * seekPos }
+                StatePaused ph ->
+                    StatePaused { ph | currentTime = ph.duration * seekPos }
 
-                        StateNotPlaying ->
-                            StateNotPlaying
-            in
-            State { state | playState = newPlayState }
+                StateNotPlaying ->
+                    StateNotPlaying
 
         columnEls =
             if isSelected then
                 [ buttonEl
                 , seekBarView playhead
-                    |> Ui.map (seekPosToNewState >> config.onStateUpdated)
+                    |> Ui.map (seekPosToNewState >> config.onPlayStateChanged)
                 ]
 
             else
@@ -240,11 +229,11 @@ audioPlayerElement :
     { src : String
     , isPlaying : Bool
     , currentTime : Float
-    , onStateUpdated : State -> msg
-    , state : State_
+    , onPlayStateChanged : PlayState -> msg
+    , playState : PlayState
     }
     -> Ui.Element msg
-audioPlayerElement { src, isPlaying, currentTime, onStateUpdated, state } =
+audioPlayerElement { src, isPlaying, currentTime, onPlayStateChanged, playState } =
     Html.node "audio-player"
         [ Html.Attributes.attribute "src" src
         , Html.Attributes.attribute "current-time" (String.fromFloat currentTime)
@@ -256,7 +245,7 @@ audioPlayerElement { src, isPlaying, currentTime, onStateUpdated, state } =
                 "false"
             )
         , Html.Events.on "timeupdate"
-            (playingTrackStateMsgDecoder { state = state, onStateUpdated = onStateUpdated })
+            (playingTrackStateMsgDecoder { playState = playState, onPlayStateChanged = onPlayStateChanged })
         ]
         []
         |> Ui.html
@@ -269,12 +258,12 @@ initialPlayhead =
     }
 
 
-playingTrackStateMsgDecoder : { state : State_, onStateUpdated : State -> msg } -> Decoder msg
-playingTrackStateMsgDecoder { state, onStateUpdated } =
+playingTrackStateMsgDecoder : { playState : PlayState, onPlayStateChanged : PlayState -> msg } -> Decoder msg
+playingTrackStateMsgDecoder { playState, onPlayStateChanged } =
     playheadDecoder
         |> Decode.map
             (\newPlayhead ->
-                case state.playState of
+                case playState of
                     StatePlaying _ ->
                         StatePlaying newPlayhead
 
@@ -284,10 +273,7 @@ playingTrackStateMsgDecoder { state, onStateUpdated } =
                     StateNotPlaying ->
                         StateNotPlaying
             )
-        |> Decode.map
-            (\newPlayState ->
-                onStateUpdated (State { state | playState = newPlayState })
-            )
+        |> Decode.map onPlayStateChanged
 
 
 playheadDecoder : Decoder Playhead
