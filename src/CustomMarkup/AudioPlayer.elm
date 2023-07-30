@@ -287,12 +287,15 @@ trackToElmUi state config track =
 trackBar : PlayingTrackState -> Ui.Element Float
 trackBar { currentTime, duration } =
     let
+        barWidth =
+            2
+
         progress =
             Svg.rect
                 [ Svg.x (Svg.px 0)
-                , Svg.y (Svg.percent 30)
+                , Svg.y (Svg.px (Style.spacing.size2 - barWidth))
                 , Svg.width (Svg.percent (currentTime / duration * 100))
-                , Svg.height (Svg.percent 70)
+                , Svg.height (Svg.px barWidth)
                 , Svg.fill (Svg.Paint Style.color.layout)
                 ]
                 []
