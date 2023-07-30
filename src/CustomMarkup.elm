@@ -110,16 +110,7 @@ renderer config =
     , tableRow = \tags -> Ui.row [] (getInlines tags) |> ElmUiTag.Block
     , text = \text -> Ui.text text |> ElmUiTag.Inline
     , thematicBreak = Ui.text "---" |> ElmUiTag.Block
-    , unorderedList =
-        \items ->
-            Ui.column []
-                (items
-                    |> List.map
-                        (\(Markdown.Block.ListItem task tags) ->
-                            Ui.paragraph [] (getInlines tags)
-                        )
-                )
-                |> ElmUiTag.Block
+    , unorderedList = renderUnorderedList
     }
 
 
@@ -194,6 +185,34 @@ renderOrderedList startNumber items =
                 item
                     |> asParagraphEl { interblock = Nothing }
                     |> addNumber (index + startNumber)
+            )
+        |> Ui.column [ Ui.paddingXY 0 (Style.interblock.m Style.textSize.m Style.interline.m) ]
+        |> ElmUiTag.Block
+
+
+renderUnorderedList : List (Markdown.Block.ListItem (ElmUiTag msg)) -> ElmUiTag msg
+renderUnorderedList items =
+    let
+        styles =
+            baseBlockStyles
+                ++ [ Ui.paddingXY 0 (Style.interblock.zero Style.textSize.m Style.interline.m) ]
+
+        addBullet paragraph =
+            Ui.row styles
+                [ Ui.el
+                    [ Ui.width (Ui.px Style.spacing.size6)
+                    , Ui.alignTop
+                    ]
+                    (Ui.text "•")
+                , paragraph
+                ]
+    in
+    items
+        |> List.map
+            (\(Markdown.Block.ListItem task tags) ->
+                tags
+                    |> asParagraphEl { interblock = Nothing }
+                    |> addBullet
             )
         |> Ui.column [ Ui.paddingXY 0 (Style.interblock.m Style.textSize.m Style.interline.m) ]
         |> ElmUiTag.Block
