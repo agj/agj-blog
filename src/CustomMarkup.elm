@@ -102,12 +102,7 @@ renderer config =
                     Ui.paragraph [] (getInlines tags)
                 }
                 |> ElmUiTag.Inline
-    , orderedList =
-        \startNumber items ->
-            items
-                |> List.map (getInlines >> Ui.paragraph [])
-                |> Ui.column []
-                |> ElmUiTag.Block
+    , orderedList = renderOrderedList
     , paragraph = renderParagraph
     , strikethrough = renderInlineWithStyle UiFont.strike
     , strong = renderInlineWithStyle UiFont.bold
@@ -143,9 +138,15 @@ renderInlineWithStyle attr tags =
 
 renderParagraph : List (ElmUiTag msg) -> ElmUiTag msg
 renderParagraph tags =
+    asParagraphEl tags
+        |> ElmUiTag.Block
+
+
+asParagraphEl : List (ElmUiTag msg) -> Ui.Element msg
+asParagraphEl tags =
     case tags of
         [ ElmUiTag.Block element ] ->
-            ElmUiTag.Block element
+            element
 
         _ ->
             Ui.paragraph
@@ -154,7 +155,24 @@ renderParagraph tags =
                        ]
                 )
                 (getInlines tags)
-                |> ElmUiTag.Block
+
+
+renderOrderedList : Int -> List (List (ElmUiTag msg)) -> ElmUiTag msg
+renderOrderedList startNumber items =
+    let
+        addNumber number paragraph =
+            Ui.row []
+                [ Ui.el
+                    [ Ui.width (Ui.px Style.spacing.size6)
+                    ]
+                    (Ui.text (String.fromInt number ++ "."))
+                , paragraph
+                ]
+    in
+    items
+        |> List.indexedMap (\index item -> asParagraphEl item |> addNumber (index + startNumber))
+        |> Ui.column []
+        |> ElmUiTag.Block
 
 
 baseBlockStyles : List (Ui.Attribute msg)
