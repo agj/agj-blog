@@ -1,8 +1,6 @@
 module CustomMarkup exposing (toElmUi)
 
 import Custom.Color as Color
-import CustomMarkup.AudioPlayer
-import CustomMarkup.AudioPlayer.Track exposing (Track)
 import CustomMarkup.ElmUiTag as ElmUiTag exposing (ElmUiTag)
 import CustomMarkup.LanguageBreak
 import CustomMarkup.VideoEmbed
@@ -17,14 +15,16 @@ import Markdown.Parser
 import Markdown.Renderer
 import Result.Extra as Result
 import Style
+import View.AudioPlayer
+import View.AudioPlayer.Track exposing (Track)
 import View.Figure
 
 
 type alias Config msg =
     { audioPlayer :
         Maybe
-            { audioPlayerState : CustomMarkup.AudioPlayer.State
-            , onAudioPlayerStateUpdated : CustomMarkup.AudioPlayer.State -> msg
+            { audioPlayerState : View.AudioPlayer.State
+            , onAudioPlayerStateUpdated : View.AudioPlayer.State -> msg
             }
     }
 
@@ -51,9 +51,9 @@ renderer config =
         audioPlayerRenderers =
             case config.audioPlayer of
                 Just { audioPlayerState, onAudioPlayerStateUpdated } ->
-                    [ CustomMarkup.AudioPlayer.Track.renderer
+                    [ View.AudioPlayer.Track.renderer
                         |> renderAsTagCustom ElmUiTag.AudioPlayerTrack
-                    , CustomMarkup.AudioPlayer.renderer
+                    , View.AudioPlayer.renderer
                         |> renderCustomWithCustomChildren
                             ElmUiTag.Block
                             (\metadata ->
@@ -61,7 +61,7 @@ renderer config =
                                     ElmUiTag.AudioPlayerTrack track ->
                                         Just track
                             )
-                            (CustomMarkup.AudioPlayer.toElmUi
+                            (View.AudioPlayer.view
                                 audioPlayerState
                                 { onStateUpdated = onAudioPlayerStateUpdated }
                             )

@@ -1,4 +1,4 @@
-module CustomMarkup.AudioPlayer.Track exposing
+module View.AudioPlayer.Track exposing
     ( Track
     , renderer
     )

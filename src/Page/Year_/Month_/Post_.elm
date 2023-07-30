@@ -2,8 +2,6 @@ module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
 import CustomMarkup
-import CustomMarkup.AudioPlayer
-import CustomMarkup.AudioPlayer.Track exposing (Track)
 import Data.Category as Category
 import Data.Date as Date
 import Data.PageHeader as PageHeader
@@ -20,6 +18,7 @@ import Path exposing (Path)
 import Shared
 import Site
 import View exposing (View)
+import View.AudioPlayer
 
 
 page : PageWithState RouteParams Data Model Msg
@@ -39,7 +38,7 @@ page =
 
 init : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> ( Model, Cmd Msg )
 init pageUrl sharedModel staticPayload =
-    ( { audioPlayerState = CustomMarkup.AudioPlayer.initialState }
+    ( { audioPlayerState = View.AudioPlayer.initialState }
     , Cmd.none
     )
 
@@ -90,11 +89,11 @@ data routeParams =
 
 
 type alias Model =
-    { audioPlayerState : CustomMarkup.AudioPlayer.State }
+    { audioPlayerState : View.AudioPlayer.State }
 
 
 type Msg
-    = AudioPlayerStateUpdated CustomMarkup.AudioPlayer.State
+    = AudioPlayerStateUpdated View.AudioPlayer.State
 
 
 update :

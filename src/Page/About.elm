@@ -1,23 +1,17 @@
 module Page.About exposing (Data, Model, Msg, page)
 
 import CustomMarkup
-import CustomMarkup.AudioPlayer
 import Data.PageHeader as PageHeader
 import DataSource exposing (DataSource)
 import DataSource.File
 import Element as Ui
 import Head
-import Head.Seo as Seo
 import Html exposing (Html)
 import Html.Attributes as Attr
-import Markdown.Parser
-import Markdown.Renderer
 import OptimizedDecoder as Decode exposing (Decoder)
 import OptimizedDecoder.Pipeline as Decode
 import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
-import Pages.Url
-import Result.Extra as Result
 import Shared
 import Site
 import View exposing (View)

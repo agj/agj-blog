@@ -1,7 +1,7 @@
 module CustomMarkup.ElmUiTag exposing (..)
 
-import CustomMarkup.AudioPlayer.Track exposing (Track)
 import Element as Ui
+import View.AudioPlayer.Track exposing (Track)
 
 
 {-| Identifies characteristics of an Elm UI element for use while parsing markdown.

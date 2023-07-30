@@ -1,15 +1,14 @@
-module CustomMarkup.AudioPlayer exposing
+module View.AudioPlayer exposing
     ( AudioPlayer
     , Config
     , State
     , initialState
     , renderer
-    , toElmUi
+    , view
     )
 
 import Color exposing (Color)
 import Custom.Color as Color
-import CustomMarkup.AudioPlayer.Track exposing (Track)
 import Element as Ui
 import Element.Background as UiBackground
 import Element.Border as UiBorder
@@ -27,6 +26,7 @@ import Style
 import TypedSvg as Svg
 import TypedSvg.Attributes as Svg
 import TypedSvg.Types as Svg
+import View.AudioPlayer.Track exposing (Track)
 
 
 type alias AudioPlayer =
@@ -81,18 +81,18 @@ renderer =
         |> Markdown.Html.withAttribute "title"
 
 
-toElmUi : State -> Config msg -> AudioPlayer -> List Track -> Ui.Element msg
-toElmUi (State state) config audioPlayer tracks =
+view : State -> Config msg -> AudioPlayer -> List Track -> Ui.Element msg
+view (State state) config audioPlayer tracks =
     case tracks of
         firstTrack :: _ ->
             Ui.column
                 [ UiBackground.color (Style.color.layout05 |> Color.toElmUi)
                 ]
-                [ titleToElmUi state config firstTrack audioPlayer.title
+                [ titleView state config firstTrack audioPlayer.title
                 , Ui.column []
                     (tracks
                         |> List.map
-                            (\track -> trackToElmUi state config track)
+                            (\track -> trackView state config track)
                     )
                 ]
 
@@ -109,8 +109,8 @@ initialPlayingTrackState =
     { currentTime = 0, duration = 0 }
 
 
-titleToElmUi : StateInternal -> Config msg -> Track -> String -> Ui.Element msg
-titleToElmUi state config firstTrack title =
+titleView : StateInternal -> Config msg -> Track -> String -> Ui.Element msg
+titleView state config firstTrack title =
     let
         ( newPlayStateOnPress, icon ) =
             case state.playState of
@@ -147,8 +147,8 @@ titleToElmUi state config firstTrack title =
         }
 
 
-trackToElmUi : StateInternal -> Config msg -> Track -> Ui.Element msg
-trackToElmUi state config track =
+trackView : StateInternal -> Config msg -> Track -> Ui.Element msg
+trackView state config track =
     let
         trackStatus =
             getTrackStatus state track
@@ -270,7 +270,7 @@ trackToElmUi state config track =
         columnEls =
             if isSelected then
                 [ buttonEl
-                , trackBar playingTrackState
+                , seekBarView playingTrackState
                     |> Ui.map (seekPosToNewState >> config.onStateUpdated)
                 ]
 
@@ -284,8 +284,8 @@ trackToElmUi state config track =
         columnEls
 
 
-trackBar : PlayingTrackState -> Ui.Element Float
-trackBar { currentTime, duration } =
+seekBarView : PlayingTrackState -> Ui.Element Float
+seekBarView { currentTime, duration } =
     let
         barWidth =
             2
