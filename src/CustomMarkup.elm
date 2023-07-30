@@ -61,9 +61,13 @@ renderer config =
                                     ElmUiTag.AudioPlayerTrack track ->
                                         Just track
                             )
-                            (View.AudioPlayer.view
-                                audioPlayerState
-                                { onStateUpdated = onAudioPlayerStateUpdated }
+                            (\audioPlayer tracks ->
+                                audioPlayer
+                                    |> View.AudioPlayer.withConfig
+                                        { onStateUpdated = onAudioPlayerStateUpdated
+                                        , tracks = tracks
+                                        }
+                                    |> View.AudioPlayer.view audioPlayerState
                             )
                     ]
 

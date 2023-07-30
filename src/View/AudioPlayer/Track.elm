@@ -1,6 +1,9 @@
 module View.AudioPlayer.Track exposing
     ( Config
+    , PlayState
     , Track
+    , notPlayingPlayState
+    , playingPlayState
     , renderer
     , view
     , withConfig
@@ -53,6 +56,16 @@ type alias Playhead =
     { currentTime : Float
     , duration : Float
     }
+
+
+notPlayingPlayState : PlayState
+notPlayingPlayState =
+    StateNotPlaying
+
+
+playingPlayState : PlayState
+playingPlayState =
+    StatePlaying initialPlayhead
 
 
 renderer : Markdown.Html.Renderer Track
