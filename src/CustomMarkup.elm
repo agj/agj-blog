@@ -3,6 +3,7 @@ module CustomMarkup exposing (toElmUi)
 import Custom.Color as Color
 import CustomMarkup.ElmUiTag as ElmUiTag exposing (ElmUiTag)
 import Element as Ui
+import Element.Background as UiBackground
 import Element.Font as UiFont
 import Element.Region as UiRegion
 import Html.Attributes
@@ -81,7 +82,7 @@ renderer config =
                 |> renderFailableCustom ElmUiTag.Block View.LanguageBreak.view
             ]
     in
-    { blockQuote = \tags -> Ui.row [] (getInlines tags) |> ElmUiTag.Block
+    { blockQuote = renderBlockQuote
     , codeBlock = \{ body, language } -> Ui.text body |> ElmUiTag.Block
     , codeSpan = \code -> Ui.text code |> ElmUiTag.Inline
     , emphasis = renderInlineWithStyle UiFont.italic
@@ -136,37 +137,15 @@ renderLink { title, destination } tags =
 
 renderParagraph : List (ElmUiTag msg) -> ElmUiTag msg
 renderParagraph tags =
-    case tags of
-        [ ElmUiTag.Block element ] ->
-            ElmUiTag.Block element
-
-        _ ->
-            Ui.paragraph
-                (baseBlockStyles
-                    ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m) ]
-                )
-                (getInlines tags)
-                |> ElmUiTag.Block
-
-
-asParagraphEl : { interblock : Maybe (Int -> (Int -> Int) -> Int) } -> List (ElmUiTag msg) -> Ui.Element msg
-asParagraphEl config tags =
     let
         styles =
-            case config.interblock of
-                Just interblock ->
-                    baseBlockStyles
-                        ++ [ Ui.paddingXY 0 (interblock Style.textSize.m Style.interline.m) ]
-
-                Nothing ->
-                    baseBlockStyles
+            baseBlockStyles
+                ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m) ]
     in
-    case tags of
-        [ ElmUiTag.Block element ] ->
-            element
-
-        _ ->
-            Ui.paragraph styles (getInlines tags)
+    tags
+        |> getInlines
+        |> Ui.paragraph styles
+        |> ElmUiTag.Block
 
 
 renderOrderedList : Int -> List (List (ElmUiTag msg)) -> ElmUiTag msg
@@ -237,6 +216,40 @@ renderUnorderedListItem (Markdown.Block.ListItem task tags) =
         |> getBlocks
         |> wrapElmUiBlocksWithoutSpacing
         |> addBullet
+
+
+renderBlockQuote : List (ElmUiTag msg) -> ElmUiTag msg
+renderBlockQuote tags =
+    let
+        line =
+            Ui.el
+                [ Ui.width (Ui.px Style.spacing.size1)
+                , Ui.height Ui.fill
+                , UiBackground.color (Style.color.secondary10 |> Color.toElmUi)
+                , Ui.alignLeft
+                ]
+                Ui.none
+
+        side =
+            Ui.el
+                [ Ui.width (Ui.px Style.spacing.size6)
+                , Ui.height Ui.fill
+                ]
+                line
+
+        toQuote : Ui.Element msg -> Ui.Element msg
+        toQuote content =
+            Ui.row [ Ui.width Ui.fill ]
+                [ side
+                , content
+                ]
+    in
+    tags
+        |> ensureBlocks
+        |> getBlocks
+        |> wrapElmUiBlocks
+        |> toQuote
+        |> ElmUiTag.Block
 
 
 baseBlockStyles : List (Ui.Attribute msg)
