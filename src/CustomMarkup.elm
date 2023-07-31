@@ -82,24 +82,34 @@ renderer config =
                 |> renderFailableCustom ElmUiTag.Block View.LanguageBreak.view
             ]
     in
-    { blockQuote = renderBlockQuote
-    , codeBlock = \{ body, language } -> Ui.text body |> ElmUiTag.Block
-    , codeSpan = \code -> Ui.text code |> ElmUiTag.Inline
+    { -- Inline
+      text = \text -> Ui.text text |> ElmUiTag.Inline
+    , strong = renderInlineWithStyle UiFont.bold
     , emphasis = renderInlineWithStyle UiFont.italic
-    , hardLineBreak = Ui.text "\n" |> ElmUiTag.Block
+    , strikethrough = renderInlineWithStyle UiFont.strike
+    , link = renderLink
+    , codeSpan = \code -> Ui.text code |> ElmUiTag.Inline
+
+    -- Block
+    , paragraph = renderParagraph
     , heading = renderHeading
-    , html = Markdown.Html.oneOf (otherCustomRenderers ++ audioPlayerRenderers)
+    , unorderedList = renderUnorderedList
+    , orderedList = renderOrderedList
+    , blockQuote = renderBlockQuote
+    , codeBlock = \{ body, language } -> Ui.text body |> ElmUiTag.Block
+
+    -- Special
+    , hardLineBreak = Ui.text "\n" |> ElmUiTag.Block
     , image =
         \{ alt, src, title } ->
             Ui.image [] { src = src, description = alt }
                 |> View.Figure.figure
                 |> View.Figure.view
                 |> ElmUiTag.Block
-    , link = renderLink
-    , orderedList = renderOrderedList
-    , paragraph = renderParagraph
-    , strikethrough = renderInlineWithStyle UiFont.strike
-    , strong = renderInlineWithStyle UiFont.bold
+    , thematicBreak = Ui.text "---" |> ElmUiTag.Block
+    , html = Markdown.Html.oneOf (otherCustomRenderers ++ audioPlayerRenderers)
+
+    -- Table
     , table =
         \tags ->
             Ui.column [] (getInlines tags)
@@ -109,9 +119,6 @@ renderer config =
     , tableHeader = \tags -> Ui.column [] (getInlines tags) |> ElmUiTag.Block
     , tableHeaderCell = \mAlignment tags -> Ui.row [] (getInlines tags) |> ElmUiTag.Block
     , tableRow = \tags -> Ui.row [] (getInlines tags) |> ElmUiTag.Block
-    , text = \text -> Ui.text text |> ElmUiTag.Inline
-    , thematicBreak = Ui.text "---" |> ElmUiTag.Block
-    , unorderedList = renderUnorderedList
     }
 
 
