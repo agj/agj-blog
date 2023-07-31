@@ -143,8 +143,7 @@ renderParagraph tags =
         _ ->
             Ui.paragraph
                 (baseBlockStyles
-                    ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
-                       ]
+                    ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m) ]
                 )
                 (getInlines tags)
                 |> ElmUiTag.Block
@@ -157,8 +156,7 @@ asParagraphEl config tags =
             case config.interblock of
                 Just interblock ->
                     baseBlockStyles
-                        ++ [ Ui.paddingXY 0 (interblock Style.textSize.m Style.interline.m)
-                           ]
+                        ++ [ Ui.paddingXY 0 (interblock Style.textSize.m Style.interline.m) ]
 
                 Nothing ->
                     baseBlockStyles
@@ -203,7 +201,7 @@ renderUnorderedList : List (Markdown.Block.ListItem (ElmUiTag msg)) -> ElmUiTag 
 renderUnorderedList items =
     items
         |> List.map renderUnorderedListItem
-        |> Ui.column [ Ui.paddingXY 0 (Style.interblock.m Style.textSize.m Style.interline.m) ]
+        |> Ui.column []
         |> ElmUiTag.Block
 
 
@@ -212,20 +210,24 @@ renderUnorderedListItem (Markdown.Block.ListItem task tags) =
     let
         styles =
             baseBlockStyles
-                ++ [ Ui.paddingXY 0 (Style.interblock.zero Style.textSize.m Style.interline.m) ]
+                ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
+                   , Ui.alignTop
+                   ]
+
+        bullet =
+            Ui.paragraph
+                (styles ++ [ Ui.width (Ui.px Style.spacing.size6) ])
+                [ Ui.text "•" ]
 
         addBullet paragraph =
-            Ui.row styles
-                [ Ui.el
-                    [ Ui.width (Ui.px Style.spacing.size6)
-                    , Ui.alignTop
-                    ]
-                    (Ui.text "•")
+            Ui.row []
+                [ bullet
                 , paragraph
                 ]
     in
     tags
-        |> asParagraphEl { interblock = Nothing }
+        |> getInlines
+        |> Ui.paragraph styles
         |> addBullet
 
 
