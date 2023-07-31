@@ -201,7 +201,7 @@ renderUnorderedList : List (Markdown.Block.ListItem (ElmUiTag msg)) -> ElmUiTag 
 renderUnorderedList items =
     items
         |> List.map renderUnorderedListItem
-        |> Ui.column []
+        |> Ui.column [ Ui.width Ui.fill ]
         |> ElmUiTag.Block
 
 
@@ -219,15 +219,16 @@ renderUnorderedListItem (Markdown.Block.ListItem task tags) =
                 (styles ++ [ Ui.width (Ui.px Style.spacing.size6) ])
                 [ Ui.text "•" ]
 
-        addBullet paragraph =
-            Ui.row []
+        addBullet content =
+            Ui.row [ Ui.width Ui.fill ]
                 [ bullet
-                , paragraph
+                , content
                 ]
     in
     tags
-        |> getInlines
-        |> Ui.paragraph styles
+        |> ensureBlocks
+        |> getBlocks
+        |> wrapElmUiBlocks
         |> addBullet
 
 
@@ -236,6 +237,7 @@ baseBlockStyles =
     [ UiFont.color (Color.toElmUi Style.color.layout)
     , UiFont.size Style.textSize.m
     , Ui.spacing (Style.interline.m Style.textSize.m)
+    , Ui.width Ui.fill
     ]
 
 
@@ -385,9 +387,36 @@ getBlocks =
         )
 
 
+ensureBlocks : List (ElmUiTag msg) -> List (ElmUiTag msg)
+ensureBlocks tags =
+    let
+        process : ElmUiTag msg -> ( List (ElmUiTag msg), List (ElmUiTag msg) ) -> ( List (ElmUiTag msg), List (ElmUiTag msg) )
+        process tag ( inlines, blocks ) =
+            case tag of
+                ElmUiTag.Inline _ ->
+                    ( tag :: inlines, blocks )
+
+                _ ->
+                    ( [], tag :: wrapUpInlines ( inlines, blocks ) )
+
+        wrapUpInlines : ( List (ElmUiTag msg), List (ElmUiTag msg) ) -> List (ElmUiTag msg)
+        wrapUpInlines ( inlines, blocks ) =
+            case inlines of
+                [] ->
+                    blocks
+
+                _ :: _ ->
+                    renderParagraph inlines :: blocks
+    in
+    tags
+        |> List.foldr process ( [], [] )
+        |> wrapUpInlines
+
+
 wrapBlocks : List (ElmUiTag msg) -> ElmUiTag msg
 wrapBlocks tags =
     tags
+        |> ensureBlocks
         |> getBlocks
         |> wrapElmUiBlocks
         |> ElmUiTag.Block
@@ -395,7 +424,10 @@ wrapBlocks tags =
 
 wrapElmUiBlocks : List (Ui.Element msg) -> Ui.Element msg
 wrapElmUiBlocks els =
-    Ui.column [ Ui.spacing Style.spacing.size3 ]
+    Ui.column
+        [ Ui.spacing Style.spacing.size3
+        , Ui.width Ui.fill
+        ]
         els
 
 
