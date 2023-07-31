@@ -8,6 +8,7 @@ import CustomMarkup.ElmUiTag exposing (ElmUiTag)
 import Data.Language as Language exposing (Language)
 import Element as Ui
 import Element.Background as UiBackground
+import Html.Attributes
 import Markdown.Html
 import Style
 
@@ -31,6 +32,8 @@ view languageBreak =
                 [ Ui.width Ui.fill
                 , Ui.height (Ui.px 1)
                 , UiBackground.color (Style.color.secondary50 |> Color.toElmUi)
+                , Html.Attributes.id "language"
+                    |> Ui.htmlAttribute
                 ]
                 Ui.none
     in
