@@ -228,7 +228,7 @@ renderUnorderedListItem (Markdown.Block.ListItem task tags) =
     tags
         |> ensureBlocks
         |> getBlocks
-        |> wrapElmUiBlocks
+        |> wrapElmUiBlocksWithoutSpacing
         |> addBullet
 
 
@@ -428,6 +428,13 @@ wrapElmUiBlocks els =
         [ Ui.spacing Style.spacing.size3
         , Ui.width Ui.fill
         ]
+        els
+
+
+wrapElmUiBlocksWithoutSpacing : List (Ui.Element msg) -> Ui.Element msg
+wrapElmUiBlocksWithoutSpacing els =
+    Ui.column
+        [ Ui.width Ui.fill ]
         els
 
 
