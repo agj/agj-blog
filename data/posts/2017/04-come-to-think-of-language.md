@@ -4,18 +4,18 @@ title: Come to think of language
 date: 20
 hour: 13
 categories:
-- language
-- projects
-- videos
-- graphics
+  - language
+  - projects
+  - videos
+  - graphics
 tags:
-- come-to-think-of-language
-- conlang
-- japan
-- language
-- release
-- university
-- video
+  - come-to-think-of-language
+  - conlang
+  - japan
+  - language
+  - release
+  - university
+  - video
 language: eng
 ---
 
@@ -49,23 +49,15 @@ I've made available online all of these works, plus some related material that m
 
 # The works
 
- 	- Picture book
-
- 	- [PDF download](http://agj.cl/files/other/kotokan/kotokan_ehon_20170114.pdf)
-
- 	- Puzzle poetry postcards
-
- 	- [PDF download](http://agj.cl/files/other/kotokan/kotokan_puzzlepoetry_postcard_20170420.pdf)
-
- 	- Wooden blocks video
-
- 	- "Comics" (exhibited)
-
- 	- [Video (same as embedded above)](https://vimeo.com/199388496)
- 	- [Script (PDF)](http://agj.cl/files/other/kotokan/kotokan_tsumiki_manga_daihon_en.pdf)
- 	- [Vocabulary grid (PDF)](http://agj.cl/files/other/kotokan/kotokan_tsumiki_manga_goi_en.pdf)
-
- 	- "Chocolate" (test piece, not exhibited)
-
- 	- [Video](https://vimeo.com/198562469)
- 	- [Script (PDF)](http://agj.cl/files/other/kotokan/kotokan_tsumiki_choco_daihon_en.pdf)
+- Picture book
+  - [PDF download](http://agj.cl/files/other/kotokan/kotokan_ehon_20170114.pdf)
+- Puzzle poetry postcards
+  - [PDF download](http://agj.cl/files/other/kotokan/kotokan_puzzlepoetry_postcard_20170420.pdf)
+- Wooden blocks video
+  - "Comics" (exhibited)
+    - [Video (same as embedded above)](https://vimeo.com/199388496)
+    - [Script (PDF)](http://agj.cl/files/other/kotokan/kotokan_tsumiki_manga_daihon_en.pdf)
+    - [Vocabulary grid (PDF)](http://agj.cl/files/other/kotokan/kotokan_tsumiki_manga_goi_en.pdf)
+  - "Chocolate" (test piece, not exhibited)
+    - [Video](https://vimeo.com/198562469)
+    - [Script (PDF)](http://agj.cl/files/other/kotokan/kotokan_tsumiki_choco_daihon_en.pdf)
