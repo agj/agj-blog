@@ -171,37 +171,44 @@ asParagraphEl config tags =
 
 renderOrderedList : Int -> List (List (ElmUiTag msg)) -> ElmUiTag msg
 renderOrderedList startNumber items =
+    items
+        |> List.indexedMap (\index item -> renderOrderedListItem (index + startNumber) item)
+        |> wrapElmUiBlocksWithoutSpacing
+        |> ElmUiTag.Block
+
+
+renderOrderedListItem : Int -> List (ElmUiTag msg) -> Ui.Element msg
+renderOrderedListItem num tags =
     let
         styles =
             baseBlockStyles
-                ++ [ Ui.paddingXY 0 (Style.interblock.zero Style.textSize.m Style.interline.m) ]
+                ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
+                   , Ui.alignTop
+                   ]
 
-        addNumber number paragraph =
-            Ui.row styles
-                [ Ui.el
-                    [ Ui.width (Ui.px Style.spacing.size6)
-                    , Ui.alignTop
-                    ]
-                    (Ui.text (String.fromInt number ++ "."))
-                , paragraph
+        number =
+            Ui.paragraph
+                (styles ++ [ Ui.width (Ui.px Style.spacing.size6) ])
+                [ Ui.text (String.fromInt num ++ ".") ]
+
+        addNumber content =
+            Ui.row [ Ui.width Ui.fill ]
+                [ number
+                , content
                 ]
     in
-    items
-        |> List.indexedMap
-            (\index item ->
-                item
-                    |> asParagraphEl { interblock = Nothing }
-                    |> addNumber (index + startNumber)
-            )
-        |> Ui.column [ Ui.paddingXY 0 (Style.interblock.m Style.textSize.m Style.interline.m) ]
-        |> ElmUiTag.Block
+    tags
+        |> ensureBlocks
+        |> getBlocks
+        |> wrapElmUiBlocksWithoutSpacing
+        |> addNumber
 
 
 renderUnorderedList : List (Markdown.Block.ListItem (ElmUiTag msg)) -> ElmUiTag msg
 renderUnorderedList items =
     items
         |> List.map renderUnorderedListItem
-        |> Ui.column [ Ui.width Ui.fill ]
+        |> wrapElmUiBlocksWithoutSpacing
         |> ElmUiTag.Block
 
 
