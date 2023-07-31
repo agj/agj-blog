@@ -22,11 +22,13 @@ import View.VideoEmbed
 
 
 type alias Config msg =
-    { audioPlayer :
-        Maybe
-            { audioPlayerState : View.AudioPlayer.State
-            , onAudioPlayerStateUpdated : View.AudioPlayer.State -> msg
-            }
+    { audioPlayer : Maybe (AudioPlayerConfig msg)
+    }
+
+
+type alias AudioPlayerConfig msg =
+    { audioPlayerState : View.AudioPlayer.State
+    , onAudioPlayerStateUpdated : View.AudioPlayer.State -> msg
     }
 
 
@@ -48,40 +50,6 @@ toElmUi config markdown =
 
 renderer : Config msg -> Markdown.Renderer.Renderer (ElmUiTag msg)
 renderer config =
-    let
-        audioPlayerRenderers =
-            case config.audioPlayer of
-                Just { audioPlayerState, onAudioPlayerStateUpdated } ->
-                    [ View.AudioPlayer.Track.renderer
-                        |> renderAsTagCustom ElmUiTag.AudioPlayerTrack
-                    , View.AudioPlayer.renderer
-                        |> renderCustomWithCustomChildren
-                            ElmUiTag.Block
-                            (\metadata ->
-                                case metadata of
-                                    ElmUiTag.AudioPlayerTrack track ->
-                                        Just track
-                            )
-                            (\audioPlayer tracks ->
-                                audioPlayer
-                                    |> View.AudioPlayer.withConfig
-                                        { onStateUpdated = onAudioPlayerStateUpdated
-                                        , tracks = tracks
-                                        }
-                                    |> View.AudioPlayer.view audioPlayerState
-                            )
-                    ]
-
-                Nothing ->
-                    []
-
-        otherCustomRenderers =
-            [ View.VideoEmbed.renderer
-                |> renderFailableCustom ElmUiTag.Block View.VideoEmbed.view
-            , View.LanguageBreak.renderer
-                |> renderFailableCustom ElmUiTag.Block View.LanguageBreak.view
-            ]
-    in
     { -- Inline
       text = \text -> Ui.text text |> ElmUiTag.Inline
     , strong = renderInlineWithStyle UiFont.bold
@@ -107,7 +75,7 @@ renderer config =
                 |> View.Figure.view
                 |> ElmUiTag.Block
     , thematicBreak = Ui.text "---" |> ElmUiTag.Block
-    , html = Markdown.Html.oneOf (otherCustomRenderers ++ audioPlayerRenderers)
+    , html = renderCustom config.audioPlayer
 
     -- Table
     , table =
@@ -120,6 +88,10 @@ renderer config =
     , tableHeaderCell = \mAlignment tags -> Ui.row [] (getInlines tags) |> ElmUiTag.Block
     , tableRow = \tags -> Ui.row [] (getInlines tags) |> ElmUiTag.Block
     }
+
+
+
+-- INLINE
 
 
 renderInlineWithStyle : Ui.Attribute msg -> List (ElmUiTag msg) -> ElmUiTag msg
@@ -142,6 +114,10 @@ renderLink { title, destination } tags =
         |> ElmUiTag.Inline
 
 
+
+-- BLOCK
+
+
 renderParagraph : List (ElmUiTag msg) -> ElmUiTag msg
 renderParagraph tags =
     let
@@ -153,119 +129,6 @@ renderParagraph tags =
         |> getInlines
         |> Ui.paragraph styles
         |> ElmUiTag.Block
-
-
-renderOrderedList : Int -> List (List (ElmUiTag msg)) -> ElmUiTag msg
-renderOrderedList startNumber items =
-    items
-        |> List.indexedMap (\index item -> renderOrderedListItem (index + startNumber) item)
-        |> wrapElmUiBlocksWithoutSpacing
-        |> ElmUiTag.Block
-
-
-renderOrderedListItem : Int -> List (ElmUiTag msg) -> Ui.Element msg
-renderOrderedListItem num tags =
-    let
-        styles =
-            baseBlockStyles
-                ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
-                   , Ui.alignTop
-                   ]
-
-        number =
-            Ui.paragraph
-                (styles ++ [ Ui.width (Ui.px Style.spacing.size6) ])
-                [ Ui.text (String.fromInt num ++ ".") ]
-
-        addNumber content =
-            Ui.row [ Ui.width Ui.fill ]
-                [ number
-                , content
-                ]
-    in
-    tags
-        |> ensureBlocks
-        |> getBlocks
-        |> wrapElmUiBlocksWithoutSpacing
-        |> addNumber
-
-
-renderUnorderedList : List (Markdown.Block.ListItem (ElmUiTag msg)) -> ElmUiTag msg
-renderUnorderedList items =
-    items
-        |> List.map renderUnorderedListItem
-        |> wrapElmUiBlocksWithoutSpacing
-        |> ElmUiTag.Block
-
-
-renderUnorderedListItem : Markdown.Block.ListItem (ElmUiTag msg) -> Ui.Element msg
-renderUnorderedListItem (Markdown.Block.ListItem task tags) =
-    let
-        styles =
-            baseBlockStyles
-                ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
-                   , Ui.alignTop
-                   ]
-
-        bullet =
-            Ui.paragraph
-                (styles ++ [ Ui.width (Ui.px Style.spacing.size6) ])
-                [ Ui.text "•" ]
-
-        addBullet content =
-            Ui.row [ Ui.width Ui.fill ]
-                [ bullet
-                , content
-                ]
-    in
-    tags
-        |> ensureBlocks
-        |> getBlocks
-        |> wrapElmUiBlocksWithoutSpacing
-        |> addBullet
-
-
-renderBlockQuote : List (ElmUiTag msg) -> ElmUiTag msg
-renderBlockQuote tags =
-    let
-        line =
-            Ui.el
-                [ Ui.width (Ui.px Style.spacing.size1)
-                , Ui.height Ui.fill
-                , UiBackground.color (Style.color.secondary10 |> Color.toElmUi)
-                , Ui.alignLeft
-                ]
-                Ui.none
-
-        side =
-            Ui.el
-                [ Ui.width (Ui.px Style.spacing.size6)
-                , Ui.height Ui.fill
-                ]
-                line
-
-        toQuote : Ui.Element msg -> Ui.Element msg
-        toQuote content =
-            Ui.row [ Ui.width Ui.fill ]
-                [ side
-                , content
-                ]
-    in
-    tags
-        |> ensureBlocks
-        |> getBlocks
-        |> wrapElmUiBlocks
-        |> toQuote
-        |> ElmUiTag.Block
-
-
-baseBlockStyles : List (Ui.Attribute msg)
-baseBlockStyles =
-    [ UiFont.color (Color.toElmUi Style.color.layout)
-    , UiFont.size Style.textSize.m
-    , Ui.spacing (Style.interline.m Style.textSize.m)
-    , Ui.width Ui.fill
-    ]
 
 
 renderHeading :
@@ -316,6 +179,167 @@ renderHeading { level, children } =
         )
         (getInlines children)
         |> ElmUiTag.Block
+
+
+renderUnorderedList : List (Markdown.Block.ListItem (ElmUiTag msg)) -> ElmUiTag msg
+renderUnorderedList items =
+    items
+        |> List.map renderUnorderedListItem
+        |> wrapElmUiBlocksWithoutSpacing
+        |> ElmUiTag.Block
+
+
+renderUnorderedListItem : Markdown.Block.ListItem (ElmUiTag msg) -> Ui.Element msg
+renderUnorderedListItem (Markdown.Block.ListItem task tags) =
+    let
+        styles =
+            baseBlockStyles
+                ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
+                   , Ui.alignTop
+                   ]
+
+        bullet =
+            Ui.paragraph
+                (styles ++ [ Ui.width (Ui.px Style.spacing.size6) ])
+                [ Ui.text "•" ]
+
+        addBullet content =
+            Ui.row [ Ui.width Ui.fill ]
+                [ bullet
+                , content
+                ]
+    in
+    tags
+        |> ensureBlocks
+        |> getBlocks
+        |> wrapElmUiBlocksWithoutSpacing
+        |> addBullet
+
+
+renderOrderedList : Int -> List (List (ElmUiTag msg)) -> ElmUiTag msg
+renderOrderedList startNumber items =
+    items
+        |> List.indexedMap (\index item -> renderOrderedListItem (index + startNumber) item)
+        |> wrapElmUiBlocksWithoutSpacing
+        |> ElmUiTag.Block
+
+
+renderOrderedListItem : Int -> List (ElmUiTag msg) -> Ui.Element msg
+renderOrderedListItem num tags =
+    let
+        styles =
+            baseBlockStyles
+                ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
+                   , Ui.alignTop
+                   ]
+
+        number =
+            Ui.paragraph
+                (styles ++ [ Ui.width (Ui.px Style.spacing.size6) ])
+                [ Ui.text (String.fromInt num ++ ".") ]
+
+        addNumber content =
+            Ui.row [ Ui.width Ui.fill ]
+                [ number
+                , content
+                ]
+    in
+    tags
+        |> ensureBlocks
+        |> getBlocks
+        |> wrapElmUiBlocksWithoutSpacing
+        |> addNumber
+
+
+renderBlockQuote : List (ElmUiTag msg) -> ElmUiTag msg
+renderBlockQuote tags =
+    let
+        line =
+            Ui.el
+                [ Ui.width (Ui.px Style.spacing.size1)
+                , Ui.height Ui.fill
+                , UiBackground.color (Style.color.secondary10 |> Color.toElmUi)
+                , Ui.alignLeft
+                ]
+                Ui.none
+
+        side =
+            Ui.el
+                [ Ui.width (Ui.px Style.spacing.size6)
+                , Ui.height Ui.fill
+                ]
+                line
+
+        toQuote : Ui.Element msg -> Ui.Element msg
+        toQuote content =
+            Ui.row [ Ui.width Ui.fill ]
+                [ side
+                , content
+                ]
+    in
+    tags
+        |> ensureBlocks
+        |> getBlocks
+        |> wrapElmUiBlocks
+        |> toQuote
+        |> ElmUiTag.Block
+
+
+baseBlockStyles : List (Ui.Attribute msg)
+baseBlockStyles =
+    [ UiFont.color (Color.toElmUi Style.color.layout)
+    , UiFont.size Style.textSize.m
+    , Ui.spacing (Style.interline.m Style.textSize.m)
+    , Ui.width Ui.fill
+    ]
+
+
+
+-- CUSTOM
+
+
+renderCustom : Maybe (AudioPlayerConfig msg) -> Markdown.Html.Renderer (List (ElmUiTag msg) -> ElmUiTag msg)
+renderCustom audioPlayerConfig =
+    Markdown.Html.oneOf (customRenderers audioPlayerConfig)
+
+
+customRenderers : Maybe (AudioPlayerConfig msg) -> List (Markdown.Html.Renderer (List (ElmUiTag msg) -> ElmUiTag msg))
+customRenderers audioPlayerConfig =
+    let
+        audioPlayerRenderers =
+            case audioPlayerConfig of
+                Just { audioPlayerState, onAudioPlayerStateUpdated } ->
+                    [ View.AudioPlayer.Track.renderer
+                        |> renderAsTagCustom ElmUiTag.AudioPlayerTrack
+                    , View.AudioPlayer.renderer
+                        |> renderCustomWithCustomChildren
+                            ElmUiTag.Block
+                            (\metadata ->
+                                case metadata of
+                                    ElmUiTag.AudioPlayerTrack track ->
+                                        Just track
+                            )
+                            (\audioPlayer tracks ->
+                                audioPlayer
+                                    |> View.AudioPlayer.withConfig
+                                        { onStateUpdated = onAudioPlayerStateUpdated
+                                        , tracks = tracks
+                                        }
+                                    |> View.AudioPlayer.view audioPlayerState
+                            )
+                    ]
+
+                Nothing ->
+                    []
+
+        otherCustomRenderers =
+            [ View.VideoEmbed.renderer
+                |> renderFailableCustom ElmUiTag.Block View.VideoEmbed.view
+            , View.LanguageBreak.renderer
+                |> renderFailableCustom ElmUiTag.Block View.LanguageBreak.view
+            ]
+    in
+    audioPlayerRenderers ++ otherCustomRenderers
 
 
 renderFailableCustom :
@@ -386,6 +410,10 @@ renderErrorMessage error =
         [ Ui.text "Parsing error:" ]
     , Ui.text error
     ]
+
+
+
+-- OTHER
 
 
 getInlines : List (ElmUiTag msg) -> List (Ui.Element msg)
