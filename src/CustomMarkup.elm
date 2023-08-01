@@ -200,6 +200,12 @@ renderHeading { level, children } =
             case prepend of
                 Just text ->
                     Ui.text (text ++ " ")
+                        |> Ui.el
+                            [ Html.Attributes.attribute "aria-hidden" "true"
+                                |> Ui.htmlAttribute
+                            , Html.Attributes.style "user-select" "none"
+                                |> Ui.htmlAttribute
+                            ]
 
                 Nothing ->
                     Ui.text ""
