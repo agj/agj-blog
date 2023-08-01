@@ -183,14 +183,32 @@ renderHeading { level, children } =
 
 renderUnorderedList : List (Markdown.Block.ListItem (ElmUiTag msg)) -> ElmUiTag msg
 renderUnorderedList items =
+    let
+        renderItem : Markdown.Block.ListItem (ElmUiTag msg) -> Ui.Element msg
+        renderItem (Markdown.Block.ListItem task tags) =
+            renderListItem "•" tags
+    in
     items
-        |> List.map renderUnorderedListItem
+        |> List.map renderItem
         |> wrapElmUiBlocksWithoutSpacing
         |> ElmUiTag.Block
 
 
-renderUnorderedListItem : Markdown.Block.ListItem (ElmUiTag msg) -> Ui.Element msg
-renderUnorderedListItem (Markdown.Block.ListItem task tags) =
+renderOrderedList : Int -> List (List (ElmUiTag msg)) -> ElmUiTag msg
+renderOrderedList startNumber items =
+    let
+        renderItem : Int -> List (ElmUiTag msg) -> Ui.Element msg
+        renderItem index tags =
+            renderListItem (String.fromInt (index + startNumber) ++ ".") tags
+    in
+    items
+        |> List.indexedMap renderItem
+        |> wrapElmUiBlocksWithoutSpacing
+        |> ElmUiTag.Block
+
+
+renderListItem : String -> List (ElmUiTag msg) -> Ui.Element msg
+renderListItem bulletText tags =
     let
         styles =
             baseBlockStyles
@@ -201,7 +219,7 @@ renderUnorderedListItem (Markdown.Block.ListItem task tags) =
         bullet =
             Ui.paragraph
                 (styles ++ [ Ui.width (Ui.px Style.spacing.size6) ])
-                [ Ui.text "•" ]
+                [ Ui.text bulletText ]
 
         addBullet content =
             Ui.row [ Ui.width Ui.fill ]
@@ -214,41 +232,6 @@ renderUnorderedListItem (Markdown.Block.ListItem task tags) =
         |> getBlocks
         |> wrapElmUiBlocksWithoutSpacing
         |> addBullet
-
-
-renderOrderedList : Int -> List (List (ElmUiTag msg)) -> ElmUiTag msg
-renderOrderedList startNumber items =
-    items
-        |> List.indexedMap (\index item -> renderOrderedListItem (index + startNumber) item)
-        |> wrapElmUiBlocksWithoutSpacing
-        |> ElmUiTag.Block
-
-
-renderOrderedListItem : Int -> List (ElmUiTag msg) -> Ui.Element msg
-renderOrderedListItem num tags =
-    let
-        styles =
-            baseBlockStyles
-                ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
-                   , Ui.alignTop
-                   ]
-
-        number =
-            Ui.paragraph
-                (styles ++ [ Ui.width (Ui.px Style.spacing.size6) ])
-                [ Ui.text (String.fromInt num ++ ".") ]
-
-        addNumber content =
-            Ui.row [ Ui.width Ui.fill ]
-                [ number
-                , content
-                ]
-    in
-    tags
-        |> ensureBlocks
-        |> getBlocks
-        |> wrapElmUiBlocksWithoutSpacing
-        |> addNumber
 
 
 renderBlockQuote : List (ElmUiTag msg) -> ElmUiTag msg
