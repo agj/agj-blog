@@ -18,6 +18,7 @@ import Style
 import SyntaxHighlight
 import View.AudioPlayer
 import View.AudioPlayer.Track exposing (Track)
+import View.CodeBlock
 import View.Figure
 import View.LanguageBreak
 import View.VideoEmbed
@@ -281,46 +282,8 @@ renderBlockQuote tags =
 
 renderCodeBlock : { body : String, language : Maybe String } -> ElmUiTag msg
 renderCodeBlock { body, language } =
-    let
-        highlighter =
-            case language of
-                Just "elm" ->
-                    SyntaxHighlight.elm
-
-                Just "js" ->
-                    SyntaxHighlight.javascript
-
-                Just "json" ->
-                    SyntaxHighlight.json
-
-                Just "html" ->
-                    SyntaxHighlight.xml
-
-                Just "xml" ->
-                    SyntaxHighlight.xml
-
-                Just "css" ->
-                    SyntaxHighlight.css
-
-                Just "py" ->
-                    SyntaxHighlight.python
-
-                Just "sql" ->
-                    SyntaxHighlight.sql
-
-                Just "nix" ->
-                    SyntaxHighlight.nix
-
-                _ ->
-                    SyntaxHighlight.noLang
-    in
-    Html.div []
-        [ SyntaxHighlight.useTheme SyntaxHighlight.gitHub
-        , highlighter body
-            |> Result.map (SyntaxHighlight.toBlockHtml (Just 1))
-            |> Result.withDefault (Html.text "")
-        ]
-        |> Ui.html
+    View.CodeBlock.fromBody language body
+        |> View.CodeBlock.view
         |> ElmUiTag.Block
 
 

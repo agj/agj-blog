@@ -19,6 +19,7 @@ import Shared
 import Site
 import View exposing (View)
 import View.AudioPlayer
+import View.CodeBlock
 
 
 page : PageWithState RouteParams Data Model Msg
@@ -219,5 +220,7 @@ view maybeUrl sharedModel model static =
                     ]
                 )
             )
-            :: [ contentHtml ]
+            :: [ contentHtml
+               , View.CodeBlock.styles
+               ]
     }
