@@ -160,31 +160,49 @@ renderHeading :
     -> ElmUiTag msg
 renderHeading { level, children } =
     let
-        styles =
+        ( styles, prepend ) =
             case level of
                 Markdown.Block.H1 ->
-                    [ UiFont.size Style.textSize.xxl ]
+                    ( [ UiFont.size Style.textSize.xl
+                      , UiFont.bold
+                      ]
+                    , Nothing
+                    )
 
                 Markdown.Block.H2 ->
-                    [ UiFont.size Style.textSize.xl
-                    , Ui.htmlAttribute (Html.Attributes.style "text-transform" "uppercase")
-                    ]
+                    ( [ UiFont.size Style.textSize.l
+                      , UiFont.bold
+                      ]
+                    , Nothing
+                    )
 
                 Markdown.Block.H3 ->
-                    [ UiFont.size Style.textSize.xl ]
+                    ( [ UiFont.size Style.textSize.l ]
+                    , Nothing
+                    )
 
                 Markdown.Block.H4 ->
-                    [ UiFont.size Style.textSize.l
-                    , Ui.htmlAttribute (Html.Attributes.style "text-transform" "uppercase")
-                    ]
+                    ( [ UiFont.size Style.textSize.l ]
+                    , Just "▹"
+                    )
 
                 Markdown.Block.H5 ->
-                    [ UiFont.size Style.textSize.l ]
+                    ( [ UiFont.size Style.textSize.l ]
+                    , Just "▹▹"
+                    )
 
                 Markdown.Block.H6 ->
-                    [ UiFont.size Style.textSize.m
-                    , UiFont.bold
-                    ]
+                    ( [ UiFont.size Style.textSize.l ]
+                    , Just "▹▹▹"
+                    )
+
+        prependEl =
+            case prepend of
+                Just text ->
+                    Ui.text (text ++ " ")
+
+                Nothing ->
+                    Ui.text ""
     in
     Ui.paragraph
         (baseBlockStyles
@@ -198,7 +216,7 @@ renderHeading { level, children } =
                ]
             ++ styles
         )
-        (getInlines children)
+        (prependEl :: getInlines children)
         |> ElmUiTag.Block
 
 
