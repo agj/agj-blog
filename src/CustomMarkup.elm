@@ -190,7 +190,7 @@ renderUnorderedList items =
     in
     items
         |> List.map renderItem
-        |> wrapElmUiBlocksWithoutSpacing
+        |> wrapListBlocks
         |> ElmUiTag.Block
 
 
@@ -203,7 +203,7 @@ renderOrderedList startNumber items =
     in
     items
         |> List.indexedMap renderItem
-        |> wrapElmUiBlocksWithoutSpacing
+        |> wrapListBlocks
         |> ElmUiTag.Block
 
 
@@ -230,8 +230,17 @@ renderListItem bulletText tags =
     tags
         |> ensureBlocks
         |> getBlocks
-        |> wrapElmUiBlocksWithoutSpacing
+        |> wrapListBlocks
         |> addBullet
+
+
+wrapListBlocks : List (Ui.Element msg) -> Ui.Element msg
+wrapListBlocks els =
+    Ui.column
+        [ Ui.spacing Style.spacing.size1
+        , Ui.width Ui.fill
+        ]
+        els
 
 
 renderBlockQuote : List (ElmUiTag msg) -> ElmUiTag msg
