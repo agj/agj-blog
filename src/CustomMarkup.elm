@@ -160,39 +160,58 @@ renderHeading :
     -> ElmUiTag msg
 renderHeading { level, children } =
     let
-        ( styles, prepend ) =
+        basePadding =
+            Style.blockPadding fontSize Style.interline.s
+
+        baseStyles =
+            [ UiFont.color (Color.toElmUi Style.color.layout)
+            , UiFont.size fontSize
+            , Ui.spacing (Style.interline.s fontSize)
+            , Ui.width Ui.fill
+            , UiRegion.heading (Markdown.Block.headingLevelToInt level)
+            , Ui.paddingEach
+                { top = basePadding + Style.spacing.size5
+                , bottom = basePadding
+                , left = 0
+                , right = 0
+                }
+            ]
+
+        ( fontSize, styles, prepend ) =
             case level of
                 Markdown.Block.H1 ->
-                    ( [ UiFont.size Style.textSize.xl
-                      , UiFont.bold
-                      ]
+                    ( Style.textSize.xl
+                    , [ UiFont.bold ]
                     , Nothing
                     )
 
                 Markdown.Block.H2 ->
-                    ( [ UiFont.size Style.textSize.l
-                      , UiFont.bold
-                      ]
+                    ( Style.textSize.l
+                    , [ UiFont.bold ]
                     , Nothing
                     )
 
                 Markdown.Block.H3 ->
-                    ( [ UiFont.size Style.textSize.l ]
+                    ( Style.textSize.l
+                    , []
                     , Nothing
                     )
 
                 Markdown.Block.H4 ->
-                    ( [ UiFont.size Style.textSize.l ]
+                    ( Style.textSize.l
+                    , []
                     , Just "▹"
                     )
 
                 Markdown.Block.H5 ->
-                    ( [ UiFont.size Style.textSize.l ]
+                    ( Style.textSize.l
+                    , []
                     , Just "▹▹"
                     )
 
                 Markdown.Block.H6 ->
-                    ( [ UiFont.size Style.textSize.l ]
+                    ( Style.textSize.l
+                    , []
                     , Just "▹▹▹"
                     )
 
@@ -210,18 +229,7 @@ renderHeading { level, children } =
                 Nothing ->
                     Ui.text ""
     in
-    Ui.paragraph
-        (baseBlockStyles
-            ++ [ UiRegion.heading (Markdown.Block.headingLevelToInt level)
-               , Ui.paddingEach
-                    { top = Style.spacing.size4
-                    , bottom = Style.spacing.size3
-                    , left = 0
-                    , right = 0
-                    }
-               ]
-            ++ styles
-        )
+    Ui.paragraph (baseStyles ++ styles)
         (prependEl :: getInlines children)
         |> ElmUiTag.Block
 

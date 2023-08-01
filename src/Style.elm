@@ -87,7 +87,8 @@ textSizeMonospace =
 
 
 interline =
-    { m = calculateInterline 0.6
+    { s = calculateInterline 0.4
+    , m = calculateInterline 0.6
     }
 
 
