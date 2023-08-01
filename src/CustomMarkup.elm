@@ -4,6 +4,7 @@ import Custom.Color as Color
 import CustomMarkup.ElmUiTag as ElmUiTag exposing (ElmUiTag)
 import Element as Ui
 import Element.Background as UiBackground
+import Element.Border as UiBorder
 import Element.Font as UiFont
 import Element.Region as UiRegion
 import Html
@@ -15,7 +16,6 @@ import Markdown.Parser
 import Markdown.Renderer
 import Result.Extra as Result
 import Style
-import SyntaxHighlight
 import View.AudioPlayer
 import View.AudioPlayer.Track exposing (Track)
 import View.CodeBlock
@@ -59,7 +59,7 @@ renderer config =
     , emphasis = renderInlineWithStyle UiFont.italic
     , strikethrough = renderInlineWithStyle UiFont.strike
     , link = renderLink
-    , codeSpan = \code -> Ui.text code |> ElmUiTag.Inline
+    , codeSpan = renderInlineCode
 
     -- Block
     , paragraph = renderParagraph
@@ -114,6 +114,24 @@ renderLink { title, destination } tags =
                 ]
                 (getInlines tags)
         }
+        |> ElmUiTag.Inline
+
+
+renderInlineCode : String -> ElmUiTag msg
+renderInlineCode code =
+    [ Html.text code ]
+        |> Html.span
+            [ Html.Attributes.style "white-space" "pre-wrap" ]
+        |> Ui.html
+        |> Ui.el
+            [ UiFont.family [ UiFont.monospace ]
+            , UiFont.size Style.textSizeMonospace.m
+            , UiBackground.color (Style.color.layout05 |> Color.toElmUi)
+            , Ui.paddingXY Style.spacing.size1 0
+            , UiBorder.rounded Style.spacing.size1
+            , Html.Attributes.style "box-decoration-break" "clone"
+                |> Ui.htmlAttribute
+            ]
         |> ElmUiTag.Inline
 
 

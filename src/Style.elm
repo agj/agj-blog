@@ -5,6 +5,7 @@ module Style exposing
     , interline
     , spacing
     , textSize
+    , textSizeMonospace
     )
 
 import Color exposing (Color)
@@ -77,6 +78,14 @@ textSize =
     }
 
 
+textSizeMonospace =
+    { m = textSizeToMonospace textSize.m
+    , l = textSizeToMonospace textSize.l
+    , xl = textSizeToMonospace textSize.xl
+    , xxl = textSizeToMonospace textSize.xxl
+    }
+
+
 interline =
     { m = calculateInterline 0.6
     }
@@ -95,6 +104,12 @@ interblock =
 
 
 -- INTERNAL
+
+
+textSizeToMonospace : Int -> Int
+textSizeToMonospace textSize_ =
+    (toFloat textSize_ * 0.9)
+        |> round
 
 
 rgb : Int -> Int -> Int -> Color
