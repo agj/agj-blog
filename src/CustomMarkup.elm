@@ -6,6 +6,7 @@ import Element as Ui
 import Element.Background as UiBackground
 import Element.Font as UiFont
 import Element.Region as UiRegion
+import Html
 import Html.Attributes
 import List.Extra as List
 import Markdown.Block
@@ -14,6 +15,7 @@ import Markdown.Parser
 import Markdown.Renderer
 import Result.Extra as Result
 import Style
+import SyntaxHighlight
 import View.AudioPlayer
 import View.AudioPlayer.Track exposing (Track)
 import View.Figure
@@ -64,7 +66,7 @@ renderer config =
     , unorderedList = renderUnorderedList
     , orderedList = renderOrderedList
     , blockQuote = renderBlockQuote
-    , codeBlock = \{ body, language } -> Ui.text body |> ElmUiTag.Block
+    , codeBlock = renderCodeBlock
 
     -- Special
     , hardLineBreak = Ui.text "\n" |> ElmUiTag.Block
@@ -275,6 +277,55 @@ renderBlockQuote tags =
         |> wrapElmUiBlocks
         |> toQuote
         |> ElmUiTag.Block
+
+
+renderCodeBlock : { body : String, language : Maybe String } -> ElmUiTag msg
+renderCodeBlock { body, language } =
+    let
+        highlighter =
+            case language of
+                Just "elm" ->
+                    SyntaxHighlight.elm
+
+                Just "js" ->
+                    SyntaxHighlight.javascript
+
+                Just "json" ->
+                    SyntaxHighlight.json
+
+                Just "html" ->
+                    SyntaxHighlight.xml
+
+                Just "xml" ->
+                    SyntaxHighlight.xml
+
+                Just "css" ->
+                    SyntaxHighlight.css
+
+                Just "py" ->
+                    SyntaxHighlight.python
+
+                Just "sql" ->
+                    SyntaxHighlight.sql
+
+                Just "nix" ->
+                    SyntaxHighlight.nix
+
+                _ ->
+                    SyntaxHighlight.noLang
+    in
+    Html.div []
+        [ SyntaxHighlight.useTheme SyntaxHighlight.gitHub
+        , highlighter body
+            |> Result.map (SyntaxHighlight.toBlockHtml (Just 1))
+            |> Result.withDefault (Html.text "")
+        ]
+        |> Ui.html
+        |> ElmUiTag.Block
+
+
+
+-- Ui.text body |> ElmUiTag.Block
 
 
 baseBlockStyles : List (Ui.Attribute msg)
