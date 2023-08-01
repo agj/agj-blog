@@ -60,7 +60,10 @@ view (CodeBlock { body, language }) =
     in
     highlighter body
         |> Result.map (SyntaxHighlight.toBlockHtml (Just 1))
-        |> Result.withDefault (Html.text "")
+        |> Result.withDefault
+            (Html.div []
+                [ Html.text "[COULDN'T PARSE CODE BLOCK]" ]
+            )
         |> Ui.html
 
 
