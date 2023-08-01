@@ -143,7 +143,7 @@ renderParagraph : List (ElmUiTag msg) -> ElmUiTag msg
 renderParagraph tags =
     let
         styles =
-            baseBlockStyles
+            baseParagraphStyles
                 ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m) ]
     in
     tags
@@ -264,7 +264,7 @@ renderListItem : String -> List (ElmUiTag msg) -> Ui.Element msg
 renderListItem bulletText tags =
     let
         styles =
-            baseBlockStyles
+            baseParagraphStyles
                 ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
                    , Ui.alignTop
                    ]
@@ -337,12 +337,8 @@ renderCodeBlock { body, language } =
         |> ElmUiTag.Block
 
 
-
--- Ui.text body |> ElmUiTag.Block
-
-
-baseBlockStyles : List (Ui.Attribute msg)
-baseBlockStyles =
+baseParagraphStyles : List (Ui.Attribute msg)
+baseParagraphStyles =
     [ UiFont.color (Color.toElmUi Style.color.layout)
     , UiFont.size Style.textSize.m
     , Ui.spacing (Style.interline.m Style.textSize.m)
