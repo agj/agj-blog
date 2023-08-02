@@ -3,6 +3,7 @@ module Style exposing
     , color
     , interblock
     , interline
+    , padding
     , spacing
     , textSize
     , textSizeMonospace
@@ -51,6 +52,14 @@ spacing =
     , size7 = 48
     , size8 = 56
     , size9 = 64
+    }
+
+
+padding =
+    { left = 0
+    , right = 0
+    , top = 0
+    , bottom = 0
     }
 
 

@@ -5,8 +5,10 @@ module View.List exposing
     , withNumbers
     )
 
+import Custom.Color as Color
 import Element as Ui
-import Style
+import Element.Font as UiFont
+import Style exposing (padding)
 import View.Column exposing (Spacing(..))
 import View.Paragraph
 
@@ -56,19 +58,24 @@ viewListItem : String -> List (Ui.Element msg) -> Ui.Element msg
 viewListItem bulletText item =
     let
         bullet =
-            [ Ui.text bulletText ]
+            [ Ui.el [ UiFont.color (Style.color.layout30 |> Color.toElmUi) ]
+                (Ui.text bulletText)
+            ]
                 |> View.Paragraph.view
                 |> Ui.el
                     [ Ui.alignTop
-                    , Ui.width (Ui.px Style.spacing.size5)
+                    , UiFont.alignRight
+                    , Ui.paddingEach { padding | right = Style.spacing.size2 }
                     ]
 
         addBullet content =
-            Ui.row [ Ui.width Ui.fill ]
-                [ bullet
-                , content
+            Ui.el
+                [ Ui.width Ui.fill
+                , Ui.onLeft bullet
                 ]
+                content
     in
     item
         |> View.Column.setSpaced SSpacing
         |> addBullet
+        |> Ui.el [ Ui.paddingEach { padding | left = Style.spacing.size4 } ]
