@@ -7,6 +7,7 @@ module View.List exposing
 
 import Element as Ui
 import Style
+import View.Column exposing (Spacing(..))
 import View.Paragraph
 
 
@@ -44,7 +45,7 @@ view (ViewList { items, startNumber }) =
     in
     items
         |> List.indexedMap renderItem
-        |> wrapBlocks
+        |> View.Column.setSpaced SSpacing
 
 
 
@@ -69,14 +70,5 @@ viewListItem bulletText item =
                 ]
     in
     item
-        |> wrapBlocks
+        |> View.Column.setSpaced SSpacing
         |> addBullet
-
-
-wrapBlocks : List (Ui.Element msg) -> Ui.Element msg
-wrapBlocks els =
-    Ui.column
-        [ Ui.spacing Style.spacing.size1
-        , Ui.width Ui.fill
-        ]
-        els

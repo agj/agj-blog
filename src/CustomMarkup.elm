@@ -6,7 +6,6 @@ import Element as Ui
 import Element.Background as UiBackground
 import Element.Border as UiBorder
 import Element.Font as UiFont
-import Element.Region as UiRegion
 import Html
 import Html.Attributes
 import List.Extra as List
@@ -19,6 +18,7 @@ import Style
 import View.AudioPlayer
 import View.AudioPlayer.Track exposing (Track)
 import View.CodeBlock
+import View.Column exposing (Spacing(..))
 import View.Figure
 import View.Heading
 import View.Inline
@@ -48,7 +48,7 @@ toElmUi config markdown =
         |> Result.map getElements
         |> Result.mapError renderErrorMessage
         |> Result.merge
-        |> wrapElmUiBlocks
+        |> View.Column.setSpaced MSpacing
 
 
 
@@ -211,7 +211,7 @@ renderBlockQuote tags =
     tags
         |> ensureBlocks
         |> unwrapBlocks
-        |> wrapElmUiBlocks
+        |> View.Column.setSpaced MSpacing
         |> toQuote
         |> ElmUiTag.Block
 
@@ -395,24 +395,6 @@ ensureBlocks tags =
     tags
         |> List.foldr process ( [], [] )
         |> wrapUpInlines
-
-
-wrapBlocks : List (ElmUiTag msg) -> ElmUiTag msg
-wrapBlocks tags =
-    tags
-        |> ensureBlocks
-        |> unwrapBlocks
-        |> wrapElmUiBlocks
-        |> ElmUiTag.Block
-
-
-wrapElmUiBlocks : List (Ui.Element msg) -> Ui.Element msg
-wrapElmUiBlocks els =
-    Ui.column
-        [ Ui.spacing Style.spacing.size3
-        , Ui.width Ui.fill
-        ]
-        els
 
 
 getElements : List (ElmUiTag msg) -> List (Ui.Element msg)
