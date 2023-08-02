@@ -8,23 +8,8 @@ import Html.Attributes
 import Style
 
 
-type Heading msg
-    = Heading
-        { content : List (Ui.Element msg)
-        , level : Int
-        }
-
-
-fromContent : Int -> List (Ui.Element msg) -> Heading msg
-fromContent level content =
-    Heading
-        { content = content
-        , level = level
-        }
-
-
-view : Heading msg -> Ui.Element msg
-view (Heading { content, level }) =
+view : Int -> List (Ui.Element msg) -> Ui.Element msg
+view level content =
     let
         basePadding =
             Style.blockPadding fontSize Style.interline.s

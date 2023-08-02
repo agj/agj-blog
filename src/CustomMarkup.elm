@@ -159,8 +159,7 @@ renderHeading :
 renderHeading { level, children } =
     children
         |> unwrapInlines
-        |> View.Heading.fromContent (Markdown.Block.headingLevelToInt level)
-        |> View.Heading.view
+        |> View.Heading.view (Markdown.Block.headingLevelToInt level)
         |> ElmUiTag.Block
 
 
