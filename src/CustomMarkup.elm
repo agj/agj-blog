@@ -85,13 +85,13 @@ renderer config =
     -- Table
     , table =
         \tags ->
-            Ui.column [] (getInlines tags)
+            Ui.column [] (unwrapInlines tags)
                 |> ElmUiTag.Block
-    , tableBody = \tags -> Ui.column [] (getInlines tags) |> ElmUiTag.Block
-    , tableCell = \mAlignment tags -> Ui.paragraph [] (getInlines tags) |> ElmUiTag.Block
-    , tableHeader = \tags -> Ui.column [] (getInlines tags) |> ElmUiTag.Block
-    , tableHeaderCell = \mAlignment tags -> Ui.row [] (getInlines tags) |> ElmUiTag.Block
-    , tableRow = \tags -> Ui.row [] (getInlines tags) |> ElmUiTag.Block
+    , tableBody = \tags -> Ui.column [] (unwrapInlines tags) |> ElmUiTag.Block
+    , tableCell = \mAlignment tags -> Ui.paragraph [] (unwrapInlines tags) |> ElmUiTag.Block
+    , tableHeader = \tags -> Ui.column [] (unwrapInlines tags) |> ElmUiTag.Block
+    , tableHeaderCell = \mAlignment tags -> Ui.row [] (unwrapInlines tags) |> ElmUiTag.Block
+    , tableRow = \tags -> Ui.row [] (unwrapInlines tags) |> ElmUiTag.Block
     }
 
 
@@ -101,7 +101,7 @@ renderer config =
 
 renderInlineWithStyle : Ui.Attribute msg -> List (ElmUiTag msg) -> ElmUiTag msg
 renderInlineWithStyle attr tags =
-    Ui.paragraph [ attr ] (getInlines tags)
+    Ui.paragraph [ attr ] (unwrapInlines tags)
         |> ElmUiTag.Inline
 
 
@@ -114,7 +114,7 @@ renderLink { title, destination } tags =
                 [ UiFont.underline
                 , UiFont.color (Style.color.secondary70 |> Color.toElmUi)
                 ]
-                (getInlines tags)
+                (unwrapInlines tags)
         }
         |> ElmUiTag.Inline
 
@@ -144,7 +144,7 @@ renderInlineCode code =
 renderParagraph : List (ElmUiTag msg) -> ElmUiTag msg
 renderParagraph tags =
     tags
-        |> getInlines
+        |> unwrapInlines
         |> View.Paragraph.view
         |> ElmUiTag.Block
 
@@ -227,7 +227,7 @@ renderHeading { level, children } =
                     Ui.text ""
     in
     Ui.paragraph (baseStyles ++ styles)
-        (prependEl :: getInlines children)
+        (prependEl :: unwrapInlines children)
         |> ElmUiTag.Block
 
 
@@ -236,7 +236,7 @@ renderUnorderedList items =
     items
         |> List.map
             (\(Markdown.Block.ListItem task item) ->
-                item |> ensureBlocks |> getBlocks
+                item |> ensureBlocks |> unwrapBlocks
             )
         |> View.List.fromItems
         |> View.List.view
@@ -246,7 +246,7 @@ renderUnorderedList items =
 renderOrderedList : Int -> List (List (ElmUiTag msg)) -> ElmUiTag msg
 renderOrderedList startNumber items =
     items
-        |> List.map (ensureBlocks >> getBlocks)
+        |> List.map (ensureBlocks >> unwrapBlocks)
         |> View.List.fromItems
         |> View.List.withNumbers startNumber
         |> View.List.view
@@ -281,7 +281,7 @@ renderBlockQuote tags =
     in
     tags
         |> ensureBlocks
-        |> getBlocks
+        |> unwrapBlocks
         |> wrapElmUiBlocks
         |> toQuote
         |> ElmUiTag.Block
@@ -416,8 +416,8 @@ renderErrorMessage error =
 -- OTHER
 
 
-getInlines : List (ElmUiTag msg) -> List (Ui.Element msg)
-getInlines =
+unwrapInlines : List (ElmUiTag msg) -> List (Ui.Element msg)
+unwrapInlines =
     List.filterMap
         (\tag ->
             case tag of
@@ -429,8 +429,8 @@ getInlines =
         )
 
 
-getBlocks : List (ElmUiTag msg) -> List (Ui.Element msg)
-getBlocks =
+unwrapBlocks : List (ElmUiTag msg) -> List (Ui.Element msg)
+unwrapBlocks =
     List.filterMap
         (\tag ->
             case tag of
@@ -472,7 +472,7 @@ wrapBlocks : List (ElmUiTag msg) -> ElmUiTag msg
 wrapBlocks tags =
     tags
         |> ensureBlocks
-        |> getBlocks
+        |> unwrapBlocks
         |> wrapElmUiBlocks
         |> ElmUiTag.Block
 
