@@ -253,47 +253,16 @@ renderUnorderedList items =
 renderOrderedList : Int -> List (List (ElmUiTag msg)) -> ElmUiTag msg
 renderOrderedList startNumber items =
     let
-        renderItem : Int -> List (ElmUiTag msg) -> Ui.Element msg
-        renderItem index tags =
-            renderListItem (String.fromInt (index + startNumber) ++ ".") tags
+        elItems : List (List (Ui.Element msg))
+        elItems =
+            items
+                |> List.map (ensureBlocks >> getBlocks)
     in
-    items
-        |> List.indexedMap renderItem
-        |> wrapListBlocks
+    elItems
+        |> View.List.fromItems
+        |> View.List.withNumbers startNumber
+        |> View.List.view
         |> ElmUiTag.Block
-
-
-renderListItem : String -> List (ElmUiTag msg) -> Ui.Element msg
-renderListItem bulletText tags =
-    let
-        bullet =
-            [ Ui.text bulletText ]
-                |> View.Paragraph.view
-                |> Ui.el
-                    [ Ui.alignTop
-                    , Ui.width (Ui.px Style.spacing.size6)
-                    ]
-
-        addBullet content =
-            Ui.row [ Ui.width Ui.fill ]
-                [ bullet
-                , content
-                ]
-    in
-    tags
-        |> ensureBlocks
-        |> getBlocks
-        |> wrapListBlocks
-        |> addBullet
-
-
-wrapListBlocks : List (Ui.Element msg) -> Ui.Element msg
-wrapListBlocks els =
-    Ui.column
-        [ Ui.spacing Style.spacing.size1
-        , Ui.width Ui.fill
-        ]
-        els
 
 
 renderBlockQuote : List (ElmUiTag msg) -> ElmUiTag msg
@@ -526,13 +495,6 @@ wrapElmUiBlocks els =
         [ Ui.spacing Style.spacing.size3
         , Ui.width Ui.fill
         ]
-        els
-
-
-wrapElmUiBlocksWithoutSpacing : List (Ui.Element msg) -> Ui.Element msg
-wrapElmUiBlocksWithoutSpacing els =
-    Ui.column
-        [ Ui.width Ui.fill ]
         els
 
 

@@ -2,6 +2,7 @@ module View.List exposing
     ( ViewList
     , fromItems
     , view
+    , withNumbers
     )
 
 import Element as Ui
@@ -24,15 +25,25 @@ fromItems items =
         }
 
 
+withNumbers : Int -> ViewList msg -> ViewList msg
+withNumbers startNumber (ViewList config) =
+    ViewList { config | startNumber = Just startNumber }
+
+
 view : ViewList msg -> Ui.Element msg
-view (ViewList { items }) =
+view (ViewList { items, startNumber }) =
     let
-        renderItem : List (Ui.Element msg) -> Ui.Element msg
-        renderItem item =
-            viewListItem "▪︎" item
+        renderItem : Int -> List (Ui.Element msg) -> Ui.Element msg
+        renderItem index item =
+            case startNumber of
+                Just num ->
+                    viewListItem (String.fromInt (index + num) ++ ".") item
+
+                Nothing ->
+                    viewListItem "▪︎" item
     in
     items
-        |> List.map renderItem
+        |> List.indexedMap renderItem
         |> wrapBlocks
 
 
