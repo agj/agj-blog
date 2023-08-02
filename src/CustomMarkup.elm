@@ -141,14 +141,9 @@ renderInlineCode code =
 
 renderParagraph : List (ElmUiTag msg) -> ElmUiTag msg
 renderParagraph tags =
-    let
-        styles =
-            baseParagraphStyles
-                ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m) ]
-    in
     tags
         |> getInlines
-        |> Ui.paragraph styles
+        |> Ui.paragraph baseParagraphStyles
         |> ElmUiTag.Block
 
 
@@ -264,10 +259,7 @@ renderListItem : String -> List (ElmUiTag msg) -> Ui.Element msg
 renderListItem bulletText tags =
     let
         styles =
-            baseParagraphStyles
-                ++ [ Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
-                   , Ui.alignTop
-                   ]
+            baseParagraphStyles ++ [ Ui.alignTop ]
 
         bullet =
             Ui.paragraph
@@ -342,6 +334,7 @@ baseParagraphStyles =
     [ UiFont.color (Color.toElmUi Style.color.layout)
     , UiFont.size Style.textSize.m
     , Ui.spacing (Style.interline.m Style.textSize.m)
+    , Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
     , Ui.width Ui.fill
     ]
 
