@@ -60,7 +60,7 @@ viewListItem bulletText item =
                 |> View.Paragraph.view
                 |> Ui.el
                     [ Ui.alignTop
-                    , Ui.width (Ui.px Style.spacing.size6)
+                    , Ui.width (Ui.px Style.spacing.size5)
                     ]
 
         addBullet content =
