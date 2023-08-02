@@ -3,6 +3,7 @@ module Page.Category exposing (Data, Model, Msg, page)
 import Data.Category as Category
 import Data.PageHeader as PageHeader
 import DataSource exposing (DataSource)
+import Element as Ui
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attr
@@ -77,6 +78,7 @@ view maybeUrl sharedModel static =
                     ]
                 )
             )
-        , Category.viewList Category.all
+        , Category.viewList
+            |> Ui.layout []
         ]
     }

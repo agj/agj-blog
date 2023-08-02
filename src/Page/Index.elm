@@ -8,6 +8,7 @@ import Data.PostList
 import Data.Tag as Tag
 import DataSource exposing (DataSource)
 import Dict exposing (Dict)
+import Element as Ui
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attr
@@ -155,7 +156,8 @@ view maybeUrl sharedModel model static =
                 [ Html.article []
                     [ Html.h3 []
                         [ Html.text "Categories" ]
-                    , Category.viewList Category.all
+                    , Category.viewList
+                        |> Ui.layout []
                     ]
                 , Html.article []
                     [ Html.h3 []

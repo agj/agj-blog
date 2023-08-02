@@ -13,10 +13,15 @@ module Data.Category exposing
     , viewList
     )
 
+import Element as Ui
 import Html exposing (Html)
 import Html.Attributes as Attr
 import List.Extra as List
 import OptimizedDecoder as Decode exposing (Decoder)
+import View.Column exposing (Spacing(..))
+import View.Inline
+import View.List
+import View.Paragraph
 
 
 type Category
@@ -64,12 +69,13 @@ toUrl category =
         |> String.replace "{slug}" (getSlug category)
 
 
-viewList : List Category -> Html msg
-viewList categories =
-    Html.ul []
-        (allNested
-            |> List.map viewCategory
-        )
+viewList : Ui.Element msg
+viewList =
+    allNested
+        |> List.map viewCategory
+        |> List.map List.singleton
+        |> View.List.fromItems
+        |> View.List.view
 
 
 toLink : List (Html.Attribute msg) -> Category -> Html msg
@@ -109,24 +115,28 @@ unnest (NestedCategory category rest) =
     category :: List.andThen unnest rest
 
 
-viewCategory : NestedCategory -> Html msg
+viewCategory : NestedCategory -> Ui.Element msg
 viewCategory (NestedCategory category children) =
     let
-        childUl =
+        childrenList =
             if List.length children > 0 then
-                [ Html.ul []
-                    (children
-                        |> List.map viewCategory
-                    )
+                [ children
+                    |> List.map viewCategory
                 ]
+                    |> View.List.fromItems
+                    |> View.List.view
 
             else
-                []
+                Ui.none
+
+        current =
+            [ Ui.text (getName category) ]
+                |> View.Inline.setLink (toUrl category)
+                |> List.singleton
+                |> View.Paragraph.view
     in
-    Html.li []
-        (toLink [] category
-            :: childUl
-        )
+    [ current, childrenList ]
+        |> View.Column.setSpaced SSpacing
 
 
 
