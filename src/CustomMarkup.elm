@@ -21,6 +21,7 @@ import View.AudioPlayer.Track exposing (Track)
 import View.CodeBlock
 import View.Figure
 import View.LanguageBreak
+import View.Paragraph
 import View.VideoEmbed
 
 
@@ -143,7 +144,7 @@ renderParagraph : List (ElmUiTag msg) -> ElmUiTag msg
 renderParagraph tags =
     tags
         |> getInlines
-        |> Ui.paragraph baseParagraphStyles
+        |> View.Paragraph.view
         |> ElmUiTag.Block
 
 
@@ -258,13 +259,13 @@ renderOrderedList startNumber items =
 renderListItem : String -> List (ElmUiTag msg) -> Ui.Element msg
 renderListItem bulletText tags =
     let
-        styles =
-            baseParagraphStyles ++ [ Ui.alignTop ]
-
         bullet =
-            Ui.paragraph
-                (styles ++ [ Ui.width (Ui.px Style.spacing.size6) ])
-                [ Ui.text bulletText ]
+            [ Ui.text bulletText ]
+                |> View.Paragraph.view
+                |> Ui.el
+                    [ Ui.alignTop
+                    , Ui.width (Ui.px Style.spacing.size6)
+                    ]
 
         addBullet content =
             Ui.row [ Ui.width Ui.fill ]
@@ -327,16 +328,6 @@ renderCodeBlock { body, language } =
     View.CodeBlock.fromBody language body
         |> View.CodeBlock.view
         |> ElmUiTag.Block
-
-
-baseParagraphStyles : List (Ui.Attribute msg)
-baseParagraphStyles =
-    [ UiFont.color (Color.toElmUi Style.color.layout)
-    , UiFont.size Style.textSize.m
-    , Ui.spacing (Style.interline.m Style.textSize.m)
-    , Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
-    , Ui.width Ui.fill
-    ]
 
 
 
