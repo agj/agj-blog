@@ -21,6 +21,7 @@ import View.AudioPlayer.Track exposing (Track)
 import View.CodeBlock
 import View.Figure
 import View.Heading
+import View.Inline
 import View.LanguageBreak
 import View.List
 import View.Paragraph
@@ -58,9 +59,9 @@ renderer : Config msg -> Markdown.Renderer.Renderer (ElmUiTag msg)
 renderer config =
     { -- Inline
       text = \text -> Ui.text text |> ElmUiTag.Inline
-    , strong = renderInlineWithStyle UiFont.bold
-    , emphasis = renderInlineWithStyle UiFont.italic
-    , strikethrough = renderInlineWithStyle UiFont.strike
+    , strong = renderInlineWithStyle View.Inline.setBold
+    , emphasis = renderInlineWithStyle View.Inline.setItalic
+    , strikethrough = renderInlineWithStyle View.Inline.setStrikethrough
     , link = renderLink
     , codeSpan = renderInlineCode
 
@@ -100,9 +101,11 @@ renderer config =
 -- INLINE
 
 
-renderInlineWithStyle : Ui.Attribute msg -> List (ElmUiTag msg) -> ElmUiTag msg
-renderInlineWithStyle attr tags =
-    Ui.paragraph [ attr ] (unwrapInlines tags)
+renderInlineWithStyle : (List (Ui.Element msg) -> Ui.Element msg) -> List (ElmUiTag msg) -> ElmUiTag msg
+renderInlineWithStyle styler tags =
+    tags
+        |> unwrapInlines
+        |> styler
         |> ElmUiTag.Inline
 
 
