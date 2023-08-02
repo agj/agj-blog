@@ -233,18 +233,11 @@ renderHeading { level, children } =
 
 renderUnorderedList : List (Markdown.Block.ListItem (ElmUiTag msg)) -> ElmUiTag msg
 renderUnorderedList items =
-    let
-        elItems : List (List (Ui.Element msg))
-        elItems =
-            items
-                |> List.map
-                    (\(Markdown.Block.ListItem task item) ->
-                        item
-                            |> ensureBlocks
-                            |> getBlocks
-                    )
-    in
-    elItems
+    items
+        |> List.map
+            (\(Markdown.Block.ListItem task item) ->
+                item |> ensureBlocks |> getBlocks
+            )
         |> View.List.fromItems
         |> View.List.view
         |> ElmUiTag.Block
@@ -252,13 +245,8 @@ renderUnorderedList items =
 
 renderOrderedList : Int -> List (List (ElmUiTag msg)) -> ElmUiTag msg
 renderOrderedList startNumber items =
-    let
-        elItems : List (List (Ui.Element msg))
-        elItems =
-            items
-                |> List.map (ensureBlocks >> getBlocks)
-    in
-    elItems
+    items
+        |> List.map (ensureBlocks >> getBlocks)
         |> View.List.fromItems
         |> View.List.withNumbers startNumber
         |> View.List.view
