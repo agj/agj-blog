@@ -57,7 +57,7 @@ viewGistYear ( year, gistMonths ) =
     let
         heading =
             [ Ui.text year ]
-                |> View.Heading.view 3
+                |> View.Heading.view 2
 
         months =
             gistMonths
@@ -75,7 +75,7 @@ viewGistMonth ( month, gists ) =
 
         heading =
             [ Ui.text monthName ]
-                |> View.Heading.view 4
+                |> View.Heading.view 3
 
         gistsList =
             gists
