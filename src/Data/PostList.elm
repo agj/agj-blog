@@ -8,6 +8,7 @@ import Element as Ui
 import Html exposing (Html)
 import Html.Attributes as Attr
 import List.Extra as List
+import View.Column exposing (Spacing(..))
 import View.Heading
 import View.Inline
 import View.List
@@ -42,7 +43,7 @@ view posts =
     in
     gistsByYearAndMonth
         |> List.map viewGistYear
-        |> Ui.column []
+        |> View.Column.setSpaced MSpacing
         |> Ui.layout []
         |> List.singleton
 
@@ -63,7 +64,7 @@ viewGistYear ( year, gistMonths ) =
                 |> List.map viewGistMonth
     in
     (heading :: months)
-        |> Ui.column []
+        |> View.Column.setSpaced MSpacing
 
 
 viewGistMonth : ( String, List Post.GlobMatchFrontmatter ) -> Ui.Element msg
@@ -83,7 +84,7 @@ viewGistMonth ( month, gists ) =
                 |> View.List.view
     in
     [ heading, gistsList ]
-        |> Ui.column []
+        |> View.Column.setSpaced MSpacing
 
 
 viewGist : Post.GlobMatchFrontmatter -> Ui.Element msg
