@@ -4,9 +4,14 @@ import Custom.List as List
 import Data.Category as Category exposing (Category)
 import Data.Date as Date
 import Data.Post as Post
+import Element as Ui
 import Html exposing (Html)
 import Html.Attributes as Attr
 import List.Extra as List
+import View.Heading
+import View.Inline
+import View.List
+import View.Paragraph
 
 
 view : List Post.GlobMatchFrontmatter -> List (Html msg)
@@ -37,57 +42,77 @@ view posts =
     in
     gistsByYearAndMonth
         |> List.map viewGistYear
-        |> List.foldl (++) []
+        |> Ui.column []
+        |> Ui.layout []
+        |> List.singleton
 
 
 
 -- INTERNAL
 
 
-viewGistYear : ( String, List ( String, List Post.GlobMatchFrontmatter ) ) -> List (Html msg)
+viewGistYear : ( String, List ( String, List Post.GlobMatchFrontmatter ) ) -> Ui.Element msg
 viewGistYear ( year, gistMonths ) =
-    Html.h3 [] [ Html.text year ]
-        :: (gistMonths
-                |> List.andThen viewGistMonth
-           )
+    let
+        heading =
+            [ Ui.text year ]
+                |> View.Heading.view 3
+
+        months =
+            gistMonths
+                |> List.map viewGistMonth
+    in
+    (heading :: months)
+        |> Ui.column []
 
 
-viewGistMonth : ( String, List Post.GlobMatchFrontmatter ) -> List (Html msg)
+viewGistMonth : ( String, List Post.GlobMatchFrontmatter ) -> Ui.Element msg
 viewGistMonth ( month, gists ) =
-    [ Html.p []
-        [ Html.strong []
-            [ Html.text (Date.monthNumberToFullName (String.toInt month |> Maybe.withDefault 0))
-            ]
-        ]
-    , Html.ul []
-        (gists
-            |> List.map viewGist
-        )
-    ]
+    let
+        monthName =
+            Date.monthNumberToFullName (String.toInt month |> Maybe.withDefault 0)
+
+        heading =
+            [ Ui.text monthName ]
+                |> View.Heading.view 4
+
+        gistsList =
+            gists
+                |> List.map (viewGist >> List.singleton)
+                |> View.List.fromItems
+                |> View.List.view
+    in
+    [ heading, gistsList ]
+        |> Ui.column []
 
 
-viewGist : Post.GlobMatchFrontmatter -> Html msg
+viewGist : Post.GlobMatchFrontmatter -> Ui.Element msg
 viewGist gist =
     let
-        dateText =
+        postDate =
             "{date} – "
                 |> String.replace "{date}" (gist.frontmatter.date |> String.fromInt |> String.padLeft 2 '0')
+                |> Ui.text
+
+        postLink =
+            [ Ui.text gist.frontmatter.title ]
+                |> View.Inline.setLink (Post.globMatchFrontmatterToUrl gist)
+                |> List.singleton
+                |> View.Inline.setBold
+
+        postCategoryEls =
+            gist.frontmatter.categories
+                |> List.map
+                    (\category ->
+                        [ Ui.text (Category.getName category) ]
+                            |> View.Inline.setLink (Category.toUrl category)
+                    )
 
         postCategories =
-            gist.frontmatter.categories
+            Ui.text " ("
+                :: (postCategoryEls |> List.intersperse (Ui.text ", "))
+                ++ [ Ui.text ")" ]
     in
-    Html.li []
-        [ Html.text dateText
-        , Html.a [ Attr.href (Post.globMatchFrontmatterToUrl gist) ]
-            [ Html.strong []
-                [ Html.text gist.frontmatter.title ]
-            ]
-        , Html.small []
-            (Html.text " ("
-                :: (postCategories
-                        |> List.map (Category.toLink [ Attr.class "secondary" ])
-                        |> List.intersperse (Html.text ", ")
-                   )
-                ++ [ Html.text ")" ]
-            )
-        ]
+    [ postDate, postLink ]
+        ++ postCategories
+        |> View.Paragraph.view
