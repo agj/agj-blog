@@ -21,6 +21,7 @@ import View.AudioPlayer.Track exposing (Track)
 import View.CodeBlock
 import View.Figure
 import View.LanguageBreak
+import View.List
 import View.Paragraph
 import View.VideoEmbed
 
@@ -233,13 +234,19 @@ renderHeading { level, children } =
 renderUnorderedList : List (Markdown.Block.ListItem (ElmUiTag msg)) -> ElmUiTag msg
 renderUnorderedList items =
     let
-        renderItem : Markdown.Block.ListItem (ElmUiTag msg) -> Ui.Element msg
-        renderItem (Markdown.Block.ListItem task tags) =
-            renderListItem "▪︎" tags
+        elItems : List (List (Ui.Element msg))
+        elItems =
+            items
+                |> List.map
+                    (\(Markdown.Block.ListItem task item) ->
+                        item
+                            |> ensureBlocks
+                            |> getBlocks
+                    )
     in
-    items
-        |> List.map renderItem
-        |> wrapListBlocks
+    elItems
+        |> View.List.fromItems
+        |> View.List.view
         |> ElmUiTag.Block
 
 
