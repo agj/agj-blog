@@ -11,6 +11,9 @@ import Style
 view : Int -> List (Ui.Element msg) -> Ui.Element msg
 view level content =
     let
+        normalizedLevel =
+            max 1 level
+
         basePadding =
             Style.blockPadding fontSize Style.interline.s
 
@@ -19,7 +22,7 @@ view level content =
             , UiFont.size fontSize
             , Ui.spacing (Style.interline.s fontSize)
             , Ui.width Ui.fill
-            , UiRegion.heading level
+            , UiRegion.heading normalizedLevel
             , Ui.paddingEach
                 { top = basePadding + Style.spacing.size5
                 , bottom = basePadding
@@ -29,20 +32,26 @@ view level content =
             ]
 
         ( fontSize, styles, prepend ) =
-            case level of
+            case normalizedLevel of
                 1 ->
-                    ( Style.textSize.xl
+                    ( Style.textSize.xxl
                     , [ UiFont.bold ]
                     , Nothing
                     )
 
                 2 ->
-                    ( Style.textSize.l
+                    ( Style.textSize.xl
                     , [ UiFont.bold ]
                     , Nothing
                     )
 
                 3 ->
+                    ( Style.textSize.l
+                    , [ UiFont.bold ]
+                    , Nothing
+                    )
+
+                4 ->
                     ( Style.textSize.l
                     , []
                     , Nothing
@@ -51,7 +60,7 @@ view level content =
                 _ ->
                     ( Style.textSize.l
                     , []
-                    , Just (String.repeat (level - 3) "▹")
+                    , Just (String.repeat (normalizedLevel - 3) "▹")
                     )
 
         prependEl =
