@@ -235,7 +235,7 @@ renderUnorderedList items =
     let
         renderItem : Markdown.Block.ListItem (ElmUiTag msg) -> Ui.Element msg
         renderItem (Markdown.Block.ListItem task tags) =
-            renderListItem "•" tags
+            renderListItem "▪︎" tags
     in
     items
         |> List.map renderItem
