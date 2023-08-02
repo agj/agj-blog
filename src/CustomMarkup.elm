@@ -110,16 +110,10 @@ renderInlineWithStyle styler tags =
 
 
 renderLink : { title : Maybe String, destination : String } -> List (ElmUiTag msg) -> ElmUiTag msg
-renderLink { title, destination } tags =
-    Ui.link []
-        { url = destination
-        , label =
-            Ui.paragraph
-                [ UiFont.underline
-                , UiFont.color (Style.color.secondary70 |> Color.toElmUi)
-                ]
-                (unwrapInlines tags)
-        }
+renderLink { destination } tags =
+    tags
+        |> unwrapInlines
+        |> View.Inline.setLink destination
         |> ElmUiTag.Inline
 
 
