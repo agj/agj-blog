@@ -20,6 +20,7 @@ import View.AudioPlayer
 import View.AudioPlayer.Track exposing (Track)
 import View.CodeBlock
 import View.Figure
+import View.Heading
 import View.LanguageBreak
 import View.List
 import View.Paragraph
@@ -156,78 +157,10 @@ renderHeading :
     }
     -> ElmUiTag msg
 renderHeading { level, children } =
-    let
-        basePadding =
-            Style.blockPadding fontSize Style.interline.s
-
-        baseStyles =
-            [ UiFont.color (Color.toElmUi Style.color.layout)
-            , UiFont.size fontSize
-            , Ui.spacing (Style.interline.s fontSize)
-            , Ui.width Ui.fill
-            , UiRegion.heading (Markdown.Block.headingLevelToInt level)
-            , Ui.paddingEach
-                { top = basePadding + Style.spacing.size5
-                , bottom = basePadding
-                , left = 0
-                , right = 0
-                }
-            ]
-
-        ( fontSize, styles, prepend ) =
-            case level of
-                Markdown.Block.H1 ->
-                    ( Style.textSize.xl
-                    , [ UiFont.bold ]
-                    , Nothing
-                    )
-
-                Markdown.Block.H2 ->
-                    ( Style.textSize.l
-                    , [ UiFont.bold ]
-                    , Nothing
-                    )
-
-                Markdown.Block.H3 ->
-                    ( Style.textSize.l
-                    , []
-                    , Nothing
-                    )
-
-                Markdown.Block.H4 ->
-                    ( Style.textSize.l
-                    , []
-                    , Just "▹"
-                    )
-
-                Markdown.Block.H5 ->
-                    ( Style.textSize.l
-                    , []
-                    , Just "▹▹"
-                    )
-
-                Markdown.Block.H6 ->
-                    ( Style.textSize.l
-                    , []
-                    , Just "▹▹▹"
-                    )
-
-        prependEl =
-            case prepend of
-                Just text ->
-                    Ui.text (text ++ " ")
-                        |> Ui.el
-                            [ Html.Attributes.attribute "aria-hidden" "true"
-                                |> Ui.htmlAttribute
-                            , Html.Attributes.style "user-select" "none"
-                                |> Ui.htmlAttribute
-                            ]
-
-                Nothing ->
-                    Ui.text ""
-    in
-    Ui.paragraph (baseStyles ++ styles)
-        (prependEl :: unwrapInlines children)
+    children
+        |> unwrapInlines
+        |> View.Heading.fromContent (Markdown.Block.headingLevelToInt level)
+        |> View.Heading.view
         |> ElmUiTag.Block
 
 
