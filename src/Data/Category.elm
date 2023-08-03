@@ -73,7 +73,6 @@ viewList : Ui.Element msg
 viewList =
     allNested
         |> List.map viewCategory
-        |> List.map List.singleton
         |> View.List.fromItems
         |> View.List.view
 
@@ -115,14 +114,13 @@ unnest (NestedCategory category rest) =
     category :: List.andThen unnest rest
 
 
-viewCategory : NestedCategory -> Ui.Element msg
+viewCategory : NestedCategory -> List (Ui.Element msg)
 viewCategory (NestedCategory category children) =
     let
         childrenList =
             if List.length children > 0 then
-                [ children
+                children
                     |> List.map viewCategory
-                ]
                     |> View.List.fromItems
                     |> View.List.view
 
@@ -136,7 +134,6 @@ viewCategory (NestedCategory category children) =
                 |> View.Paragraph.view
     in
     [ current, childrenList ]
-        |> View.Column.setSpaced SSpacing
 
 
 
