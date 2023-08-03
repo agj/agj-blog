@@ -77,25 +77,10 @@ viewList =
         |> View.List.view
 
 
-toLink : List (Html.Attribute msg) -> Category -> Html msg
-toLink attrs category =
-    let
-        descriptionAttr =
-            case getDescription category of
-                Just desc ->
-                    Attr.title desc
-                        :: attrs
-
-                Nothing ->
-                    attrs
-    in
-    Html.a
-        ([ Attr.href (toUrl category)
-         , Attr.class "category"
-         ]
-            ++ descriptionAttr
-        )
-        [ Html.text (getName category) ]
+toLink : Category -> Ui.Element msg
+toLink category =
+    [ Ui.text (getName category) ]
+        |> View.Inline.setLink (toUrl category)
 
 
 decoder : Decoder Category
@@ -128,9 +113,7 @@ viewCategory (NestedCategory category children) =
                 Ui.none
 
         current =
-            [ Ui.text (getName category) ]
-                |> View.Inline.setLink (toUrl category)
-                |> List.singleton
+            [ toLink category ]
                 |> View.Paragraph.view
     in
     [ current, childrenList ]

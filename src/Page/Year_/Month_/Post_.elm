@@ -20,6 +20,8 @@ import Site
 import View exposing (View)
 import View.AudioPlayer
 import View.CodeBlock
+import View.Inline
+import View.Paragraph
 
 
 page : PageWithState RouteParams Data Model Msg
@@ -163,18 +165,18 @@ view maybeUrl sharedModel model static =
 
         categoryEls =
             static.data.frontmatter.categories
-                |> List.map (Category.toLink [])
-                |> List.intersperse (Html.text ", ")
+                |> List.map Category.toLink
+                |> List.intersperse (Ui.text ", ")
 
         categoriesTextEls =
             if List.length static.data.frontmatter.categories > 0 then
-                [ Html.text "Categories: "
-                , Html.em [] categoryEls
-                , Html.text ". "
+                [ Ui.text "Categories: "
+                , View.Inline.setItalic categoryEls
+                , Ui.text ". "
                 ]
 
             else
-                [ Html.text "No categories. " ]
+                [ Ui.text "No categories. " ]
 
         tagEls =
             static.data.frontmatter.tags
@@ -191,7 +193,18 @@ view maybeUrl sharedModel model static =
             else
                 [ Html.text "No tags." ]
 
-        contentHtml =
+        postInfo =
+            ([ Ui.text ("Posted {date}, on " |> String.replace "{date}" date)
+             , View.Inline.setLink "/"
+                [ Ui.text "agj's blog" ]
+             , Ui.text ". "
+             ]
+                ++ categoriesTextEls
+                ++ [ tagsTextEls |> Html.span [] |> Ui.html ]
+            )
+                |> View.Paragraph.view
+
+        contentEl =
             CustomMarkup.toElmUi
                 { audioPlayer =
                     Just
@@ -200,27 +213,13 @@ view maybeUrl sharedModel model static =
                         }
                 }
                 static.data.markdown
-                |> Ui.layout []
     in
     { title = title static
     , body =
         PageHeader.view
             [ Html.text static.data.frontmatter.title ]
-            (Just
-                (Html.p []
-                    [ Html.small []
-                        ([ Html.text ("Posted {date}, on " |> String.replace "{date}" date)
-                         , Html.a [ Attr.href "/" ]
-                            [ Html.text "agj's blog" ]
-                         , Html.text ". "
-                         ]
-                            ++ categoriesTextEls
-                            ++ tagsTextEls
-                        )
-                    ]
-                )
-            )
-            :: [ contentHtml
+            (Just (postInfo |> Ui.layout []))
+            :: [ contentEl |> Ui.layoutWith { options = [] } []
                , View.CodeBlock.styles
                ]
     }
