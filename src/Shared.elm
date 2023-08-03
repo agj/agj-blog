@@ -121,7 +121,7 @@ view :
     -> { body : Html msg, title : String }
 view sharedData page model toMsg pageView =
     { body =
-        Html.main_ [ Attr.class "container" ]
-            [ pageView.body |> Ui.layout [] ]
+        pageView.body
+            |> Ui.layout []
     , title = pageView.title
     }

@@ -21,6 +21,7 @@ import Style
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Heading
+import View.PageBody
 import View.PageHeader
 
 
@@ -147,25 +148,29 @@ view :
     -> StaticPayload Data {}
     -> View Msg
 view maybeUrl sharedModel model static =
+    let
+        content =
+            Ui.row
+                [ Ui.width Ui.fill
+                , Ui.spacing Style.spacing.size3
+                ]
+                [ Data.PostList.view static.sharedData.posts
+                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+                , [ [ Ui.text "Categories" ]
+                        |> View.Heading.view 2
+                  , Category.viewList
+                  , [ Ui.text "Categories" ]
+                        |> View.Heading.view 2
+                  , Tag.listView [] static.sharedData.posts Tag.all
+                  ]
+                    |> View.Column.setSpaced MSpacing
+                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+                ]
+    in
     { title = title static
     , body =
-        [ View.PageHeader.view [ Ui.text "agj's blog" ] Nothing
-        , Ui.row
-            [ Ui.width Ui.fill
-            , Ui.spacing Style.spacing.size3
-            ]
-            [ Data.PostList.view static.sharedData.posts
-                |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
-            , [ [ Ui.text "Categories" ]
-                    |> View.Heading.view 2
-              , Category.viewList
-              , [ Ui.text "Categories" ]
-                    |> View.Heading.view 2
-              , Tag.listView [] static.sharedData.posts Tag.all
-              ]
-                |> View.Column.setSpaced MSpacing
-                |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
-            ]
-        ]
-            |> View.Column.setSpaced MSpacing
+        View.PageBody.fromContent content
+            |> View.PageBody.withTitle
+                [ Ui.text "agj's blog" ]
+            |> View.PageBody.view
     }
