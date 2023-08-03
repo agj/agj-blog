@@ -119,19 +119,7 @@ renderLink { destination } tags =
 
 renderInlineCode : String -> ElmUiTag msg
 renderInlineCode code =
-    [ Html.text code ]
-        |> Html.span
-            [ Html.Attributes.style "white-space" "pre-wrap" ]
-        |> Ui.html
-        |> Ui.el
-            [ UiFont.family [ UiFont.monospace ]
-            , UiFont.size Style.textSizeMonospace.m
-            , UiBackground.color (Style.color.layout05 |> Color.toElmUi)
-            , Ui.paddingXY Style.spacing.size1 0
-            , UiBorder.rounded Style.spacing.size1
-            , Html.Attributes.style "box-decoration-break" "clone"
-                |> Ui.htmlAttribute
-            ]
+    View.Inline.setCode code
         |> ElmUiTag.Inline
 
 

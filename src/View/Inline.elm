@@ -1,5 +1,6 @@
 module View.Inline exposing
     ( setBold
+    , setCode
     , setItalic
     , setLink
     , setStrikethrough
@@ -7,7 +8,11 @@ module View.Inline exposing
 
 import Custom.Color as Color
 import Element as Ui
+import Element.Background as UiBackground
+import Element.Border as UiBorder
 import Element.Font as UiFont
+import Html
+import Html.Attributes
 import Style
 
 
@@ -24,6 +29,23 @@ setItalic children =
 setStrikethrough : List (Ui.Element msg) -> Ui.Element msg
 setStrikethrough children =
     setStyle UiFont.strike children
+
+
+setCode : String -> Ui.Element msg
+setCode code =
+    [ Html.text code ]
+        |> Html.span
+            [ Html.Attributes.style "white-space" "pre-wrap" ]
+        |> Ui.html
+        |> Ui.el
+            [ UiFont.family [ UiFont.monospace ]
+            , UiFont.size Style.textSizeMonospace.m
+            , UiBackground.color (Style.color.layout05 |> Color.toElmUi)
+            , Ui.paddingXY Style.spacing.size1 0
+            , UiBorder.rounded Style.spacing.size1
+            , Html.Attributes.style "box-decoration-break" "clone"
+                |> Ui.htmlAttribute
+            ]
 
 
 setLink : String -> List (Ui.Element msg) -> Ui.Element msg
