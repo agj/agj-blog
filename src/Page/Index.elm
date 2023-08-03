@@ -159,7 +159,7 @@ view maybeUrl sharedModel model static =
                 , [ [ Ui.text "Categories" ]
                         |> View.Heading.view 2
                   , Category.viewList
-                  , [ Ui.text "Categories" ]
+                  , [ Ui.text "Tags" ]
                         |> View.Heading.view 2
                   , Tag.listView [] static.sharedData.posts Tag.all
                   ]
