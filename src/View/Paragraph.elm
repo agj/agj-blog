@@ -7,7 +7,7 @@ import Style
 
 
 view : List (Ui.Element msg) -> Ui.Element msg
-view children =
+view inlines =
     Ui.paragraph
         [ UiFont.color (Color.toElmUi Style.color.layout)
         , UiFont.size Style.textSize.m
@@ -15,4 +15,4 @@ view children =
         , Ui.paddingXY 0 (Style.blockPadding Style.textSize.m Style.interline.m)
         , Ui.width Ui.fill
         ]
-        children
+        inlines
