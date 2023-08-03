@@ -83,6 +83,4 @@ view maybeUrl sharedModel static =
         , Category.viewList
         ]
             |> View.Column.setSpaced MSpacing
-            |> Ui.layout []
-            |> List.singleton
     }

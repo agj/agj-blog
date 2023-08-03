@@ -5,6 +5,7 @@ import Data.Category as Category exposing (Category)
 import Data.Post as Post
 import Data.Tag as Tag exposing (Tag)
 import DataSource exposing (DataSource)
+import Element as Ui
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Pages.Flags
@@ -121,6 +122,6 @@ view :
 view sharedData page model toMsg pageView =
     { body =
         Html.main_ [ Attr.class "container" ]
-            pageView.body
+            [ pageView.body |> Ui.layout [] ]
     , title = pageView.title
     }

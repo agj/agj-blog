@@ -215,13 +215,11 @@ view maybeUrl sharedModel model static =
     in
     { title = title static
     , body =
-        [ [ PageHeader.view
-                [ Ui.text static.data.frontmatter.title ]
-                (Just postInfo)
-          , contentEl
-          ]
-            |> View.Column.setSpaced MSpacing
-            |> Ui.layout []
-        , View.CodeBlock.styles
+        [ PageHeader.view
+            [ Ui.text static.data.frontmatter.title ]
+            (Just postInfo)
+        , contentEl
+        , View.CodeBlock.styles |> Ui.html
         ]
+            |> View.Column.setSpaced MSpacing
     }

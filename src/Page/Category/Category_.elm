@@ -91,7 +91,7 @@ view maybeUrl sharedModel static =
     case Category.fromSlug static.routeParams.category of
         Err _ ->
             { title = "Category not found!"
-            , body = []
+            , body = Ui.none
             }
 
         Ok category ->
@@ -129,6 +129,4 @@ view maybeUrl sharedModel static =
                 , postViews
                 ]
                     |> View.Column.setSpaced MSpacing
-                    |> Ui.layout []
-                    |> List.singleton
             }

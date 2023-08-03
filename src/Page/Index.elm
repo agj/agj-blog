@@ -170,6 +170,4 @@ view maybeUrl sharedModel model static =
             ]
         ]
             |> View.Column.setSpaced MSpacing
-            |> Ui.layout []
-            |> List.singleton
     }

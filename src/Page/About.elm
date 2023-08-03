@@ -100,6 +100,4 @@ view maybeUrl sharedModel static =
                     static.data.markdown
                ]
             |> View.Column.setSpaced MSpacing
-            |> Ui.layout []
-            |> List.singleton
     }
