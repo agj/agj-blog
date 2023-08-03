@@ -19,6 +19,7 @@ import View.AudioPlayer
 import View.CodeBlock
 import View.Column exposing (Spacing(..))
 import View.Inline
+import View.PageBody
 import View.PageHeader
 import View.Paragraph
 
@@ -204,7 +205,7 @@ view maybeUrl sharedModel model static =
                 |> View.Paragraph.view
 
         contentEl =
-            CustomMarkup.toElmUi
+            [ CustomMarkup.toElmUi
                 { audioPlayer =
                     Just
                         { audioPlayerState = model.audioPlayerState
@@ -212,14 +213,15 @@ view maybeUrl sharedModel model static =
                         }
                 }
                 static.data.markdown
+            , View.CodeBlock.styles |> Ui.html
+            ]
+                |> Ui.column []
     in
     { title = title static
     , body =
-        [ View.PageHeader.view
-            [ Ui.text static.data.frontmatter.title ]
-            (Just postInfo)
-        , contentEl
-        , View.CodeBlock.styles |> Ui.html
-        ]
-            |> View.Column.setSpaced MSpacing
+        View.PageBody.fromContent contentEl
+            |> View.PageBody.withTitleAndSubtitle
+                [ Ui.text static.data.frontmatter.title ]
+                postInfo
+            |> View.PageBody.view
     }
