@@ -20,7 +20,7 @@ type PageBody msg
 type PageTitle msg
     = NoPageTitle
     | PageTitleOnly (List (Ui.Element msg))
-    | PageTitleAndSubtitle (List (Ui.Element msg)) (List (Ui.Element msg))
+    | PageTitleAndSubtitle (List (Ui.Element msg)) (Ui.Element msg)
 
 
 fromContent : Ui.Element msg -> PageBody msg
@@ -36,9 +36,9 @@ withTitle titleInlines (PageBody config) =
     PageBody { config | title = PageTitleOnly titleInlines }
 
 
-withTitleAndSubtitle : List (Ui.Element msg) -> List (Ui.Element msg) -> PageBody msg -> PageBody msg
-withTitleAndSubtitle titleInlines subtitleInlines (PageBody config) =
-    PageBody { config | title = PageTitleAndSubtitle titleInlines subtitleInlines }
+withTitleAndSubtitle : List (Ui.Element msg) -> Ui.Element msg -> PageBody msg -> PageBody msg
+withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
+    PageBody { config | title = PageTitleAndSubtitle titleInlines subtitleBlock }
 
 
 view : PageBody msg -> Ui.Element msg
@@ -54,8 +54,9 @@ view (PageBody config) =
                         |> Just
 
                 PageTitleAndSubtitle title_ subtitle ->
-                    View.Heading.view 1 title_
-                        :: subtitle
+                    [ View.Heading.view 1 title_
+                    , subtitle
+                    ]
                         |> View.Column.setSpaced MSpacing
                         |> Just
 
