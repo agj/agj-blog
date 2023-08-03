@@ -6,14 +6,15 @@ import Data.PostList
 import DataSource exposing (DataSource)
 import Element as Ui
 import Head
-import Html
-import Html.Attributes as Attr
 import List.Extra as List
 import Page exposing (Page, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Shared
 import Site
 import View exposing (View)
+import View.Column exposing (Spacing(..))
+import View.Inline
+import View.Paragraph
 
 
 page : Page RouteParams Data
@@ -101,30 +102,33 @@ view maybeUrl sharedModel static =
 
                 postViews =
                     Data.PostList.view posts
-                        |> Ui.layout []
 
                 titleEl =
-                    [ Html.text "Category: "
-                    , Html.em []
-                        [ Html.text (Category.getName category) ]
+                    [ Ui.text "Category: "
+                    , [ Ui.text (Category.getName category) ]
+                        |> View.Inline.setItalic
                     ]
 
                 backToIndexEls =
-                    [ Html.text "Back to "
-                    , Html.a [ Attr.href "/" ] [ Html.text "the index" ]
-                    , Html.text "."
+                    [ Ui.text "Back to "
+                    , [ Ui.text "the index" ]
+                        |> View.Inline.setLink "/"
+                    , Ui.text "."
                     ]
 
                 descriptionEl =
                     Category.getDescription category
                         |> Maybe.map
-                            (\desc -> Html.text (desc ++ " ") :: backToIndexEls)
+                            (\desc -> Ui.text (desc ++ " ") :: backToIndexEls)
                         |> Maybe.withDefault backToIndexEls
-                        |> Html.p []
+                        |> View.Paragraph.view
             in
             { title = title static
             , body =
                 [ PageHeader.view titleEl (Just descriptionEl)
                 , postViews
                 ]
+                    |> View.Column.setSpaced MSpacing
+                    |> Ui.layout []
+                    |> List.singleton
             }

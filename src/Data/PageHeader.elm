@@ -1,21 +1,18 @@
 module Data.PageHeader exposing (..)
 
-import Html exposing (Html)
+import Element as Ui
+import View.Column exposing (Spacing(..))
+import View.Heading
 
 
-view : List (Html msg) -> Maybe (Html msg) -> Html msg
+view : List (Ui.Element msg) -> Maybe (Ui.Element msg) -> Ui.Element msg
 view title subtitleM =
     case subtitleM of
         Just subtitle ->
-            Html.header []
-                [ Html.node "hgroup"
-                    []
-                    [ Html.h1 [] title
-                    , subtitle
-                    ]
-                ]
+            [ View.Heading.view 1 title
+            , subtitle
+            ]
+                |> View.Column.setSpaced MSpacing
 
         Nothing ->
-            Html.header []
-                [ Html.h1 [] title
-                ]
+            View.Heading.view 1 title

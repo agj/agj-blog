@@ -5,13 +5,14 @@ import Data.PageHeader as PageHeader
 import DataSource exposing (DataSource)
 import Element as Ui
 import Head
-import Html exposing (Html)
-import Html.Attributes as Attr
 import Page exposing (Page, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Shared
 import Site
 import View exposing (View)
+import View.Column exposing (Spacing(..))
+import View.Inline
+import View.Paragraph
 
 
 page : Page {} Data
@@ -69,16 +70,19 @@ view maybeUrl sharedModel static =
     { title = title static
     , body =
         [ PageHeader.view
-            [ Html.text "Categories" ]
+            [ Ui.text "Categories" ]
             (Just
-                (Html.p []
-                    [ Html.text "Back to "
-                    , Html.a [ Attr.href "/" ] [ Html.text "the index" ]
-                    , Html.text "."
-                    ]
+                ([ Ui.text "Back to "
+                 , [ Ui.text "the index" ]
+                    |> View.Inline.setLink "/"
+                 , Ui.text "."
+                 ]
+                    |> View.Paragraph.view
                 )
             )
         , Category.viewList
-            |> Ui.layout []
         ]
+            |> View.Column.setSpaced MSpacing
+            |> Ui.layout []
+            |> List.singleton
     }

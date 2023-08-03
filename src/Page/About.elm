@@ -6,8 +6,6 @@ import DataSource exposing (DataSource)
 import DataSource.File
 import Element as Ui
 import Head
-import Html exposing (Html)
-import Html.Attributes as Attr
 import OptimizedDecoder as Decode exposing (Decoder)
 import OptimizedDecoder.Pipeline as Decode
 import Page exposing (Page, PageWithState, StaticPayload)
@@ -15,6 +13,9 @@ import Pages.PageUrl exposing (PageUrl)
 import Shared
 import Site
 import View exposing (View)
+import View.Column exposing (Spacing(..))
+import View.Inline
+import View.Paragraph
 
 
 page : Page RouteParams Data
@@ -84,18 +85,21 @@ view maybeUrl sharedModel static =
     { title = title static
     , body =
         PageHeader.view
-            [ Html.text static.data.title ]
+            [ Ui.text static.data.title ]
             (Just
-                (Html.p []
-                    [ Html.text "Back to "
-                    , Html.a [ Attr.href "/" ] [ Html.text "the index" ]
-                    , Html.text "."
-                    ]
+                ([ Ui.text "Back to "
+                 , [ Ui.text "the index" ]
+                    |> View.Inline.setLink "/"
+                 , Ui.text "."
+                 ]
+                    |> View.Paragraph.view
                 )
             )
             :: [ CustomMarkup.toElmUi
                     { audioPlayer = Nothing }
                     static.data.markdown
-                    |> Ui.layout []
                ]
+            |> View.Column.setSpaced MSpacing
+            |> Ui.layout []
+            |> List.singleton
     }

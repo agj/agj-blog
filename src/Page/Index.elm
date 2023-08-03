@@ -20,7 +20,10 @@ import Path exposing (Path)
 import QueryParams exposing (QueryParams)
 import Shared
 import Site
+import Style
 import View exposing (View)
+import View.Column exposing (Spacing(..))
+import View.Heading
 
 
 page : PageWithState {} Data Model Msg
@@ -148,28 +151,25 @@ view :
 view maybeUrl sharedModel model static =
     { title = title static
     , body =
-        [ PageHeader.view [ Html.text "agj's blog" ] Nothing
-        , Html.div [ Attr.class "grid" ]
-            [ Html.section []
-                [ Data.PostList.view static.sharedData.posts
-                    |> Ui.layoutWith { options = [] } []
-                ]
-            , Html.section []
-                [ Html.article []
-                    [ Html.h3 []
-                        [ Html.text "Categories" ]
-                    , Category.viewList
-                        |> Ui.layout []
-                    ]
-                , Html.article []
-                    [ Html.h3 []
-                        [ Html.text "Tags" ]
-                    , Html.p []
-                        [ Tag.listView [] static.sharedData.posts Tag.all
-                            |> Ui.layoutWith { options = [] } []
-                        ]
-                    ]
-                ]
+        [ PageHeader.view [ Ui.text "agj's blog" ] Nothing
+        , Ui.row
+            [ Ui.width Ui.fill
+            , Ui.spacing Style.spacing.size3
+            ]
+            [ Data.PostList.view static.sharedData.posts
+                |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+            , [ [ Ui.text "Categories" ]
+                    |> View.Heading.view 2
+              , Category.viewList
+              , [ Ui.text "Categories" ]
+                    |> View.Heading.view 2
+              , Tag.listView [] static.sharedData.posts Tag.all
+              ]
+                |> View.Column.setSpaced MSpacing
+                |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
             ]
         ]
+            |> View.Column.setSpaced MSpacing
+            |> Ui.layout []
+            |> List.singleton
     }

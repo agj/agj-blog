@@ -9,8 +9,6 @@ import DataSource exposing (DataSource)
 import Dict exposing (Dict)
 import Element as Ui
 import Head
-import Html exposing (Html)
-import Html.Attributes as Attr
 import List.Extra as List
 import Page exposing (PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
@@ -19,8 +17,12 @@ import QueryParams exposing (QueryParams)
 import Result.Extra as Result
 import Shared
 import Site
+import Style
 import Url.Builder exposing (QueryParameter)
 import View exposing (View)
+import View.Column exposing (Spacing(..))
+import View.Inline
+import View.Paragraph
 
 
 page : PageWithState {} Data Model Msg
@@ -135,7 +137,6 @@ view maybeUrl sharedModel model static =
 
         postViews =
             Data.PostList.view posts
-                |> Ui.layout []
 
         subTags =
             posts
@@ -153,53 +154,52 @@ view maybeUrl sharedModel model static =
                         [] ->
                             Tag.baseUrl
             in
-            Html.a
-                [ Attr.class "removable contrast"
-                , Attr.href url
-                , Attr.attribute "data-tooltip" "Remove from filter"
-                ]
-                [ Html.text (Tag.getName tag) ]
+            [ Ui.text (Tag.getName tag) ]
+                |> View.Inline.setLink url
 
         titleChildren =
             if List.length model.queryTags > 0 then
-                [ Html.text "Tags: "
-                , Html.em []
-                    (model.queryTags
-                        |> List.map tagToEl
-                        |> List.intersperse (Html.text ", ")
-                    )
+                [ Ui.text "Tags: "
+                , (model.queryTags
+                    |> List.map tagToEl
+                    |> List.intersperse (Ui.text ", ")
+                  )
+                    |> View.Inline.setItalic
                 ]
 
             else
-                [ Html.text "Tags" ]
+                [ Ui.text "Tags" ]
     in
     { title = title static
     , body =
         [ PageHeader.view titleChildren
             (Just
-                (Html.p []
-                    [ Html.text "Back to "
-                    , Html.a [ Attr.href "/" ] [ Html.text "the index" ]
-                    , Html.text "."
-                    ]
+                ([ Ui.text "Back to "
+                 , [ Ui.text "the index" ]
+                    |> View.Inline.setLink "/"
+                 , Ui.text "."
+                 ]
+                    |> View.Paragraph.view
                 )
             )
-        , Html.div [ Attr.class "grid" ]
+        , Ui.row
+            [ Ui.width Ui.fill
+            , Ui.spacing Style.spacing.size3
+            ]
             ((if List.length model.queryTags > 0 then
-                [ Html.section [] [ postViews ] ]
+                [ postViews
+                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+                ]
 
               else
                 []
              )
-                ++ [ Html.section []
-                        [ Html.article []
-                            [ Html.p []
-                                [ Tag.listView model.queryTags static.sharedData.posts subTags
-                                    |> Ui.layoutWith { options = [] } []
-                                ]
-                            ]
-                        ]
+                ++ [ Tag.listView model.queryTags static.sharedData.posts subTags
+                        |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
                    ]
             )
         ]
+            |> View.Column.setSpaced MSpacing
+            |> Ui.layout []
+            |> List.singleton
     }

@@ -10,8 +10,6 @@ import Data.Tag as Tag
 import DataSource exposing (DataSource)
 import Element as Ui
 import Head
-import Html exposing (Html)
-import Html.Attributes as Attr
 import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Path exposing (Path)
@@ -20,6 +18,7 @@ import Site
 import View exposing (View)
 import View.AudioPlayer
 import View.CodeBlock
+import View.Column exposing (Spacing(..))
 import View.Inline
 import View.Paragraph
 
@@ -216,10 +215,13 @@ view maybeUrl sharedModel model static =
     in
     { title = title static
     , body =
-        PageHeader.view
-            [ Html.text static.data.frontmatter.title ]
-            (Just (postInfo |> Ui.layout []))
-            :: [ contentEl |> Ui.layoutWith { options = [] } []
-               , View.CodeBlock.styles
-               ]
+        [ [ PageHeader.view
+                [ Ui.text static.data.frontmatter.title ]
+                (Just postInfo)
+          , contentEl
+          ]
+            |> View.Column.setSpaced MSpacing
+            |> Ui.layout []
+        , View.CodeBlock.styles
+        ]
     }
