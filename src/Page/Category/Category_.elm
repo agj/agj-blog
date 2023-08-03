@@ -4,6 +4,7 @@ import Data.Category as Category exposing (Category)
 import Data.PageHeader as PageHeader
 import Data.PostList
 import DataSource exposing (DataSource)
+import Element as Ui
 import Head
 import Html
 import Html.Attributes as Attr
@@ -100,6 +101,7 @@ view maybeUrl sharedModel static =
 
                 postViews =
                     Data.PostList.view posts
+                        |> Ui.layout []
 
                 titleEl =
                     [ Html.text "Category: "
@@ -122,6 +124,7 @@ view maybeUrl sharedModel static =
             in
             { title = title static
             , body =
-                PageHeader.view titleEl (Just descriptionEl)
-                    :: postViews
+                [ PageHeader.view titleEl (Just descriptionEl)
+                , postViews
+                ]
             }

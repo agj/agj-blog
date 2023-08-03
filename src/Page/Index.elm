@@ -151,13 +151,15 @@ view maybeUrl sharedModel model static =
         [ PageHeader.view [ Html.text "agj's blog" ] Nothing
         , Html.div [ Attr.class "grid" ]
             [ Html.section []
-                (Data.PostList.view static.sharedData.posts)
+                [ Data.PostList.view static.sharedData.posts
+                    |> Ui.layout []
+                ]
             , Html.section []
                 [ Html.article []
                     [ Html.h3 []
                         [ Html.text "Categories" ]
                     , Category.viewList
-                        |> Ui.layout []
+                        |> Ui.layoutWith { options = [] } []
                     ]
                 , Html.article []
                     [ Html.h3 []

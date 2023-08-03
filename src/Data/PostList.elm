@@ -6,7 +6,6 @@ import Data.Date as Date
 import Data.Post as Post
 import Element as Ui
 import Html exposing (Html)
-import Html.Attributes as Attr
 import List.Extra as List
 import View.Column exposing (Spacing(..))
 import View.Heading
@@ -15,7 +14,7 @@ import View.List
 import View.Paragraph
 
 
-view : List Post.GlobMatchFrontmatter -> List (Html msg)
+view : List Post.GlobMatchFrontmatter -> Ui.Element msg
 view posts =
     let
         padNumber : Int -> String
@@ -44,8 +43,6 @@ view posts =
     gistsByYearAndMonth
         |> List.map viewGistYear
         |> View.Column.setSpaced MSpacing
-        |> Ui.layout []
-        |> List.singleton
 
 
 

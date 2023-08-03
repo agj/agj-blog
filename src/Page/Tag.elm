@@ -7,6 +7,7 @@ import Data.PostList
 import Data.Tag as Tag exposing (Tag)
 import DataSource exposing (DataSource)
 import Dict exposing (Dict)
+import Element as Ui
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attr
@@ -134,6 +135,7 @@ view maybeUrl sharedModel model static =
 
         postViews =
             Data.PostList.view posts
+                |> Ui.layout []
 
         subTags =
             posts
@@ -184,7 +186,7 @@ view maybeUrl sharedModel model static =
             )
         , Html.div [ Attr.class "grid" ]
             ((if List.length model.queryTags > 0 then
-                [ Html.section [] postViews ]
+                [ Html.section [] [ postViews ] ]
 
               else
                 []
