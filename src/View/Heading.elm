@@ -1,10 +1,10 @@
 module View.Heading exposing (..)
 
 import Custom.Color as Color
+import Custom.Element as Ui
 import Element as Ui
 import Element.Font as UiFont
 import Element.Region as UiRegion
-import Html.Attributes
 import Style
 
 
@@ -68,10 +68,8 @@ view level content =
                 Just text ->
                     Ui.text (text ++ " ")
                         |> Ui.el
-                            [ Html.Attributes.attribute "aria-hidden" "true"
-                                |> Ui.htmlAttribute
-                            , Html.Attributes.style "user-select" "none"
-                                |> Ui.htmlAttribute
+                            [ Ui.hiddenToScreenReaders
+                            , Ui.nonSelectable
                             ]
 
                 Nothing ->

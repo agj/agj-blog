@@ -10,8 +10,6 @@ import DataSource exposing (DataSource)
 import Dict exposing (Dict)
 import Element as Ui
 import Head
-import Html exposing (Html)
-import Html.Attributes as Attr
 import List.Extra as List
 import Maybe.Extra as Maybe
 import Page exposing (Page, PageWithState, StaticPayload)

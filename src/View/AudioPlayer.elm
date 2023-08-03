@@ -15,7 +15,6 @@ import Element.Background as UiBackground
 import Element.Border as UiBorder
 import Element.Font as UiFont
 import Element.Input as UiInput
-import Html exposing (Html)
 import Icon
 import Markdown.Html
 import Style

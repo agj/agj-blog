@@ -8,7 +8,7 @@ module View.VideoEmbed exposing
 import CustomMarkup.ElmUiTag exposing (ElmUiTag)
 import Element as Ui
 import Html exposing (Html)
-import Html.Attributes as Attr
+import Html.Attributes
 import Markdown.Html
 import View.Figure
 
@@ -63,11 +63,11 @@ view videoEmbed =
 
         iframe =
             Html.iframe
-                [ Attr.src src
-                , Attr.attribute "frameborder" "0"
-                , Attr.attribute "allowfullscreen" "allowfullscreen"
-                , Attr.style "width" ((videoEmbed.width |> String.fromInt) ++ "px")
-                , Attr.style "height" ((videoEmbed.height |> String.fromInt) ++ "px")
+                [ Html.Attributes.src src
+                , Html.Attributes.attribute "frameborder" "0"
+                , Html.Attributes.attribute "allowfullscreen" "allowfullscreen"
+                , Html.Attributes.style "width" ((videoEmbed.width |> String.fromInt) ++ "px")
+                , Html.Attributes.style "height" ((videoEmbed.height |> String.fromInt) ++ "px")
                 ]
                 []
     in

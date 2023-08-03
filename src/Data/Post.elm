@@ -15,7 +15,6 @@ import Data.Tag as Tag exposing (Tag)
 import DataSource exposing (DataSource)
 import DataSource.File
 import DataSource.Glob as Glob exposing (Glob)
-import Html exposing (Html)
 import OptimizedDecoder as Decode exposing (Decoder)
 import OptimizedDecoder.Pipeline as Decode
 

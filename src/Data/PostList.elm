@@ -5,7 +5,6 @@ import Data.Category as Category exposing (Category)
 import Data.Date as Date
 import Data.Post as Post
 import Element as Ui
-import Html exposing (Html)
 import List.Extra as List
 import View.Column exposing (Spacing(..))
 import View.Heading

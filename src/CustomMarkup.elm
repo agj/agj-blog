@@ -4,10 +4,6 @@ import Custom.Color as Color
 import CustomMarkup.ElmUiTag as ElmUiTag exposing (ElmUiTag)
 import Element as Ui
 import Element.Background as UiBackground
-import Element.Border as UiBorder
-import Element.Font as UiFont
-import Html
-import Html.Attributes
 import List.Extra as List
 import Markdown.Block
 import Markdown.Html

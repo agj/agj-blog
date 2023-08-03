@@ -12,7 +12,7 @@ module Icon exposing
 import Element as Ui
 import Heroicons.Solid
 import Html exposing (Attribute, Html)
-import Html.Attributes as HtmlAttr
+import Html.Attributes
 
 
 type alias Icon msg =
@@ -56,8 +56,8 @@ stop size =
 none : Icon msg
 none size =
     Html.div
-        [ HtmlAttr.style "width" (sizeToEms size)
-        , HtmlAttr.style "height" (sizeToEms size)
+        [ Html.Attributes.style "width" (sizeToEms size)
+        , Html.Attributes.style "height" (sizeToEms size)
         ]
         []
         |> Ui.html
@@ -71,7 +71,7 @@ none size =
 style : Size -> (List (Attribute msg) -> Html msg) -> Ui.Element msg
 style size icon =
     icon
-        [ HtmlAttr.style "width" (sizeToEms size)
+        [ Html.Attributes.style "width" (sizeToEms size)
         ]
         |> Ui.html
         |> Ui.el []
