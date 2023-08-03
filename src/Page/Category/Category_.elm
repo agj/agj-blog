@@ -1,7 +1,6 @@
 module Page.Category.Category_ exposing (Data, Model, Msg, page)
 
 import Data.Category as Category exposing (Category)
-import Data.PageHeader as PageHeader
 import Data.PostList
 import DataSource exposing (DataSource)
 import Element as Ui
@@ -14,6 +13,7 @@ import Site
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Inline
+import View.PageHeader
 import View.Paragraph
 
 
@@ -125,7 +125,7 @@ view maybeUrl sharedModel static =
             in
             { title = title static
             , body =
-                [ PageHeader.view titleEl (Just descriptionEl)
+                [ View.PageHeader.view titleEl (Just descriptionEl)
                 , postViews
                 ]
                     |> View.Column.setSpaced MSpacing

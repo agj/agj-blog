@@ -1,7 +1,6 @@
 module Page.About exposing (Data, Model, Msg, page)
 
 import CustomMarkup
-import Data.PageHeader as PageHeader
 import DataSource exposing (DataSource)
 import DataSource.File
 import Element as Ui
@@ -15,6 +14,7 @@ import Site
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Inline
+import View.PageHeader
 import View.Paragraph
 
 
@@ -84,7 +84,7 @@ view :
 view maybeUrl sharedModel static =
     { title = title static
     , body =
-        PageHeader.view
+        View.PageHeader.view
             [ Ui.text static.data.title ]
             (Just
                 ([ Ui.text "Back to "

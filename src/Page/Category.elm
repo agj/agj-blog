@@ -1,7 +1,6 @@
 module Page.Category exposing (Data, Model, Msg, page)
 
 import Data.Category as Category
-import Data.PageHeader as PageHeader
 import DataSource exposing (DataSource)
 import Element as Ui
 import Head
@@ -12,6 +11,7 @@ import Site
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Inline
+import View.PageHeader
 import View.Paragraph
 
 
@@ -69,7 +69,7 @@ view :
 view maybeUrl sharedModel static =
     { title = title static
     , body =
-        [ PageHeader.view
+        [ View.PageHeader.view
             [ Ui.text "Categories" ]
             (Just
                 ([ Ui.text "Back to "

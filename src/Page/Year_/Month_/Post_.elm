@@ -4,7 +4,6 @@ import Browser.Navigation
 import CustomMarkup
 import Data.Category as Category
 import Data.Date as Date
-import Data.PageHeader as PageHeader
 import Data.Post as Post exposing (Post)
 import Data.Tag as Tag
 import DataSource exposing (DataSource)
@@ -20,6 +19,7 @@ import View.AudioPlayer
 import View.CodeBlock
 import View.Column exposing (Spacing(..))
 import View.Inline
+import View.PageHeader
 import View.Paragraph
 
 
@@ -215,7 +215,7 @@ view maybeUrl sharedModel model static =
     in
     { title = title static
     , body =
-        [ PageHeader.view
+        [ View.PageHeader.view
             [ Ui.text static.data.frontmatter.title ]
             (Just postInfo)
         , contentEl

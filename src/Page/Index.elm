@@ -2,7 +2,6 @@ module Page.Index exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
 import Data.Category as Category exposing (Category, NestedCategory)
-import Data.PageHeader as PageHeader
 import Data.Post as Post
 import Data.PostList
 import Data.Tag as Tag
@@ -22,6 +21,7 @@ import Style
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Heading
+import View.PageHeader
 
 
 page : PageWithState {} Data Model Msg
@@ -149,7 +149,7 @@ view :
 view maybeUrl sharedModel model static =
     { title = title static
     , body =
-        [ PageHeader.view [ Ui.text "agj's blog" ] Nothing
+        [ View.PageHeader.view [ Ui.text "agj's blog" ] Nothing
         , Ui.row
             [ Ui.width Ui.fill
             , Ui.spacing Style.spacing.size3

@@ -2,7 +2,6 @@ module Page.Tag exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
 import Custom.List as List
-import Data.PageHeader as PageHeader
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
 import DataSource exposing (DataSource)
@@ -22,6 +21,7 @@ import Url.Builder exposing (QueryParameter)
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Inline
+import View.PageHeader
 import View.Paragraph
 
 
@@ -172,7 +172,7 @@ view maybeUrl sharedModel model static =
     in
     { title = title static
     , body =
-        [ PageHeader.view titleChildren
+        [ View.PageHeader.view titleChildren
             (Just
                 ([ Ui.text "Back to "
                  , [ Ui.text "the index" ]
