@@ -194,7 +194,9 @@ view maybeUrl sharedModel model static =
                 ++ [ Html.section []
                         [ Html.article []
                             [ Html.p []
-                                (Tag.listView model.queryTags static.sharedData.posts subTags)
+                                [ Tag.listView model.queryTags static.sharedData.posts subTags
+                                    |> Ui.layoutWith { options = [] } []
+                                ]
                             ]
                         ]
                    ]

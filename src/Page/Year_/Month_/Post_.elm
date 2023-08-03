@@ -180,18 +180,18 @@ view maybeUrl sharedModel model static =
 
         tagEls =
             static.data.frontmatter.tags
-                |> List.map (Tag.toLink [] [])
-                |> List.intersperse (Html.text ", ")
+                |> List.map (Tag.toLink [])
+                |> List.intersperse (Ui.text ", ")
 
         tagsTextEls =
             if List.length static.data.frontmatter.tags > 0 then
-                [ Html.text "Tags: "
-                , Html.em [] tagEls
-                , Html.text "."
+                [ Ui.text "Tags: "
+                , View.Inline.setItalic tagEls
+                , Ui.text "."
                 ]
 
             else
-                [ Html.text "No tags." ]
+                [ Ui.text "No tags." ]
 
         postInfo =
             ([ Ui.text ("Posted {date}, on " |> String.replace "{date}" date)
@@ -200,7 +200,7 @@ view maybeUrl sharedModel model static =
              , Ui.text ". "
              ]
                 ++ categoriesTextEls
-                ++ [ tagsTextEls |> Html.span [] |> Ui.html ]
+                ++ tagsTextEls
             )
                 |> View.Paragraph.view
 

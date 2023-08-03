@@ -13,11 +13,12 @@ module Data.Tag exposing
     )
 
 import DataSource exposing (DataSource)
-import Html exposing (Html)
-import Html.Attributes as Attr
+import Element as Ui
 import List.Extra as List
 import Maybe.Extra as Maybe
 import OptimizedDecoder as Decode exposing (Decoder)
+import View.Inline
+import View.Paragraph
 
 
 type Tag
@@ -70,40 +71,36 @@ slugsToUrl firstSlug moreSlugs =
         |> String.replace "{slugs}" slugs
 
 
-toLink : List Tag -> List (Html.Attribute msg) -> Tag -> Html msg
-toLink tagsToAddTo attrs tag =
+toLink : List Tag -> Tag -> Ui.Element msg
+toLink tagsToAddTo tag =
     let
-        aEl =
-            Html.a
-                ([ Attr.href (toUrl tag [])
-                 , Attr.class "tag"
-                 ]
-                    ++ attrs
-                )
-                [ Html.text (getName tag) ]
+        singleLink =
+            [ Ui.text (getName tag) ]
+                |> View.Inline.setLink (toUrl tag [])
     in
     case tagsToAddTo of
-        moreTag :: moreTags ->
-            Html.span [ Attr.class "tag" ]
-                [ aEl
-                , Html.text " "
-                , Html.a
-                    [ Attr.href (toUrl tag (moreTag :: moreTags))
-                    , Attr.attribute "role" "button"
-                    , Attr.attribute "data-tooltip" "Add to filter"
-                    ]
-                    [ Html.text "+" ]
-                ]
+        _ :: _ ->
+            let
+                addLink =
+                    [ Ui.text "+" ]
+                        |> View.Inline.setLink (toUrl tag tagsToAddTo)
+            in
+            [ singleLink
+            , Ui.text "["
+            , addLink
+            , Ui.text "]"
+            ]
+                |> Ui.paragraph []
 
         [] ->
-            aEl
+            singleLink
 
 
 listView :
     List Tag
     -> List { a | frontmatter : { b | tags : List Tag } }
     -> List Tag
-    -> List (Html msg)
+    -> Ui.Element msg
 listView selectedTags posts relatedTags =
     let
         tagsCount =
@@ -131,18 +128,11 @@ listView selectedTags posts relatedTags =
                 |> List.map Tuple.second
                 |> List.minimum
                 |> Maybe.withDefault 0
-
-        tagElAttrs count =
-            let
-                opacity =
-                    (toFloat (count - minCount) / toFloat (maxCount - minCount) * 0.7)
-                        + 0.3
-            in
-            [ Attr.style "opacity" (String.fromFloat opacity) ]
     in
     tagsCount
-        |> List.map (\( tag, count ) -> toLink selectedTags (tagElAttrs count) tag)
-        |> List.intersperse (Html.text ", ")
+        |> List.map (\( tag, count ) -> toLink selectedTags tag)
+        |> List.intersperse (Ui.text ", ")
+        |> View.Paragraph.view
 
 
 decoder : Decoder Tag

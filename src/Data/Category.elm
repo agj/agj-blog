@@ -14,8 +14,6 @@ module Data.Category exposing
     )
 
 import Element as Ui
-import Html exposing (Html)
-import Html.Attributes as Attr
 import List.Extra as List
 import OptimizedDecoder as Decode exposing (Decoder)
 import View.Column exposing (Spacing(..))

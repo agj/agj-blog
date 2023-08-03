@@ -152,20 +152,22 @@ view maybeUrl sharedModel model static =
         , Html.div [ Attr.class "grid" ]
             [ Html.section []
                 [ Data.PostList.view static.sharedData.posts
-                    |> Ui.layout []
+                    |> Ui.layoutWith { options = [] } []
                 ]
             , Html.section []
                 [ Html.article []
                     [ Html.h3 []
                         [ Html.text "Categories" ]
                     , Category.viewList
-                        |> Ui.layoutWith { options = [] } []
+                        |> Ui.layout []
                     ]
                 , Html.article []
                     [ Html.h3 []
                         [ Html.text "Tags" ]
                     , Html.p []
-                        (Tag.listView [] static.sharedData.posts Tag.all)
+                        [ Tag.listView [] static.sharedData.posts Tag.all
+                            |> Ui.layoutWith { options = [] } []
+                        ]
                     ]
                 ]
             ]
