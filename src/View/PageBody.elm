@@ -82,6 +82,12 @@ view (PageBody config) =
                 [ Ui.width (Ui.px 900)
                 , Ui.centerX
                 , Ui.paddingXY Style.spacing.size4 Style.spacing.size6
+                , Ui.paddingEach
+                    { top = Style.spacing.size6
+                    , left = Style.spacing.size4
+                    , right = Style.spacing.size4
+                    , bottom = Style.spacing.size9
+                    }
                 ]
                 config.content
                 |> Ui.el
