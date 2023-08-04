@@ -4,14 +4,14 @@ title: Illustrated mythology
 date: 30
 hour: 18
 categories:
-- graphics
+  - graphics
 tags:
-- book
-- chile
-- espanol
-- graphic-design
-- illustration
-- university
+  - book
+  - chile
+  - espanol
+  - graphic-design
+  - illustration
+  - university
 language: eng
 ---
 
@@ -27,16 +27,16 @@ That was the final cover, I'm not sure whose design it is, but it showcases some
 
 And that is how the book looks on the inside. The page on the left is my own work. Some are better than others, but here are all of them:
 
-	- [El balsero](//piclog.agj.cl/index.php?showimage=24)
-	- [Brujo tonto](//piclog.agj.cl/index.php?showimage=25)
-	- [Cahuelche](//piclog.agj.cl/index.php?showimage=26)
-	- [Chinifilu](//piclog.agj.cl/index.php?showimage=27)
-	- [Deñ](//piclog.agj.cl/index.php?showimage=28)
-	- [Haucella](//piclog.agj.cl/index.php?showimage=29)
-	- [Huala](//piclog.agj.cl/index.php?showimage=30)
-	- [Piruquina](//piclog.agj.cl/index.php?showimage=31)
-	- [Sietecolores](//piclog.agj.cl/index.php?showimage=32)
-	- [La voladora](//piclog.agj.cl/index.php?showimage=33)
+- [El balsero](//piclog.agj.cl/index.php?showimage=24)
+- [Brujo tonto](//piclog.agj.cl/index.php?showimage=25)
+- [Cahuelche](//piclog.agj.cl/index.php?showimage=26)
+- [Chinifilu](//piclog.agj.cl/index.php?showimage=27)
+- [Deñ](//piclog.agj.cl/index.php?showimage=28)
+- [Haucella](//piclog.agj.cl/index.php?showimage=29)
+- [Huala](//piclog.agj.cl/index.php?showimage=30)
+- [Piruquina](//piclog.agj.cl/index.php?showimage=31)
+- [Sietecolores](//piclog.agj.cl/index.php?showimage=32)
+- [La voladora](//piclog.agj.cl/index.php?showimage=33)
 
 <!-- more -->
 
