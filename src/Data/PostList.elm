@@ -31,14 +31,29 @@ view posts =
         getTime gist =
             gist.year ++ gist.month ++ getDateHour gist
 
-        gistsByYearAndMonth : List ( String, List ( String, List Post.GlobMatchFrontmatter ) )
+        gistsByYearAndMonth : List ( String, List ( Int, List Post.GlobMatchFrontmatter ) )
         gistsByYearAndMonth =
             posts
                 |> List.gatherUnder .year
                 |> List.sortBy Tuple.first
-                |> List.map (Tuple.mapSecond (List.gatherUnder .month >> List.sortBy Tuple.first >> List.reverse))
-                |> List.map (Tuple.mapSecond (List.map (Tuple.mapSecond (List.sortBy getTime >> List.reverse))))
                 |> List.reverse
+                |> List.map
+                    (\( year, yearGists ) ->
+                        ( year
+                        , yearGists
+                            |> List.gatherUnder .month
+                            |> List.sortBy Tuple.first
+                            |> List.reverse
+                            |> List.map
+                                (\( month, monthGists ) ->
+                                    ( String.toInt month |> Maybe.withDefault 0
+                                    , monthGists
+                                        |> List.sortBy getTime
+                                        |> List.reverse
+                                    )
+                                )
+                        )
+                    )
     in
     gistsByYearAndMonth
         |> List.map viewGistYear
@@ -49,7 +64,7 @@ view posts =
 -- INTERNAL
 
 
-viewGistYear : ( String, List ( String, List Post.GlobMatchFrontmatter ) ) -> Ui.Element msg
+viewGistYear : ( String, List ( Int, List Post.GlobMatchFrontmatter ) ) -> Ui.Element msg
 viewGistYear ( year, gistMonths ) =
     let
         heading =
@@ -64,11 +79,11 @@ viewGistYear ( year, gistMonths ) =
         |> View.Column.setSpaced MSpacing
 
 
-viewGistMonth : ( String, List Post.GlobMatchFrontmatter ) -> Ui.Element msg
+viewGistMonth : ( Int, List Post.GlobMatchFrontmatter ) -> Ui.Element msg
 viewGistMonth ( month, gists ) =
     let
         monthName =
-            Date.monthNumberToFullName (String.toInt month |> Maybe.withDefault 0)
+            Date.monthNumberToFullName month
 
         heading =
             [ Ui.text monthName ]
