@@ -38,6 +38,7 @@ view posts =
                 |> List.sortBy Tuple.first
                 |> List.map (Tuple.mapSecond (List.gatherUnder .month >> List.sortBy Tuple.first >> List.reverse))
                 |> List.map (Tuple.mapSecond (List.map (Tuple.mapSecond (List.sortBy getTime >> List.reverse))))
+                |> List.reverse
     in
     gistsByYearAndMonth
         |> List.map viewGistYear
