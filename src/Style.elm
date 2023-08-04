@@ -43,15 +43,15 @@ color =
 
 
 spacing =
-    { size1 = 4
-    , size2 = 8
-    , size3 = 16
-    , size4 = 24
-    , size5 = 32
-    , size6 = 40
-    , size7 = 48
-    , size8 = 56
-    , size9 = 64
+    { size1 = 3
+    , size2 = 5
+    , size3 = 8
+    , size4 = 13
+    , size5 = 21
+    , size6 = 34
+    , size7 = 55
+    , size8 = 89
+    , size9 = 144
     }
 
 

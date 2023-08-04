@@ -21,7 +21,7 @@ setSpaced spacing blocks =
                     Style.spacing.size1
 
                 MSpacing ->
-                    Style.spacing.size3
+                    Style.spacing.size4
     in
     Ui.column
         [ Ui.spacing spacingSize
