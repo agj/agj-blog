@@ -8,7 +8,8 @@ import Style
 
 
 type Spacing
-    = SSpacing
+    = NoSpacing
+    | SSpacing
     | MSpacing
 
 
@@ -17,6 +18,9 @@ setSpaced spacing blocks =
     let
         spacingSize =
             case spacing of
+                NoSpacing ->
+                    0
+
                 SSpacing ->
                     Style.spacing.size1
 

@@ -97,4 +97,4 @@ view (PageBody config) =
     [ header
     , content
     ]
-        |> View.Column.setSpaced MSpacing
+        |> View.Column.setSpaced NoSpacing
