@@ -125,10 +125,19 @@ renderInlineCode code =
 
 renderParagraph : List (ElmUiTag msg) -> ElmUiTag msg
 renderParagraph tags =
-    tags
-        |> unwrapInlines
-        |> View.Paragraph.view
-        |> ElmUiTag.Block
+    case tags of
+        (ElmUiTag.Block _) :: _ ->
+            -- Images get put into paragraphs.
+            tags
+                |> unwrapBlocks
+                |> View.Column.setSpaced MSpacing
+                |> ElmUiTag.Block
+
+        _ ->
+            tags
+                |> unwrapInlines
+                |> View.Paragraph.view
+                |> ElmUiTag.Block
 
 
 renderHeading :
