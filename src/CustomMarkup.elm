@@ -95,7 +95,7 @@ docRenderer config =
 
 
 placeholderDoc =
-    Doc.plainText ""
+    Doc.plainText "[Doc]"
         |> Doc.IntermediateInline
 
 
