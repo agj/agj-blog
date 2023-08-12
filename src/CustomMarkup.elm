@@ -1,7 +1,8 @@
-module CustomMarkup exposing (toElmUi)
+module CustomMarkup exposing (toDoc, toElmUi)
 
 import Custom.Color as Color
 import CustomMarkup.ElmUiTag as ElmUiTag exposing (ElmUiTag)
+import Doc
 import Element as Ui
 import Element.Background as UiBackground
 import List.Extra as List
@@ -33,6 +34,90 @@ type alias AudioPlayerConfig msg =
     { audioPlayerState : View.AudioPlayer.State
     , onAudioPlayerStateUpdated : View.AudioPlayer.State -> msg
     }
+
+
+toDoc : Config msg -> String -> List Doc.Block
+toDoc config markdown =
+    markdown
+        |> Markdown.Parser.parse
+        |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
+        |> Result.andThen (Markdown.Renderer.render (docRenderer config))
+        |> Result.map
+            (List.filterMap
+                (\intermediate ->
+                    case intermediate of
+                        Doc.IntermediateBlock block ->
+                            Just block
+
+                        Doc.IntermediateInline inline ->
+                            Just (Doc.Paragraph [ inline ])
+
+                        Doc.IntermediateCustom _ ->
+                            Nothing
+                )
+            )
+        |> Result.mapError (\error -> [ Doc.Paragraph [ Doc.plainText error ] ])
+        |> Result.merge
+
+
+docRenderer : Config msg -> Markdown.Renderer.Renderer Doc.Intermediate
+docRenderer config =
+    { -- Inline
+      text = Doc.plainText >> Doc.IntermediateInline
+    , strong = renderInlineWithStyleDoc Doc.setBold
+    , emphasis = renderInlineWithStyleDoc Doc.setItalic
+    , strikethrough = renderInlineWithStyleDoc Doc.setStrikethrough
+    , link = \_ _ -> placeholderDoc
+    , codeSpan = \_ -> placeholderDoc
+
+    -- Block
+    , paragraph = \_ -> placeholderDoc
+    , heading = \_ -> placeholderDoc
+    , unorderedList = \_ -> placeholderDoc
+    , orderedList = \_ _ -> placeholderDoc
+    , blockQuote = \_ -> placeholderDoc
+    , codeBlock = \_ -> placeholderDoc
+
+    -- Special
+    , hardLineBreak = placeholderDoc
+    , image = \_ -> placeholderDoc
+    , thematicBreak = placeholderDoc
+    , html = Markdown.Html.oneOf []
+
+    -- Table
+    , table = \_ -> placeholderDoc
+    , tableBody = \_ -> placeholderDoc
+    , tableCell = \_ _ -> placeholderDoc
+    , tableHeader = \_ -> placeholderDoc
+    , tableHeaderCell = \_ _ -> placeholderDoc
+    , tableRow = \_ -> placeholderDoc
+    }
+
+
+placeholderDoc =
+    Doc.plainText ""
+        |> Doc.IntermediateInline
+
+
+renderInlineWithStyleDoc : (Doc.Inline -> Doc.Inline) -> List Doc.Intermediate -> Doc.Intermediate
+renderInlineWithStyleDoc styler intermediates =
+    intermediates
+        |> List.filterMap
+            (\intermediate ->
+                case intermediate of
+                    Doc.IntermediateInline inline ->
+                        Just (styler inline)
+
+                    _ ->
+                        Nothing
+            )
+        |> List.head
+        |> Maybe.withDefault (Doc.plainText "")
+        |> Doc.IntermediateInline
+
+
+
+-- ELM-UI
 
 
 toElmUi : Config msg -> String -> Ui.Element msg
