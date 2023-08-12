@@ -41,14 +41,31 @@ blockToElmUi block =
 inlineToElmUi : Doc.Inline -> Ui.Element msg
 inlineToElmUi inline =
     case inline of
-        Doc.Text { text, styles } ->
-            Ui.text text
+        Doc.Text styledText ->
+            styledTextToElmUi styledText
 
         Doc.InlineCode text ->
             View.Inline.setCode text
 
         Doc.Link { target, inlines } ->
             inlines
-                |> List.map .text
-                |> String.join ""
-                |> Ui.text
+                |> List.map styledTextToElmUi
+                |> View.Inline.setLink target
+
+
+styledTextToElmUi : Doc.StyledText -> Ui.Element msg
+styledTextToElmUi { text, styles } =
+    [ Ui.text text ]
+        |> setStyleIf styles.bold View.Inline.setBold
+        |> setStyleIf styles.italic View.Inline.setItalic
+        |> setStyleIf styles.strikethrough View.Inline.setStrikethrough
+        |> Ui.paragraph []
+
+
+setStyleIf : Bool -> (List (Ui.Element msg) -> Ui.Element msg) -> List (Ui.Element msg) -> List (Ui.Element msg)
+setStyleIf cond styler children =
+    if cond then
+        [ styler children ]
+
+    else
+        children
