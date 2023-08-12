@@ -47,5 +47,8 @@ inlineToElmUi inline =
         Doc.InlineCode text ->
             View.Inline.setCode text
 
-        Doc.Link { target, text, styles } ->
-            Ui.text text
+        Doc.Link { target, inlines } ->
+            inlines
+                |> List.map .text
+                |> String.join ""
+                |> Ui.text

@@ -4,9 +4,9 @@ import View.AudioPlayer.Track exposing (Track)
 
 
 type Inline
-    = Text { text : String, styles : Styles }
+    = Text StyledText
     | InlineCode String
-    | Link { target : String, text : String, styles : Styles }
+    | Link { target : String, inlines : List StyledText }
 
 
 type Block
@@ -19,6 +19,10 @@ type Block
     | Separation
     | Video
     | AudioPlayer
+
+
+type alias StyledText =
+    { text : String, styles : Styles }
 
 
 type alias Styles =
@@ -61,14 +65,19 @@ setStrikethrough =
 mapStyles : (Styles -> Styles) -> Inline -> Inline
 mapStyles mapper inline =
     case inline of
-        Text ({ styles } as config) ->
-            Text { config | styles = mapper styles }
+        Text styledText ->
+            Text (mapStyledTextStyles mapper styledText)
 
-        Link ({ styles } as config) ->
-            Link { config | styles = mapper styles }
+        Link ({ inlines } as config) ->
+            Link { config | inlines = inlines |> List.map (mapStyledTextStyles mapper) }
 
         InlineCode _ ->
             inline
+
+
+mapStyledTextStyles : (Styles -> Styles) -> StyledText -> StyledText
+mapStyledTextStyles mapper styledText =
+    { styledText | styles = mapper styledText.styles }
 
 
 emptyStyles : Styles
