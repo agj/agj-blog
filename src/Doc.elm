@@ -15,7 +15,7 @@ type Block
     | List Block (List Block)
     | BlockQuote (List Block)
     | CodeBlock String
-    | Image String
+    | Image { url : String, description : String }
     | Separation
     | Video
     | AudioPlayer

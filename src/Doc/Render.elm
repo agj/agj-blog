@@ -3,6 +3,7 @@ module Doc.Render exposing (..)
 import Doc
 import Element as Ui
 import View.Column exposing (Spacing(..))
+import View.Figure
 import View.Inline
 import View.Paragraph
 
@@ -21,6 +22,11 @@ blockToElmUi block =
             inlines
                 |> List.map inlineToElmUi
                 |> View.Paragraph.view
+
+        Doc.Image { url, description } ->
+            Ui.image [] { src = url, description = description }
+                |> View.Figure.figure
+                |> View.Figure.view
 
         _ ->
             Doc.plainText "[Block]"

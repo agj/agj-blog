@@ -83,7 +83,7 @@ docRenderer config =
 
     -- Special
     , hardLineBreak = placeholderDoc
-    , image = \_ -> placeholderDoc
+    , image = renderDocImage
     , thematicBreak = placeholderDoc
     , html = Markdown.Html.oneOf []
 
@@ -147,6 +147,12 @@ renderDocParagraph intermediates =
                 |> unwrapDocInlines
                 |> Doc.Paragraph
                 |> Doc.IntermediateBlock
+
+
+renderDocImage : { alt : String, src : String, title : Maybe String } -> Doc.Intermediate
+renderDocImage { alt, src, title } =
+    Doc.Image { url = src, description = alt }
+        |> Doc.IntermediateBlock
 
 
 unwrapDocInlines : List Doc.Intermediate -> List Doc.Inline
