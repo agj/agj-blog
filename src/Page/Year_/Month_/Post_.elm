@@ -7,6 +7,7 @@ import Data.Date as Date
 import Data.Post as Post exposing (Post)
 import Data.Tag as Tag
 import DataSource exposing (DataSource)
+import Doc.Render
 import Element as Ui
 import Head
 import Page exposing (Page, PageWithState, StaticPayload)
@@ -205,7 +206,7 @@ view maybeUrl sharedModel model static =
                 |> View.Paragraph.view
 
         contentEl =
-            [ CustomMarkup.toElmUi
+            [ CustomMarkup.toDoc
                 { audioPlayer =
                     Just
                         { audioPlayerState = model.audioPlayerState
@@ -213,6 +214,7 @@ view maybeUrl sharedModel model static =
                         }
                 }
                 static.data.markdown
+                |> Doc.Render.toElmUi
             , View.CodeBlock.styles |> Ui.html
             ]
                 |> Ui.column []
