@@ -35,6 +35,7 @@ type alias Styles =
 type Intermediate
     = IntermediateBlock Block
     | IntermediateInline Inline
+    | IntermediateInlineList (List Inline)
     | IntermediateCustom Metadata
 
 

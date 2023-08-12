@@ -52,6 +52,9 @@ toDoc config markdown =
                         Doc.IntermediateInline inline ->
                             Just (Doc.Paragraph [ inline ])
 
+                        Doc.IntermediateInlineList inlines ->
+                            Just (Doc.Paragraph inlines)
+
                         Doc.IntermediateCustom _ ->
                             Nothing
                 )
@@ -106,14 +109,16 @@ renderInlineWithStyleDoc styler intermediates =
             (\intermediate ->
                 case intermediate of
                     Doc.IntermediateInline inline ->
-                        Just (styler inline)
+                        Just [ styler inline ]
+
+                    Doc.IntermediateInlineList inlines ->
+                        Just (inlines |> List.map styler)
 
                     _ ->
                         Nothing
             )
-        |> List.head
-        |> Maybe.withDefault (Doc.plainText "")
-        |> Doc.IntermediateInline
+        |> List.concat
+        |> Doc.IntermediateInlineList
 
 
 renderDocLink : { title : Maybe String, destination : String } -> List Doc.Intermediate -> Doc.Intermediate
@@ -145,16 +150,24 @@ renderDocParagraph intermediates =
 
 
 unwrapDocInlines : List Doc.Intermediate -> List Doc.Inline
-unwrapDocInlines =
-    List.filterMap
-        (\intermediates ->
-            case intermediates of
-                Doc.IntermediateInline inline ->
-                    Just inline
+unwrapDocInlines intermediates =
+    intermediates
+        |> List.filterMap
+            (\intermediate ->
+                case intermediate of
+                    Doc.IntermediateInline inline ->
+                        Just [ inline ]
 
-                _ ->
-                    Nothing
-        )
+                    Doc.IntermediateInlineList inlines ->
+                        Just inlines
+
+                    Doc.IntermediateBlock _ ->
+                        Nothing
+
+                    Doc.IntermediateCustom _ ->
+                        Nothing
+            )
+        |> List.concat
 
 
 unwrapDocBlocks : List Doc.Intermediate -> List Doc.Block
