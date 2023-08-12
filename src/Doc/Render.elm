@@ -23,7 +23,7 @@ blockToElmUi block =
                 |> View.Paragraph.view
 
         _ ->
-            Doc.plainText ""
+            Doc.plainText "[Block]"
                 |> inlineToElmUi
 
 
