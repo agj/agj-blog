@@ -67,7 +67,7 @@ docRenderer config =
     , strong = renderInlineWithStyleDoc Doc.setBold
     , emphasis = renderInlineWithStyleDoc Doc.setItalic
     , strikethrough = renderInlineWithStyleDoc Doc.setStrikethrough
-    , link = \_ _ -> placeholderDoc
+    , link = renderDocLink
     , codeSpan = \_ -> placeholderDoc
 
     -- Block
@@ -113,6 +113,14 @@ renderInlineWithStyleDoc styler intermediates =
             )
         |> List.head
         |> Maybe.withDefault (Doc.plainText "")
+        |> Doc.IntermediateInline
+
+
+renderDocLink : { title : Maybe String, destination : String } -> List Doc.Intermediate -> Doc.Intermediate
+renderDocLink { destination } intermediates =
+    intermediates
+        |> unwrapDocInlines
+        |> Doc.toLink destination
         |> Doc.IntermediateInline
 
 

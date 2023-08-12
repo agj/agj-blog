@@ -47,6 +47,11 @@ plainText text =
     Text { text = text, styles = emptyStyles }
 
 
+link : String -> List StyledText -> Inline
+link target inlines =
+    Link { target = target, inlines = inlines }
+
+
 setBold : Inline -> Inline
 setBold =
     mapStyles (\styles -> { styles | bold = True })
@@ -60,6 +65,28 @@ setItalic =
 setStrikethrough : Inline -> Inline
 setStrikethrough =
     mapStyles (\styles -> { styles | strikethrough = True })
+
+
+toLink : String -> List Inline -> Inline
+toLink target inlines =
+    let
+        styledTexts =
+            inlines
+                |> List.filterMap
+                    (\inline ->
+                        case inline of
+                            Text styledText ->
+                                Just [ styledText ]
+
+                            Link l ->
+                                Just l.inlines
+
+                            InlineCode text ->
+                                Just [ { text = text, styles = emptyStyles } ]
+                    )
+                |> List.concat
+    in
+    Link { target = target, inlines = styledTexts }
 
 
 mapStyles : (Styles -> Styles) -> Inline -> Inline
