@@ -71,7 +71,7 @@ docRenderer config =
     , codeSpan = \_ -> placeholderDoc
 
     -- Block
-    , paragraph = \_ -> placeholderDoc
+    , paragraph = renderDocParagraph
     , heading = \_ -> placeholderDoc
     , unorderedList = \_ -> placeholderDoc
     , orderedList = \_ _ -> placeholderDoc
@@ -114,6 +114,46 @@ renderInlineWithStyleDoc styler intermediates =
         |> List.head
         |> Maybe.withDefault (Doc.plainText "")
         |> Doc.IntermediateInline
+
+
+renderDocParagraph : List Doc.Intermediate -> Doc.Intermediate
+renderDocParagraph intermediates =
+    case intermediates of
+        (Doc.IntermediateBlock block) :: _ ->
+            -- Images get put into paragraphs.
+            Doc.IntermediateBlock block
+
+        _ ->
+            intermediates
+                |> unwrapDocInlines
+                |> Doc.Paragraph
+                |> Doc.IntermediateBlock
+
+
+unwrapDocInlines : List Doc.Intermediate -> List Doc.Inline
+unwrapDocInlines =
+    List.filterMap
+        (\intermediates ->
+            case intermediates of
+                Doc.IntermediateInline inline ->
+                    Just inline
+
+                _ ->
+                    Nothing
+        )
+
+
+unwrapDocBlocks : List Doc.Intermediate -> List Doc.Block
+unwrapDocBlocks =
+    List.filterMap
+        (\intermediate ->
+            case intermediate of
+                Doc.IntermediateBlock block ->
+                    Just block
+
+                _ ->
+                    Nothing
+        )
 
 
 
