@@ -68,7 +68,7 @@ docRenderer config =
     , emphasis = renderInlineWithStyleDoc Doc.setItalic
     , strikethrough = renderInlineWithStyleDoc Doc.setStrikethrough
     , link = renderDocLink
-    , codeSpan = \_ -> placeholderDoc
+    , codeSpan = renderDocInlineCode
 
     -- Block
     , paragraph = renderDocParagraph
@@ -121,6 +121,12 @@ renderDocLink { destination } intermediates =
     intermediates
         |> unwrapDocInlines
         |> Doc.toLink destination
+        |> Doc.IntermediateInline
+
+
+renderDocInlineCode : String -> Doc.Intermediate
+renderDocInlineCode code =
+    Doc.inlineCode code
         |> Doc.IntermediateInline
 
 

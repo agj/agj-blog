@@ -52,6 +52,11 @@ link target inlines =
     Link { target = target, inlines = inlines }
 
 
+inlineCode : String -> Inline
+inlineCode text =
+    InlineCode text
+
+
 setBold : Inline -> Inline
 setBold =
     mapStyles (\styles -> { styles | bold = True })
