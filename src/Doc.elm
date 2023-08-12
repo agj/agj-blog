@@ -11,7 +11,7 @@ type Inline
 
 type Block
     = Paragraph (List Inline)
-    | Heading { level : Int, inlines : List Inline }
+    | Section { heading : List Inline, content : List Block }
     | List Block (List Block)
     | BlockQuote (List Block)
     | CodeBlock String
