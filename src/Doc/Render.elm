@@ -12,7 +12,6 @@ import View.Paragraph
 toElmUi : List Doc.Block -> Ui.Element msg
 toElmUi blocks =
     blocks
-        |> Debug.log "blocks"
         |> toElmUiInternal 1
         |> View.Column.setSpaced MSpacing
 
@@ -23,10 +22,6 @@ toElmUi blocks =
 
 toElmUiInternal : Int -> List Doc.Block -> List (Ui.Element msg)
 toElmUiInternal sectionDepth blocks =
-    let
-        _ =
-            Debug.log "sectionDepth" sectionDepth
-    in
     case blocks of
         (Doc.Paragraph inlines) :: nextBlocks ->
             (inlines
