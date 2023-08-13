@@ -132,6 +132,10 @@ placeholderDoc =
         |> Doc.IntermediateInline
 
 
+
+-- INLINE
+
+
 renderInlineWithStyle : (Doc.Inline -> Doc.Inline) -> List Doc.Intermediate -> Doc.Intermediate
 renderInlineWithStyle styler intermediates =
     intermediates
@@ -165,6 +169,10 @@ renderInlineCode code =
         |> Doc.IntermediateInline
 
 
+
+-- BLOCK
+
+
 renderParagraph : List Doc.Intermediate -> Doc.Intermediate
 renderParagraph intermediates =
     case intermediates of
@@ -179,10 +187,19 @@ renderParagraph intermediates =
                 |> Doc.IntermediateBlock
 
 
+
+-- SPECIAL
+
+
 renderImage : { alt : String, src : String, title : Maybe String } -> Doc.Intermediate
 renderImage { alt, src, title } =
     Doc.Image { url = src, description = alt }
         |> Doc.IntermediateBlock
+
+
+
+-- CUSTOM
+-- OTHER
 
 
 unwrapInlines : List Doc.Intermediate -> List Doc.Inline
