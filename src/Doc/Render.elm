@@ -4,6 +4,7 @@ import Doc
 import Element as Ui
 import View.Column exposing (Spacing(..))
 import View.Figure
+import View.Heading
 import View.Inline
 import View.Paragraph
 
@@ -11,30 +12,63 @@ import View.Paragraph
 toElmUi : List Doc.Block -> Ui.Element msg
 toElmUi blocks =
     blocks
-        |> List.map blockToElmUi
+        |> Debug.log "blocks"
+        |> toElmUiInternal 1
         |> View.Column.setSpaced MSpacing
 
 
-blockToElmUi : Doc.Block -> Ui.Element msg
-blockToElmUi block =
-    case block of
-        Doc.Paragraph inlines ->
-            inlines
+
+-- INTERNAL
+
+
+toElmUiInternal : Int -> List Doc.Block -> List (Ui.Element msg)
+toElmUiInternal sectionDepth blocks =
+    let
+        _ =
+            Debug.log "sectionDepth" sectionDepth
+    in
+    case blocks of
+        (Doc.Paragraph inlines) :: nextBlocks ->
+            (inlines
                 |> List.map inlineToElmUi
                 |> View.Paragraph.view
+            )
+                :: toElmUiInternal sectionDepth nextBlocks
 
-        Doc.Image { url, description } ->
-            Ui.image [] { src = url, description = description }
+        (Doc.Section { heading, content }) :: nextBlocks ->
+            let
+                newSectionDepth =
+                    sectionDepth + 1
+            in
+            ([ heading
+                |> List.map inlineToElmUi
+                |> View.Heading.view newSectionDepth
+             , content
+                |> toElmUiInternal newSectionDepth
+                |> View.Column.setSpaced MSpacing
+             ]
+                |> View.Column.setSpaced MSpacing
+            )
+                :: toElmUiInternal newSectionDepth nextBlocks
+
+        (Doc.Image { url, description }) :: nextBlocks ->
+            (Ui.image [] { src = url, description = description }
                 |> View.Figure.figure
                 |> View.Figure.view
+            )
+                :: toElmUiInternal sectionDepth nextBlocks
 
-        _ ->
-            Doc.plainText "[Block]"
+        _ :: nextBlocks ->
+            (Doc.plainText "[Block]"
                 |> inlineToElmUi
+            )
+                :: toElmUiInternal sectionDepth nextBlocks
+
+        [] ->
+            []
 
 
 
--- Section { heading : List Inline, content : List Block }
 -- List Block (List Block)
 -- BlockQuote (List Block)
 -- CodeBlock String
