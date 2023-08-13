@@ -42,25 +42,65 @@ toDoc config markdown =
         |> Markdown.Parser.parse
         |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
         |> Result.andThen (Markdown.Renderer.render (docRenderer config))
-        |> Result.map
-            (List.filterMap
-                (\intermediate ->
-                    case intermediate of
-                        Doc.IntermediateBlock block ->
-                            Just block
-
-                        Doc.IntermediateInline inline ->
-                            Just (Doc.Paragraph [ inline ])
-
-                        Doc.IntermediateInlineList inlines ->
-                            Just (Doc.Paragraph inlines)
-
-                        Doc.IntermediateCustom _ ->
-                            Nothing
-                )
-            )
+        |> Result.map intermediatesToBlocks
         |> Result.mapError (\error -> [ Doc.Paragraph [ Doc.plainText error ] ])
         |> Result.merge
+
+
+intermediatesToBlocks : List Doc.Intermediate -> List Doc.Block
+intermediatesToBlocks intermediates =
+    let
+        getForSection : List Doc.Block -> { forSection : List Doc.Block, afterSection : List Doc.Block }
+        getForSection blocks =
+            blocks
+                |> List.splitWhen Doc.isSection
+                |> Maybe.map (\( before, after ) -> { forSection = before, afterSection = after })
+                |> Maybe.withDefault { forSection = blocks, afterSection = [] }
+    in
+    intermediates
+        |> List.foldr
+            (\intermediate ( sectionLevel, acc ) ->
+                case intermediate of
+                    Doc.IntermediateBlock block ->
+                        ( sectionLevel
+                        , block :: acc
+                        )
+
+                    Doc.IntermediateHeading incomingLevel inlines ->
+                        if incomingLevel >= sectionLevel then
+                            -- Parallel section
+                            let
+                                { forSection, afterSection } =
+                                    getForSection acc
+                            in
+                            ( incomingLevel
+                            , Doc.Section { heading = inlines, content = forSection }
+                                :: afterSection
+                            )
+
+                        else
+                            -- Wrapping section
+                            ( incomingLevel
+                            , [ Doc.Section { heading = inlines, content = acc } ]
+                            )
+
+                    Doc.IntermediateInline inline ->
+                        ( sectionLevel
+                        , Doc.Paragraph [ inline ] :: acc
+                        )
+
+                    Doc.IntermediateInlineList inlines ->
+                        ( sectionLevel
+                        , Doc.Paragraph inlines :: acc
+                        )
+
+                    Doc.IntermediateCustom _ ->
+                        ( sectionLevel
+                        , acc
+                        )
+            )
+            ( 0, [] )
+        |> Tuple.second
 
 
 docRenderer : Config msg -> Markdown.Renderer.Renderer Doc.Intermediate
@@ -168,6 +208,9 @@ unwrapDocInlines intermediates =
                         Just inlines
 
                     Doc.IntermediateBlock _ ->
+                        Nothing
+
+                    Doc.IntermediateHeading _ _ ->
                         Nothing
 
                     Doc.IntermediateCustom _ ->

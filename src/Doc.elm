@@ -34,6 +34,7 @@ type alias Styles =
 
 type Intermediate
     = IntermediateBlock Block
+    | IntermediateHeading Int (List Inline)
     | IntermediateInline Inline
     | IntermediateInlineList (List Inline)
     | IntermediateCustom Metadata
@@ -119,3 +120,13 @@ emptyStyles =
     , italic = False
     , strikethrough = False
     }
+
+
+isSection : Block -> Bool
+isSection block =
+    case block of
+        Section _ ->
+            True
+
+        _ ->
+            False
