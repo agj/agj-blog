@@ -97,14 +97,14 @@ docRenderer : Config msg -> Markdown.Renderer.Renderer Doc.Intermediate
 docRenderer config =
     { -- Inline
       text = Doc.plainText >> Doc.IntermediateInline
-    , strong = renderInlineWithStyleDoc Doc.setBold
-    , emphasis = renderInlineWithStyleDoc Doc.setItalic
-    , strikethrough = renderInlineWithStyleDoc Doc.setStrikethrough
-    , link = renderDocLink
-    , codeSpan = renderDocInlineCode
+    , strong = renderInlineWithStyle Doc.setBold
+    , emphasis = renderInlineWithStyle Doc.setItalic
+    , strikethrough = renderInlineWithStyle Doc.setStrikethrough
+    , link = renderLink
+    , codeSpan = renderInlineCode
 
     -- Block
-    , paragraph = renderDocParagraph
+    , paragraph = renderParagraph
     , heading = \_ -> placeholderDoc
     , unorderedList = \_ -> placeholderDoc
     , orderedList = \_ _ -> placeholderDoc
@@ -113,7 +113,7 @@ docRenderer config =
 
     -- Special
     , hardLineBreak = placeholderDoc
-    , image = renderDocImage
+    , image = renderImage
     , thematicBreak = placeholderDoc
     , html = Markdown.Html.oneOf []
 
@@ -132,8 +132,8 @@ placeholderDoc =
         |> Doc.IntermediateInline
 
 
-renderInlineWithStyleDoc : (Doc.Inline -> Doc.Inline) -> List Doc.Intermediate -> Doc.Intermediate
-renderInlineWithStyleDoc styler intermediates =
+renderInlineWithStyle : (Doc.Inline -> Doc.Inline) -> List Doc.Intermediate -> Doc.Intermediate
+renderInlineWithStyle styler intermediates =
     intermediates
         |> List.filterMap
             (\intermediate ->
@@ -151,22 +151,22 @@ renderInlineWithStyleDoc styler intermediates =
         |> Doc.IntermediateInlineList
 
 
-renderDocLink : { title : Maybe String, destination : String } -> List Doc.Intermediate -> Doc.Intermediate
-renderDocLink { destination } intermediates =
+renderLink : { title : Maybe String, destination : String } -> List Doc.Intermediate -> Doc.Intermediate
+renderLink { destination } intermediates =
     intermediates
-        |> unwrapDocInlines
+        |> unwrapInlines
         |> Doc.toLink destination
         |> Doc.IntermediateInline
 
 
-renderDocInlineCode : String -> Doc.Intermediate
-renderDocInlineCode code =
+renderInlineCode : String -> Doc.Intermediate
+renderInlineCode code =
     Doc.inlineCode code
         |> Doc.IntermediateInline
 
 
-renderDocParagraph : List Doc.Intermediate -> Doc.Intermediate
-renderDocParagraph intermediates =
+renderParagraph : List Doc.Intermediate -> Doc.Intermediate
+renderParagraph intermediates =
     case intermediates of
         (Doc.IntermediateBlock block) :: _ ->
             -- Images get put into paragraphs.
@@ -174,19 +174,19 @@ renderDocParagraph intermediates =
 
         _ ->
             intermediates
-                |> unwrapDocInlines
+                |> unwrapInlines
                 |> Doc.Paragraph
                 |> Doc.IntermediateBlock
 
 
-renderDocImage : { alt : String, src : String, title : Maybe String } -> Doc.Intermediate
-renderDocImage { alt, src, title } =
+renderImage : { alt : String, src : String, title : Maybe String } -> Doc.Intermediate
+renderImage { alt, src, title } =
     Doc.Image { url = src, description = alt }
         |> Doc.IntermediateBlock
 
 
-unwrapDocInlines : List Doc.Intermediate -> List Doc.Inline
-unwrapDocInlines intermediates =
+unwrapInlines : List Doc.Intermediate -> List Doc.Inline
+unwrapInlines intermediates =
     intermediates
         |> List.filterMap
             (\intermediate ->
@@ -209,8 +209,8 @@ unwrapDocInlines intermediates =
         |> List.concat
 
 
-unwrapDocBlocks : List Doc.Intermediate -> List Doc.Block
-unwrapDocBlocks =
+unwrapBlocks : List Doc.Intermediate -> List Doc.Block
+unwrapBlocks =
     List.filterMap
         (\intermediate ->
             case intermediate of
