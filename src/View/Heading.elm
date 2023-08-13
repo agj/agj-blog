@@ -60,7 +60,7 @@ view level content =
                 _ ->
                     ( Style.textSize.l
                     , []
-                    , Just (String.repeat (normalizedLevel - 3) "▹")
+                    , Just (String.repeat (normalizedLevel - 4) "▹")
                     )
 
         prependEl =
