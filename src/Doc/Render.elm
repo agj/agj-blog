@@ -7,6 +7,7 @@ import View.Column exposing (Spacing(..))
 import View.Figure
 import View.Heading
 import View.Inline
+import View.LanguageBreak
 import View.Paragraph
 
 
@@ -58,6 +59,10 @@ toElmUiInternal sectionDepth blocks =
             (View.CodeBlock.fromBody language code
                 |> View.CodeBlock.view
             )
+                :: toElmUiInternal sectionDepth nextBlocks
+
+        (Doc.LanguageBreak languageBreak) :: nextBlocks ->
+            View.LanguageBreak.view languageBreak
                 :: toElmUiInternal sectionDepth nextBlocks
 
         _ :: nextBlocks ->

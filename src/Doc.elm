@@ -1,6 +1,9 @@
 module Doc exposing (..)
 
+import View.AudioPlayer
 import View.AudioPlayer.Track exposing (Track)
+import View.LanguageBreak
+import View.VideoEmbed
 
 
 type Inline
@@ -17,8 +20,9 @@ type Block
     | CodeBlock { language : Maybe String, code : String }
     | Image { url : String, description : String }
     | Separation
-    | Video
-    | AudioPlayer
+    | Video View.VideoEmbed.VideoEmbed
+    | AudioPlayer View.AudioPlayer.AudioPlayer
+    | LanguageBreak View.LanguageBreak.LanguageBreak
 
 
 type alias StyledText =

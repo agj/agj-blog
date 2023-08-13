@@ -1,5 +1,6 @@
 module View.LanguageBreak exposing
-    ( renderer
+    ( LanguageBreak
+    , renderer
     , view
     )
 

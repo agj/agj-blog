@@ -14,6 +14,7 @@ import Result.Extra as Result
 import View.AudioPlayer
 import View.AudioPlayer.Track exposing (Track)
 import View.Column exposing (Spacing(..))
+import View.LanguageBreak
 
 
 type alias Config msg =
@@ -116,7 +117,7 @@ docRenderer config =
     , hardLineBreak = placeholderDoc
     , image = renderImage
     , thematicBreak = placeholderDoc
-    , html = Markdown.Html.oneOf []
+    , html = renderCustom config.audioPlayer
 
     -- Table
     , table = \_ -> placeholderDoc
@@ -218,6 +219,50 @@ renderImage { alt, src, title } =
 
 
 -- CUSTOM
+
+
+renderCustom : Maybe (AudioPlayerConfig msg) -> Markdown.Html.Renderer (List Doc.Intermediate -> Doc.Intermediate)
+renderCustom audioPlayerConfig =
+    Markdown.Html.oneOf (customRenderers audioPlayerConfig)
+
+
+customRenderers : Maybe (AudioPlayerConfig msg) -> List (Markdown.Html.Renderer (List Doc.Intermediate -> Doc.Intermediate))
+customRenderers audioPlayerConfig =
+    [ View.LanguageBreak.renderer
+        |> renderFailableCustom Doc.IntermediateBlock Doc.LanguageBreak
+    ]
+
+
+renderFailableCustom :
+    (Doc.Block -> Doc.Intermediate)
+    -> (a -> Doc.Block)
+    -> Markdown.Html.Renderer (Result String a)
+    -> Markdown.Html.Renderer (List b -> Doc.Intermediate)
+renderFailableCustom toIntermediate okToDoc customRenderer =
+    customRenderer
+        |> Markdown.Html.map
+            (Result.mapBoth
+                (\err _ ->
+                    renderErrorMessage err
+                        |> Doc.IntermediateBlock
+                )
+                (\okResult _ ->
+                    okToDoc okResult
+                        |> toIntermediate
+                )
+            )
+        |> Markdown.Html.map Result.merge
+
+
+renderErrorMessage : String -> Doc.Block
+renderErrorMessage error =
+    [ Doc.plainText "Parsing error: "
+    , Doc.plainText error
+    ]
+        |> Doc.Paragraph
+
+
+
 -- OTHER
 
 
