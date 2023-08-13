@@ -6,6 +6,7 @@ module Doc.Markdown exposing
 
 import Doc
 import List.Extra as List
+import Markdown.Block
 import Markdown.Html
 import Markdown.Parser
 import Markdown.Renderer
@@ -105,7 +106,7 @@ docRenderer config =
 
     -- Block
     , paragraph = renderParagraph
-    , heading = \_ -> placeholderDoc
+    , heading = renderHeading
     , unorderedList = \_ -> placeholderDoc
     , orderedList = \_ _ -> placeholderDoc
     , blockQuote = \_ -> placeholderDoc
@@ -185,6 +186,18 @@ renderParagraph intermediates =
                 |> unwrapInlines
                 |> Doc.Paragraph
                 |> Doc.IntermediateBlock
+
+
+renderHeading :
+    { level : Markdown.Block.HeadingLevel
+    , rawText : String
+    , children : List Doc.Intermediate
+    }
+    -> Doc.Intermediate
+renderHeading { level, children } =
+    Doc.IntermediateHeading
+        (Markdown.Block.headingLevelToInt level)
+        (unwrapInlines children)
 
 
 
