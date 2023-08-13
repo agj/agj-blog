@@ -110,7 +110,7 @@ docRenderer config =
     , unorderedList = \_ -> placeholderDoc
     , orderedList = \_ _ -> placeholderDoc
     , blockQuote = \_ -> placeholderDoc
-    , codeBlock = \_ -> placeholderDoc
+    , codeBlock = renderCodeBlock
 
     -- Special
     , hardLineBreak = placeholderDoc
@@ -198,6 +198,12 @@ renderHeading { level, children } =
     Doc.IntermediateHeading
         (Markdown.Block.headingLevelToInt level)
         (unwrapInlines children)
+
+
+renderCodeBlock : { body : String, language : Maybe String } -> Doc.Intermediate
+renderCodeBlock { body, language } =
+    Doc.CodeBlock { language = language, code = body }
+        |> Doc.IntermediateBlock
 
 
 

@@ -14,7 +14,7 @@ type Block
     | Section { heading : List Inline, content : List Block }
     | List Block (List Block)
     | BlockQuote (List Block)
-    | CodeBlock String
+    | CodeBlock { language : Maybe String, code : String }
     | Image { url : String, description : String }
     | Separation
     | Video

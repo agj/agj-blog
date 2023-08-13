@@ -2,6 +2,7 @@ module Doc.Render exposing (..)
 
 import Doc
 import Element as Ui
+import View.CodeBlock
 import View.Column exposing (Spacing(..))
 import View.Figure
 import View.Heading
@@ -50,6 +51,12 @@ toElmUiInternal sectionDepth blocks =
             (Ui.image [] { src = url, description = description }
                 |> View.Figure.figure
                 |> View.Figure.view
+            )
+                :: toElmUiInternal sectionDepth nextBlocks
+
+        (Doc.CodeBlock { code, language }) :: nextBlocks ->
+            (View.CodeBlock.fromBody language code
+                |> View.CodeBlock.view
             )
                 :: toElmUiInternal sectionDepth nextBlocks
 
