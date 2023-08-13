@@ -1,12 +1,12 @@
 module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
-import CustomMarkup
 import Data.Category as Category
 import Data.Date as Date
 import Data.Post as Post exposing (Post)
 import Data.Tag as Tag
 import DataSource exposing (DataSource)
+import Doc.Markdown
 import Doc.Render
 import Element as Ui
 import Head
@@ -21,7 +21,6 @@ import View.CodeBlock
 import View.Column exposing (Spacing(..))
 import View.Inline
 import View.PageBody
-import View.PageHeader
 import View.Paragraph
 
 
@@ -206,14 +205,14 @@ view maybeUrl sharedModel model static =
                 |> View.Paragraph.view
 
         contentEl =
-            [ CustomMarkup.toDoc
-                { audioPlayer =
-                    Just
-                        { audioPlayerState = model.audioPlayerState
-                        , onAudioPlayerStateUpdated = AudioPlayerStateUpdated
-                        }
-                }
-                static.data.markdown
+            [ static.data.markdown
+                |> Doc.Markdown.parse
+                    { audioPlayer =
+                        Just
+                            { audioPlayerState = model.audioPlayerState
+                            , onAudioPlayerStateUpdated = AudioPlayerStateUpdated
+                            }
+                    }
                 |> Doc.Render.toElmUi
             , View.CodeBlock.styles |> Ui.html
             ]
