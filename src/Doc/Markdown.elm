@@ -4,6 +4,7 @@ module Doc.Markdown exposing
     , parse
     )
 
+import Custom.List as List
 import Doc
 import List.Extra as List
 import Markdown.Block
@@ -109,7 +110,7 @@ docRenderer config =
     , paragraph = renderParagraph
     , heading = renderHeading
     , unorderedList = \_ -> placeholderDoc
-    , orderedList = \_ _ -> placeholderDoc
+    , orderedList = renderOrderedList
     , blockQuote = \_ -> placeholderDoc
     , codeBlock = renderCodeBlock
 
@@ -199,6 +200,27 @@ renderHeading { level, children } =
     Doc.IntermediateHeading
         (Markdown.Block.headingLevelToInt level)
         (unwrapInlines children)
+
+
+renderOrderedList : Int -> List (List Doc.Intermediate) -> Doc.Intermediate
+renderOrderedList startNumber items =
+    let
+        docListItems : List Doc.ListItem
+        docListItems =
+            items
+                |> List.map (ensureBlocks >> unwrapBlocks)
+                |> List.filterMap List.uncons
+
+        ( firstDocListItem, restDocListItems ) =
+            docListItems
+                |> List.uncons
+                |> Maybe.withDefault
+                    ( ( Doc.Paragraph [ Doc.plainText "" ], [] )
+                    , []
+                    )
+    in
+    Doc.OrderedList firstDocListItem restDocListItems
+        |> Doc.IntermediateBlock
 
 
 renderCodeBlock : { body : String, language : Maybe String } -> Doc.Intermediate
@@ -301,3 +323,34 @@ unwrapBlocks =
                 _ ->
                     Nothing
         )
+
+
+ensureBlocks : List Doc.Intermediate -> List Doc.Intermediate
+ensureBlocks tags =
+    let
+        process :
+            Doc.Intermediate
+            -> ( List Doc.Intermediate, List Doc.Intermediate )
+            -> ( List Doc.Intermediate, List Doc.Intermediate )
+        process tag ( inlines, blocks ) =
+            case tag of
+                Doc.IntermediateInline _ ->
+                    ( tag :: inlines, blocks )
+
+                _ ->
+                    ( [], tag :: wrapUpInlines ( inlines, blocks ) )
+
+        wrapUpInlines :
+            ( List Doc.Intermediate, List Doc.Intermediate )
+            -> List Doc.Intermediate
+        wrapUpInlines ( inlines, blocks ) =
+            case inlines of
+                [] ->
+                    blocks
+
+                _ :: _ ->
+                    renderParagraph inlines :: blocks
+    in
+    tags
+        |> List.foldr process ( [], [] )
+        |> wrapUpInlines

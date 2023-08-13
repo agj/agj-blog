@@ -15,7 +15,8 @@ type Inline
 type Block
     = Paragraph (List Inline)
     | Section { heading : List Inline, content : List Block }
-    | List Block (List Block)
+    | UnorderedList ListItem (List ListItem)
+    | OrderedList ListItem (List ListItem)
     | BlockQuote (List Block)
     | CodeBlock { language : Maybe String, code : String }
     | Image { url : String, description : String }
@@ -34,6 +35,10 @@ type alias Styles =
     , italic : Bool
     , strikethrough : Bool
     }
+
+
+type alias ListItem =
+    ( Block, List Block )
 
 
 type Intermediate

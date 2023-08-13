@@ -8,6 +8,7 @@ import View.Figure
 import View.Heading
 import View.Inline
 import View.LanguageBreak
+import View.List
 import View.Paragraph
 
 
@@ -29,6 +30,19 @@ toElmUiInternal sectionDepth blocks =
             (inlines
                 |> List.map inlineToElmUi
                 |> View.Paragraph.view
+            )
+                :: toElmUiInternal sectionDepth nextBlocks
+
+        (Doc.OrderedList firstItem restItems) :: nextBlocks ->
+            ((firstItem :: restItems)
+                |> List.map
+                    (\( firstBlock, restBlocks ) ->
+                        (firstBlock :: restBlocks)
+                            |> toElmUiInternal sectionDepth
+                    )
+                |> View.List.fromItems
+                |> View.List.withNumbers 1
+                |> View.List.view
             )
                 :: toElmUiInternal sectionDepth nextBlocks
 
