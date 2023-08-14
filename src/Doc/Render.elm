@@ -34,16 +34,11 @@ toElmUiInternal sectionDepth blocks =
                 :: toElmUiInternal sectionDepth nextBlocks
 
         (Doc.OrderedList firstItem restItems) :: nextBlocks ->
-            ((firstItem :: restItems)
-                |> List.map
-                    (\( firstBlock, restBlocks ) ->
-                        (firstBlock :: restBlocks)
-                            |> toElmUiInternal sectionDepth
-                    )
-                |> View.List.fromItems
-                |> View.List.withNumbers 1
-                |> View.List.view
-            )
+            listToElmUi sectionDepth (Just 1) firstItem restItems
+                :: toElmUiInternal sectionDepth nextBlocks
+
+        (Doc.UnorderedList firstItem restItems) :: nextBlocks ->
+            listToElmUi sectionDepth Nothing firstItem restItems
                 :: toElmUiInternal sectionDepth nextBlocks
 
         (Doc.Section { heading, content }) :: nextBlocks ->
@@ -130,3 +125,26 @@ setStyleIf cond styler children =
 
     else
         children
+
+
+listToElmUi : Int -> Maybe Int -> Doc.ListItem -> List Doc.ListItem -> Ui.Element msg
+listToElmUi sectionDepth maybeStartNumber firstItem restItems =
+    let
+        list =
+            (firstItem :: restItems)
+                |> List.map
+                    (\( firstBlock, restBlocks ) ->
+                        (firstBlock :: restBlocks)
+                            |> toElmUiInternal sectionDepth
+                    )
+                |> View.List.fromItems
+    in
+    case maybeStartNumber of
+        Just startNumber ->
+            list
+                |> View.List.withNumbers startNumber
+                |> View.List.view
+
+        Nothing ->
+            list
+                |> View.List.view

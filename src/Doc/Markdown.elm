@@ -109,7 +109,7 @@ docRenderer config =
     -- Block
     , paragraph = renderParagraph
     , heading = renderHeading
-    , unorderedList = \_ -> placeholderDoc
+    , unorderedList = renderUnorderedList
     , orderedList = renderOrderedList
     , blockQuote = \_ -> placeholderDoc
     , codeBlock = renderCodeBlock
@@ -200,6 +200,30 @@ renderHeading { level, children } =
     Doc.IntermediateHeading
         (Markdown.Block.headingLevelToInt level)
         (unwrapInlines children)
+
+
+renderUnorderedList : List (Markdown.Block.ListItem Doc.Intermediate) -> Doc.Intermediate
+renderUnorderedList items =
+    let
+        docListItems : List Doc.ListItem
+        docListItems =
+            items
+                |> List.map
+                    (\(Markdown.Block.ListItem task item) ->
+                        item |> ensureBlocks |> unwrapBlocks
+                    )
+                |> List.filterMap List.uncons
+
+        ( firstDocListItem, restDocListItems ) =
+            docListItems
+                |> List.uncons
+                |> Maybe.withDefault
+                    ( ( Doc.Paragraph [ Doc.plainText "" ], [] )
+                    , []
+                    )
+    in
+    Doc.UnorderedList firstDocListItem restDocListItems
+        |> Doc.IntermediateBlock
 
 
 renderOrderedList : Int -> List (List Doc.Intermediate) -> Doc.Intermediate
