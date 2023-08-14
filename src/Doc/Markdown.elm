@@ -112,7 +112,7 @@ docRenderer config =
     , heading = renderHeading
     , unorderedList = renderUnorderedList
     , orderedList = renderOrderedList
-    , blockQuote = \_ -> placeholderDoc
+    , blockQuote = renderBlockQuote
     , codeBlock = renderCodeBlock
 
     -- Special
@@ -245,6 +245,15 @@ renderOrderedList startNumber items =
                     )
     in
     Doc.OrderedList firstDocListItem restDocListItems
+        |> Doc.IntermediateBlock
+
+
+renderBlockQuote : List Doc.Intermediate -> Doc.Intermediate
+renderBlockQuote intermediates =
+    intermediates
+        |> ensureBlocks
+        |> unwrapBlocks
+        |> Doc.BlockQuote
         |> Doc.IntermediateBlock
 
 

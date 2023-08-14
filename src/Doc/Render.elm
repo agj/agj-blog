@@ -1,7 +1,10 @@
 module Doc.Render exposing (..)
 
+import Custom.Color as Color
 import Doc
 import Element as Ui
+import Element.Background as UiBackground
+import Style
 import View.CodeBlock
 import View.Column exposing (Spacing(..))
 import View.Figure
@@ -40,6 +43,10 @@ toElmUiInternal sectionDepth blocks =
 
         (Doc.UnorderedList firstItem restItems) :: nextBlocks ->
             listToElmUi sectionDepth Nothing firstItem restItems
+                :: toElmUiInternal sectionDepth nextBlocks
+
+        (Doc.BlockQuote blockQuoteBlocks) :: nextBlocks ->
+            blockQuoteToElmUi sectionDepth blockQuoteBlocks
                 :: toElmUiInternal sectionDepth nextBlocks
 
         (Doc.Section { heading, content }) :: nextBlocks ->
@@ -153,3 +160,35 @@ listToElmUi sectionDepth maybeStartNumber firstItem restItems =
         Nothing ->
             list
                 |> View.List.view
+
+
+blockQuoteToElmUi : Int -> List Doc.Block -> Ui.Element msg
+blockQuoteToElmUi sectionDepth blocks =
+    let
+        line =
+            Ui.el
+                [ Ui.width (Ui.px Style.spacing.size1)
+                , Ui.height Ui.fill
+                , UiBackground.color (Style.color.secondary10 |> Color.toElmUi)
+                , Ui.alignLeft
+                ]
+                Ui.none
+
+        side =
+            Ui.el
+                [ Ui.width (Ui.px Style.spacing.size6)
+                , Ui.height Ui.fill
+                ]
+                line
+
+        toQuote : Ui.Element msg -> Ui.Element msg
+        toQuote content =
+            Ui.row [ Ui.width Ui.fill ]
+                [ side
+                , content
+                ]
+    in
+    blocks
+        |> toElmUiInternal sectionDepth
+        |> View.Column.setSpaced MSpacing
+        |> toQuote
