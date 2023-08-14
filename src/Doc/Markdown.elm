@@ -16,6 +16,7 @@ import View.AudioPlayer
 import View.AudioPlayer.Track exposing (Track)
 import View.Column exposing (Spacing(..))
 import View.LanguageBreak
+import View.VideoEmbed
 
 
 type alias Config msg =
@@ -274,7 +275,9 @@ renderCustom audioPlayerConfig =
 
 customRenderers : Maybe (AudioPlayerConfig msg) -> List (Markdown.Html.Renderer (List Doc.Intermediate -> Doc.Intermediate))
 customRenderers audioPlayerConfig =
-    [ View.LanguageBreak.renderer
+    [ View.VideoEmbed.renderer
+        |> renderFailableCustom Doc.IntermediateBlock Doc.Video
+    , View.LanguageBreak.renderer
         |> renderFailableCustom Doc.IntermediateBlock Doc.LanguageBreak
     ]
 

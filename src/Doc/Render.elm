@@ -10,6 +10,7 @@ import View.Inline
 import View.LanguageBreak
 import View.List
 import View.Paragraph
+import View.VideoEmbed
 
 
 toElmUi : List Doc.Block -> Ui.Element msg
@@ -62,6 +63,10 @@ toElmUiInternal sectionDepth blocks =
                 |> View.Figure.figure
                 |> View.Figure.view
             )
+                :: toElmUiInternal sectionDepth nextBlocks
+
+        (Doc.Video videoEmbed) :: nextBlocks ->
+            View.VideoEmbed.view videoEmbed
                 :: toElmUiInternal sectionDepth nextBlocks
 
         (Doc.CodeBlock { code, language }) :: nextBlocks ->
