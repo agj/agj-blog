@@ -25,8 +25,7 @@ type alias Config msg =
 
 
 type alias AudioPlayerConfig msg =
-    { audioPlayerState : View.AudioPlayer.State
-    , onAudioPlayerStateUpdated : View.AudioPlayer.State -> msg
+    { onAudioPlayerStateUpdated : View.AudioPlayer.State -> msg
     }
 
 
@@ -287,7 +286,7 @@ customRenderers audioPlayerConfig =
     let
         audioPlayerRenderers =
             case audioPlayerConfig of
-                Just { audioPlayerState, onAudioPlayerStateUpdated } ->
+                Just { onAudioPlayerStateUpdated } ->
                     [ View.AudioPlayer.Track.renderer
                         |> renderAsIntermediateCustom Doc.AudioPlayerTrack
                     , View.AudioPlayer.renderer

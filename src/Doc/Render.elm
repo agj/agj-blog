@@ -5,6 +5,7 @@ import Doc
 import Element as Ui
 import Element.Background as UiBackground
 import Style
+import View.AudioPlayer
 import View.CodeBlock
 import View.Column exposing (Spacing(..))
 import View.Figure
@@ -16,10 +17,15 @@ import View.Paragraph
 import View.VideoEmbed
 
 
-toElmUi : List (Doc.Block msg) -> Ui.Element msg
-toElmUi blocks =
+type alias State =
+    { audioPlayerState : View.AudioPlayer.State
+    }
+
+
+toElmUi : Maybe State -> List (Doc.Block msg) -> Ui.Element msg
+toElmUi state blocks =
     blocks
-        |> toElmUiInternal 1
+        |> toElmUiInternal state 1
         |> View.Column.setSpaced MSpacing
 
 
@@ -27,27 +33,27 @@ toElmUi blocks =
 -- INTERNAL
 
 
-toElmUiInternal : Int -> List (Doc.Block msg) -> List (Ui.Element msg)
-toElmUiInternal sectionDepth blocks =
+toElmUiInternal : Maybe State -> Int -> List (Doc.Block msg) -> List (Ui.Element msg)
+toElmUiInternal state sectionDepth blocks =
     case blocks of
         (Doc.Paragraph inlines) :: nextBlocks ->
             (inlines
                 |> List.map inlineToElmUi
                 |> View.Paragraph.view
             )
-                :: toElmUiInternal sectionDepth nextBlocks
+                :: toElmUiInternal state sectionDepth nextBlocks
 
         (Doc.OrderedList firstItem restItems) :: nextBlocks ->
-            listToElmUi sectionDepth (Just 1) firstItem restItems
-                :: toElmUiInternal sectionDepth nextBlocks
+            listToElmUi state sectionDepth (Just 1) firstItem restItems
+                :: toElmUiInternal state sectionDepth nextBlocks
 
         (Doc.UnorderedList firstItem restItems) :: nextBlocks ->
-            listToElmUi sectionDepth Nothing firstItem restItems
-                :: toElmUiInternal sectionDepth nextBlocks
+            listToElmUi state sectionDepth Nothing firstItem restItems
+                :: toElmUiInternal state sectionDepth nextBlocks
 
         (Doc.BlockQuote blockQuoteBlocks) :: nextBlocks ->
-            blockQuoteToElmUi sectionDepth blockQuoteBlocks
-                :: toElmUiInternal sectionDepth nextBlocks
+            blockQuoteToElmUi state sectionDepth blockQuoteBlocks
+                :: toElmUiInternal state sectionDepth nextBlocks
 
         (Doc.Section { heading, content }) :: nextBlocks ->
             let
@@ -58,39 +64,51 @@ toElmUiInternal sectionDepth blocks =
                 |> List.map inlineToElmUi
                 |> View.Heading.view newSectionDepth
              , content
-                |> toElmUiInternal newSectionDepth
+                |> toElmUiInternal state newSectionDepth
                 |> View.Column.setSpaced MSpacing
              ]
                 |> View.Column.setSpaced MSpacing
             )
-                :: toElmUiInternal newSectionDepth nextBlocks
+                :: toElmUiInternal state newSectionDepth nextBlocks
 
         (Doc.Image { url, description }) :: nextBlocks ->
             (Ui.image [] { src = url, description = description }
                 |> View.Figure.figure
                 |> View.Figure.view
             )
-                :: toElmUiInternal sectionDepth nextBlocks
+                :: toElmUiInternal state sectionDepth nextBlocks
 
         (Doc.Video videoEmbed) :: nextBlocks ->
             View.VideoEmbed.view videoEmbed
-                :: toElmUiInternal sectionDepth nextBlocks
+                :: toElmUiInternal state sectionDepth nextBlocks
 
         (Doc.CodeBlock { code, language }) :: nextBlocks ->
             (View.CodeBlock.fromBody language code
                 |> View.CodeBlock.view
             )
-                :: toElmUiInternal sectionDepth nextBlocks
+                :: toElmUiInternal state sectionDepth nextBlocks
 
         (Doc.LanguageBreak languageBreak) :: nextBlocks ->
             View.LanguageBreak.view languageBreak
-                :: toElmUiInternal sectionDepth nextBlocks
+                :: toElmUiInternal state sectionDepth nextBlocks
+
+        (Doc.AudioPlayer audioPlayer) :: nextBlocks ->
+            case state of
+                Just { audioPlayerState } ->
+                    View.AudioPlayer.view audioPlayerState audioPlayer
+                        :: toElmUiInternal state sectionDepth nextBlocks
+
+                Nothing ->
+                    ([ Ui.text "[AudioPlayer state not provided]" ]
+                        |> View.Paragraph.view
+                    )
+                        :: toElmUiInternal state sectionDepth nextBlocks
 
         _ :: nextBlocks ->
             (Doc.plainText "[Block]"
                 |> inlineToElmUi
             )
-                :: toElmUiInternal sectionDepth nextBlocks
+                :: toElmUiInternal state sectionDepth nextBlocks
 
         [] ->
             []
@@ -139,15 +157,15 @@ setStyleIf cond styler children =
         children
 
 
-listToElmUi : Int -> Maybe Int -> Doc.ListItem msg -> List (Doc.ListItem msg) -> Ui.Element msg
-listToElmUi sectionDepth maybeStartNumber firstItem restItems =
+listToElmUi : Maybe State -> Int -> Maybe Int -> Doc.ListItem msg -> List (Doc.ListItem msg) -> Ui.Element msg
+listToElmUi state sectionDepth maybeStartNumber firstItem restItems =
     let
         list =
             (firstItem :: restItems)
                 |> List.map
                     (\( firstBlock, restBlocks ) ->
                         (firstBlock :: restBlocks)
-                            |> toElmUiInternal sectionDepth
+                            |> toElmUiInternal state sectionDepth
                     )
                 |> View.List.fromItems
     in
@@ -162,8 +180,8 @@ listToElmUi sectionDepth maybeStartNumber firstItem restItems =
                 |> View.List.view
 
 
-blockQuoteToElmUi : Int -> List (Doc.Block msg) -> Ui.Element msg
-blockQuoteToElmUi sectionDepth blocks =
+blockQuoteToElmUi : Maybe State -> Int -> List (Doc.Block msg) -> Ui.Element msg
+blockQuoteToElmUi state sectionDepth blocks =
     let
         line =
             Ui.el
@@ -189,6 +207,6 @@ blockQuoteToElmUi sectionDepth blocks =
                 ]
     in
     blocks
-        |> toElmUiInternal sectionDepth
+        |> toElmUiInternal state sectionDepth
         |> View.Column.setSpaced MSpacing
         |> toQuote

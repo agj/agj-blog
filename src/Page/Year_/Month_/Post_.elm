@@ -207,13 +207,8 @@ view maybeUrl sharedModel model static =
         contentEl =
             [ static.data.markdown
                 |> Doc.Markdown.parse
-                    { audioPlayer =
-                        Just
-                            { audioPlayerState = model.audioPlayerState
-                            , onAudioPlayerStateUpdated = AudioPlayerStateUpdated
-                            }
-                    }
-                |> Doc.Render.toElmUi
+                    { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
+                |> Doc.Render.toElmUi (Just { audioPlayerState = model.audioPlayerState })
             , View.CodeBlock.styles |> Ui.html
             ]
                 |> Ui.column []
