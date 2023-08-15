@@ -35,7 +35,7 @@ parse config markdown =
     markdown
         |> Markdown.Parser.parse
         |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
-        |> Result.andThen (Markdown.Renderer.render (docRenderer config))
+        |> Result.andThen (Markdown.Renderer.render (renderer config))
         |> Result.map intermediatesToBlocks
         |> Result.mapError (\error -> [ Doc.Paragraph [ Doc.plainText error ] ])
         |> Result.merge
@@ -97,8 +97,8 @@ intermediatesToBlocks intermediates =
         |> Tuple.second
 
 
-docRenderer : Config msg -> Markdown.Renderer.Renderer Doc.Intermediate
-docRenderer config =
+renderer : Config msg -> Markdown.Renderer.Renderer Doc.Intermediate
+renderer config =
     { -- Inline
       text = Doc.plainText >> Doc.IntermediateInline
     , strong = renderInlineWithStyle Doc.setBold
