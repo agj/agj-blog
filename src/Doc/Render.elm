@@ -71,6 +71,10 @@ toElmUiInternal state sectionDepth blocks =
             )
                 :: toElmUiInternal state newSectionDepth nextBlocks
 
+        Doc.Separation :: nextBlocks ->
+            viewSeparation
+                :: toElmUiInternal state sectionDepth nextBlocks
+
         (Doc.Image { url, description }) :: nextBlocks ->
             (Ui.image [] { src = url, description = description }
                 |> View.Figure.figure
@@ -103,12 +107,6 @@ toElmUiInternal state sectionDepth blocks =
                         |> View.Paragraph.view
                     )
                         :: toElmUiInternal state sectionDepth nextBlocks
-
-        _ :: nextBlocks ->
-            (Doc.plainText "[Block]"
-                |> inlineToElmUi
-            )
-                :: toElmUiInternal state sectionDepth nextBlocks
 
         [] ->
             []
@@ -210,3 +208,25 @@ blockQuoteToElmUi state sectionDepth blocks =
         |> toElmUiInternal state sectionDepth
         |> View.Column.setSpaced MSpacing
         |> toQuote
+
+
+viewSeparation : Ui.Element msg
+viewSeparation =
+    let
+        blank =
+            Ui.el [ Ui.width (Ui.fillPortion 1) ]
+                Ui.none
+
+        rule =
+            Ui.el
+                [ Ui.width (Ui.fillPortion 1)
+                , Ui.height (Ui.px 1)
+                , UiBackground.color (Style.color.secondary50 |> Color.toElmUi)
+                ]
+                Ui.none
+    in
+    Ui.row
+        [ Ui.width Ui.fill
+        , Ui.paddingXY 0 Style.spacing.size5
+        ]
+        [ blank, rule, blank ]

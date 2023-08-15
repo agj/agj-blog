@@ -117,7 +117,7 @@ renderer config =
     -- Special
     , hardLineBreak = placeholderDoc
     , image = renderImage
-    , thematicBreak = placeholderDoc
+    , thematicBreak = Doc.Separation |> Doc.IntermediateBlock
     , html = renderCustom config.audioPlayer
 
     -- Table
