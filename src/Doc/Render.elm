@@ -40,21 +40,21 @@ toElmUiInternal state sectionDepth blocks =
     case blocks of
         (Doc.Paragraph inlines) :: nextBlocks ->
             (inlines
-                |> List.map inlineToElmUi
+                |> List.map viewInline
                 |> View.Paragraph.view
             )
                 :: toElmUiInternal state sectionDepth nextBlocks
 
         (Doc.OrderedList firstItem restItems) :: nextBlocks ->
-            listToElmUi state sectionDepth (Just 1) firstItem restItems
+            viewList state sectionDepth (Just 1) firstItem restItems
                 :: toElmUiInternal state sectionDepth nextBlocks
 
         (Doc.UnorderedList firstItem restItems) :: nextBlocks ->
-            listToElmUi state sectionDepth Nothing firstItem restItems
+            viewList state sectionDepth Nothing firstItem restItems
                 :: toElmUiInternal state sectionDepth nextBlocks
 
         (Doc.BlockQuote blockQuoteBlocks) :: nextBlocks ->
-            blockQuoteToElmUi state sectionDepth blockQuoteBlocks
+            viewBlockQuote state sectionDepth blockQuoteBlocks
                 :: toElmUiInternal state sectionDepth nextBlocks
 
         (Doc.Section { heading, content }) :: nextBlocks ->
@@ -63,7 +63,7 @@ toElmUiInternal state sectionDepth blocks =
                     sectionDepth + 1
             in
             ([ heading
-                |> List.map inlineToElmUi
+                |> List.map viewInline
                 |> View.Heading.view newSectionDepth
              , content
                 |> toElmUiInternal state newSectionDepth
@@ -114,18 +114,18 @@ toElmUiInternal state sectionDepth blocks =
             []
 
 
-inlineToElmUi : Doc.Inline -> Ui.Element msg
-inlineToElmUi inline =
+viewInline : Doc.Inline -> Ui.Element msg
+viewInline inline =
     case inline of
         Doc.Text styledText ->
-            styledTextToElmUi styledText
+            viewStyledText styledText
 
         Doc.InlineCode text ->
             View.Inline.setCode text
 
         Doc.Link { target, inlines } ->
             inlines
-                |> List.map styledTextToElmUi
+                |> List.map viewStyledText
                 |> View.Inline.setLink target
 
         Doc.LineBreak ->
@@ -134,8 +134,8 @@ inlineToElmUi inline =
                 |> Ui.html
 
 
-styledTextToElmUi : Doc.StyledText -> Ui.Element msg
-styledTextToElmUi { text, styles } =
+viewStyledText : Doc.StyledText -> Ui.Element msg
+viewStyledText { text, styles } =
     [ Ui.text text ]
         |> setStyleIf styles.bold View.Inline.setBold
         |> setStyleIf styles.italic View.Inline.setItalic
@@ -152,8 +152,8 @@ setStyleIf cond styler children =
         children
 
 
-listToElmUi : Maybe State -> Int -> Maybe Int -> Doc.ListItem msg -> List (Doc.ListItem msg) -> Ui.Element msg
-listToElmUi state sectionDepth maybeStartNumber firstItem restItems =
+viewList : Maybe State -> Int -> Maybe Int -> Doc.ListItem msg -> List (Doc.ListItem msg) -> Ui.Element msg
+viewList state sectionDepth maybeStartNumber firstItem restItems =
     let
         list =
             (firstItem :: restItems)
@@ -175,8 +175,8 @@ listToElmUi state sectionDepth maybeStartNumber firstItem restItems =
                 |> View.List.view
 
 
-blockQuoteToElmUi : Maybe State -> Int -> List (Doc.Block msg) -> Ui.Element msg
-blockQuoteToElmUi state sectionDepth blocks =
+viewBlockQuote : Maybe State -> Int -> List (Doc.Block msg) -> Ui.Element msg
+viewBlockQuote state sectionDepth blocks =
     let
         line =
             Ui.el
