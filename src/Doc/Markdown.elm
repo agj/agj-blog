@@ -115,7 +115,7 @@ renderer config =
     , codeBlock = renderCodeBlock
 
     -- Special
-    , hardLineBreak = placeholderDoc
+    , hardLineBreak = Doc.LineBreak |> Doc.IntermediateInline
     , image = renderImage
     , thematicBreak = Doc.Separation |> Doc.IntermediateBlock
     , html = renderCustom config.audioPlayer

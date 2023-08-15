@@ -10,6 +10,7 @@ type Inline
     = Text StyledText
     | InlineCode String
     | Link { target : String, inlines : List StyledText }
+    | LineBreak
 
 
 type Block msg
@@ -99,6 +100,9 @@ toLink target inlines =
 
                             InlineCode text ->
                                 Just [ { text = text, styles = emptyStyles } ]
+
+                            LineBreak ->
+                                Nothing
                     )
                 |> List.concat
     in
@@ -115,6 +119,9 @@ mapStyles mapper inline =
             Link { config | inlines = inlines |> List.map (mapStyledTextStyles mapper) }
 
         InlineCode _ ->
+            inline
+
+        LineBreak ->
             inline
 
 

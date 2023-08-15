@@ -4,6 +4,8 @@ import Custom.Color as Color
 import Doc
 import Element as Ui
 import Element.Background as UiBackground
+import Html
+import Html.Attributes
 import Style
 import View.AudioPlayer
 import View.CodeBlock
@@ -112,16 +114,6 @@ toElmUiInternal state sectionDepth blocks =
             []
 
 
-
--- List Block (List Block)
--- BlockQuote (List Block)
--- CodeBlock String
--- Image String
--- Separation
--- Video
--- AudioPlayer
-
-
 inlineToElmUi : Doc.Inline -> Ui.Element msg
 inlineToElmUi inline =
     case inline of
@@ -135,6 +127,11 @@ inlineToElmUi inline =
             inlines
                 |> List.map styledTextToElmUi
                 |> View.Inline.setLink target
+
+        Doc.LineBreak ->
+            [ Html.text "\n" ]
+                |> Html.span [ Html.Attributes.style "white-space" "pre-wrap" ]
+                |> Ui.html
 
 
 styledTextToElmUi : Doc.StyledText -> Ui.Element msg
