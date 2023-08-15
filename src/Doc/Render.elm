@@ -16,7 +16,7 @@ import View.Paragraph
 import View.VideoEmbed
 
 
-toElmUi : List Doc.Block -> Ui.Element msg
+toElmUi : List (Doc.Block msg) -> Ui.Element msg
 toElmUi blocks =
     blocks
         |> toElmUiInternal 1
@@ -27,7 +27,7 @@ toElmUi blocks =
 -- INTERNAL
 
 
-toElmUiInternal : Int -> List Doc.Block -> List (Ui.Element msg)
+toElmUiInternal : Int -> List (Doc.Block msg) -> List (Ui.Element msg)
 toElmUiInternal sectionDepth blocks =
     case blocks of
         (Doc.Paragraph inlines) :: nextBlocks ->
@@ -139,7 +139,7 @@ setStyleIf cond styler children =
         children
 
 
-listToElmUi : Int -> Maybe Int -> Doc.ListItem -> List Doc.ListItem -> Ui.Element msg
+listToElmUi : Int -> Maybe Int -> Doc.ListItem msg -> List (Doc.ListItem msg) -> Ui.Element msg
 listToElmUi sectionDepth maybeStartNumber firstItem restItems =
     let
         list =
@@ -162,7 +162,7 @@ listToElmUi sectionDepth maybeStartNumber firstItem restItems =
                 |> View.List.view
 
 
-blockQuoteToElmUi : Int -> List Doc.Block -> Ui.Element msg
+blockQuoteToElmUi : Int -> List (Doc.Block msg) -> Ui.Element msg
 blockQuoteToElmUi sectionDepth blocks =
     let
         line =

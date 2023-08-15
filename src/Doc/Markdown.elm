@@ -30,7 +30,7 @@ type alias AudioPlayerConfig msg =
     }
 
 
-parse : Config msg -> String -> List Doc.Block
+parse : Config msg -> String -> List (Doc.Block msg)
 parse config markdown =
     markdown
         |> Markdown.Parser.parse
@@ -41,10 +41,10 @@ parse config markdown =
         |> Result.merge
 
 
-intermediatesToBlocks : List Doc.Intermediate -> List Doc.Block
+intermediatesToBlocks : List (Doc.Intermediate msg) -> List (Doc.Block msg)
 intermediatesToBlocks intermediates =
     let
-        getForSection : List Doc.Block -> { forSection : List Doc.Block, afterSection : List Doc.Block }
+        getForSection : List (Doc.Block msg) -> { forSection : List (Doc.Block msg), afterSection : List (Doc.Block msg) }
         getForSection blocks =
             blocks
                 |> List.splitWhen Doc.isSection
@@ -97,7 +97,7 @@ intermediatesToBlocks intermediates =
         |> Tuple.second
 
 
-renderer : Config msg -> Markdown.Renderer.Renderer Doc.Intermediate
+renderer : Config msg -> Markdown.Renderer.Renderer (Doc.Intermediate msg)
 renderer config =
     { -- Inline
       text = Doc.plainText >> Doc.IntermediateInline
@@ -140,7 +140,7 @@ placeholderDoc =
 -- INLINE
 
 
-renderInlineWithStyle : (Doc.Inline -> Doc.Inline) -> List Doc.Intermediate -> Doc.Intermediate
+renderInlineWithStyle : (Doc.Inline -> Doc.Inline) -> List (Doc.Intermediate msg) -> Doc.Intermediate msg
 renderInlineWithStyle styler intermediates =
     intermediates
         |> List.filterMap
@@ -159,7 +159,7 @@ renderInlineWithStyle styler intermediates =
         |> Doc.IntermediateInlineList
 
 
-renderLink : { title : Maybe String, destination : String } -> List Doc.Intermediate -> Doc.Intermediate
+renderLink : { title : Maybe String, destination : String } -> List (Doc.Intermediate msg) -> Doc.Intermediate msg
 renderLink { destination } intermediates =
     intermediates
         |> unwrapInlines
@@ -167,7 +167,7 @@ renderLink { destination } intermediates =
         |> Doc.IntermediateInline
 
 
-renderInlineCode : String -> Doc.Intermediate
+renderInlineCode : String -> Doc.Intermediate msg
 renderInlineCode code =
     Doc.inlineCode code
         |> Doc.IntermediateInline
@@ -177,7 +177,7 @@ renderInlineCode code =
 -- BLOCK
 
 
-renderParagraph : List Doc.Intermediate -> Doc.Intermediate
+renderParagraph : List (Doc.Intermediate msg) -> Doc.Intermediate msg
 renderParagraph intermediates =
     case intermediates of
         (Doc.IntermediateBlock block) :: _ ->
@@ -194,19 +194,19 @@ renderParagraph intermediates =
 renderHeading :
     { level : Markdown.Block.HeadingLevel
     , rawText : String
-    , children : List Doc.Intermediate
+    , children : List (Doc.Intermediate msg)
     }
-    -> Doc.Intermediate
+    -> Doc.Intermediate msg
 renderHeading { level, children } =
     Doc.IntermediateHeading
         (Markdown.Block.headingLevelToInt level)
         (unwrapInlines children)
 
 
-renderUnorderedList : List (Markdown.Block.ListItem Doc.Intermediate) -> Doc.Intermediate
+renderUnorderedList : List (Markdown.Block.ListItem (Doc.Intermediate msg)) -> Doc.Intermediate msg
 renderUnorderedList items =
     let
-        docListItems : List Doc.ListItem
+        docListItems : List (Doc.ListItem msg)
         docListItems =
             items
                 |> List.map
@@ -227,10 +227,10 @@ renderUnorderedList items =
         |> Doc.IntermediateBlock
 
 
-renderOrderedList : Int -> List (List Doc.Intermediate) -> Doc.Intermediate
+renderOrderedList : Int -> List (List (Doc.Intermediate msg)) -> Doc.Intermediate msg
 renderOrderedList startNumber items =
     let
-        docListItems : List Doc.ListItem
+        docListItems : List (Doc.ListItem msg)
         docListItems =
             items
                 |> List.map (ensureBlocks >> unwrapBlocks)
@@ -248,7 +248,7 @@ renderOrderedList startNumber items =
         |> Doc.IntermediateBlock
 
 
-renderBlockQuote : List Doc.Intermediate -> Doc.Intermediate
+renderBlockQuote : List (Doc.Intermediate msg) -> Doc.Intermediate msg
 renderBlockQuote intermediates =
     intermediates
         |> ensureBlocks
@@ -257,7 +257,7 @@ renderBlockQuote intermediates =
         |> Doc.IntermediateBlock
 
 
-renderCodeBlock : { body : String, language : Maybe String } -> Doc.Intermediate
+renderCodeBlock : { body : String, language : Maybe String } -> Doc.Intermediate msg
 renderCodeBlock { body, language } =
     Doc.CodeBlock { language = language, code = body }
         |> Doc.IntermediateBlock
@@ -267,7 +267,7 @@ renderCodeBlock { body, language } =
 -- SPECIAL
 
 
-renderImage : { alt : String, src : String, title : Maybe String } -> Doc.Intermediate
+renderImage : { alt : String, src : String, title : Maybe String } -> Doc.Intermediate msg
 renderImage { alt, src, title } =
     Doc.Image { url = src, description = alt }
         |> Doc.IntermediateBlock
@@ -277,25 +277,55 @@ renderImage { alt, src, title } =
 -- CUSTOM
 
 
-renderCustom : Maybe (AudioPlayerConfig msg) -> Markdown.Html.Renderer (List Doc.Intermediate -> Doc.Intermediate)
+renderCustom : Maybe (AudioPlayerConfig msg) -> Markdown.Html.Renderer (List (Doc.Intermediate msg) -> Doc.Intermediate msg)
 renderCustom audioPlayerConfig =
     Markdown.Html.oneOf (customRenderers audioPlayerConfig)
 
 
-customRenderers : Maybe (AudioPlayerConfig msg) -> List (Markdown.Html.Renderer (List Doc.Intermediate -> Doc.Intermediate))
+customRenderers : Maybe (AudioPlayerConfig msg) -> List (Markdown.Html.Renderer (List (Doc.Intermediate msg) -> Doc.Intermediate msg))
 customRenderers audioPlayerConfig =
-    [ View.VideoEmbed.renderer
-        |> renderFailableCustom Doc.IntermediateBlock Doc.Video
-    , View.LanguageBreak.renderer
-        |> renderFailableCustom Doc.IntermediateBlock Doc.LanguageBreak
-    ]
+    let
+        audioPlayerRenderers =
+            case audioPlayerConfig of
+                Just { audioPlayerState, onAudioPlayerStateUpdated } ->
+                    [ View.AudioPlayer.Track.renderer
+                        |> renderAsIntermediateCustom Doc.AudioPlayerTrack
+                    , View.AudioPlayer.renderer
+                        |> renderCustomWithCustomChildren
+                            Doc.IntermediateBlock
+                            (\metadata ->
+                                case metadata of
+                                    Doc.AudioPlayerTrack track ->
+                                        Just track
+                            )
+                            (\audioPlayer tracks ->
+                                audioPlayer
+                                    |> View.AudioPlayer.withConfig
+                                        { onStateUpdated = onAudioPlayerStateUpdated
+                                        , tracks = tracks
+                                        }
+                                    |> Doc.AudioPlayer
+                            )
+                    ]
+
+                Nothing ->
+                    []
+
+        otherCustomRenderers =
+            [ View.VideoEmbed.renderer
+                |> renderFailableCustom Doc.IntermediateBlock Doc.Video
+            , View.LanguageBreak.renderer
+                |> renderFailableCustom Doc.IntermediateBlock Doc.LanguageBreak
+            ]
+    in
+    audioPlayerRenderers ++ otherCustomRenderers
 
 
 renderFailableCustom :
-    (Doc.Block -> Doc.Intermediate)
-    -> (a -> Doc.Block)
+    (Doc.Block msg -> Doc.Intermediate msg)
+    -> (a -> Doc.Block msg)
     -> Markdown.Html.Renderer (Result String a)
-    -> Markdown.Html.Renderer (List b -> Doc.Intermediate)
+    -> Markdown.Html.Renderer (List b -> Doc.Intermediate msg)
 renderFailableCustom toIntermediate okToDoc customRenderer =
     customRenderer
         |> Markdown.Html.map
@@ -312,7 +342,48 @@ renderFailableCustom toIntermediate okToDoc customRenderer =
         |> Markdown.Html.map Result.merge
 
 
-renderErrorMessage : String -> Doc.Block
+renderAsIntermediateCustom :
+    (a -> Doc.Metadata)
+    -> Markdown.Html.Renderer a
+    -> Markdown.Html.Renderer (List b -> Doc.Intermediate msg)
+renderAsIntermediateCustom toMetadata customRenderer =
+    customRenderer
+        |> Markdown.Html.map
+            (\value _ ->
+                toMetadata value
+                    |> Doc.IntermediateCustom
+            )
+
+
+renderCustomWithCustomChildren :
+    (Doc.Block msg -> Doc.Intermediate msg)
+    -> (Doc.Metadata -> Maybe child)
+    -> (value -> List child -> Doc.Block msg)
+    -> Markdown.Html.Renderer value
+    -> Markdown.Html.Renderer (List (Doc.Intermediate msg) -> Doc.Intermediate msg)
+renderCustomWithCustomChildren toElmUiTag metadataToChild toElmUi_ customRenderer =
+    customRenderer
+        |> Markdown.Html.map
+            (\value childrenTags ->
+                let
+                    children =
+                        childrenTags
+                            |> List.filterMap
+                                (\tag ->
+                                    case tag of
+                                        Doc.IntermediateCustom metadata ->
+                                            metadataToChild metadata
+
+                                        _ ->
+                                            Nothing
+                                )
+                in
+                toElmUi_ value children
+                    |> toElmUiTag
+            )
+
+
+renderErrorMessage : String -> Doc.Block msg
 renderErrorMessage error =
     [ Doc.plainText "Parsing error: "
     , Doc.plainText error
@@ -324,7 +395,7 @@ renderErrorMessage error =
 -- OTHER
 
 
-unwrapInlines : List Doc.Intermediate -> List Doc.Inline
+unwrapInlines : List (Doc.Intermediate msg) -> List Doc.Inline
 unwrapInlines intermediates =
     intermediates
         |> List.filterMap
@@ -348,7 +419,7 @@ unwrapInlines intermediates =
         |> List.concat
 
 
-unwrapBlocks : List Doc.Intermediate -> List Doc.Block
+unwrapBlocks : List (Doc.Intermediate msg) -> List (Doc.Block msg)
 unwrapBlocks =
     List.filterMap
         (\intermediate ->
@@ -361,13 +432,13 @@ unwrapBlocks =
         )
 
 
-ensureBlocks : List Doc.Intermediate -> List Doc.Intermediate
+ensureBlocks : List (Doc.Intermediate msg) -> List (Doc.Intermediate msg)
 ensureBlocks tags =
     let
         process :
-            Doc.Intermediate
-            -> ( List Doc.Intermediate, List Doc.Intermediate )
-            -> ( List Doc.Intermediate, List Doc.Intermediate )
+            Doc.Intermediate msg
+            -> ( List (Doc.Intermediate msg), List (Doc.Intermediate msg) )
+            -> ( List (Doc.Intermediate msg), List (Doc.Intermediate msg) )
         process tag ( inlines, blocks ) =
             case tag of
                 Doc.IntermediateInline _ ->
@@ -377,8 +448,8 @@ ensureBlocks tags =
                     ( [], tag :: wrapUpInlines ( inlines, blocks ) )
 
         wrapUpInlines :
-            ( List Doc.Intermediate, List Doc.Intermediate )
-            -> List Doc.Intermediate
+            ( List (Doc.Intermediate msg), List (Doc.Intermediate msg) )
+            -> List (Doc.Intermediate msg)
         wrapUpInlines ( inlines, blocks ) =
             case inlines of
                 [] ->

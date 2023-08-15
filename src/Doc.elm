@@ -12,17 +12,17 @@ type Inline
     | Link { target : String, inlines : List StyledText }
 
 
-type Block
+type Block msg
     = Paragraph (List Inline)
-    | Section { heading : List Inline, content : List Block }
-    | UnorderedList ListItem (List ListItem)
-    | OrderedList ListItem (List ListItem)
-    | BlockQuote (List Block)
+    | Section { heading : List Inline, content : List (Block msg) }
+    | UnorderedList (ListItem msg) (List (ListItem msg))
+    | OrderedList (ListItem msg) (List (ListItem msg))
+    | BlockQuote (List (Block msg))
     | CodeBlock { language : Maybe String, code : String }
     | Image { url : String, description : String }
     | Separation
     | Video View.VideoEmbed.VideoEmbed
-    | AudioPlayer View.AudioPlayer.AudioPlayer
+    | AudioPlayer (View.AudioPlayer.AudioPlayerWithConfig msg)
     | LanguageBreak View.LanguageBreak.LanguageBreak
 
 
@@ -37,12 +37,12 @@ type alias Styles =
     }
 
 
-type alias ListItem =
-    ( Block, List Block )
+type alias ListItem msg =
+    ( Block msg, List (Block msg) )
 
 
-type Intermediate
-    = IntermediateBlock Block
+type Intermediate msg
+    = IntermediateBlock (Block msg)
     | IntermediateHeading Int (List Inline)
     | IntermediateInline Inline
     | IntermediateInlineList (List Inline)
@@ -131,7 +131,7 @@ emptyStyles =
     }
 
 
-isSection : Block -> Bool
+isSection : Block msg -> Bool
 isSection block =
     case block of
         Section _ ->

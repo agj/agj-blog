@@ -1,5 +1,6 @@
 module View.AudioPlayer exposing
     ( AudioPlayer
+    , AudioPlayerWithConfig
     , Config
     , State
     , initialState
