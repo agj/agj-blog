@@ -1,14 +1,12 @@
 module Style exposing
     ( blockPadding
-    , blockPaddingVar
     , color
     , interblock
     , interline
-    , interlineVar
     , padding
     , spacing
-    , textSizeMonospaceVar
-    , textSizeVar
+    , textSize
+    , textSizeMonospace
     )
 
 import Color exposing (Color)
@@ -82,7 +80,7 @@ colorSecondary =
     rgb 0x00 0xEB 0xFF
 
 
-textSizeVar =
+textSize =
     { m = Css.Var "text-size-m"
     , l = Css.Var "text-size-l"
     , xl = Css.Var "text-size-xl"
@@ -90,33 +88,22 @@ textSizeVar =
     }
 
 
-textSizeMonospaceVar =
-    { m = Css.CalcMultiplication (Css.Unitless 0.9) textSizeVar.m
-    , l = Css.CalcMultiplication (Css.Unitless 0.9) textSizeVar.l
-    , xl = Css.CalcMultiplication (Css.Unitless 0.9) textSizeVar.xl
-    , xxl = Css.CalcMultiplication (Css.Unitless 0.9) textSizeVar.xxl
+textSizeMonospace =
+    { m = Css.CalcMultiplication (Css.Unitless 0.9) textSize.m
+    , l = Css.CalcMultiplication (Css.Unitless 0.9) textSize.l
+    , xl = Css.CalcMultiplication (Css.Unitless 0.9) textSize.xl
+    , xxl = Css.CalcMultiplication (Css.Unitless 0.9) textSize.xxl
     }
 
 
 interline =
-    { s = calculateInterline 0.4
-    , m = calculateInterline 0.6
-    }
-
-
-interlineVar =
     { s = Css.CalcMultiplication (Css.Unitless 0.4)
     , m = Css.CalcMultiplication (Css.Unitless 0.6)
     }
 
 
-blockPadding : Int -> (Int -> Int) -> Int
-blockPadding fontSize_ interline_ =
-    round (toFloat (interline_ fontSize_) / 2)
-
-
-blockPaddingVar : Css.Expression -> (Css.Expression -> Css.Expression) -> Css.Expression
-blockPaddingVar textSize_ interline_ =
+blockPadding : Css.Expression -> (Css.Expression -> Css.Expression) -> Css.Expression
+blockPadding textSize_ interline_ =
     Css.CalcMultiplication (interline_ textSize_) (Css.Unitless 0.5)
 
 

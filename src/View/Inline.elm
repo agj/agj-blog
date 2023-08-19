@@ -40,7 +40,7 @@ setCode code =
         |> Ui.html
         |> Ui.el
             [ UiFont.family [ UiFont.monospace ]
-            , Ui.varFontSize Style.textSizeMonospaceVar.m
+            , Ui.varFontSize Style.textSizeMonospace.m
             , UiBackground.color (Style.color.layout05 |> Color.toElmUi)
             , Ui.paddingXY Style.spacing.size1 0
             , UiBorder.rounded Style.spacing.size1

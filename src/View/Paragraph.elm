@@ -11,10 +11,10 @@ view : List (Ui.Element msg) -> Ui.Element msg
 view inlines =
     Ui.paragraph
         [ UiFont.color (Color.toElmUi Style.color.layout)
-        , Ui.varFontSize Style.textSizeVar.m
-        , Ui.varLineSpacing (Style.interlineVar.m Style.textSizeVar.m)
-        , Ui.varPaddingTop (Style.blockPaddingVar Style.textSizeVar.m Style.interlineVar.m)
-        , Ui.varPaddingBottom (Style.blockPaddingVar Style.textSizeVar.m Style.interlineVar.m)
+        , Ui.varFontSize Style.textSize.m
+        , Ui.varLineSpacing (Style.interline.m Style.textSize.m)
+        , Ui.varPaddingTop (Style.blockPadding Style.textSize.m Style.interline.m)
+        , Ui.varPaddingBottom (Style.blockPadding Style.textSize.m Style.interline.m)
         , Ui.width Ui.fill
         ]
         inlines

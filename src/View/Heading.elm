@@ -16,12 +16,12 @@ view level content =
             max 1 level
 
         basePadding =
-            Style.blockPaddingVar fontSize Style.interlineVar.s
+            Style.blockPadding fontSize Style.interline.s
 
         baseStyles =
             [ UiFont.color (Color.toElmUi Style.color.layout)
             , Ui.varFontSize fontSize
-            , Ui.varLineSpacing (Style.interlineVar.s fontSize)
+            , Ui.varLineSpacing (Style.interline.s fontSize)
             , Ui.width Ui.fill
             , UiRegion.heading normalizedLevel
             , Ui.varPaddingTop (Css.CalcAddition basePadding (Css.Pixels Style.spacing.size5))
@@ -31,31 +31,31 @@ view level content =
         ( fontSize, styles, prepend ) =
             case normalizedLevel of
                 1 ->
-                    ( Style.textSizeVar.xxl
+                    ( Style.textSize.xxl
                     , [ UiFont.bold ]
                     , Nothing
                     )
 
                 2 ->
-                    ( Style.textSizeVar.xl
+                    ( Style.textSize.xl
                     , [ UiFont.bold ]
                     , Nothing
                     )
 
                 3 ->
-                    ( Style.textSizeVar.l
+                    ( Style.textSize.l
                     , [ UiFont.bold ]
                     , Nothing
                     )
 
                 4 ->
-                    ( Style.textSizeVar.l
+                    ( Style.textSize.l
                     , []
                     , Nothing
                     )
 
                 _ ->
-                    ( Style.textSizeVar.l
+                    ( Style.textSize.l
                     , []
                     , Just (String.repeat (normalizedLevel - 4) "▹")
                     )
