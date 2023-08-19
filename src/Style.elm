@@ -1,12 +1,16 @@
 module Style exposing
     ( blockPadding
+    , blockPaddingVar
     , color
     , interblock
     , interline
+    , interlineVar
     , padding
     , spacing
     , textSize
     , textSizeMonospace
+    , textSizeMonospaceVar
+    , textSizeVar
     )
 
 import Color exposing (Color)
@@ -87,11 +91,27 @@ textSize =
     }
 
 
+textSizeVar =
+    { m = "text-size-m"
+    , l = "text-size-l"
+    , xl = "text-size-xl"
+    , xxl = "text-size-xxl"
+    }
+
+
 textSizeMonospace =
     { m = textSizeToMonospace textSize.m
     , l = textSizeToMonospace textSize.l
     , xl = textSizeToMonospace textSize.xl
     , xxl = textSizeToMonospace textSize.xxl
+    }
+
+
+textSizeMonospaceVar =
+    { m = "text-size-monospace-m"
+    , l = "text-size-monospace-l"
+    , xl = "text-size-monospace-xl"
+    , xxl = "text-size-monospace-xxl"
     }
 
 
@@ -101,9 +121,20 @@ interline =
     }
 
 
+interlineVar =
+    { sForTextSizeM = "interline-s-for-text-size-m"
+    , mForTextSizeM = "interline-m-for-text-size-m"
+    }
+
+
 blockPadding : Int -> (Int -> Int) -> Int
 blockPadding fontSize_ interline_ =
     round (toFloat (interline_ fontSize_) / 2)
+
+
+blockPaddingVar =
+    { textSizeMInterlineM = "block-padding-font-size-m-interline-m"
+    }
 
 
 interblock =
