@@ -4,7 +4,7 @@ module Style exposing
     , color
     , interblock
     , interline
-    , interlineVar
+    , interlineFactor
     , padding
     , spacing
     , textSize
@@ -121,9 +121,9 @@ interline =
     }
 
 
-interlineVar =
-    { sForTextSizeM = "interline-s-for-text-size-m"
-    , mForTextSizeM = "interline-m-for-text-size-m"
+interlineFactor =
+    { s = 0.4
+    , m = 0.6
     }
 
 

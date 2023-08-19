@@ -4,6 +4,7 @@ module Custom.Element exposing
     , nonSelectable
     , varFontSize
     , varLineSpacing
+    , varLineSpacingFromFontSize
     , varPaddingBottom
     , varPaddingTop
     , varWidth
@@ -47,6 +48,15 @@ varLineSpacing : String -> Ui.Attribute msg
 varLineSpacing varName =
     "calc(1em + var(--{varName}))"
         |> String.replace "{varName}" varName
+        |> Html.Attributes.style "line-height"
+        |> Ui.htmlAttribute
+
+
+varLineSpacingFromFontSize : String -> Float -> Ui.Attribute msg
+varLineSpacingFromFontSize fontSizeVarName lineSpacingFactor =
+    "calc(1em + (var(--{fontSizeVarName}) * {lineSpacingFactor}))"
+        |> String.replace "{fontSizeVarName}" fontSizeVarName
+        |> String.replace "{lineSpacingFactor}" (String.fromFloat lineSpacingFactor)
         |> Html.Attributes.style "line-height"
         |> Ui.htmlAttribute
 

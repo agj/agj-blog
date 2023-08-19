@@ -12,7 +12,7 @@ view inlines =
     Ui.paragraph
         [ UiFont.color (Color.toElmUi Style.color.layout)
         , Ui.varFontSize Style.textSizeVar.m
-        , Ui.varLineSpacing Style.interlineVar.mForTextSizeM
+        , Ui.varLineSpacingFromFontSize Style.textSizeVar.m Style.interlineFactor.m
         , Ui.varPaddingTop Style.blockPaddingVar.textSizeMInterlineM
         , Ui.varPaddingBottom Style.blockPaddingVar.textSizeMInterlineM
         , Ui.width Ui.fill
