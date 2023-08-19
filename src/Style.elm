@@ -7,8 +7,6 @@ module Style exposing
     , interlineVar
     , padding
     , spacing
-    , textSize
-    , textSizeMonospace
     , textSizeMonospaceVar
     , textSizeVar
     )
@@ -84,14 +82,6 @@ colorSecondary =
     rgb 0x00 0xEB 0xFF
 
 
-textSize =
-    { m = 18
-    , l = 24
-    , xl = 35
-    , xxl = 60
-    }
-
-
 textSizeVar =
     { m = Css.Var "text-size-m"
     , l = Css.Var "text-size-l"
@@ -100,19 +90,11 @@ textSizeVar =
     }
 
 
-textSizeMonospace =
-    { m = textSizeToMonospace textSize.m
-    , l = textSizeToMonospace textSize.l
-    , xl = textSizeToMonospace textSize.xl
-    , xxl = textSizeToMonospace textSize.xxl
-    }
-
-
 textSizeMonospaceVar =
-    { m = Css.Var "text-size-monospace-m"
-    , l = Css.Var "text-size-monospace-l"
-    , xl = Css.Var "text-size-monospace-xl"
-    , xxl = Css.Var "text-size-monospace-xxl"
+    { m = Css.CalcMultiplication (Css.Unitless 0.9) textSizeVar.m
+    , l = Css.CalcMultiplication (Css.Unitless 0.9) textSizeVar.l
+    , xl = Css.CalcMultiplication (Css.Unitless 0.9) textSizeVar.xl
+    , xxl = Css.CalcMultiplication (Css.Unitless 0.9) textSizeVar.xxl
     }
 
 
@@ -146,12 +128,6 @@ interblock =
 
 
 -- INTERNAL
-
-
-textSizeToMonospace : Int -> Int
-textSizeToMonospace textSize_ =
-    (toFloat textSize_ * 0.9)
-        |> round
 
 
 rgb : Int -> Int -> Int -> Color

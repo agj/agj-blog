@@ -3,15 +3,6 @@
   --text-size-l: 24px;
   --text-size-xl: 35px;
   --text-size-xxl: 60px;
-
-  --text-size-monospace-m: calc(0.9 * var(--text-size-m));
-  --text-size-monospace-l: calc(0.9 * var(--text-size-l));
-  --text-size-monospace-xl: calc(0.9 * var(--text-size-xl));
-  --text-size-monospace-xxl: calc(0.9 * var(--text-size-xxl));
-
-  --block-padding-font-size-m-interline-m: calc(
-    0.5 * var(--interline-m-for-text-size-m)
-  );
 }
 
 .category,
