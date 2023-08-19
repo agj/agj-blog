@@ -7,6 +7,7 @@ module View.Inline exposing
     )
 
 import Custom.Color as Color
+import Custom.Element as Ui
 import Element as Ui
 import Element.Background as UiBackground
 import Element.Border as UiBorder
@@ -39,7 +40,7 @@ setCode code =
         |> Ui.html
         |> Ui.el
             [ UiFont.family [ UiFont.monospace ]
-            , UiFont.size Style.textSizeMonospace.m
+            , Ui.varFontSize Style.textSizeMonospaceVar.m
             , UiBackground.color (Style.color.layout05 |> Color.toElmUi)
             , Ui.paddingXY Style.spacing.size1 0
             , UiBorder.rounded Style.spacing.size1
