@@ -4,7 +4,7 @@ module Style exposing
     , color
     , interblock
     , interline
-    , interlineFactor
+    , interlineVar
     , padding
     , spacing
     , textSize
@@ -15,6 +15,7 @@ module Style exposing
 
 import Color exposing (Color)
 import Color.Manipulate
+import Css
 
 
 color =
@@ -92,10 +93,10 @@ textSize =
 
 
 textSizeVar =
-    { m = "text-size-m"
-    , l = "text-size-l"
-    , xl = "text-size-xl"
-    , xxl = "text-size-xxl"
+    { m = Css.Var "text-size-m"
+    , l = Css.Var "text-size-l"
+    , xl = Css.Var "text-size-xl"
+    , xxl = Css.Var "text-size-xxl"
     }
 
 
@@ -108,10 +109,10 @@ textSizeMonospace =
 
 
 textSizeMonospaceVar =
-    { m = "text-size-monospace-m"
-    , l = "text-size-monospace-l"
-    , xl = "text-size-monospace-xl"
-    , xxl = "text-size-monospace-xxl"
+    { m = Css.Var "text-size-monospace-m"
+    , l = Css.Var "text-size-monospace-l"
+    , xl = Css.Var "text-size-monospace-xl"
+    , xxl = Css.Var "text-size-monospace-xxl"
     }
 
 
@@ -121,9 +122,9 @@ interline =
     }
 
 
-interlineFactor =
-    { s = 0.4
-    , m = 0.6
+interlineVar =
+    { s = Css.CalcMultiplication (Css.Unitless 0.4)
+    , m = Css.CalcMultiplication (Css.Unitless 0.6)
     }
 
 
@@ -132,9 +133,9 @@ blockPadding fontSize_ interline_ =
     round (toFloat (interline_ fontSize_) / 2)
 
 
-blockPaddingVar =
-    { textSizeMInterlineM = "block-padding-font-size-m-interline-m"
-    }
+blockPaddingVar : Css.Expression -> (Css.Expression -> Css.Expression) -> Css.Expression
+blockPaddingVar textSize_ interline_ =
+    Css.CalcMultiplication (interline_ textSize_) (Css.Unitless 0.5)
 
 
 interblock =

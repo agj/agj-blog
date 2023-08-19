@@ -4,12 +4,12 @@ module Custom.Element exposing
     , nonSelectable
     , varFontSize
     , varLineSpacing
-    , varLineSpacingFromFontSize
     , varPaddingBottom
     , varPaddingTop
     , varWidth
     )
 
+import Css
 import Element as Ui
 import Html.Attributes
 
@@ -34,39 +34,28 @@ id id_ =
         |> Ui.htmlAttribute
 
 
-varWidth : String -> Ui.Attribute msg
+varWidth : Css.Expression -> Ui.Attribute msg
 varWidth =
     basicVarAttribute "width"
 
 
-varFontSize : String -> Ui.Attribute msg
+varFontSize : Css.Expression -> Ui.Attribute msg
 varFontSize =
     basicVarAttribute "font-size"
 
 
-varLineSpacing : String -> Ui.Attribute msg
-varLineSpacing varName =
-    "calc(1em + var(--{varName}))"
-        |> String.replace "{varName}" varName
-        |> Html.Attributes.style "line-height"
-        |> Ui.htmlAttribute
+varLineSpacing : Css.Expression -> Ui.Attribute msg
+varLineSpacing expression =
+    Css.CalcAddition (Css.Ems 1) expression
+        |> basicVarAttribute "line-height"
 
 
-varLineSpacingFromFontSize : String -> Float -> Ui.Attribute msg
-varLineSpacingFromFontSize fontSizeVarName lineSpacingFactor =
-    "calc(1em + (var(--{fontSizeVarName}) * {lineSpacingFactor}))"
-        |> String.replace "{fontSizeVarName}" fontSizeVarName
-        |> String.replace "{lineSpacingFactor}" (String.fromFloat lineSpacingFactor)
-        |> Html.Attributes.style "line-height"
-        |> Ui.htmlAttribute
-
-
-varPaddingTop : String -> Ui.Attribute msg
+varPaddingTop : Css.Expression -> Ui.Attribute msg
 varPaddingTop =
     basicVarAttribute "padding-top"
 
 
-varPaddingBottom : String -> Ui.Attribute msg
+varPaddingBottom : Css.Expression -> Ui.Attribute msg
 varPaddingBottom =
     basicVarAttribute "padding-bottom"
 
@@ -75,9 +64,9 @@ varPaddingBottom =
 -- INTERNAL
 
 
-basicVarAttribute : String -> String -> Ui.Attribute msg
-basicVarAttribute attributeName varName =
-    "var(--{varName})"
-        |> String.replace "{varName}" varName
+basicVarAttribute : String -> Css.Expression -> Ui.Attribute msg
+basicVarAttribute attributeName expression =
+    expression
+        |> Css.expressionToString
         |> Html.Attributes.style attributeName
         |> Ui.htmlAttribute
