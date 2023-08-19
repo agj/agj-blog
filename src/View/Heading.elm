@@ -1,5 +1,6 @@
 module View.Heading exposing (..)
 
+import Css
 import Custom.Color as Color
 import Custom.Element as Ui
 import Element as Ui
@@ -15,50 +16,46 @@ view level content =
             max 1 level
 
         basePadding =
-            Style.blockPadding fontSize Style.interline.s
+            Style.blockPaddingVar fontSize Style.interlineVar.s
 
         baseStyles =
             [ UiFont.color (Color.toElmUi Style.color.layout)
-            , UiFont.size fontSize
-            , Ui.spacing (Style.interline.s fontSize)
+            , Ui.varFontSize fontSize
+            , Ui.varLineSpacing (Style.interlineVar.s fontSize)
             , Ui.width Ui.fill
             , UiRegion.heading normalizedLevel
-            , Ui.paddingEach
-                { top = basePadding + Style.spacing.size5
-                , bottom = basePadding
-                , left = 0
-                , right = 0
-                }
+            , Ui.varPaddingTop (Css.CalcAddition basePadding (Css.Pixels Style.spacing.size5))
+            , Ui.varPaddingBottom basePadding
             ]
 
         ( fontSize, styles, prepend ) =
             case normalizedLevel of
                 1 ->
-                    ( Style.textSize.xxl
+                    ( Style.textSizeVar.xxl
                     , [ UiFont.bold ]
                     , Nothing
                     )
 
                 2 ->
-                    ( Style.textSize.xl
+                    ( Style.textSizeVar.xl
                     , [ UiFont.bold ]
                     , Nothing
                     )
 
                 3 ->
-                    ( Style.textSize.l
+                    ( Style.textSizeVar.l
                     , [ UiFont.bold ]
                     , Nothing
                     )
 
                 4 ->
-                    ( Style.textSize.l
+                    ( Style.textSizeVar.l
                     , []
                     , Nothing
                     )
 
                 _ ->
-                    ( Style.textSize.l
+                    ( Style.textSizeVar.l
                     , []
                     , Just (String.repeat (normalizedLevel - 4) "▹")
                     )
