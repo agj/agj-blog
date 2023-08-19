@@ -1,4 +1,13 @@
-module Custom.Element exposing (..)
+module Custom.Element exposing
+    ( hiddenToScreenReaders
+    , id
+    , nonSelectable
+    , varFontSize
+    , varLineSpacing
+    , varPaddingBottom
+    , varPaddingTop
+    , varWidth
+    )
 
 import Element as Ui
 import Html.Attributes
@@ -21,4 +30,44 @@ nonSelectable =
 id : String -> Ui.Attribute msg
 id id_ =
     Html.Attributes.id id_
+        |> Ui.htmlAttribute
+
+
+varWidth : String -> Ui.Attribute msg
+varWidth =
+    basicVarAttribute "width"
+
+
+varFontSize : String -> Ui.Attribute msg
+varFontSize =
+    basicVarAttribute "font-size"
+
+
+varLineSpacing : String -> Ui.Attribute msg
+varLineSpacing varName =
+    "calc(1em + var(--{varName}))"
+        |> String.replace "{varName}" varName
+        |> Html.Attributes.style "line-height"
+        |> Ui.htmlAttribute
+
+
+varPaddingTop : String -> Ui.Attribute msg
+varPaddingTop =
+    basicVarAttribute "padding-top"
+
+
+varPaddingBottom : String -> Ui.Attribute msg
+varPaddingBottom =
+    basicVarAttribute "padding-bottom"
+
+
+
+-- INTERNAL
+
+
+basicVarAttribute : String -> String -> Ui.Attribute msg
+basicVarAttribute attributeName varName =
+    "var(--{varName})"
+        |> String.replace "{varName}" varName
+        |> Html.Attributes.style attributeName
         |> Ui.htmlAttribute
