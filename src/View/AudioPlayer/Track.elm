@@ -9,7 +9,9 @@ module View.AudioPlayer.Track exposing
     , withConfig
     )
 
+import Css
 import Custom.Color as Color
+import Custom.Element as Ui
 import Element as Ui
 import Element.Background as UiBackground
 import Element.Border as UiBorder
@@ -130,17 +132,16 @@ view (TrackWithConfig track config) =
             , UiBackground.color (Style.color.transparent |> Color.toElmUi)
             , UiFont.color (fontColor |> Color.toElmUi)
             , Ui.width Ui.fill
-            , Ui.paddingEach
-                { left = Style.spacing.size3
-                , right = Style.spacing.size3
-                , top = Style.spacing.size2
-                , bottom =
-                    if isSelected then
-                        0
+            , Ui.varPaddingLeft Style.spacingVar.size3
+            , Ui.varPaddingRight Style.spacingVar.size3
+            , Ui.varPaddingTop Style.spacingVar.size2
+            , Ui.varPaddingBottom
+                (if isSelected then
+                    Css.Unitless 0
 
-                    else
-                        Style.spacing.size2
-                }
+                 else
+                    Style.spacingVar.size2
+                )
             ]
 
         audioPlayerEl =
@@ -161,7 +162,7 @@ view (TrackWithConfig track config) =
                 { onPress = Just (config.onPlayStateChanged newPlayStateOnPress)
                 , label =
                     Ui.row
-                        [ Ui.spacing Style.spacing.size1
+                        [ Ui.varSpacing Style.spacingVar.size1
                         ]
                         [ icon Icon.Medium
                         , Ui.text track.title
@@ -216,14 +217,18 @@ seekBarView : Playhead -> Ui.Element Float
 seekBarView { currentTime, duration } =
     let
         barWidth =
-            2
+            Style.spacingVar.size1
 
         progress =
             Svg.rect
                 [ Svg.x (Svg.px 0)
-                , Svg.y (Svg.px (Style.spacing.size2 - barWidth))
+                , Html.Attributes.attribute "y"
+                    (Css.CalcSubtraction Style.spacingVar.size2 barWidth
+                        |> Css.expressionToString
+                    )
                 , Svg.width (Svg.percent (currentTime / duration * 100))
-                , Svg.height (Svg.px barWidth)
+                , Html.Attributes.attribute "height"
+                    (barWidth |> Css.expressionToString)
                 , Svg.fill (Svg.Paint Style.color.layout)
                 ]
                 []
@@ -235,7 +240,8 @@ seekBarView { currentTime, duration } =
         ]
         (Svg.svg
             [ Svg.width (Svg.percent 100)
-            , Svg.height (Svg.px Style.spacing.size2)
+            , Html.Attributes.attribute "height"
+                (Style.spacingVar.size2 |> Css.expressionToString)
             ]
             [ progress ]
             |> Ui.html

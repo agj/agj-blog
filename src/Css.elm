@@ -7,6 +7,7 @@ type Expression
     | Ems Float
     | Var String
     | CalcAddition Expression Expression
+    | CalcSubtraction Expression Expression
     | CalcMultiplication Expression Expression
 
 
@@ -28,6 +29,11 @@ expressionToString expression =
 
         CalcAddition left right ->
             "calc({left} + {right})"
+                |> String.replace "{left}" (expressionToString left)
+                |> String.replace "{right}" (expressionToString right)
+
+        CalcSubtraction left right ->
+            "calc({left} - {right})"
                 |> String.replace "{left}" (expressionToString left)
                 |> String.replace "{right}" (expressionToString right)
 
