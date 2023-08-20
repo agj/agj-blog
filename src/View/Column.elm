@@ -3,6 +3,8 @@ module View.Column exposing
     , setSpaced
     )
 
+import Css
+import Custom.Element as Ui
 import Element as Ui
 import Style
 
@@ -19,16 +21,16 @@ setSpaced spacing blocks =
         spacingSize =
             case spacing of
                 NoSpacing ->
-                    0
+                    Css.Unitless 0
 
                 SSpacing ->
-                    Style.spacing.size1
+                    Style.spacingVar.size1
 
                 MSpacing ->
-                    Style.spacing.size4
+                    Style.spacingVar.size4
     in
     Ui.column
-        [ Ui.spacing spacingSize
+        [ Ui.varSpacing spacingSize
         , Ui.width Ui.fill
         ]
         blocks

@@ -6,6 +6,7 @@ module Custom.Element exposing
     , varLineSpacing
     , varPaddingBottom
     , varPaddingTop
+    , varSpacing
     , varWidth
     )
 
@@ -58,6 +59,11 @@ varPaddingTop =
 varPaddingBottom : Css.Expression -> Ui.Attribute msg
 varPaddingBottom =
     basicVarAttribute "padding-bottom"
+
+
+varSpacing : Css.Expression -> Ui.Attribute msg
+varSpacing =
+    basicVarAttribute "gap"
 
 
 
