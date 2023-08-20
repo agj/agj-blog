@@ -15,6 +15,7 @@ import Site
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Inline
+import View.PageBody
 import View.PageHeader
 import View.Paragraph
 
@@ -84,6 +85,17 @@ view :
     -> View Msg
 view maybeUrl sharedModel static =
     let
+        titleEl =
+            [ Ui.text static.data.title ]
+
+        subtitle =
+            [ Ui.text "Back to "
+            , [ Ui.text "the index" ]
+                |> View.Inline.setLink "/"
+            , Ui.text "."
+            ]
+                |> View.Paragraph.view
+
         content =
             static.data.markdown
                 |> Doc.Markdown.parse
@@ -92,17 +104,7 @@ view maybeUrl sharedModel static =
     in
     { title = title static
     , body =
-        View.PageHeader.view
-            [ Ui.text static.data.title ]
-            (Just
-                ([ Ui.text "Back to "
-                 , [ Ui.text "the index" ]
-                    |> View.Inline.setLink "/"
-                 , Ui.text "."
-                 ]
-                    |> View.Paragraph.view
-                )
-            )
-            :: [ content ]
-            |> View.Column.setSpaced MSpacing
+        View.PageBody.fromContent content
+            |> View.PageBody.withTitleAndSubtitle titleEl subtitle
+            |> View.PageBody.view
     }
