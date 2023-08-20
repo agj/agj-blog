@@ -21,6 +21,7 @@ import Url.Builder exposing (QueryParameter)
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Inline
+import View.PageBody
 import View.PageHeader
 import View.Paragraph
 
@@ -169,35 +170,39 @@ view maybeUrl sharedModel model static =
 
             else
                 [ Ui.text "Tags" ]
+
+        subtitle =
+            [ Ui.text "Back to "
+            , [ Ui.text "the index" ]
+                |> View.Inline.setLink "/"
+            , Ui.text "."
+            ]
+                |> View.Paragraph.view
+
+        postColumn =
+            if List.length model.queryTags > 0 then
+                postViews
+                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+
+            else
+                Ui.none
+
+        tagsColumn =
+            Tag.listView model.queryTags static.sharedData.posts subTags
+                |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+
+        content =
+            [ postColumn
+            , tagsColumn
+            ]
+                |> Ui.row
+                    [ Ui.width Ui.fill
+                    , Ui.spacing Style.spacing.size3
+                    ]
     in
     { title = title static
     , body =
-        [ View.PageHeader.view titleChildren
-            (Just
-                ([ Ui.text "Back to "
-                 , [ Ui.text "the index" ]
-                    |> View.Inline.setLink "/"
-                 , Ui.text "."
-                 ]
-                    |> View.Paragraph.view
-                )
-            )
-        , Ui.row
-            [ Ui.width Ui.fill
-            , Ui.spacing Style.spacing.size3
-            ]
-            ((if List.length model.queryTags > 0 then
-                [ postViews
-                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
-                ]
-
-              else
-                []
-             )
-                ++ [ Tag.listView model.queryTags static.sharedData.posts subTags
-                        |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
-                   ]
-            )
-        ]
-            |> View.Column.setSpaced MSpacing
+        View.PageBody.fromContent content
+            |> View.PageBody.withTitleAndSubtitle titleChildren subtitle
+            |> View.PageBody.view
     }
