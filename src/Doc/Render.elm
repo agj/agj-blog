@@ -1,6 +1,7 @@
 module Doc.Render exposing (..)
 
 import Custom.Color as Color
+import Custom.Element as Ui
 import Doc
 import Element as Ui
 import Element.Background as UiBackground
@@ -180,7 +181,7 @@ viewBlockQuote state sectionDepth blocks =
     let
         line =
             Ui.el
-                [ Ui.width (Ui.px Style.spacing.size1)
+                [ Ui.varWidth Style.spacingVar.size1
                 , Ui.height Ui.fill
                 , UiBackground.color (Style.color.secondary10 |> Color.toElmUi)
                 , Ui.alignLeft
@@ -189,7 +190,8 @@ viewBlockQuote state sectionDepth blocks =
 
         side =
             Ui.el
-                [ Ui.width (Ui.px Style.spacing.size6)
+                [ Ui.varWidth Style.spacingVar.size6
+                , Ui.varWidthFix
                 , Ui.height Ui.fill
                 ]
                 line
@@ -224,6 +226,7 @@ viewSeparation =
     in
     Ui.row
         [ Ui.width Ui.fill
-        , Ui.paddingXY 0 Style.spacing.size5
+        , Ui.varPaddingTop Style.spacingVar.size5
+        , Ui.varPaddingBottom Style.spacingVar.size5
         ]
         [ blank, rule, blank ]

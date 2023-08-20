@@ -11,6 +11,7 @@ module Custom.Element exposing
     , varPaddingTop
     , varSpacing
     , varWidth
+    , varWidthFix
     )
 
 import Css
@@ -38,9 +39,20 @@ id id_ =
         |> Ui.htmlAttribute
 
 
+{-| Sets width via a CSS size.
+Under some circumstances, it needs `varWidthFix` to also be applied on the same element.
+-}
 varWidth : Css.Expression -> Ui.Attribute msg
 varWidth =
     basicVarAttribute "width"
+
+
+{-| Fixes `varWidth` when it doesn't work. Apply to the same element.
+-}
+varWidthFix : Ui.Attribute msg
+varWidthFix =
+    Html.Attributes.style "flex-basis" "auto"
+        |> Ui.htmlAttribute
 
 
 varFontSize : Css.Expression -> Ui.Attribute msg
