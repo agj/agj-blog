@@ -3,4 +3,14 @@
   --text-size-l: 24px;
   --text-size-xl: 35px;
   --text-size-xxl: 60px;
+
+  --spacing-1: 3px;
+  --spacing-2: 5px;
+  --spacing-3: 8px;
+  --spacing-4: 13px;
+  --spacing-5: 21px;
+  --spacing-6: 34px;
+  --spacing-7: 55px;
+  --spacing-8: 89px;
+  --spacing-9: 144px;
 }

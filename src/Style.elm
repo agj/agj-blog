@@ -5,6 +5,7 @@ module Style exposing
     , interline
     , padding
     , spacing
+    , spacingVar
     , textSize
     , textSizeMonospace
     )
@@ -53,6 +54,19 @@ spacing =
     , size7 = 55
     , size8 = 89
     , size9 = 144
+    }
+
+
+spacingVar =
+    { size1 = Css.Var "spacing-1"
+    , size2 = Css.Var "spacing-2"
+    , size3 = Css.Var "spacing-3"
+    , size4 = Css.Var "spacing-4"
+    , size5 = Css.Var "spacing-5"
+    , size6 = Css.Var "spacing-6"
+    , size7 = Css.Var "spacing-7"
+    , size8 = Css.Var "spacing-8"
+    , size9 = Css.Var "spacing-9"
     }
 
 
