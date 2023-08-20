@@ -6,7 +6,6 @@ module View.LanguageBreak exposing
 
 import Custom.Color as Color
 import Custom.Element as Ui
-import CustomMarkup.ElmUiTag exposing (ElmUiTag)
 import Data.Language as Language exposing (Language)
 import Element as Ui
 import Element.Background as UiBackground

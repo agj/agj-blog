@@ -1,8 +1,9 @@
 module Page.About exposing (Data, Model, Msg, page)
 
-import CustomMarkup
 import DataSource exposing (DataSource)
 import DataSource.File
+import Doc.Markdown
+import Doc.Render
 import Element as Ui
 import Head
 import OptimizedDecoder as Decode exposing (Decoder)
@@ -82,6 +83,13 @@ view :
     -> StaticPayload Data RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
+    let
+        content =
+            static.data.markdown
+                |> Doc.Markdown.parse
+                    { audioPlayer = Nothing }
+                |> Doc.Render.toElmUi Nothing
+    in
     { title = title static
     , body =
         View.PageHeader.view
@@ -95,9 +103,6 @@ view maybeUrl sharedModel static =
                     |> View.Paragraph.view
                 )
             )
-            :: [ CustomMarkup.toElmUi
-                    { audioPlayer = Nothing }
-                    static.data.markdown
-               ]
+            :: [ content ]
             |> View.Column.setSpaced MSpacing
     }

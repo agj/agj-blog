@@ -5,7 +5,6 @@ module View.VideoEmbed exposing
     , view
     )
 
-import CustomMarkup.ElmUiTag exposing (ElmUiTag)
 import Element as Ui
 import Html exposing (Html)
 import Html.Attributes
