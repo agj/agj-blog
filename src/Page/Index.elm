@@ -1,6 +1,7 @@
 module Page.Index exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
+import Custom.Element as Ui
 import Data.Category as Category exposing (Category, NestedCategory)
 import Data.Post as Post
 import Data.PostList
@@ -152,7 +153,7 @@ view maybeUrl sharedModel model static =
         content =
             Ui.row
                 [ Ui.width Ui.fill
-                , Ui.spacing Style.spacing.size3
+                , Ui.varSpacing Style.spacingVar.size5
                 ]
                 [ Data.PostList.view static.sharedData.posts
                     |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]

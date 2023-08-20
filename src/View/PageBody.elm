@@ -1,13 +1,13 @@
 module View.PageBody exposing (..)
 
 import Custom.Color as Color
+import Custom.Element as Ui
 import Element as Ui
 import Element.Background as UiBackground
 import Style
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Heading
-import View.PageHeader
 
 
 type PageBody msg
@@ -69,7 +69,7 @@ view (PageBody config) =
                     Ui.el
                         [ Ui.width (Ui.px 900)
                         , Ui.centerX
-                        , Ui.paddingXY Style.spacing.size4 Style.spacing.size4
+                        , Ui.varPadding Style.spacingVar.size4
                         ]
                         title_
                         |> Ui.el
@@ -81,13 +81,10 @@ view (PageBody config) =
             Ui.el
                 [ Ui.width (Ui.px 900)
                 , Ui.centerX
-                , Ui.paddingXY Style.spacing.size4 Style.spacing.size6
-                , Ui.paddingEach
-                    { top = Style.spacing.size6
-                    , left = Style.spacing.size4
-                    , right = Style.spacing.size4
-                    , bottom = Style.spacing.size9
-                    }
+                , Ui.varPaddingTop Style.spacingVar.size6
+                , Ui.varPaddingLeft Style.spacingVar.size4
+                , Ui.varPaddingRight Style.spacingVar.size4
+                , Ui.varPaddingBottom Style.spacingVar.size9
                 ]
                 config.content
                 |> Ui.el

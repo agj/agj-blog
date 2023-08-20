@@ -1,6 +1,7 @@
 module Page.Tag exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
+import Custom.Element as Ui
 import Custom.List as List
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
@@ -22,7 +23,6 @@ import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Inline
 import View.PageBody
-import View.PageHeader
 import View.Paragraph
 
 
@@ -197,7 +197,7 @@ view maybeUrl sharedModel model static =
             ]
                 |> Ui.row
                     [ Ui.width Ui.fill
-                    , Ui.spacing Style.spacing.size3
+                    , Ui.varSpacing Style.spacingVar.size5
                     ]
     in
     { title = title static

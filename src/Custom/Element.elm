@@ -5,6 +5,7 @@ module Custom.Element exposing
     , varBorderRounded
     , varFontSize
     , varLineSpacing
+    , varPadding
     , varPaddingBottom
     , varPaddingLeft
     , varPaddingRight
@@ -64,6 +65,11 @@ varLineSpacing : Css.Expression -> Ui.Attribute msg
 varLineSpacing expression =
     Css.CalcAddition (Css.Ems 1) expression
         |> basicVarAttribute "line-height"
+
+
+varPadding : Css.Expression -> Ui.Attribute msg
+varPadding =
+    basicVarAttribute "padding"
 
 
 varPaddingTop : Css.Expression -> Ui.Attribute msg
