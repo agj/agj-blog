@@ -24,10 +24,10 @@ setSpaced spacing blocks =
                     Css.Unitless 0
 
                 SSpacing ->
-                    Style.spacingVar.size1
+                    Style.spacing.size1
 
                 MSpacing ->
-                    Style.spacingVar.size4
+                    Style.spacing.size4
     in
     Ui.column
         [ Ui.varSpacing spacingSize

@@ -34,7 +34,7 @@ figure content =
 view : Figure msg -> Ui.Element msg
 view (Figure config) =
     Ui.el
-        [ Ui.varPadding Style.spacingVar.size2
+        [ Ui.varPadding Style.spacing.size2
         , UiBackground.color (Color.toElmUi Style.color.secondary10)
         , Ui.centerX
         ]

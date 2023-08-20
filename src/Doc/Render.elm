@@ -181,7 +181,7 @@ viewBlockQuote state sectionDepth blocks =
     let
         line =
             Ui.el
-                [ Ui.varWidth Style.spacingVar.size1
+                [ Ui.varWidth Style.spacing.size1
                 , Ui.height Ui.fill
                 , UiBackground.color (Style.color.secondary10 |> Color.toElmUi)
                 , Ui.alignLeft
@@ -190,7 +190,7 @@ viewBlockQuote state sectionDepth blocks =
 
         side =
             Ui.el
-                [ Ui.varWidth Style.spacingVar.size6
+                [ Ui.varWidth Style.spacing.size6
                 , Ui.varWidthFix
                 , Ui.height Ui.fill
                 ]
@@ -226,7 +226,7 @@ viewSeparation =
     in
     Ui.row
         [ Ui.width Ui.fill
-        , Ui.varPaddingTop Style.spacingVar.size5
-        , Ui.varPaddingBottom Style.spacingVar.size5
+        , Ui.varPaddingTop Style.spacing.size5
+        , Ui.varPaddingBottom Style.spacing.size5
         ]
         [ blank, rule, blank ]

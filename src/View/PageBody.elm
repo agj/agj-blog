@@ -69,7 +69,7 @@ view (PageBody config) =
                     Ui.el
                         [ Ui.width (Ui.px 900)
                         , Ui.centerX
-                        , Ui.varPadding Style.spacingVar.size4
+                        , Ui.varPadding Style.spacing.size4
                         ]
                         title_
                         |> Ui.el
@@ -81,10 +81,10 @@ view (PageBody config) =
             Ui.el
                 [ Ui.width (Ui.px 900)
                 , Ui.centerX
-                , Ui.varPaddingTop Style.spacingVar.size6
-                , Ui.varPaddingLeft Style.spacingVar.size4
-                , Ui.varPaddingRight Style.spacingVar.size4
-                , Ui.varPaddingBottom Style.spacingVar.size9
+                , Ui.varPaddingTop Style.spacing.size6
+                , Ui.varPaddingLeft Style.spacing.size4
+                , Ui.varPaddingRight Style.spacing.size4
+                , Ui.varPaddingBottom Style.spacing.size9
                 ]
                 config.content
                 |> Ui.el

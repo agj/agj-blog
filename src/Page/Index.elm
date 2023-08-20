@@ -153,7 +153,7 @@ view maybeUrl sharedModel model static =
         content =
             Ui.row
                 [ Ui.width Ui.fill
-                , Ui.varSpacing Style.spacingVar.size5
+                , Ui.varSpacing Style.spacing.size5
                 ]
                 [ Data.PostList.view static.sharedData.posts
                     |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]

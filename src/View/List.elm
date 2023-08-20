@@ -66,7 +66,7 @@ viewListItem bulletText item =
                 |> Ui.el
                     [ Ui.alignTop
                     , UiFont.alignRight
-                    , Ui.varPaddingRight Style.spacingVar.size2
+                    , Ui.varPaddingRight Style.spacing.size2
                     ]
 
         addBullet content =
@@ -79,4 +79,4 @@ viewListItem bulletText item =
     item
         |> View.Column.setSpaced SSpacing
         |> addBullet
-        |> Ui.el [ Ui.varPaddingLeft Style.spacingVar.size4 ]
+        |> Ui.el [ Ui.varPaddingLeft Style.spacing.size4 ]

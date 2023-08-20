@@ -1,11 +1,9 @@
 module Style exposing
     ( blockPadding
     , color
-    , interblock
     , interline
     , padding
     , spacing
-    , spacingVar
     , textSize
     , textSizeMonospace
     )
@@ -45,19 +43,6 @@ color =
 
 
 spacing =
-    { size1 = 3
-    , size2 = 5
-    , size3 = 8
-    , size4 = 13
-    , size5 = 21
-    , size6 = 34
-    , size7 = 55
-    , size8 = 89
-    , size9 = 144
-    }
-
-
-spacingVar =
     { size1 = Css.Var "spacing-1"
     , size2 = Css.Var "spacing-2"
     , size3 = Css.Var "spacing-3"
@@ -121,12 +106,6 @@ blockPadding textSize_ interline_ =
     Css.CalcMultiplication (interline_ textSize_) (Css.Unitless 0.5)
 
 
-interblock =
-    { zero = calculateInterblock 0
-    , m = calculateInterblock spacing.size3
-    }
-
-
 
 -- INTERNAL
 
@@ -134,18 +113,6 @@ interblock =
 rgb : Int -> Int -> Int -> Color
 rgb red green blue =
     Color.rgb255 red green blue
-
-
-calculateInterline : Float -> Int -> Int
-calculateInterline factor textSize_ =
-    toFloat textSize_
-        * factor
-        |> round
-
-
-calculateInterblock : Int -> Int -> (Int -> Int) -> Int
-calculateInterblock paddingToAdd textSize_ interline_ =
-    round (toFloat (interline_ textSize_) / 2) + paddingToAdd
 
 
 lighten : Float -> Color -> Color

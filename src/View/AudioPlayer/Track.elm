@@ -132,15 +132,15 @@ view (TrackWithConfig track config) =
             , UiBackground.color (Style.color.transparent |> Color.toElmUi)
             , UiFont.color (fontColor |> Color.toElmUi)
             , Ui.width Ui.fill
-            , Ui.varPaddingLeft Style.spacingVar.size3
-            , Ui.varPaddingRight Style.spacingVar.size3
-            , Ui.varPaddingTop Style.spacingVar.size2
+            , Ui.varPaddingLeft Style.spacing.size3
+            , Ui.varPaddingRight Style.spacing.size3
+            , Ui.varPaddingTop Style.spacing.size2
             , Ui.varPaddingBottom
                 (if isSelected then
                     Css.Unitless 0
 
                  else
-                    Style.spacingVar.size2
+                    Style.spacing.size2
                 )
             ]
 
@@ -162,7 +162,7 @@ view (TrackWithConfig track config) =
                 { onPress = Just (config.onPlayStateChanged newPlayStateOnPress)
                 , label =
                     Ui.row
-                        [ Ui.varSpacing Style.spacingVar.size1
+                        [ Ui.varSpacing Style.spacing.size1
                         ]
                         [ icon Icon.Medium
                         , Ui.text track.title
@@ -217,13 +217,13 @@ seekBarView : Playhead -> Ui.Element Float
 seekBarView { currentTime, duration } =
     let
         barWidth =
-            Style.spacingVar.size1
+            Style.spacing.size1
 
         progress =
             Svg.rect
                 [ Svg.x (Svg.px 0)
                 , Html.Attributes.attribute "y"
-                    (Css.CalcSubtraction Style.spacingVar.size2 barWidth
+                    (Css.CalcSubtraction Style.spacing.size2 barWidth
                         |> Css.expressionToString
                     )
                 , Svg.width (Svg.percent (currentTime / duration * 100))
@@ -241,7 +241,7 @@ seekBarView { currentTime, duration } =
         (Svg.svg
             [ Svg.width (Svg.percent 100)
             , Html.Attributes.attribute "height"
-                (Style.spacingVar.size2 |> Css.expressionToString)
+                (Style.spacing.size2 |> Css.expressionToString)
             ]
             [ progress ]
             |> Ui.html

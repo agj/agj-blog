@@ -159,15 +159,15 @@ titleView state config firstTrack title =
         , UiBackground.color (Style.color.layout40 |> Color.toElmUi)
         , UiFont.color (Style.color.white |> Color.toElmUi)
         , Ui.width Ui.fill
-        , Ui.varPaddingTop Style.spacingVar.size2
-        , Ui.varPaddingBottom Style.spacingVar.size2
-        , Ui.varPaddingLeft Style.spacingVar.size3
-        , Ui.varPaddingRight Style.spacingVar.size3
+        , Ui.varPaddingTop Style.spacing.size2
+        , Ui.varPaddingBottom Style.spacing.size2
+        , Ui.varPaddingLeft Style.spacing.size3
+        , Ui.varPaddingRight Style.spacing.size3
         ]
         { onPress = Just (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
         , label =
             Ui.row
-                [ Ui.varSpacing Style.spacingVar.size1
+                [ Ui.varSpacing Style.spacing.size1
                 ]
                 [ icon Icon.Medium
                 , Ui.text title

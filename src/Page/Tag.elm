@@ -197,7 +197,7 @@ view maybeUrl sharedModel model static =
             ]
                 |> Ui.row
                     [ Ui.width Ui.fill
-                    , Ui.varSpacing Style.spacingVar.size5
+                    , Ui.varSpacing Style.spacing.size5
                     ]
     in
     { title = title static

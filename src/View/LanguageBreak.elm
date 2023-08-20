@@ -38,8 +38,8 @@ view languageBreak =
     in
     Ui.el
         [ Ui.width Ui.fill
-        , Ui.varPaddingTop Style.spacingVar.size5
-        , Ui.varPaddingBottom Style.spacingVar.size5
+        , Ui.varPaddingTop Style.spacing.size5
+        , Ui.varPaddingBottom Style.spacing.size5
         ]
         rule
 

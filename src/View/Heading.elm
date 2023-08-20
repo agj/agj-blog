@@ -24,7 +24,7 @@ view level content =
             , Ui.varLineSpacing (Style.interline.s fontSize)
             , Ui.width Ui.fill
             , UiRegion.heading normalizedLevel
-            , Ui.varPaddingTop (Css.CalcAddition basePadding Style.spacingVar.size5)
+            , Ui.varPaddingTop (Css.CalcAddition basePadding Style.spacing.size5)
             , Ui.varPaddingBottom basePadding
             ]
 
