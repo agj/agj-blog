@@ -6,6 +6,7 @@ module View.List exposing
     )
 
 import Custom.Color as Color
+import Custom.Element as Ui
 import Element as Ui
 import Element.Font as UiFont
 import Style exposing (padding)
@@ -65,7 +66,7 @@ viewListItem bulletText item =
                 |> Ui.el
                     [ Ui.alignTop
                     , UiFont.alignRight
-                    , Ui.paddingEach { padding | right = Style.spacing.size2 }
+                    , Ui.varPaddingRight Style.spacingVar.size2
                     ]
 
         addBullet content =
@@ -78,4 +79,4 @@ viewListItem bulletText item =
     item
         |> View.Column.setSpaced SSpacing
         |> addBullet
-        |> Ui.el [ Ui.paddingEach { padding | left = Style.spacing.size4 } ]
+        |> Ui.el [ Ui.varPaddingLeft Style.spacingVar.size4 ]

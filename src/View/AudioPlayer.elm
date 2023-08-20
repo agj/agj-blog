@@ -11,6 +11,7 @@ module View.AudioPlayer exposing
 
 import Color exposing (Color)
 import Custom.Color as Color
+import Custom.Element as Ui
 import Element as Ui
 import Element.Background as UiBackground
 import Element.Border as UiBorder
@@ -158,12 +159,15 @@ titleView state config firstTrack title =
         , UiBackground.color (Style.color.layout40 |> Color.toElmUi)
         , UiFont.color (Style.color.white |> Color.toElmUi)
         , Ui.width Ui.fill
-        , Ui.paddingXY Style.spacing.size3 Style.spacing.size2
+        , Ui.varPaddingTop Style.spacingVar.size2
+        , Ui.varPaddingBottom Style.spacingVar.size2
+        , Ui.varPaddingLeft Style.spacingVar.size3
+        , Ui.varPaddingRight Style.spacingVar.size3
         ]
         { onPress = Just (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
         , label =
             Ui.row
-                [ Ui.spacing Style.spacing.size1
+                [ Ui.varSpacing Style.spacingVar.size1
                 ]
                 [ icon Icon.Medium
                 , Ui.text title
