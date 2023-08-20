@@ -2,9 +2,12 @@ module Custom.Element exposing
     ( hiddenToScreenReaders
     , id
     , nonSelectable
+    , varBorderRounded
     , varFontSize
     , varLineSpacing
     , varPaddingBottom
+    , varPaddingLeft
+    , varPaddingRight
     , varPaddingTop
     , varSpacing
     , varWidth
@@ -56,14 +59,29 @@ varPaddingTop =
     basicVarAttribute "padding-top"
 
 
+varPaddingRight : Css.Expression -> Ui.Attribute msg
+varPaddingRight =
+    basicVarAttribute "padding-right"
+
+
 varPaddingBottom : Css.Expression -> Ui.Attribute msg
 varPaddingBottom =
     basicVarAttribute "padding-bottom"
 
 
+varPaddingLeft : Css.Expression -> Ui.Attribute msg
+varPaddingLeft =
+    basicVarAttribute "padding-left"
+
+
 varSpacing : Css.Expression -> Ui.Attribute msg
 varSpacing =
     basicVarAttribute "gap"
+
+
+varBorderRounded : Css.Expression -> Ui.Attribute msg
+varBorderRounded =
+    basicVarAttribute "border-radius"
 
 
 

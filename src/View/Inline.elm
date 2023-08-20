@@ -42,8 +42,9 @@ setCode code =
             [ UiFont.family [ UiFont.monospace ]
             , Ui.varFontSize Style.textSizeMonospace.m
             , UiBackground.color (Style.color.layout05 |> Color.toElmUi)
-            , Ui.paddingXY Style.spacing.size1 0
-            , UiBorder.rounded Style.spacing.size1
+            , Ui.varPaddingLeft Style.spacingVar.size1
+            , Ui.varPaddingRight Style.spacingVar.size1
+            , Ui.varBorderRounded Style.spacingVar.size1
             , Html.Attributes.style "box-decoration-break" "clone"
                 |> Ui.htmlAttribute
             ]
