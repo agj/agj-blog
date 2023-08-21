@@ -1,4 +1,4 @@
-module Doc.Render exposing (..)
+module Doc.ElmUi exposing (State, view)
 
 import Custom.Color as Color
 import Custom.Element as Ui
@@ -25,8 +25,8 @@ type alias State =
     }
 
 
-toElmUi : Maybe State -> List (Doc.Block msg) -> Ui.Element msg
-toElmUi state blocks =
+view : Maybe State -> List (Doc.Block msg) -> Ui.Element msg
+view state blocks =
     blocks
         |> toElmUiInternal state 1
         |> View.Column.setSpaced MSpacing

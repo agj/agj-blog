@@ -2,8 +2,8 @@ module Page.About exposing (Data, Model, Msg, page)
 
 import DataSource exposing (DataSource)
 import DataSource.File
+import Doc.ElmUi
 import Doc.Markdown
-import Doc.Render
 import Element as Ui
 import Head
 import OptimizedDecoder as Decode exposing (Decoder)
@@ -100,7 +100,7 @@ view maybeUrl sharedModel static =
             static.data.markdown
                 |> Doc.Markdown.parse
                     { audioPlayer = Nothing }
-                |> Doc.Render.toElmUi Nothing
+                |> Doc.ElmUi.view Nothing
     in
     { title = title static
     , body =
