@@ -56,12 +56,12 @@ routes =
 
 
 type alias Data =
-    ()
+    Category
 
 
 data : RouteParams -> DataSource Data
 data routeParams =
-    DataSource.succeed ()
+    Category.singleDataSource routeParams.category
 
 
 
@@ -88,45 +88,41 @@ view :
     -> StaticPayload Data RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
-    case Category.fromSlug static.routeParams.category of
-        Err _ ->
-            { title = "Category not found!"
-            , body = Ui.none
-            }
+    let
+        category =
+            static.data
 
-        Ok category ->
-            let
-                posts =
-                    static.sharedData.posts
-                        |> List.filter (.frontmatter >> .categories >> List.member category)
+        posts =
+            static.sharedData.posts
+                |> List.filter (.frontmatter >> .categories >> List.member category)
 
-                postViews =
-                    Data.PostList.view posts
+        postViews =
+            Data.PostList.view posts
 
-                titleEl =
-                    [ Ui.text "Category: "
-                    , [ Ui.text (Category.getName category) ]
-                        |> View.Inline.setItalic
-                    ]
+        titleEl =
+            [ Ui.text "Category: "
+            , [ Ui.text (Category.getName category) ]
+                |> View.Inline.setItalic
+            ]
 
-                backToIndexEls =
-                    [ Ui.text "Back to "
-                    , [ Ui.text "the index" ]
-                        |> View.Inline.setLink "/"
-                    , Ui.text "."
-                    ]
+        backToIndexEls =
+            [ Ui.text "Back to "
+            , [ Ui.text "the index" ]
+                |> View.Inline.setLink "/"
+            , Ui.text "."
+            ]
 
-                descriptionEl =
-                    Category.getDescription category
-                        |> Maybe.map
-                            (\desc -> Ui.text (desc ++ " ") :: backToIndexEls)
-                        |> Maybe.withDefault backToIndexEls
-                        |> View.Paragraph.view
-            in
-            { title = title static
-            , body =
-                [ View.PageHeader.view titleEl (Just descriptionEl)
-                , postViews
-                ]
-                    |> View.Column.setSpaced MSpacing
-            }
+        descriptionEl =
+            Category.getDescription category
+                |> Maybe.map
+                    (\desc -> Ui.text (desc ++ " ") :: backToIndexEls)
+                |> Maybe.withDefault backToIndexEls
+                |> View.Paragraph.view
+    in
+    { title = title static
+    , body =
+        [ View.PageHeader.view titleEl (Just descriptionEl)
+        , postViews
+        ]
+            |> View.Column.setSpaced MSpacing
+    }

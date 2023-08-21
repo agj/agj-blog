@@ -8,11 +8,13 @@ module Data.Category exposing
     , getDescription
     , getName
     , getSlug
+    , singleDataSource
     , toLink
     , toUrl
     , viewList
     )
 
+import DataSource exposing (DataSource)
 import Element as Ui
 import List.Extra as List
 import OptimizedDecoder as Decode exposing (Decoder)
@@ -37,6 +39,12 @@ type NestedCategory
 all : List Category
 all =
     List.andThen unnest allNested
+
+
+singleDataSource : String -> DataSource Category
+singleDataSource slug =
+    fromSlug slug
+        |> DataSource.fromResult
 
 
 getSlug : Category -> String
