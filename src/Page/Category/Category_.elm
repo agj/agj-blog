@@ -13,7 +13,7 @@ import Site
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Inline
-import View.PageHeader
+import View.PageBody
 import View.Paragraph
 
 
@@ -96,10 +96,7 @@ view maybeUrl sharedModel static =
             static.sharedData.posts
                 |> List.filter (.frontmatter >> .categories >> List.member category)
 
-        postViews =
-            Data.PostList.view posts
-
-        titleEl =
+        titleEls =
             [ Ui.text "Category: "
             , [ Ui.text (Category.getName category) ]
                 |> View.Inline.setItalic
@@ -112,17 +109,19 @@ view maybeUrl sharedModel static =
             , Ui.text "."
             ]
 
-        descriptionEl =
+        subtitle =
             Category.getDescription category
                 |> Maybe.map
                     (\desc -> Ui.text (desc ++ " ") :: backToIndexEls)
                 |> Maybe.withDefault backToIndexEls
                 |> View.Paragraph.view
+
+        content =
+            Data.PostList.view posts
     in
     { title = title static
     , body =
-        [ View.PageHeader.view titleEl (Just descriptionEl)
-        , postViews
-        ]
-            |> View.Column.setSpaced MSpacing
+        View.PageBody.fromContent content
+            |> View.PageBody.withTitleAndSubtitle titleEls subtitle
+            |> View.PageBody.view
     }
