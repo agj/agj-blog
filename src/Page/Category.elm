@@ -11,7 +11,7 @@ import Site
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Inline
-import View.PageHeader
+import View.PageBody
 import View.Paragraph
 
 
@@ -67,20 +67,24 @@ view :
     -> StaticPayload Data {}
     -> View Msg
 view maybeUrl sharedModel static =
+    let
+        titleEls =
+            [ Ui.text "Categories" ]
+
+        subtitle =
+            [ Ui.text "Back to "
+            , [ Ui.text "the index" ]
+                |> View.Inline.setLink "/"
+            , Ui.text "."
+            ]
+                |> View.Paragraph.view
+
+        content =
+            Category.viewList
+    in
     { title = title static
     , body =
-        [ View.PageHeader.view
-            [ Ui.text "Categories" ]
-            (Just
-                ([ Ui.text "Back to "
-                 , [ Ui.text "the index" ]
-                    |> View.Inline.setLink "/"
-                 , Ui.text "."
-                 ]
-                    |> View.Paragraph.view
-                )
-            )
-        , Category.viewList
-        ]
-            |> View.Column.setSpaced MSpacing
+        View.PageBody.fromContent content
+            |> View.PageBody.withTitleAndSubtitle titleEls subtitle
+            |> View.PageBody.view
     }
