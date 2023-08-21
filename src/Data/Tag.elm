@@ -461,10 +461,6 @@ all =
         , slug = "micro-story"
         }
     , Tag
-        { name = "MooTools"
-        , slug = "mootools"
-        }
-    , Tag
         { name = "motion graphics"
         , slug = "motion-graphics"
         }
