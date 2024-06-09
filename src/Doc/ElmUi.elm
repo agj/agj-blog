@@ -78,9 +78,15 @@ toElmUiInternal state sectionDepth blocks =
             viewSeparation
                 :: toElmUiInternal state sectionDepth nextBlocks
 
-        (Doc.Image { url, description }) :: nextBlocks ->
+        (Doc.Image { url, description, caption }) :: nextBlocks ->
             (Ui.image [] { src = url, description = description }
                 |> View.Figure.figure
+                |> (if caption /= "" then
+                        View.Figure.withCaption caption
+
+                    else
+                        identity
+                   )
                 |> View.Figure.view
             )
                 :: toElmUiInternal state sectionDepth nextBlocks

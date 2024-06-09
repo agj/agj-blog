@@ -20,7 +20,7 @@ type Block msg
     | OrderedList (ListItem msg) (List (ListItem msg))
     | BlockQuote (List (Block msg))
     | CodeBlock { language : Maybe String, code : String }
-    | Image { url : String, description : String }
+    | Image { url : String, description : String, caption : String }
     | Separation
     | Video View.VideoEmbed.VideoEmbed
     | AudioPlayer (View.AudioPlayer.AudioPlayerWithConfig msg)

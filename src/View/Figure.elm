@@ -2,14 +2,15 @@ module View.Figure exposing
     ( Figure
     , figure
     , view
+    , withCaption
     )
 
 import Custom.Color as Color
 import Custom.Element as Ui
 import Element as Ui
 import Element.Background as UiBackground
-import Element.Border as UiBorder
 import Style
+import View.Paragraph
 
 
 type Figure msg
@@ -27,15 +28,29 @@ figure content =
         }
 
 
+withCaption : String -> Figure msg -> Figure msg
+withCaption caption (Figure config) =
+    Figure { config | caption = Just caption }
+
+
 
 -- VIEW
 
 
 view : Figure msg -> Ui.Element msg
 view (Figure config) =
-    Ui.el
+    Ui.column
         [ Ui.varPadding Style.spacing.size2
         , UiBackground.color (Color.toElmUi Style.color.secondary10)
         , Ui.centerX
         ]
-        config.content
+        ([ [ config.content ]
+         , case config.caption of
+            Just text ->
+                [ View.Paragraph.view [ Ui.text text ] ]
+
+            Nothing ->
+                []
+         ]
+            |> List.concat
+        )

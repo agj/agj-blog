@@ -268,7 +268,7 @@ renderCodeBlock { body, language } =
 
 renderImage : { alt : String, src : String, title : Maybe String } -> Doc.Intermediate msg
 renderImage { alt, src, title } =
-    Doc.Image { url = src, description = alt }
+    Doc.Image { url = src, description = alt, caption = title |> Maybe.withDefault "" }
         |> Doc.IntermediateBlock
 
 
