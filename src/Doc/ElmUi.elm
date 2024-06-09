@@ -82,7 +82,7 @@ toElmUiInternal state sectionDepth blocks =
             (Ui.image [] { src = url, description = description }
                 |> View.Figure.figure
                 |> (if caption /= "" then
-                        View.Figure.withCaption caption
+                        View.Figure.setCaption caption
 
                     else
                         identity

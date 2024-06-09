@@ -1,8 +1,8 @@
 module View.Figure exposing
     ( Figure
     , figure
+    , setCaption
     , view
-    , withCaption
     )
 
 import Custom.Color as Color
@@ -28,8 +28,8 @@ figure content =
         }
 
 
-withCaption : String -> Figure msg -> Figure msg
-withCaption caption (Figure config) =
+setCaption : String -> Figure msg -> Figure msg
+setCaption caption (Figure config) =
     Figure { config | caption = Just caption }
 
 
