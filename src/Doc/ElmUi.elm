@@ -72,7 +72,7 @@ toElmUiInternal state sectionDepth blocks =
              ]
                 |> View.Column.setSpaced MSpacing
             )
-                :: toElmUiInternal state newSectionDepth nextBlocks
+                :: toElmUiInternal state sectionDepth nextBlocks
 
         Doc.Separation :: nextBlocks ->
             viewSeparation
