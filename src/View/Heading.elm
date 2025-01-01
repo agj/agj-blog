@@ -1,7 +1,6 @@
 module View.Heading exposing (..)
 
 import Css
-import Custom.Color as Color
 import Custom.Element as Ui
 import Element as Ui
 import Element.Font as UiFont
@@ -19,8 +18,7 @@ view level content =
             Style.blockPadding fontSize Style.interline.s
 
         baseStyles =
-            [ UiFont.color (Color.toElmUi Style.color.layout)
-            , Ui.varFontSize fontSize
+            [ Ui.varFontSize fontSize
             , Ui.varLineSpacing (Style.interline.s fontSize)
             , Ui.width Ui.fill
             , UiRegion.heading normalizedLevel
