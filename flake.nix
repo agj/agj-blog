@@ -17,13 +17,14 @@
       in {
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
-            nodejs_20
             elmPackages.elm
             elmPackages.elm-format
             elmPackages.elm-optimize-level-2
             elmPackages.elm-pages
             elmPackages.elm-review
+            just
             leiningen
+            nodejs_20
           ];
         };
       }
