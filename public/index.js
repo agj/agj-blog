@@ -1,3 +1,7 @@
+import { defineAudioPlayerCustomElement } from './js/custom-elements/audio-player.js';
+
+defineAudioPlayerCustomElement();
+
 /** @typedef {{load: (Promise<unknown>); flags: (unknown)}} ElmPagesInit */
 
 /** @type ElmPagesInit */

@@ -4,15 +4,14 @@ title: Updated front page
 date: 9
 hour: 16
 categories:
-- interactive
-- graphics
+  - interactive
+  - graphics
 tags:
-- archive
-- front-page-design
-- graphic-design
-- javascript
-- mootools
-- web
+  - archive
+  - front-page-design
+  - graphic-design
+  - javascript
+  - web
 language: eng
 ---
 

@@ -1,18 +1,20 @@
 module Page.Category.Category_ exposing (Data, Model, Msg, page)
 
 import Data.Category as Category exposing (Category)
-import Data.PageHeader as PageHeader
 import Data.PostList
 import DataSource exposing (DataSource)
+import Element as Ui
 import Head
-import Html
-import Html.Attributes as Attr
 import List.Extra as List
 import Page exposing (Page, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Shared
 import Site
 import View exposing (View)
+import View.Column exposing (Spacing(..))
+import View.Inline
+import View.PageBody
+import View.Paragraph
 
 
 page : Page RouteParams Data
@@ -54,12 +56,12 @@ routes =
 
 
 type alias Data =
-    ()
+    Category
 
 
 data : RouteParams -> DataSource Data
 data routeParams =
-    DataSource.succeed ()
+    Category.singleDataSource routeParams.category
 
 
 
@@ -86,42 +88,40 @@ view :
     -> StaticPayload Data RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
-    case Category.fromSlug static.routeParams.category of
-        Err _ ->
-            { title = "Category not found!"
-            , body = []
-            }
+    let
+        category =
+            static.data
 
-        Ok category ->
-            let
-                posts =
-                    static.sharedData.posts
-                        |> List.filter (.frontmatter >> .categories >> List.member category)
+        posts =
+            static.sharedData.posts
+                |> List.filter (.frontmatter >> .categories >> List.member category)
 
-                postViews =
-                    Data.PostList.view posts
+        titleEls =
+            [ Ui.text "Category: "
+            , [ Ui.text (Category.getName category) ]
+                |> View.Inline.setItalic
+            ]
 
-                titleEl =
-                    [ Html.text "Category: "
-                    , Html.em []
-                        [ Html.text (Category.getName category) ]
-                    ]
+        backToIndexEls =
+            [ Ui.text "Back to "
+            , [ Ui.text "the index" ]
+                |> View.Inline.setLink "/"
+            , Ui.text "."
+            ]
 
-                backToIndexEls =
-                    [ Html.text "Back to "
-                    , Html.a [ Attr.href "/" ] [ Html.text "the index" ]
-                    , Html.text "."
-                    ]
+        subtitle =
+            Category.getDescription category
+                |> Maybe.map
+                    (\desc -> Ui.text (desc ++ " ") :: backToIndexEls)
+                |> Maybe.withDefault backToIndexEls
+                |> View.Paragraph.view
 
-                descriptionEl =
-                    Category.getDescription category
-                        |> Maybe.map
-                            (\desc -> Html.text (desc ++ " ") :: backToIndexEls)
-                        |> Maybe.withDefault backToIndexEls
-                        |> Html.p []
-            in
-            { title = title static
-            , body =
-                PageHeader.view titleEl (Just descriptionEl)
-                    :: postViews
-            }
+        content =
+            Data.PostList.view posts
+    in
+    { title = title static
+    , body =
+        View.PageBody.fromContent content
+            |> View.PageBody.withTitleAndSubtitle titleEls subtitle
+            |> View.PageBody.view
+    }

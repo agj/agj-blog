@@ -8,15 +8,20 @@ module Data.Category exposing
     , getDescription
     , getName
     , getSlug
+    , singleDataSource
     , toLink
     , toUrl
     , viewList
     )
 
-import Html exposing (Html)
-import Html.Attributes as Attr
+import DataSource exposing (DataSource)
+import Element as Ui
 import List.Extra as List
 import OptimizedDecoder as Decode exposing (Decoder)
+import View.Column exposing (Spacing(..))
+import View.Inline
+import View.List
+import View.Paragraph
 
 
 type Category
@@ -34,6 +39,12 @@ type NestedCategory
 all : List Category
 all =
     List.andThen unnest allNested
+
+
+singleDataSource : String -> DataSource Category
+singleDataSource slug =
+    fromSlug slug
+        |> DataSource.fromResult
 
 
 getSlug : Category -> String
@@ -64,33 +75,18 @@ toUrl category =
         |> String.replace "{slug}" (getSlug category)
 
 
-viewList : List Category -> Html msg
-viewList categories =
-    Html.ul []
-        (allNested
-            |> List.map viewCategory
-        )
+viewList : Ui.Element msg
+viewList =
+    allNested
+        |> List.map viewCategory
+        |> View.List.fromItems
+        |> View.List.view
 
 
-toLink : List (Html.Attribute msg) -> Category -> Html msg
-toLink attrs category =
-    let
-        descriptionAttr =
-            case getDescription category of
-                Just desc ->
-                    Attr.title desc
-                        :: attrs
-
-                Nothing ->
-                    attrs
-    in
-    Html.a
-        ([ Attr.href (toUrl category)
-         , Attr.class "category"
-         ]
-            ++ descriptionAttr
-        )
-        [ Html.text (getName category) ]
+toLink : Category -> Ui.Element msg
+toLink category =
+    [ Ui.text (getName category) ]
+        |> View.Inline.setLink (toUrl category)
 
 
 decoder : Decoder Category
@@ -109,24 +105,24 @@ unnest (NestedCategory category rest) =
     category :: List.andThen unnest rest
 
 
-viewCategory : NestedCategory -> Html msg
+viewCategory : NestedCategory -> List (Ui.Element msg)
 viewCategory (NestedCategory category children) =
     let
-        childUl =
+        childrenList =
             if List.length children > 0 then
-                [ Html.ul []
-                    (children
-                        |> List.map viewCategory
-                    )
-                ]
+                children
+                    |> List.map viewCategory
+                    |> View.List.fromItems
+                    |> View.List.view
 
             else
-                []
+                Ui.none
+
+        current =
+            [ toLink category ]
+                |> View.Paragraph.view
     in
-    Html.li []
-        (toLink [] category
-            :: childUl
-        )
+    [ current, childrenList ]
 
 
 

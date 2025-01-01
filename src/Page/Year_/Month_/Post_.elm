@@ -1,38 +1,53 @@
 module Page.Year_.Month_.Post_ exposing (Data, Model, Msg, page)
 
-import CustomMarkup
+import Browser.Navigation
 import Data.Category as Category
 import Data.Date as Date
-import Data.PageHeader as PageHeader
 import Data.Post as Post exposing (Post)
 import Data.Tag as Tag
 import DataSource exposing (DataSource)
+import Doc.ElmUi
+import Doc.Markdown
+import Element as Ui
 import Head
-import Html exposing (Html)
-import Html.Attributes as Attr
-import Page exposing (Page, StaticPayload)
+import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
+import Path exposing (Path)
 import Shared
 import Site
 import View exposing (View)
+import View.AudioPlayer
+import View.CodeBlock
+import View.Column exposing (Spacing(..))
+import View.Inline
+import View.PageBody
+import View.Paragraph
 
 
-page : Page RouteParams Data
+page : PageWithState RouteParams Data Model Msg
 page =
     Page.prerender
         { head = head
         , routes = routes
         , data = data
         }
-        |> Page.buildNoState { view = view }
+        |> Page.buildWithLocalState
+            { view = view
+            , init = init
+            , update = update
+            , subscriptions = subscriptions
+            }
 
 
-type alias Model =
-    ()
+init : Maybe PageUrl -> Shared.Model -> StaticPayload Data RouteParams -> ( Model, Cmd Msg )
+init pageUrl sharedModel staticPayload =
+    ( { audioPlayerState = View.AudioPlayer.initialState }
+    , Cmd.none
+    )
 
 
-type alias Msg =
-    Never
+
+-- ROUTES
 
 
 type alias RouteParams =
@@ -73,6 +88,43 @@ data routeParams =
 
 
 
+-- UPDATE
+
+
+type alias Model =
+    { audioPlayerState : View.AudioPlayer.State }
+
+
+type Msg
+    = AudioPlayerStateUpdated View.AudioPlayer.State
+
+
+update :
+    PageUrl
+    -> Maybe Browser.Navigation.Key
+    -> Shared.Model
+    -> StaticPayload Data RouteParams
+    -> Msg
+    -> Model
+    -> ( Model, Cmd Msg )
+update pageUrl navigationKey sharedModel staticPayload msg model =
+    case msg of
+        AudioPlayerStateUpdated state ->
+            ( { audioPlayerState = state }
+            , Cmd.none
+            )
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Maybe PageUrl -> RouteParams -> Path -> Model -> Sub templateMsg
+subscriptions pageUrl routeParams path model =
+    Sub.none
+
+
+
 -- VIEW
 
 
@@ -100,9 +152,10 @@ head static =
 view :
     Maybe PageUrl
     -> Shared.Model
+    -> Model
     -> StaticPayload Data RouteParams
     -> View Msg
-view maybeUrl sharedModel static =
+view maybeUrl sharedModel model static =
     let
         date =
             Date.formatShortDate
@@ -112,54 +165,59 @@ view maybeUrl sharedModel static =
 
         categoryEls =
             static.data.frontmatter.categories
-                |> List.map (Category.toLink [])
-                |> List.intersperse (Html.text ", ")
+                |> List.map Category.toLink
+                |> List.intersperse (Ui.text ", ")
 
         categoriesTextEls =
             if List.length static.data.frontmatter.categories > 0 then
-                [ Html.text "Categories: "
-                , Html.em [] categoryEls
-                , Html.text ". "
+                [ Ui.text "Categories: "
+                , View.Inline.setItalic categoryEls
+                , Ui.text ". "
                 ]
 
             else
-                [ Html.text "No categories. " ]
+                [ Ui.text "No categories. " ]
 
         tagEls =
             static.data.frontmatter.tags
-                |> List.map (Tag.toLink [] [])
-                |> List.intersperse (Html.text ", ")
+                |> List.map (Tag.toLink [])
+                |> List.intersperse (Ui.text ", ")
 
         tagsTextEls =
             if List.length static.data.frontmatter.tags > 0 then
-                [ Html.text "Tags: "
-                , Html.em [] tagEls
-                , Html.text "."
+                [ Ui.text "Tags: "
+                , View.Inline.setItalic tagEls
+                , Ui.text "."
                 ]
 
             else
-                [ Html.text "No tags." ]
+                [ Ui.text "No tags." ]
 
-        contentHtml =
-            CustomMarkup.toHtml static.data.markdown
+        postInfo =
+            ([ Ui.text ("Posted {date}, on " |> String.replace "{date}" date)
+             , View.Inline.setLink "/"
+                [ Ui.text "agj's blog" ]
+             , Ui.text ". "
+             ]
+                ++ categoriesTextEls
+                ++ tagsTextEls
+            )
+                |> View.Paragraph.view
+
+        contentEl =
+            [ static.data.markdown
+                |> Doc.Markdown.parse
+                    { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
+                |> Doc.ElmUi.view (Just { audioPlayerState = model.audioPlayerState })
+            , View.CodeBlock.styles |> Ui.html
+            ]
+                |> Ui.column []
     in
     { title = title static
     , body =
-        PageHeader.view
-            [ Html.text static.data.frontmatter.title ]
-            (Just
-                (Html.p []
-                    [ Html.small []
-                        ([ Html.text ("Posted {date}, on " |> String.replace "{date}" date)
-                         , Html.a [ Attr.href "/" ]
-                            [ Html.text "agj's blog" ]
-                         , Html.text ". "
-                         ]
-                            ++ categoriesTextEls
-                            ++ tagsTextEls
-                        )
-                    ]
-                )
-            )
-            :: contentHtml
+        View.PageBody.fromContent contentEl
+            |> View.PageBody.withTitleAndSubtitle
+                [ Ui.text static.data.frontmatter.title ]
+                postInfo
+            |> View.PageBody.view
     }

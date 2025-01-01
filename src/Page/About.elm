@@ -1,24 +1,23 @@
 module Page.About exposing (Data, Model, Msg, page)
 
-import CustomMarkup
-import Data.PageHeader as PageHeader
 import DataSource exposing (DataSource)
 import DataSource.File
+import Doc.ElmUi
+import Doc.Markdown
+import Element as Ui
 import Head
-import Head.Seo as Seo
-import Html exposing (Html)
-import Html.Attributes as Attr
-import Markdown.Parser
-import Markdown.Renderer
 import OptimizedDecoder as Decode exposing (Decoder)
 import OptimizedDecoder.Pipeline as Decode
 import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
-import Pages.Url
-import Result.Extra as Result
 import Shared
 import Site
 import View exposing (View)
+import View.Column exposing (Spacing(..))
+import View.Inline
+import View.PageBody
+import View.PageHeader
+import View.Paragraph
 
 
 page : Page RouteParams Data
@@ -85,17 +84,27 @@ view :
     -> StaticPayload Data RouteParams
     -> View Msg
 view maybeUrl sharedModel static =
+    let
+        titleEl =
+            [ Ui.text static.data.title ]
+
+        subtitle =
+            [ Ui.text "Back to "
+            , [ Ui.text "the index" ]
+                |> View.Inline.setLink "/"
+            , Ui.text "."
+            ]
+                |> View.Paragraph.view
+
+        content =
+            static.data.markdown
+                |> Doc.Markdown.parse
+                    { audioPlayer = Nothing }
+                |> Doc.ElmUi.view Nothing
+    in
     { title = title static
     , body =
-        PageHeader.view
-            [ Html.text static.data.title ]
-            (Just
-                (Html.p []
-                    [ Html.text "Back to "
-                    , Html.a [ Attr.href "/" ] [ Html.text "the index" ]
-                    , Html.text "."
-                    ]
-                )
-            )
-            :: CustomMarkup.toHtml static.data.markdown
+        View.PageBody.fromContent content
+            |> View.PageBody.withTitleAndSubtitle titleEl subtitle
+            |> View.PageBody.view
     }

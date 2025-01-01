@@ -1,15 +1,14 @@
 module Page.Tag exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
+import Custom.Element as Ui
 import Custom.List as List
-import Data.PageHeader as PageHeader
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
 import DataSource exposing (DataSource)
 import Dict exposing (Dict)
+import Element as Ui
 import Head
-import Html exposing (Html)
-import Html.Attributes as Attr
 import List.Extra as List
 import Page exposing (PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
@@ -18,8 +17,13 @@ import QueryParams exposing (QueryParams)
 import Result.Extra as Result
 import Shared
 import Site
+import Style
 import Url.Builder exposing (QueryParameter)
 import View exposing (View)
+import View.Column exposing (Spacing(..))
+import View.Inline
+import View.PageBody
+import View.Paragraph
 
 
 page : PageWithState {} Data Model Msg
@@ -151,51 +155,54 @@ view maybeUrl sharedModel model static =
                         [] ->
                             Tag.baseUrl
             in
-            Html.a
-                [ Attr.class "removable contrast"
-                , Attr.href url
-                , Attr.attribute "data-tooltip" "Remove from filter"
-                ]
-                [ Html.text (Tag.getName tag) ]
+            [ Ui.text (Tag.getName tag) ]
+                |> View.Inline.setLink url
 
         titleChildren =
             if List.length model.queryTags > 0 then
-                [ Html.text "Tags: "
-                , Html.em []
-                    (model.queryTags
-                        |> List.map tagToEl
-                        |> List.intersperse (Html.text ", ")
-                    )
+                [ Ui.text "Tags: "
+                , (model.queryTags
+                    |> List.map tagToEl
+                    |> List.intersperse (Ui.text ", ")
+                  )
+                    |> View.Inline.setItalic
                 ]
 
             else
-                [ Html.text "Tags" ]
+                [ Ui.text "Tags" ]
+
+        subtitle =
+            [ Ui.text "Back to "
+            , [ Ui.text "the index" ]
+                |> View.Inline.setLink "/"
+            , Ui.text "."
+            ]
+                |> View.Paragraph.view
+
+        postColumn =
+            if List.length model.queryTags > 0 then
+                postViews
+                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+
+            else
+                Ui.none
+
+        tagsColumn =
+            Tag.listView model.queryTags static.sharedData.posts subTags
+                |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+
+        content =
+            [ postColumn
+            , tagsColumn
+            ]
+                |> Ui.row
+                    [ Ui.width Ui.fill
+                    , Ui.varSpacing Style.spacing.size5
+                    ]
     in
     { title = title static
     , body =
-        [ PageHeader.view titleChildren
-            (Just
-                (Html.p []
-                    [ Html.text "Back to "
-                    , Html.a [ Attr.href "/" ] [ Html.text "the index" ]
-                    , Html.text "."
-                    ]
-                )
-            )
-        , Html.div [ Attr.class "grid" ]
-            ((if List.length model.queryTags > 0 then
-                [ Html.section [] postViews ]
-
-              else
-                []
-             )
-                ++ [ Html.section []
-                        [ Html.article []
-                            [ Html.p []
-                                (Tag.listView model.queryTags static.sharedData.posts subTags)
-                            ]
-                        ]
-                   ]
-            )
-        ]
+        View.PageBody.fromContent content
+            |> View.PageBody.withTitleAndSubtitle titleChildren subtitle
+            |> View.PageBody.view
     }

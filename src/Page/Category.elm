@@ -1,16 +1,18 @@
 module Page.Category exposing (Data, Model, Msg, page)
 
 import Data.Category as Category
-import Data.PageHeader as PageHeader
 import DataSource exposing (DataSource)
+import Element as Ui
 import Head
-import Html exposing (Html)
-import Html.Attributes as Attr
 import Page exposing (Page, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Shared
 import Site
 import View exposing (View)
+import View.Column exposing (Spacing(..))
+import View.Inline
+import View.PageBody
+import View.Paragraph
 
 
 page : Page {} Data
@@ -65,18 +67,24 @@ view :
     -> StaticPayload Data {}
     -> View Msg
 view maybeUrl sharedModel static =
+    let
+        titleEls =
+            [ Ui.text "Categories" ]
+
+        subtitle =
+            [ Ui.text "Back to "
+            , [ Ui.text "the index" ]
+                |> View.Inline.setLink "/"
+            , Ui.text "."
+            ]
+                |> View.Paragraph.view
+
+        content =
+            Category.viewList
+    in
     { title = title static
     , body =
-        [ PageHeader.view
-            [ Html.text "Categories" ]
-            (Just
-                (Html.p []
-                    [ Html.text "Back to "
-                    , Html.a [ Attr.href "/" ] [ Html.text "the index" ]
-                    , Html.text "."
-                    ]
-                )
-            )
-        , Category.viewList Category.all
-        ]
+        View.PageBody.fromContent content
+            |> View.PageBody.withTitleAndSubtitle titleEls subtitle
+            |> View.PageBody.view
     }

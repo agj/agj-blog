@@ -1,16 +1,15 @@
 module Page.Index exposing (Data, Model, Msg, page)
 
 import Browser.Navigation
+import Custom.Element as Ui
 import Data.Category as Category exposing (Category, NestedCategory)
-import Data.PageHeader as PageHeader
 import Data.Post as Post
 import Data.PostList
 import Data.Tag as Tag
 import DataSource exposing (DataSource)
 import Dict exposing (Dict)
+import Element as Ui
 import Head
-import Html exposing (Html)
-import Html.Attributes as Attr
 import List.Extra as List
 import Maybe.Extra as Maybe
 import Page exposing (Page, PageWithState, StaticPayload)
@@ -19,7 +18,12 @@ import Path exposing (Path)
 import QueryParams exposing (QueryParams)
 import Shared
 import Site
+import Style
 import View exposing (View)
+import View.Column exposing (Spacing(..))
+import View.Heading
+import View.PageBody
+import View.PageHeader
 
 
 page : PageWithState {} Data Model Msg
@@ -145,25 +149,29 @@ view :
     -> StaticPayload Data {}
     -> View Msg
 view maybeUrl sharedModel model static =
+    let
+        content =
+            Ui.row
+                [ Ui.width Ui.fill
+                , Ui.varSpacing Style.spacing.size5
+                ]
+                [ Data.PostList.view static.sharedData.posts
+                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+                , [ [ Ui.text "Categories" ]
+                        |> View.Heading.view 2
+                  , Category.viewList
+                  , [ Ui.text "Tags" ]
+                        |> View.Heading.view 2
+                  , Tag.listView [] static.sharedData.posts Tag.all
+                  ]
+                    |> View.Column.setSpaced MSpacing
+                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+                ]
+    in
     { title = title static
     , body =
-        [ PageHeader.view [ Html.text "agj's blog" ] Nothing
-        , Html.div [ Attr.class "grid" ]
-            [ Html.section []
-                (Data.PostList.view static.sharedData.posts)
-            , Html.section []
-                [ Html.article []
-                    [ Html.h3 []
-                        [ Html.text "Categories" ]
-                    , Category.viewList Category.all
-                    ]
-                , Html.article []
-                    [ Html.h3 []
-                        [ Html.text "Tags" ]
-                    , Html.p []
-                        (Tag.listView [] static.sharedData.posts Tag.all)
-                    ]
-                ]
-            ]
-        ]
+        View.PageBody.fromContent content
+            |> View.PageBody.withTitle
+                [ Ui.text "agj's blog" ]
+            |> View.PageBody.view
     }

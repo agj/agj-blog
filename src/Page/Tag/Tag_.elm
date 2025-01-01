@@ -2,8 +2,8 @@ module Page.Tag.Tag_ exposing (..)
 
 import Data.Tag as Tag
 import DataSource exposing (DataSource)
+import Element as Ui
 import Head
-import Html exposing (Html)
 import Page exposing (Page, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
 import Shared
@@ -88,6 +88,5 @@ view :
     -> View Msg
 view maybeUrl sharedModel static =
     { title = title static
-    , body =
-        []
+    , body = Ui.none
     }
