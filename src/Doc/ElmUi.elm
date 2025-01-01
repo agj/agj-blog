@@ -79,7 +79,8 @@ toElmUiInternal state sectionDepth blocks =
                 :: toElmUiInternal state sectionDepth nextBlocks
 
         (Doc.Image { url, description, caption }) :: nextBlocks ->
-            (Ui.image [] { src = url, description = description }
+            (Ui.image [ Ui.centerX ]
+                { src = url, description = description }
                 |> View.Figure.figure
                 |> (if caption /= "" then
                         View.Figure.setCaption caption
