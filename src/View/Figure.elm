@@ -9,6 +9,7 @@ import Custom.Color as Color
 import Custom.Element as Ui
 import Element as Ui
 import Element.Background as UiBackground
+import Element.Font as UiFont
 import Style
 import View.Paragraph
 
@@ -39,18 +40,29 @@ setCaption caption (Figure config) =
 
 view : Figure msg -> Ui.Element msg
 view (Figure config) =
-    Ui.column
-        [ Ui.varPadding Style.spacing.size2
-        , UiBackground.color (Color.toElmUi Style.color.secondary10)
-        , Ui.centerX
-        ]
-        ([ [ config.content ]
-         , case config.caption of
-            Just text ->
-                [ View.Paragraph.view [ Ui.text text ] ]
+    let
+        content =
+            Ui.el
+                [ Ui.varPadding Style.spacing.size2
+                , UiBackground.color (Color.toElmUi Style.color.secondary10)
+                , Ui.centerX
+                ]
+                config.content
 
-            Nothing ->
-                []
-         ]
-            |> List.concat
-        )
+        caption =
+            case config.caption of
+                Just text ->
+                    [ Ui.el
+                        [ Ui.varPaddingLeft Style.spacing.size9
+                        , Ui.varPaddingRight Style.spacing.size9
+                        , UiFont.color (Color.toElmUi Style.color.layout20)
+                        , Ui.varPaddingTop Style.spacing.size3
+                        ]
+                        (View.Paragraph.view [ Ui.text text ])
+                    ]
+
+                Nothing ->
+                    []
+    in
+    Ui.column [ Ui.centerX ]
+        (List.concat [ [ content ], caption ])
