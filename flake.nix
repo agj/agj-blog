@@ -13,18 +13,25 @@
   }:
     flake-utils.lib.eachDefaultSystem (
       system: let
-        pkgs = import nixpkgs {system = system;};
+        pkgs = import nixpkgs {
+          system = system;
+          config.allowUnfree = true;
+        };
       in {
         devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            elmPackages.elm
-            elmPackages.elm-format
-            elmPackages.elm-optimize-level-2
-            elmPackages.elm-pages
-            elmPackages.elm-review
-            just
-            leiningen
-            nodejs_20
+          buildInputs = [
+            pkgs.elmPackages.elm
+            pkgs.elmPackages.elm-optimize-level-2
+            pkgs.elmPackages.elm-pages
+            pkgs.elmPackages.elm-review
+            pkgs.elmPackages.lamdera
+            pkgs.just
+            pkgs.leiningen
+            pkgs.nodejs_20
+            pkgs.pnpm
+
+            # Currently broken:
+            # pkgs.elmPackages.elm-format
           ];
         };
       }
