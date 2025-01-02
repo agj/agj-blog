@@ -14,10 +14,11 @@ module Data.Category exposing
     , viewList
     )
 
-import DataSource exposing (DataSource)
+import BackendTask exposing (BackendTask)
 import Element as Ui
+import Json.Decode as Decode exposing (Decoder)
+import Json.Decode.Extra as Decode
 import List.Extra as List
-import OptimizedDecoder as Decode exposing (Decoder)
 import View.Column exposing (Spacing(..))
 import View.Inline
 import View.List
@@ -41,10 +42,10 @@ all =
     List.andThen unnest allNested
 
 
-singleDataSource : String -> DataSource Category
+singleDataSource : String -> BackendTask String Category
 singleDataSource slug =
     fromSlug slug
-        |> DataSource.fromResult
+        |> BackendTask.fromResult
 
 
 getSlug : Category -> String

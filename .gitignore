@@ -1,22 +1,27 @@
-dist/
+/dist/
 
 # Private data
-data/posts/drafts/
-**/*-HIDDEN.md
+*-HIDDEN.md
+/data/posts/drafts/
 
 # elm-pages
-functions/render/elm-pages-cli.js
+.elm-pages/
+/.cache/
+/functions/render/
+/functions/render/elm-pages-cli.js
+/functions/server-render/
+/gen/
 
 # Elm
 elm-stuff/
-.elm-pages/
 
 # Node
 node_modules/
 npm-debug.log
 
 # Editors
+.helix/
 .vscode/
 
 # direnv
-.direnv/
+/.direnv/

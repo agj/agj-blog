@@ -4,6 +4,7 @@ import Custom.Color as Color
 import Custom.Element as Ui
 import Element as Ui
 import Element.Background as UiBackground
+import PagesMsg exposing (PagesMsg)
 import Style
 import View exposing (View)
 import View.Column exposing (Spacing(..))
@@ -41,7 +42,7 @@ withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
     PageBody { config | title = PageTitleAndSubtitle titleInlines subtitleBlock }
 
 
-view : PageBody msg -> Ui.Element msg
+view : PageBody msg -> Ui.Element (PagesMsg msg)
 view (PageBody config) =
     let
         title =
@@ -95,3 +96,4 @@ view (PageBody config) =
     , content
     ]
         |> View.Column.setSpaced NoSpacing
+        |> Ui.map PagesMsg.fromMsg

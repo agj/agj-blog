@@ -10,11 +10,11 @@ init:
 
 # Run development server.
 dev: install
-    pnpm exec elm-pages dev
+    pnpm run start
 
 # Build for release.
 build: install
-    pnpm exec elm-pages build
+    pnpm run build
 
 [private]
 install:

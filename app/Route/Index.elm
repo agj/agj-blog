@@ -1,38 +1,39 @@
-module Page.Index exposing (Data, Model, Msg, page)
+module Route.Index exposing (ActionData, Data, Model, Msg, route)
 
+import BackendTask exposing (BackendTask)
 import Browser.Navigation
 import Custom.Element as Ui
 import Data.Category as Category exposing (Category, NestedCategory)
 import Data.Post as Post
 import Data.PostList
 import Data.Tag as Tag
-import DataSource exposing (DataSource)
 import Dict exposing (Dict)
+import Effect exposing (Effect)
 import Element as Ui
+import FatalError exposing (FatalError)
 import Head
 import List.Extra as List
 import Maybe.Extra as Maybe
-import Page exposing (Page, PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
-import Path exposing (Path)
-import QueryParams exposing (QueryParams)
+import PagesMsg exposing (PagesMsg)
+import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
 import Style
+import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Heading
 import View.PageBody
-import View.PageHeader
 
 
-page : PageWithState {} Data Model Msg
-page =
-    Page.single
+route : StatefulRoute RouteParams Data ActionData Model Msg
+route =
+    RouteBuilder.single
         { head = head
         , data = data
         }
-        |> Page.buildWithSharedState
+        |> RouteBuilder.buildWithSharedState
             { init = init
             , update = update
             , subscriptions = subscriptions
@@ -40,23 +41,22 @@ page =
             }
 
 
-init : Maybe PageUrl -> Shared.Model -> StaticPayload Data {} -> ( Model, Cmd Msg )
-init maybePageUrl sharedModel static =
+init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
+init app shared =
     let
         maybeRequestedPostId =
-            maybePageUrl
-                |> Maybe.andThen .query
-                |> Maybe.map QueryParams.toDict
+            app.url
+                |> Maybe.map .query
                 |> Maybe.andThen (Dict.get "p")
                 |> Maybe.andThen List.head
                 |> Maybe.andThen String.toInt
 
         maybeUrlFragment =
-            maybePageUrl
+            app.url
                 |> Maybe.andThen .fragment
 
         findPostGistById id =
-            static.sharedData.posts
+            app.sharedData.posts
                 |> List.find (\pg -> pg.frontmatter.id == Just id)
 
         maybePostRedirectCommand =
@@ -77,6 +77,7 @@ init maybePageUrl sharedModel static =
     ( {}
     , maybePostRedirectCommand
         |> Maybe.withDefault Cmd.none
+        |> Effect.fromCmd
     )
 
 
@@ -88,9 +89,13 @@ type alias Data =
     {}
 
 
-data : DataSource Data
+type alias ActionData =
+    {}
+
+
+data : BackendTask FatalError Data
 data =
-    DataSource.succeed {}
+    BackendTask.succeed {}
 
 
 
@@ -105,24 +110,21 @@ type alias Msg =
     Never
 
 
-update :
-    PageUrl
-    -> Maybe Browser.Navigation.Key
-    -> Shared.Model
-    -> StaticPayload Data {}
-    -> Msg
-    -> Model
-    -> ( Model, Cmd Msg, Maybe Shared.Msg )
-update pageUrl navKey sharedModel static msg model =
-    ( {}, Cmd.none, Nothing )
+type alias RouteParams =
+    {}
+
+
+update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg, Maybe Shared.Msg )
+update app shared msg model =
+    ( {}, Effect.none, Nothing )
 
 
 
 -- SUBSCRIPTIONS
 
 
-subscriptions : Maybe PageUrl -> {} -> Path -> Model -> Shared.Model -> Sub Msg
-subscriptions maybePageUrl _ path model sharedModel =
+subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub msg
+subscriptions routeParams path shared model =
     Sub.none
 
 
@@ -130,45 +132,42 @@ subscriptions maybePageUrl _ path model sharedModel =
 -- VIEW
 
 
-title : StaticPayload Data {} -> String
-title static =
+title : String
+title =
     Site.windowTitle "Home"
 
 
-head :
-    StaticPayload Data {}
-    -> List Head.Tag
-head static =
-    Site.pageMeta (title static)
+head : App Data ActionData RouteParams -> List Head.Tag
+head app =
+    Site.pageMeta title
 
 
 view :
-    Maybe PageUrl
+    App Data ActionData RouteParams
     -> Shared.Model
     -> Model
-    -> StaticPayload Data {}
-    -> View Msg
-view maybeUrl sharedModel model static =
+    -> View (PagesMsg Msg)
+view app shared model =
     let
         content =
             Ui.row
                 [ Ui.width Ui.fill
                 , Ui.varSpacing Style.spacing.size5
                 ]
-                [ Data.PostList.view static.sharedData.posts
+                [ Data.PostList.view app.sharedData.posts
                     |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
                 , [ [ Ui.text "Categories" ]
                         |> View.Heading.view 2
                   , Category.viewList
                   , [ Ui.text "Tags" ]
                         |> View.Heading.view 2
-                  , Tag.listView [] static.sharedData.posts Tag.all
+                  , Tag.listView [] app.sharedData.posts Tag.all
                   ]
                     |> View.Column.setSpaced MSpacing
                     |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
                 ]
     in
-    { title = title static
+    { title = title
     , body =
         View.PageBody.fromContent content
             |> View.PageBody.withTitle

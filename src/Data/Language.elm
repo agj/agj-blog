@@ -1,6 +1,7 @@
 module Data.Language exposing (Language(..), decoder, fromString)
 
-import OptimizedDecoder as Decode exposing (Decoder)
+import Json.Decode as Decode exposing (Decoder)
+import Json.Decode.Extra as Decode
 
 
 type Language

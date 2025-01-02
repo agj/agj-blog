@@ -12,11 +12,11 @@ module Data.Tag exposing
     , toUrl
     )
 
-import DataSource exposing (DataSource)
 import Element as Ui
+import Json.Decode as Decode exposing (Decoder)
+import Json.Decode.Extra as Decode
 import List.Extra as List
 import Maybe.Extra as Maybe
-import OptimizedDecoder as Decode exposing (Decoder)
 import View.Inline
 import View.Paragraph
 

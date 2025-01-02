@@ -1,11 +1,12 @@
-module Page.Category exposing (Data, Model, Msg, page)
+module Route.Category exposing (ActionData, Data, Model, Msg, route)
 
+import BackendTask exposing (BackendTask)
 import Data.Category as Category
-import DataSource exposing (DataSource)
 import Element as Ui
+import FatalError exposing (FatalError)
 import Head
-import Page exposing (Page, StaticPayload)
-import Pages.PageUrl exposing (PageUrl)
+import PagesMsg exposing (PagesMsg)
+import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
 import View exposing (View)
@@ -15,21 +16,25 @@ import View.PageBody
 import View.Paragraph
 
 
-page : Page {} Data
-page =
-    Page.single
+route : StatefulRoute RouteParams Data ActionData Model Msg
+route =
+    RouteBuilder.single
         { head = head
         , data = data
         }
-        |> Page.buildNoState { view = view }
+        |> RouteBuilder.buildNoState { view = view }
 
 
 type alias Model =
-    ()
+    {}
 
 
 type alias Msg =
-    Never
+    ()
+
+
+type alias RouteParams =
+    {}
 
 
 
@@ -37,36 +42,37 @@ type alias Msg =
 
 
 type alias Data =
-    ()
+    {}
 
 
-data : DataSource Data
+type alias ActionData =
+    {}
+
+
+data : BackendTask FatalError Data
 data =
-    DataSource.succeed ()
+    BackendTask.succeed {}
 
 
 
 -- VIEW
 
 
-title : StaticPayload Data {} -> String
-title static =
+title : String
+title =
     Site.windowTitle "Categories"
 
 
-head :
-    StaticPayload Data {}
-    -> List Head.Tag
-head static =
-    Site.pageMeta (title static)
+head : App Data ActionData RouteParams -> List Head.Tag
+head app =
+    Site.pageMeta title
 
 
 view :
-    Maybe PageUrl
+    App Data ActionData RouteParams
     -> Shared.Model
-    -> StaticPayload Data {}
-    -> View Msg
-view maybeUrl sharedModel static =
+    -> View (PagesMsg Msg)
+view app shared =
     let
         titleEls =
             [ Ui.text "Categories" ]
@@ -82,7 +88,7 @@ view maybeUrl sharedModel static =
         content =
             Category.viewList
     in
-    { title = title static
+    { title = title
     , body =
         View.PageBody.fromContent content
             |> View.PageBody.withTitleAndSubtitle titleEls subtitle

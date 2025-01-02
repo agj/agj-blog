@@ -1,11 +1,14 @@
-import { defineAudioPlayerCustomElement } from './js/custom-elements/audio-player.js';
+
+import { defineAudioPlayerCustomElement } from './src-ts/custom-elements/audio-player.js';
 
 defineAudioPlayerCustomElement();
 
-/** @typedef {{load: (Promise<unknown>); flags: (unknown)}} ElmPagesInit */
+type ElmPagesInit = {
+  load: (elmLoaded: Promise<unknown>) => Promise<void>;
+  flags: unknown;
+};
 
-/** @type ElmPagesInit */
-export default {
+const config: ElmPagesInit = {
   load: async function (elmLoaded) {
     const app = await elmLoaded;
     console.log("App loaded", app);
@@ -14,3 +17,5 @@ export default {
     return "You can decode this in Shared.elm using Json.Decode.string!";
   },
 };
+
+export default config;
