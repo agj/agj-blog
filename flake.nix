@@ -22,7 +22,6 @@
           buildInputs = [
             pkgs.elmPackages.elm
             pkgs.elmPackages.elm-optimize-level-2
-            pkgs.elmPackages.elm-pages
             pkgs.elmPackages.elm-review
             pkgs.elmPackages.lamdera
             pkgs.just
