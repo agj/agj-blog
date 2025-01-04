@@ -2,7 +2,6 @@ module Style exposing
     ( blockPadding
     , color
     , interline
-    , padding
     , spacing
     , textSize
     , textSizeMonospace
@@ -52,14 +51,6 @@ spacing =
     , size7 = Css.Var "spacing-7"
     , size8 = Css.Var "spacing-8"
     , size9 = Css.Var "spacing-9"
-    }
-
-
-padding =
-    { left = 0
-    , right = 0
-    , top = 0
-    , bottom = 0
     }
 
 

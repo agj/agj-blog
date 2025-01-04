@@ -9,7 +9,7 @@ import Custom.Color as Color
 import Custom.Element as Ui
 import Element as Ui
 import Element.Font as UiFont
-import Style exposing (padding)
+import Style
 import View.Column exposing (Spacing(..))
 import View.Paragraph
 
