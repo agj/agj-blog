@@ -58,18 +58,6 @@ spacing =
 -- TYPOGRAPHY
 
 
-colorLayout =
-    rgb 0x00 0x00 0x00
-
-
-colorPrimary =
-    rgb 0xFF 0x00 0xCC
-
-
-colorSecondary =
-    rgb 0x00 0xEB 0xFF
-
-
 textSize =
     { m = Css.Var "text-size-m"
     , l = Css.Var "text-size-l"
@@ -99,6 +87,18 @@ blockPadding textSize_ interline_ =
 
 
 -- INTERNAL
+
+
+colorLayout =
+    rgb 0x00 0x00 0x00
+
+
+colorPrimary =
+    rgb 0xFF 0x00 0xCC
+
+
+colorSecondary =
+    rgb 0x00 0xEB 0xFF
 
 
 rgb : Int -> Int -> Int -> Color
