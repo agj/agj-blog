@@ -19,9 +19,9 @@
           buildInputs = [
             pkgs.just
             pkgs.leiningen
+            pkgs.nodePackages.prettier
             pkgs.nodejs-slim_18
             pkgs.pnpm
-            pkgs.nodePackages.prettier
           ];
         };
       }
