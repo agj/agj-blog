@@ -6,7 +6,6 @@ import Element as Ui
 import Element.Background as UiBackground
 import PagesMsg exposing (PagesMsg)
 import Style
-import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Heading
 
@@ -75,7 +74,7 @@ view (PageBody config) =
                         title_
                         |> Ui.el
                             [ Ui.width Ui.fill
-                            , UiBackground.color (Style.color.secondary05 |> Color.toElmUi)
+                            , UiBackground.color (Style.color.layout05 |> Color.toElmUi)
                             ]
 
         content =

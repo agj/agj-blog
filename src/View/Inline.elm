@@ -10,7 +10,6 @@ import Custom.Color as Color
 import Custom.Element as Ui
 import Element as Ui
 import Element.Background as UiBackground
-import Element.Border as UiBorder
 import Element.Font as UiFont
 import Html
 import Html.Attributes
@@ -57,7 +56,7 @@ setLink destination children =
         , label =
             Ui.paragraph
                 [ UiFont.underline
-                , UiFont.color (Style.color.secondary70 |> Color.toElmUi)
+                , UiFont.color (Style.color.primary70 |> Color.toElmUi)
                 ]
                 children
         }

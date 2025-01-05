@@ -190,7 +190,7 @@ viewBlockQuote state sectionDepth blocks =
             Ui.el
                 [ Ui.varWidth Style.spacing.size1
                 , Ui.height Ui.fill
-                , UiBackground.color (Style.color.secondary10 |> Color.toElmUi)
+                , UiBackground.color (Style.color.primary10 |> Color.toElmUi)
                 , Ui.alignLeft
                 ]
                 Ui.none
@@ -227,7 +227,7 @@ viewSeparation =
             Ui.el
                 [ Ui.width (Ui.fillPortion 1)
                 , Ui.height (Ui.px 1)
-                , UiBackground.color (Style.color.secondary50 |> Color.toElmUi)
+                , UiBackground.color (Style.color.primary50 |> Color.toElmUi)
                 ]
                 Ui.none
     in

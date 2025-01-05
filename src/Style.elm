@@ -33,16 +33,6 @@ color =
     , primary20 = colorPrimary |> lighten 0.6
     , primary10 = colorPrimary |> lighten 0.8
     , primary05 = colorPrimary |> lighten 0.9
-    , secondary90 = colorSecondary |> darken 0.8
-    , secondary80 = colorSecondary |> darken 0.6
-    , secondary70 = colorSecondary |> darken 0.4
-    , secondary60 = colorSecondary |> darken 0.2
-    , secondary50 = colorSecondary
-    , secondary40 = colorSecondary |> lighten 0.2
-    , secondary30 = colorSecondary |> lighten 0.4
-    , secondary20 = colorSecondary |> lighten 0.6
-    , secondary10 = colorSecondary |> lighten 0.8
-    , secondary05 = colorSecondary |> lighten 0.9
     , transparent = Color.rgba 1 1 1 0
     , white = Color.rgb 1 1 1
     }
