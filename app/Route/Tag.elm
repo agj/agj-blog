@@ -189,7 +189,7 @@ view app shared model =
                             Tag.baseUrl
             in
             [ Ui.text (Tag.getName tag) ]
-                |> View.Inline.setLink Nothing url
+                |> View.Inline.setLink (Just OnClick) url
 
         titleChildren =
             if List.length model.queryTags > 0 then
