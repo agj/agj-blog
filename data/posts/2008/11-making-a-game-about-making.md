@@ -46,9 +46,9 @@ Another aspect of this game, related both to helping spread the word about the g
 
 That is the current state, and the future, of my game. Other planned features include:
 
-	- A name!
-	- Audio.
-	- More parameters.
-	- Indications overlaid on the composition for each parameter, during the results screen. For instance, if the composition was found to be symmetric, hovering over that pictogram will show, on top of the canvas, what the axis (or axes) of symmetry is/are.
+- A name!
+- Audio.
+- More parameters.
+- Indications overlaid on the composition for each parameter, during the results screen. For instance, if the composition was found to be symmetric, hovering over that pictogram will show, on top of the canvas, what the axis (or axes) of symmetry is/are.
 
 Remember that you can [**play the game**](//www.agj.cl/files/games/viscomp1/) in its current state if you wish. I'd be grateful for any comments you may have on it.
