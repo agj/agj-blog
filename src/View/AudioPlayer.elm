@@ -156,7 +156,7 @@ titleView state config firstTrack title =
     in
     UiInput.button
         [ UiBorder.rounded 0
-        , UiBackground.color (Style.color.layout40 |> Color.toElmUi)
+        , UiBackground.color (Style.color.layout60 |> Color.toElmUi)
         , UiFont.color (Style.color.white |> Color.toElmUi)
         , Ui.width Ui.fill
         , Ui.varPaddingTop Style.spacing.size2
