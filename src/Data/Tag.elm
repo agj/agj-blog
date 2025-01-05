@@ -71,19 +71,19 @@ slugsToUrl firstSlug moreSlugs =
         |> String.replace "{slugs}" slugs
 
 
-toLink : List Tag -> Tag -> Ui.Element msg
-toLink tagsToAddTo tag =
+toLink : Maybe (String -> msg) -> List Tag -> Tag -> Ui.Element msg
+toLink onClick tagsToAddTo tag =
     let
         singleLink =
             [ Ui.text (getName tag) ]
-                |> View.Inline.setLink Nothing (toUrl tag [])
+                |> View.Inline.setLink onClick (toUrl tag [])
     in
     case tagsToAddTo of
         _ :: _ ->
             let
                 addLink =
                     [ Ui.text "+" ]
-                        |> View.Inline.setLink Nothing (toUrl tag tagsToAddTo)
+                        |> View.Inline.setLink onClick (toUrl tag tagsToAddTo)
             in
             [ singleLink
             , Ui.text "["
@@ -97,11 +97,12 @@ toLink tagsToAddTo tag =
 
 
 listView :
-    List Tag
+    Maybe (String -> msg)
+    -> List Tag
     -> List { a | frontmatter : { b | tags : List Tag } }
     -> List Tag
     -> Ui.Element msg
-listView selectedTags posts relatedTags =
+listView onClick selectedTags posts relatedTags =
     let
         tagsCount =
             relatedTags
@@ -130,7 +131,7 @@ listView selectedTags posts relatedTags =
                 |> Maybe.withDefault 0
     in
     tagsCount
-        |> List.map (\( tag, count ) -> toLink selectedTags tag)
+        |> List.map (\( tag, count ) -> toLink onClick selectedTags tag)
         |> List.intersperse (Ui.text ", ")
         |> View.Paragraph.view
 

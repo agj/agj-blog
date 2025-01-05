@@ -193,7 +193,7 @@ view app shared model =
                 Ui.none
 
         tagsColumn =
-            Tag.listView model.queryTags app.sharedData.posts subTags
+            Tag.listView Nothing model.queryTags app.sharedData.posts subTags
                 |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
 
         content =

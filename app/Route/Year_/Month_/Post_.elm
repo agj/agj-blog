@@ -185,7 +185,7 @@ view app shared model =
 
         tagEls =
             app.data.frontmatter.tags
-                |> List.map (Tag.toLink [])
+                |> List.map (Tag.toLink Nothing [])
                 |> List.intersperse (Ui.text ", ")
 
         tagsTextEls =

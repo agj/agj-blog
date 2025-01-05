@@ -161,7 +161,7 @@ view app shared model =
                   , Category.viewList
                   , [ Ui.text "Tags" ]
                         |> View.Heading.view 2
-                  , Tag.listView [] app.sharedData.posts Tag.all
+                  , Tag.listView Nothing [] app.sharedData.posts Tag.all
                   ]
                     |> View.Column.setSpaced MSpacing
                     |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
