@@ -17,6 +17,7 @@ import Maybe.Extra as Maybe
 import Pages.PageUrl exposing (PageUrl)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
+import Sand
 import Shared
 import Site
 import Style
@@ -149,23 +150,28 @@ view :
     -> View (PagesMsg Msg)
 view app shared model =
     let
+        cols =
+            [ Data.PostList.view app.sharedData.posts
+                |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+            , [ [ Ui.text "Categories" ]
+                    |> View.Heading.view 2
+              , Category.viewList
+              , [ Ui.text "Tags" ]
+                    |> View.Heading.view 2
+              , Tag.listView Nothing [] app.sharedData.posts Tag.all
+              ]
+                |> View.Column.setSpaced MSpacing
+                |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+            ]
+                |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
+
         content =
-            Ui.row
-                [ Ui.width Ui.fill
-                , Ui.varSpacing Style.spacing.size5
-                ]
-                [ Data.PostList.view app.sharedData.posts
-                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
-                , [ [ Ui.text "Categories" ]
-                        |> View.Heading.view 2
-                  , Category.viewList
-                  , [ Ui.text "Tags" ]
-                        |> View.Heading.view 2
-                  , Tag.listView Nothing [] app.sharedData.posts Tag.all
-                  ]
-                    |> View.Column.setSpaced MSpacing
-                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
-                ]
+            Sand.gridCols
+                { cols = Sand.ResponsiveGridCols [ ( 0, [ Sand.GlFraction 2, Sand.GlFraction 1 ] ), ( 500, [ Sand.GlFraction 1 ] ) ]
+                , gap = Sand.L4
+                }
+                cols
+                |> Ui.html
     in
     { title = title
     , body =
