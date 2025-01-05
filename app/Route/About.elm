@@ -95,7 +95,7 @@ view app shared =
         subtitle =
             [ Ui.text "Back to "
             , [ Ui.text "the index" ]
-                |> View.Inline.setLink "/"
+                |> View.Inline.setLink Nothing "/"
             , Ui.text "."
             ]
                 |> View.Paragraph.view
@@ -104,7 +104,7 @@ view app shared =
             app.data.markdown
                 |> Doc.Markdown.parse
                     { audioPlayer = Nothing }
-                |> Doc.ElmUi.view Nothing
+                |> Doc.ElmUi.view Doc.ElmUi.noConfig
     in
     { title = title app
     , body =

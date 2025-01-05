@@ -76,14 +76,14 @@ toLink tagsToAddTo tag =
     let
         singleLink =
             [ Ui.text (getName tag) ]
-                |> View.Inline.setLink (toUrl tag [])
+                |> View.Inline.setLink Nothing (toUrl tag [])
     in
     case tagsToAddTo of
         _ :: _ ->
             let
                 addLink =
                     [ Ui.text "+" ]
-                        |> View.Inline.setLink (toUrl tag tagsToAddTo)
+                        |> View.Inline.setLink Nothing (toUrl tag tagsToAddTo)
             in
             [ singleLink
             , Ui.text "["

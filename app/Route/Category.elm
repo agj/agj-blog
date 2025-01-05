@@ -80,7 +80,7 @@ view app shared =
         subtitle =
             [ Ui.text "Back to "
             , [ Ui.text "the index" ]
-                |> View.Inline.setLink "/"
+                |> View.Inline.setLink Nothing "/"
             , Ui.text "."
             ]
                 |> View.Paragraph.view

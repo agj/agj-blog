@@ -87,7 +87,7 @@ viewList =
 toLink : Category -> Ui.Element msg
 toLink category =
     [ Ui.text (getName category) ]
-        |> View.Inline.setLink (toUrl category)
+        |> View.Inline.setLink Nothing (toUrl category)
 
 
 decoder : Decoder Category

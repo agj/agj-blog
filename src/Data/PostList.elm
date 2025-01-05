@@ -109,7 +109,7 @@ viewGist gist =
 
         postLink =
             [ Ui.text gist.frontmatter.title ]
-                |> View.Inline.setLink (Post.globMatchFrontmatterToUrl gist)
+                |> View.Inline.setLink Nothing (Post.globMatchFrontmatterToUrl gist)
                 |> List.singleton
                 |> View.Inline.setBold
 
@@ -118,7 +118,7 @@ viewGist gist =
                 |> List.map
                     (\category ->
                         [ Ui.text (Category.getName category) ]
-                            |> View.Inline.setLink (Category.toUrl category)
+                            |> View.Inline.setLink Nothing (Category.toUrl category)
                     )
 
         postCategories =

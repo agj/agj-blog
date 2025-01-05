@@ -161,7 +161,7 @@ view app shared model =
                             Tag.baseUrl
             in
             [ Ui.text (Tag.getName tag) ]
-                |> View.Inline.setLink url
+                |> View.Inline.setLink Nothing url
 
         titleChildren =
             if List.length model.queryTags > 0 then
@@ -179,7 +179,7 @@ view app shared model =
         subtitle =
             [ Ui.text "Back to "
             , [ Ui.text "the index" ]
-                |> View.Inline.setLink "/"
+                |> View.Inline.setLink Nothing "/"
             , Ui.text "."
             ]
                 |> View.Paragraph.view

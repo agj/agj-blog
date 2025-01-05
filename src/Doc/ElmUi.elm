@@ -1,4 +1,4 @@
-module Doc.ElmUi exposing (State, view)
+module Doc.ElmUi exposing (Config, noConfig, view)
 
 import Custom.Color as Color
 import Custom.Element as Ui
@@ -20,43 +20,51 @@ import View.Paragraph
 import View.VideoEmbed
 
 
-type alias State =
-    { audioPlayerState : View.AudioPlayer.State
+type alias Config msg =
+    { onClick : Maybe (String -> msg)
+    , audioPlayerState : Maybe View.AudioPlayer.State
     }
 
 
-view : Maybe State -> List (Doc.Block msg) -> Ui.Element msg
-view state blocks =
+view : Config msg -> List (Doc.Block msg) -> Ui.Element msg
+view config blocks =
     blocks
-        |> toElmUiInternal state 1
+        |> toElmUiInternal config 1
         |> View.Column.setSpaced MSpacing
+
+
+noConfig : Config msg
+noConfig =
+    { onClick = Nothing
+    , audioPlayerState = Nothing
+    }
 
 
 
 -- INTERNAL
 
 
-toElmUiInternal : Maybe State -> Int -> List (Doc.Block msg) -> List (Ui.Element msg)
-toElmUiInternal state sectionDepth blocks =
+toElmUiInternal : Config msg -> Int -> List (Doc.Block msg) -> List (Ui.Element msg)
+toElmUiInternal config sectionDepth blocks =
     case blocks of
         (Doc.Paragraph inlines) :: nextBlocks ->
             (inlines
-                |> List.map viewInline
+                |> List.map (viewInline config.onClick)
                 |> View.Paragraph.view
             )
-                :: toElmUiInternal state sectionDepth nextBlocks
+                :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.OrderedList firstItem restItems) :: nextBlocks ->
-            viewList state sectionDepth (Just 1) firstItem restItems
-                :: toElmUiInternal state sectionDepth nextBlocks
+            viewList config sectionDepth (Just 1) firstItem restItems
+                :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.UnorderedList firstItem restItems) :: nextBlocks ->
-            viewList state sectionDepth Nothing firstItem restItems
-                :: toElmUiInternal state sectionDepth nextBlocks
+            viewList config sectionDepth Nothing firstItem restItems
+                :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.BlockQuote blockQuoteBlocks) :: nextBlocks ->
-            viewBlockQuote state sectionDepth blockQuoteBlocks
-                :: toElmUiInternal state sectionDepth nextBlocks
+            viewBlockQuote config sectionDepth blockQuoteBlocks
+                :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.Section { heading, content }) :: nextBlocks ->
             let
@@ -64,19 +72,19 @@ toElmUiInternal state sectionDepth blocks =
                     sectionDepth + 1
             in
             ([ heading
-                |> List.map viewInline
+                |> List.map (viewInline config.onClick)
                 |> View.Heading.view newSectionDepth
              , content
-                |> toElmUiInternal state newSectionDepth
+                |> toElmUiInternal config newSectionDepth
                 |> View.Column.setSpaced MSpacing
              ]
                 |> View.Column.setSpaced MSpacing
             )
-                :: toElmUiInternal state sectionDepth nextBlocks
+                :: toElmUiInternal config sectionDepth nextBlocks
 
         Doc.Separation :: nextBlocks ->
             viewSeparation
-                :: toElmUiInternal state sectionDepth nextBlocks
+                :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.Image { url, description, caption }) :: nextBlocks ->
             (Ui.image [ Ui.centerX ]
@@ -90,40 +98,40 @@ toElmUiInternal state sectionDepth blocks =
                    )
                 |> View.Figure.view
             )
-                :: toElmUiInternal state sectionDepth nextBlocks
+                :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.Video videoEmbed) :: nextBlocks ->
             View.VideoEmbed.view videoEmbed
-                :: toElmUiInternal state sectionDepth nextBlocks
+                :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.CodeBlock { code, language }) :: nextBlocks ->
             (View.CodeBlock.fromBody language code
                 |> View.CodeBlock.view
             )
-                :: toElmUiInternal state sectionDepth nextBlocks
+                :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.LanguageBreak languageBreak) :: nextBlocks ->
             View.LanguageBreak.view languageBreak
-                :: toElmUiInternal state sectionDepth nextBlocks
+                :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.AudioPlayer audioPlayer) :: nextBlocks ->
-            case state of
-                Just { audioPlayerState } ->
-                    View.AudioPlayer.view audioPlayerState audioPlayer
-                        :: toElmUiInternal state sectionDepth nextBlocks
+            case config.audioPlayerState of
+                Just aps ->
+                    View.AudioPlayer.view aps audioPlayer
+                        :: toElmUiInternal config sectionDepth nextBlocks
 
                 Nothing ->
                     ([ Ui.text "[AudioPlayer state not provided]" ]
                         |> View.Paragraph.view
                     )
-                        :: toElmUiInternal state sectionDepth nextBlocks
+                        :: toElmUiInternal config sectionDepth nextBlocks
 
         [] ->
             []
 
 
-viewInline : Doc.Inline -> Ui.Element msg
-viewInline inline =
+viewInline : Maybe (String -> msg) -> Doc.Inline -> Ui.Element msg
+viewInline onClickMaybe inline =
     case inline of
         Doc.Text styledText ->
             viewStyledText styledText
@@ -134,7 +142,7 @@ viewInline inline =
         Doc.Link { target, inlines } ->
             inlines
                 |> List.map viewStyledText
-                |> View.Inline.setLink target
+                |> View.Inline.setLink onClickMaybe target
 
         Doc.LineBreak ->
             [ Html.text "\n" ]
@@ -160,15 +168,15 @@ setStyleIf cond styler children =
         children
 
 
-viewList : Maybe State -> Int -> Maybe Int -> Doc.ListItem msg -> List (Doc.ListItem msg) -> Ui.Element msg
-viewList state sectionDepth maybeStartNumber firstItem restItems =
+viewList : Config msg -> Int -> Maybe Int -> Doc.ListItem msg -> List (Doc.ListItem msg) -> Ui.Element msg
+viewList config sectionDepth maybeStartNumber firstItem restItems =
     let
         list =
             (firstItem :: restItems)
                 |> List.map
                     (\( firstBlock, restBlocks ) ->
                         (firstBlock :: restBlocks)
-                            |> toElmUiInternal state sectionDepth
+                            |> toElmUiInternal config sectionDepth
                     )
                 |> View.List.fromItems
     in
@@ -183,8 +191,8 @@ viewList state sectionDepth maybeStartNumber firstItem restItems =
                 |> View.List.view
 
 
-viewBlockQuote : Maybe State -> Int -> List (Doc.Block msg) -> Ui.Element msg
-viewBlockQuote state sectionDepth blocks =
+viewBlockQuote : Config msg -> Int -> List (Doc.Block msg) -> Ui.Element msg
+viewBlockQuote config sectionDepth blocks =
     let
         line =
             Ui.el
@@ -211,7 +219,7 @@ viewBlockQuote state sectionDepth blocks =
                 ]
     in
     blocks
-        |> toElmUiInternal state sectionDepth
+        |> toElmUiInternal config sectionDepth
         |> View.Column.setSpaced MSpacing
         |> toQuote
 

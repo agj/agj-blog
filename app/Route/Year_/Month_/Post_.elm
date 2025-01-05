@@ -200,8 +200,7 @@ view app shared model =
 
         postInfo =
             ([ Ui.text ("Posted {date}, on " |> String.replace "{date}" date)
-             , View.Inline.setLink "/"
-                [ Ui.text "agj's blog" ]
+             , View.Inline.setLink Nothing "/" [ Ui.text "agj's blog" ]
              , Ui.text ". "
              ]
                 ++ categoriesTextEls
@@ -213,7 +212,7 @@ view app shared model =
             [ app.data.markdown
                 |> Doc.Markdown.parse
                     { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
-                |> Doc.ElmUi.view (Just { audioPlayerState = model.audioPlayerState })
+                |> Doc.ElmUi.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
             , View.CodeBlock.styles |> Ui.html
             ]
                 |> Ui.column []

@@ -10,6 +10,7 @@ import Custom.Color as Color
 import Custom.Element as Ui
 import Element as Ui
 import Element.Background as UiBackground
+import Element.Events as UiEvents
 import Element.Font as UiFont
 import Html
 import Html.Attributes
@@ -49,9 +50,18 @@ setCode code =
             ]
 
 
-setLink : String -> List (Ui.Element msg) -> Ui.Element msg
-setLink destination children =
-    Ui.link []
+setLink : Maybe (String -> msg) -> String -> List (Ui.Element msg) -> Ui.Element msg
+setLink onClickMaybe destination children =
+    let
+        attrs =
+            case onClickMaybe of
+                Just onClick ->
+                    [ UiEvents.onClick (onClick destination) ]
+
+                Nothing ->
+                    []
+    in
+    Ui.link attrs
         { url = destination
         , label =
             Ui.paragraph
