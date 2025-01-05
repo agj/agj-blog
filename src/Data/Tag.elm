@@ -186,10 +186,6 @@ all =
         , slug = "audio-games"
         }
     , Tag
-        { name = "bicycle"
-        , slug = "bicycle"
-        }
-    , Tag
         { name = "blog"
         , slug = "blog"
         }
@@ -252,10 +248,6 @@ all =
     , Tag
         { name = "Construct"
         , slug = "construct"
-        }
-    , Tag
-        { name = "creativity"
-        , slug = "creativity"
         }
     , Tag
         { name = "dot-into"
@@ -356,10 +348,6 @@ all =
     , Tag
         { name = "Halloween"
         , slug = "halloween"
-        }
-    , Tag
-        { name = "HD"
-        , slug = "hd"
         }
     , Tag
         { name = "Heart"
@@ -466,10 +454,6 @@ all =
         , slug = "motion-graphics"
         }
     , Tag
-        { name = "moving photo"
-        , slug = "moving-photo"
-        }
-    , Tag
         { name = "Muévete"
         , slug = "muevete"
         }
@@ -548,10 +532,6 @@ all =
     , Tag
         { name = "Santiago en 100 palabras"
         , slug = "santiago-en-100-palabras"
-        }
-    , Tag
-        { name = "Sega"
-        , slug = "sega"
         }
     , Tag
         { name = "Sheets"
@@ -672,10 +652,6 @@ all =
     , Tag
         { name = "web"
         , slug = "web"
-        }
-    , Tag
-        { name = "web 2.0"
-        , slug = "web-20"
         }
     , Tag
         { name = "Weekly concern"

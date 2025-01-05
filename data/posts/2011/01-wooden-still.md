@@ -7,7 +7,6 @@ categories:
 - videos
 tags:
 - animation
-- hd
 - photomotion
 - release
 - sound-design

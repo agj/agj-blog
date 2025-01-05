@@ -4,13 +4,12 @@ title: The Japanese countryside
 date: 14
 hour: 23
 categories:
-- musings
-- videos
+  - musings
+  - videos
 tags:
-- japan
-- moving-photo
-- video
-- vine
+  - japan
+  - video
+  - vine
 language: eng
 ---
 

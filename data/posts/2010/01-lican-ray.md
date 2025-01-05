@@ -4,14 +4,13 @@ title: Lican Ray
 date: 12
 hour: 4
 categories:
-- videos
+  - videos
 tags:
-- animation
-- chile
-- hd
-- release
-- sound-design
-- video
+  - animation
+  - chile
+  - release
+  - sound-design
+  - video
 language: eng
 ---
 

@@ -4,17 +4,16 @@ title: That place, again
 date: 15
 hour: 22
 categories:
-- sound
-- videos
+  - sound
+  - videos
 tags:
-- hd
-- lofi
-- motion-graphics
-- music-video
-- release
-- sound
-- the-color-and-the-leaves
-- video
+  - lofi
+  - motion-graphics
+  - music-video
+  - release
+  - sound
+  - the-color-and-the-leaves
+  - video
 language: eng
 ---
 

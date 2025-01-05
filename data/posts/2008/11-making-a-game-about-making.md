@@ -4,19 +4,17 @@ title: Making a game about making
 date: 6
 hour: 16
 categories:
-- my-games
-- projects
+  - my-games
+  - projects
 tags:
-- campodecolor
-- creativity
-- final-years-project
-- flash
-- graphic-design
-- interactive
-- university
-- video-game
-- web
-- web-20
+  - campodecolor
+  - final-years-project
+  - flash
+  - graphic-design
+  - interactive
+  - university
+  - video-game
+  - web
 language: eng
 ---
 
