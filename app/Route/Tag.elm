@@ -1,5 +1,6 @@
 module Route.Tag exposing (ActionData, Data, Model, Msg, route)
 
+import AppUrl exposing (AppUrl)
 import BackendTask exposing (BackendTask)
 import Custom.Element as Ui
 import Custom.List as List
@@ -11,12 +12,14 @@ import Element as Ui
 import FatalError exposing (FatalError)
 import Head
 import List.Extra as List
+import Pages.PageUrl exposing (PageUrl)
 import PagesMsg exposing (PagesMsg)
 import Result.Extra as Result
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
 import Style
+import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.Column exposing (Spacing(..))
@@ -42,17 +45,15 @@ route =
 init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
 init app shared =
     let
-        queryTags =
+        query : Dict String (List String)
+        query =
             app.url
                 |> Maybe.map .query
-                |> Maybe.andThen (Dict.get "t")
-                |> Maybe.withDefault []
-                |> List.map Tag.fromSlug
-                |> List.filter Result.isOk
-                |> Result.combine
-                |> Result.withDefault []
+                |> Maybe.withDefault Dict.empty
     in
-    ( { queryTags = queryTags }, Effect.none )
+    ( { queryTags = queryTags query }
+    , Effect.none
+    )
 
 
 
@@ -89,8 +90,8 @@ type alias Model =
     }
 
 
-type alias Msg =
-    ()
+type Msg
+    = OnClick String
 
 
 update :
@@ -100,7 +101,34 @@ update :
     -> Model
     -> ( Model, Effect Msg )
 update app shared msg model =
-    ( model, Effect.none )
+    case msg of
+        OnClick urlString ->
+            let
+                urlMaybe : Maybe AppUrl
+                urlMaybe =
+                    -- Plain paths don't get parsed, so we need to add something on the front.
+                    Url.fromString ("http://x.x" ++ urlString)
+                        |> Maybe.map AppUrl.fromUrl
+            in
+            case urlMaybe of
+                Just url ->
+                    ( { model | queryTags = queryTags url.queryParameters }
+                    , Effect.none
+                    )
+
+                Nothing ->
+                    ( model, Effect.none )
+
+
+queryTags : Dict String (List String) -> List Tag
+queryTags query =
+    query
+        |> Dict.get "t"
+        |> Maybe.withDefault []
+        |> List.map Tag.fromSlug
+        |> List.filter Result.isOk
+        |> Result.combine
+        |> Result.withDefault []
 
 
 
@@ -193,7 +221,7 @@ view app shared model =
                 Ui.none
 
         tagsColumn =
-            Tag.listView Nothing model.queryTags app.sharedData.posts subTags
+            Tag.listView (Just OnClick) model.queryTags app.sharedData.posts subTags
                 |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
 
         content =

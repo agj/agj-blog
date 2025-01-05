@@ -36,6 +36,7 @@
             "jasonliang-dev/elm-heroicons": "2.3.0",
             "jluckyiv/elm-utc-date-strings": "1.0.0",
             "justinmimbs/date": "4.1.0",
+            "lydell/elm-app-url": "1.0.4",
             "mdgriffith/elm-codegen": "5.2.0",
             "mdgriffith/elm-ui": "1.1.8",
             "miniBill/elm-codec": "2.2.0",
