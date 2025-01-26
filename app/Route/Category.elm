@@ -5,6 +5,7 @@ import Data.Category as Category
 import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html exposing (Html)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
@@ -74,9 +75,11 @@ view :
     -> View (PagesMsg Msg)
 view app shared =
     let
+        titleEls : List (Html msg)
         titleEls =
-            [ Ui.text "Categories" ]
+            [ Html.text "Categories" ]
 
+        subtitle : Html msg
         subtitle =
             [ Ui.text "Back to "
             , [ Ui.text "the index" ]
@@ -84,9 +87,12 @@ view app shared =
             , Ui.text "."
             ]
                 |> View.Paragraph.view
+                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
+        content : Html Msg
         content =
             Category.viewList
+                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
     in
     { title = title
     , body =

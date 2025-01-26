@@ -12,8 +12,10 @@ import Effect exposing (Effect)
 import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html exposing (Html)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
+import Sand
 import Shared
 import Site
 import UrlPath exposing (UrlPath)
@@ -198,6 +200,7 @@ view app shared model =
             else
                 [ Ui.text "No tags." ]
 
+        postInfo : Html Msg
         postInfo =
             ([ Ui.text ("Posted {date}, on " |> String.replace "{date}" date)
              , View.Inline.setLink Nothing "/" [ Ui.text "agj's blog" ]
@@ -207,21 +210,23 @@ view app shared model =
                 ++ tagsTextEls
             )
                 |> View.Paragraph.view
+                |> Ui.layout []
 
+        contentEl : Html Msg
         contentEl =
             [ app.data.markdown
                 |> Doc.Markdown.parse
                     { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
                 |> Doc.ElmUi.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
-            , View.CodeBlock.styles |> Ui.html
+            , View.CodeBlock.styles
             ]
-                |> Ui.column []
+                |> Sand.div []
     in
     { title = title app
     , body =
         View.PageBody.fromContent contentEl
             |> View.PageBody.withTitleAndSubtitle
-                [ Ui.text app.data.frontmatter.title ]
+                [ Html.text app.data.frontmatter.title ]
                 postInfo
             |> View.PageBody.view
     }

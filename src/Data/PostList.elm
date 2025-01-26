@@ -5,6 +5,7 @@ import Data.Category as Category exposing (Category)
 import Data.Date as Date
 import Data.Post as Post
 import Element as Ui
+import Html exposing (Html)
 import List.Extra as List
 import View.Column exposing (Spacing(..))
 import View.Heading
@@ -13,7 +14,7 @@ import View.List
 import View.Paragraph
 
 
-view : List Post.GlobMatchFrontmatter -> Ui.Element msg
+view : List Post.GlobMatchFrontmatter -> Html msg
 view posts =
     let
         padNumber : Int -> String
@@ -64,12 +65,13 @@ view posts =
 -- INTERNAL
 
 
-viewGistYear : ( String, List ( Int, List Post.GlobMatchFrontmatter ) ) -> Ui.Element msg
+viewGistYear : ( String, List ( Int, List Post.GlobMatchFrontmatter ) ) -> Html msg
 viewGistYear ( year, gistMonths ) =
     let
         heading =
             [ Ui.text year ]
                 |> View.Heading.view 2
+                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
         months =
             gistMonths
@@ -79,21 +81,25 @@ viewGistYear ( year, gistMonths ) =
         |> View.Column.setSpaced MSpacing
 
 
-viewGistMonth : ( Int, List Post.GlobMatchFrontmatter ) -> Ui.Element msg
+viewGistMonth : ( Int, List Post.GlobMatchFrontmatter ) -> Html msg
 viewGistMonth ( month, gists ) =
     let
         monthName =
             Date.monthNumberToFullName month
 
+        heading : Html msg
         heading =
             [ Ui.text monthName ]
                 |> View.Heading.view 3
+                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
+        gistsList : Html msg
         gistsList =
             gists
                 |> List.map (viewGist >> List.singleton)
                 |> View.List.fromItems
                 |> View.List.view
+                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
     in
     [ heading, gistsList ]
         |> View.Column.setSpaced MSpacing

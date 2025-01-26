@@ -12,17 +12,19 @@ module Sand exposing
     , justifyContentCenter
     , maxWidth
     , none
+    , ol
     , padding
     , paddingBottom
     , paddingLeft
     , paddingRight
     , paddingTop
     , textSizeToString
+    , ul
     , width
     )
 
 import Color exposing (Color)
-import Html exposing (Attribute, Html)
+import Html exposing (Html)
 import Html.Attributes
 
 
@@ -68,6 +70,26 @@ div attrs =
         )
 
 
+ol : List (Html.Attribute msg) -> List (Html msg) -> Html msg
+ol attrs =
+    Html.ol
+        ([ Html.Attributes.style "display" "flex"
+         , Html.Attributes.style "flex-direction" "column"
+         ]
+            ++ attrs
+        )
+
+
+ul : List (Html.Attribute msg) -> List (Html msg) -> Html msg
+ul attrs =
+    Html.ul
+        ([ Html.Attributes.style "display" "flex"
+         , Html.Attributes.style "flex-direction" "column"
+         ]
+            ++ attrs
+        )
+
+
 gridCols : { cols : GridCols, gap : Length } -> List (Html msg) -> Html msg
 gridCols config els =
     let
@@ -75,8 +97,8 @@ gridCols config els =
         className =
             "grid-cols-temp"
 
-        mediaQuery { maxWidth, gridLengths } =
-            (if maxWidth > 0 then
+        mediaQuery { maxWidth_, gridLengths } =
+            (if maxWidth_ > 0 then
                 """
                 @media (max-width: {maxWidth}) {
                     .{className} {
@@ -92,7 +114,7 @@ gridCols config els =
                 }
                 """
             )
-                |> String.replace "{maxWidth}" (String.fromInt maxWidth ++ "px")
+                |> String.replace "{maxWidth}" (String.fromInt maxWidth_ ++ "px")
                 |> String.replace "{className}" className
                 |> String.replace "{cols}" (gridLengthsToString gridLengths)
 
@@ -100,13 +122,13 @@ gridCols config els =
         styles =
             case config.cols of
                 GridCols gridLengths ->
-                    mediaQuery { maxWidth = 0, gridLengths = gridLengths }
+                    mediaQuery { maxWidth_ = 0, gridLengths = gridLengths }
 
                 ResponsiveGridCols defs ->
                     defs
                         |> List.map
-                            (\( maxWidth, gridLengths ) ->
-                                mediaQuery { maxWidth = maxWidth, gridLengths = gridLengths }
+                            (\( maxWidth_, gridLengths ) ->
+                                mediaQuery { maxWidth_ = maxWidth_, gridLengths = gridLengths }
                             )
                         |> String.join ""
 

@@ -6,6 +6,7 @@ import Data.PostList
 import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html exposing (Html)
 import List.Extra as List
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -96,11 +97,13 @@ view app shared =
             app.sharedData.posts
                 |> List.filter (.frontmatter >> .categories >> List.member category)
 
+        titleEls : List (Html Msg)
         titleEls =
             [ Ui.text "Category: "
             , [ Ui.text (Category.getName category) ]
                 |> View.Inline.setItalic
             ]
+                |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
 
         backToIndexEls =
             [ Ui.text "Back to "
@@ -109,12 +112,14 @@ view app shared =
             , Ui.text "."
             ]
 
+        subtitle : Html Msg
         subtitle =
             Category.getDescription category
                 |> Maybe.map
                     (\desc -> Ui.text (desc ++ " ") :: backToIndexEls)
                 |> Maybe.withDefault backToIndexEls
                 |> View.Paragraph.view
+                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
         content =
             Data.PostList.view posts

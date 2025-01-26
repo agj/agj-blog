@@ -5,7 +5,7 @@ import Custom.Element as Ui
 import Doc
 import Element as Ui
 import Element.Background as UiBackground
-import Html
+import Html exposing (Html)
 import Html.Attributes
 import Style
 import View.AudioPlayer
@@ -26,10 +26,11 @@ type alias Config msg =
     }
 
 
-view : Config msg -> List (Doc.Block msg) -> Ui.Element msg
+view : Config msg -> List (Doc.Block msg) -> Html msg
 view config blocks =
     blocks
         |> toElmUiInternal config 1
+        |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
         |> View.Column.setSpaced MSpacing
 
 
@@ -74,11 +75,14 @@ toElmUiInternal config sectionDepth blocks =
             ([ heading
                 |> List.map (viewInline config.onClick)
                 |> View.Heading.view newSectionDepth
+                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
              , content
                 |> toElmUiInternal config newSectionDepth
+                |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
                 |> View.Column.setSpaced MSpacing
              ]
                 |> View.Column.setSpaced MSpacing
+                |> Ui.html
             )
                 :: toElmUiInternal config sectionDepth nextBlocks
 
@@ -220,7 +224,9 @@ viewBlockQuote config sectionDepth blocks =
     in
     blocks
         |> toElmUiInternal config sectionDepth
+        |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
         |> View.Column.setSpaced MSpacing
+        |> Ui.html
         |> toQuote
 
 

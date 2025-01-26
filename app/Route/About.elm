@@ -7,6 +7,7 @@ import Doc.Markdown
 import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html exposing (Html)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Decode
 import PagesMsg exposing (PagesMsg)
@@ -89,9 +90,11 @@ view :
     -> View (PagesMsg Msg)
 view app shared =
     let
+        titleEl : List (Html Msg)
         titleEl =
-            [ Ui.text app.data.title ]
+            [ Html.text app.data.title ]
 
+        subtitle : Html Msg
         subtitle =
             [ Ui.text "Back to "
             , [ Ui.text "the index" ]
@@ -99,7 +102,9 @@ view app shared =
             , Ui.text "."
             ]
                 |> View.Paragraph.view
+                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
+        content : Html Msg
         content =
             app.data.markdown
                 |> Doc.Markdown.parse

@@ -11,11 +11,13 @@ import Effect exposing (Effect)
 import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html exposing (Html)
 import List.Extra as List
 import Pages.PageUrl exposing (PageUrl)
 import PagesMsg exposing (PagesMsg)
 import Result.Extra as Result
 import RouteBuilder exposing (App, StatefulRoute)
+import Sand
 import Shared
 import Site
 import Style
@@ -178,6 +180,7 @@ view app shared model =
                 |> List.unique
                 |> List.filter (List.memberOf model.queryTags >> not)
 
+        tagToEl : Tag -> Ui.Element Msg
         tagToEl tag =
             let
                 url =
@@ -191,6 +194,7 @@ view app shared model =
             [ Ui.text (Tag.getName tag) ]
                 |> View.Inline.setLink (Just OnClick) url
 
+        titleChildren : List (Html Msg)
         titleChildren =
             if List.length model.queryTags > 0 then
                 [ Ui.text "Tags: "
@@ -200,10 +204,12 @@ view app shared model =
                   )
                     |> View.Inline.setItalic
                 ]
+                    |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
 
             else
-                [ Ui.text "Tags" ]
+                [ Html.text "Tags" ]
 
+        subtitle : Html Msg
         subtitle =
             [ Ui.text "Back to "
             , [ Ui.text "the index" ]
@@ -211,27 +217,29 @@ view app shared model =
             , Ui.text "."
             ]
                 |> View.Paragraph.view
+                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
+        postColumn : Html Msg
         postColumn =
             if List.length model.queryTags > 0 then
                 postViews
-                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
 
             else
-                Ui.none
+                Sand.none
 
+        tagsColumn : Html Msg
         tagsColumn =
             Tag.listView (Just OnClick) model.queryTags app.sharedData.posts subTags
-                |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
+                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
         content =
-            [ postColumn
-            , tagsColumn
-            ]
-                |> Ui.row
-                    [ Ui.width Ui.fill
-                    , Ui.varSpacing Style.spacing.size5
-                    ]
+            Sand.gridCols
+                { cols = Sand.GridCols [ Sand.fr 1, Sand.fr 1 ]
+                , gap = Sand.L4
+                }
+                [ postColumn
+                , tagsColumn
+                ]
     in
     { title = title
     , body =

@@ -9,6 +9,11 @@ import Custom.Color as Color
 import Custom.Element as Ui
 import Element as Ui
 import Element.Font as UiFont
+import Html exposing (Html)
+import Html.Attributes
+import Markdown.Block exposing (Block(..))
+import Order.Extra exposing (isOrdered)
+import Sand
 import Style
 import View.Column exposing (Spacing(..))
 import View.Paragraph
@@ -37,46 +42,29 @@ withNumbers startNumber (ViewList config) =
 view : ViewList msg -> Ui.Element msg
 view (ViewList { items, startNumber }) =
     let
-        renderItem : Int -> List (Ui.Element msg) -> Ui.Element msg
-        renderItem index item =
-            case startNumber of
-                Just num ->
-                    viewListItem (String.fromInt (index + num) ++ ".") item
-
-                Nothing ->
-                    viewListItem "▪︎" item
-    in
-    items
-        |> List.indexedMap renderItem
-        |> View.Column.setSpaced SSpacing
-
-
-
--- INTERNAL
-
-
-viewListItem : String -> List (Ui.Element msg) -> Ui.Element msg
-viewListItem bulletText item =
-    let
-        bullet =
-            [ Ui.el [ UiFont.color (Style.color.layout30 |> Color.toElmUi) ]
-                (Ui.text bulletText)
-            ]
-                |> View.Paragraph.view
-                |> Ui.el
-                    [ Ui.alignTop
-                    , UiFont.alignRight
-                    , Ui.varPaddingRight Style.spacing.size2
-                    ]
-
-        addBullet content =
-            Ui.el
-                [ Ui.width Ui.fill
-                , Ui.onLeft bullet
+        renderItem : List (Ui.Element msg) -> Html msg
+        renderItem item =
+            Html.li []
+                [ item
+                    |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
+                    |> View.Column.setSpaced SSpacing
                 ]
-                content
+
+        renderedItems : List (Html msg)
+        renderedItems =
+            items
+                |> List.map renderItem
     in
-    item
-        |> View.Column.setSpaced SSpacing
-        |> addBullet
-        |> Ui.el [ Ui.varPaddingLeft Style.spacing.size4 ]
+    Ui.html <|
+        case startNumber of
+            Just num ->
+                Sand.ol
+                    [ Sand.gap Sand.L3
+                    , Html.Attributes.attribute "start" (String.fromInt num)
+                    ]
+                    renderedItems
+
+            Nothing ->
+                Sand.ul
+                    [ Sand.gap Sand.L3 ]
+                    renderedItems

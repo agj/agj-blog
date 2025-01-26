@@ -12,6 +12,7 @@ import Effect exposing (Effect)
 import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html exposing (Html)
 import List.Extra as List
 import Maybe.Extra as Maybe
 import Pages.PageUrl exposing (PageUrl)
@@ -150,9 +151,9 @@ view :
     -> View (PagesMsg Msg)
 view app shared model =
     let
+        cols : List (Html Msg)
         cols =
             [ Data.PostList.view app.sharedData.posts
-                |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
             , [ [ Ui.text "Categories" ]
                     |> View.Heading.view 2
               , Category.viewList
@@ -160,11 +161,11 @@ view app shared model =
                     |> View.Heading.view 2
               , Tag.listView Nothing [] app.sharedData.posts Tag.all
               ]
-                |> View.Column.setSpaced MSpacing
-                |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
-            ]
                 |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
+                |> View.Column.setSpaced MSpacing
+            ]
 
+        content : Html Msg
         content =
             Sand.gridCols
                 { cols =
@@ -175,12 +176,11 @@ view app shared model =
                 , gap = Sand.L4
                 }
                 cols
-                |> Ui.html
     in
     { title = title
     , body =
         View.PageBody.fromContent content
             |> View.PageBody.withTitle
-                [ Ui.text "agj's blog" ]
+                [ Html.text "agj's blog" ]
             |> View.PageBody.view
     }

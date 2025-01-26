@@ -14,18 +14,18 @@ import View.Heading
 
 type PageBody msg
     = PageBody
-        { content : Ui.Element msg
+        { content : Html msg
         , title : PageTitle msg
         }
 
 
 type PageTitle msg
     = NoPageTitle
-    | PageTitleOnly (List (Ui.Element msg))
-    | PageTitleAndSubtitle (List (Ui.Element msg)) (Ui.Element msg)
+    | PageTitleOnly (List (Html msg))
+    | PageTitleAndSubtitle (List (Html msg)) (Html msg)
 
 
-fromContent : Ui.Element msg -> PageBody msg
+fromContent : Html msg -> PageBody msg
 fromContent content =
     PageBody
         { content = content
@@ -33,12 +33,12 @@ fromContent content =
         }
 
 
-withTitle : List (Ui.Element msg) -> PageBody msg -> PageBody msg
+withTitle : List (Html msg) -> PageBody msg -> PageBody msg
 withTitle titleInlines (PageBody config) =
     PageBody { config | title = PageTitleOnly titleInlines }
 
 
-withTitleAndSubtitle : List (Ui.Element msg) -> Ui.Element msg -> PageBody msg -> PageBody msg
+withTitleAndSubtitle : List (Html msg) -> Html msg -> PageBody msg -> PageBody msg
 withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
     PageBody { config | title = PageTitleAndSubtitle titleInlines subtitleBlock }
 
@@ -53,17 +53,15 @@ view (PageBody config) =
                     Nothing
 
                 PageTitleOnly title_ ->
-                    View.Heading.view 1 title_
+                    View.Heading.view 1 (title_ |> List.map Ui.html)
                         |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
                         |> Just
 
                 PageTitleAndSubtitle title_ subtitle ->
-                    [ View.Heading.view 1 title_
+                    [ View.Heading.view 1 (title_ |> List.map Ui.html)
+                        |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
                     , subtitle
                     ]
-                        |> Ui.column []
-                        |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
-                        |> List.singleton
                         |> View.Column.setSpaced MSpacing
                         |> Just
 
@@ -99,7 +97,7 @@ view (PageBody config) =
                     , Sand.paddingRight Sand.L4
                     , Sand.paddingBottom Sand.L9
                     ]
-                    [ Ui.layout [] config.content ]
+                    [ config.content ]
                 ]
     in
     [ header
