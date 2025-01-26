@@ -3,10 +3,8 @@ module View.Column exposing
     , setSpaced
     )
 
-import Css
-import Custom.Element as Ui
-import Element as Ui
-import Style
+import Html exposing (Html)
+import Sand
 
 
 type Spacing
@@ -15,22 +13,22 @@ type Spacing
     | MSpacing
 
 
-setSpaced : Spacing -> List (Ui.Element msg) -> Ui.Element msg
+setSpaced : Spacing -> List (Html msg) -> Html msg
 setSpaced spacing blocks =
     let
         spacingSize =
             case spacing of
                 NoSpacing ->
-                    Css.Unitless 0
+                    Sand.L0
 
                 SSpacing ->
-                    Style.spacing.size1
+                    Sand.L1
 
                 MSpacing ->
-                    Style.spacing.size4
+                    Sand.L4
     in
-    Ui.column
-        [ Ui.varSpacing spacingSize
-        , Ui.width Ui.fill
+    Sand.div
+        [ Sand.gap spacingSize
+        , Sand.width (Sand.LRaw "100%")
         ]
         blocks

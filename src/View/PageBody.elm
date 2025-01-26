@@ -46,6 +46,7 @@ withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
 view : PageBody msg -> Html (PagesMsg msg)
 view (PageBody config) =
     let
+        title : Maybe (Html msg)
         title =
             case config.title of
                 NoPageTitle ->
@@ -53,12 +54,16 @@ view (PageBody config) =
 
                 PageTitleOnly title_ ->
                     View.Heading.view 1 title_
+                        |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
                         |> Just
 
                 PageTitleAndSubtitle title_ subtitle ->
                     [ View.Heading.view 1 title_
                     , subtitle
                     ]
+                        |> Ui.column []
+                        |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
+                        |> List.singleton
                         |> View.Column.setSpaced MSpacing
                         |> Just
 
@@ -79,26 +84,26 @@ view (PageBody config) =
                             , Sand.alightItemsCenter
                             , Sand.padding Sand.L4
                             ]
-                            [ Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [] title_ ]
+                            [ title_ ]
                         ]
 
+        content : Html msg
         content =
-            Ui.el
-                [ Ui.width (Ui.maximum 900 Ui.fill)
-                , Ui.centerX
-                , Ui.varPaddingTop Style.spacing.size6
-                , Ui.varPaddingLeft Style.spacing.size4
-                , Ui.varPaddingRight Style.spacing.size4
-                , Ui.varPaddingBottom Style.spacing.size9
-                ]
-                config.content
-                |> Ui.el
-                    [ Ui.width Ui.fill
+            Sand.div [ Sand.width (Sand.LRaw "100%") ]
+                [ Sand.div
+                    [ Sand.maxWidth (Sand.LRaw "900px")
+                    , Sand.justifyContentCenter
+                    , Sand.alightItemsCenter
+                    , Sand.paddingTop Sand.L6
+                    , Sand.paddingLeft Sand.L4
+                    , Sand.paddingRight Sand.L4
+                    , Sand.paddingBottom Sand.L9
                     ]
+                    [ Ui.layout [] config.content ]
+                ]
     in
     [ header
     , content
     ]
         |> View.Column.setSpaced NoSpacing
-        |> Ui.map PagesMsg.fromMsg
-        |> Ui.layout []
+        |> Html.map PagesMsg.fromMsg

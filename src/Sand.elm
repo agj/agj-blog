@@ -1,4 +1,25 @@
-module Sand exposing (GridCols(..), GridLength(..), Length(..), alightItemsCenter, backgroundColor, div, fr, gridCols, justifyContentCenter, maxWidth, none, padding, width)
+module Sand exposing
+    ( GridCols(..)
+    , GridLength(..)
+    , Length(..)
+    , TextSize(..)
+    , alightItemsCenter
+    , backgroundColor
+    , div
+    , fr
+    , gap
+    , gridCols
+    , justifyContentCenter
+    , maxWidth
+    , none
+    , padding
+    , paddingBottom
+    , paddingLeft
+    , paddingRight
+    , paddingTop
+    , textSizeToString
+    , width
+    )
 
 import Color exposing (Color)
 import Html exposing (Attribute, Html)
@@ -18,6 +39,13 @@ type Length
     | L9
     | L10
     | LRaw String
+
+
+type TextSize
+    = TextM
+    | TextL
+    | TextXl
+    | TextXxl
 
 
 type GridLength
@@ -133,6 +161,31 @@ padding length =
     Html.Attributes.style "padding" (lengthToString length)
 
 
+paddingTop : Length -> Html.Attribute msg
+paddingTop length =
+    Html.Attributes.style "padding-top" (lengthToString length)
+
+
+paddingRight : Length -> Html.Attribute msg
+paddingRight length =
+    Html.Attributes.style "padding-right" (lengthToString length)
+
+
+paddingBottom : Length -> Html.Attribute msg
+paddingBottom length =
+    Html.Attributes.style "padding-bottom" (lengthToString length)
+
+
+paddingLeft : Length -> Html.Attribute msg
+paddingLeft length =
+    Html.Attributes.style "padding-left" (lengthToString length)
+
+
+gap : Length -> Html.Attribute msg
+gap length =
+    Html.Attributes.style "gap" (lengthToString length)
+
+
 
 -- INTERNAL
 
@@ -182,6 +235,22 @@ lengthToString length =
 
         LRaw rawLength ->
             rawLength
+
+
+textSizeToString : TextSize -> String
+textSizeToString textSize =
+    case textSize of
+        TextM ->
+            "18px"
+
+        TextL ->
+            "24px"
+
+        TextXl ->
+            "35px"
+
+        TextXxl ->
+            "60px"
 
 
 gridLengthToString : GridLength -> String
