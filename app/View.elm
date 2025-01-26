@@ -1,11 +1,11 @@
 module View exposing (View, map)
 
-import Element as Ui
+import Html exposing (Html)
 
 
 type alias View msg =
     { title : String
-    , body : Ui.Element msg
+    , body : Html msg
     }
 
 
@@ -16,5 +16,5 @@ type alias View msg =
 map : (msg1 -> msg2) -> View msg1 -> View msg2
 map fn doc =
     { title = doc.title
-    , body = Ui.map fn doc.body
+    , body = Html.map fn doc.body
     }

@@ -64,7 +64,6 @@ view error model =
                             "Something went wrong.\n" ++ string
                 ]
             ]
-            |> Ui.html
     , title =
         case error of
             NotFound ->
