@@ -31,7 +31,7 @@ view languageBreak =
             Ui.el
                 [ Ui.width Ui.fill
                 , Ui.height (Ui.px 1)
-                , UiBackground.color (Style.color.secondary50 |> Color.toElmUi)
+                , UiBackground.color (Style.color.primary50 |> Color.toElmUi)
                 , Ui.id "language"
                 ]
                 Ui.none

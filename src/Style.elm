@@ -2,7 +2,6 @@ module Style exposing
     ( blockPadding
     , color
     , interline
-    , padding
     , spacing
     , textSize
     , textSizeMonospace
@@ -14,29 +13,26 @@ import Css
 
 
 color =
-    { layout = colorLayout
+    { layout90 = colorLayout |> darken 0.8
+    , layout80 = colorLayout |> darken 0.6
+    , layout70 = colorLayout |> darken 0.4
+    , layout60 = colorLayout |> darken 0.2
     , layout50 = colorLayout
     , layout40 = colorLayout |> lighten 0.2
     , layout30 = colorLayout |> lighten 0.4
     , layout20 = colorLayout |> lighten 0.6
     , layout10 = colorLayout |> lighten 0.8
     , layout05 = colorLayout |> lighten 0.9
+    , primary90 = colorPrimary |> darken 0.8
+    , primary80 = colorPrimary |> darken 0.6
+    , primary70 = colorPrimary |> darken 0.4
+    , primary60 = colorPrimary |> darken 0.2
     , primary50 = colorPrimary
     , primary40 = colorPrimary |> lighten 0.2
     , primary30 = colorPrimary |> lighten 0.4
     , primary20 = colorPrimary |> lighten 0.6
     , primary10 = colorPrimary |> lighten 0.8
     , primary05 = colorPrimary |> lighten 0.9
-    , secondary90 = colorSecondary |> darken 0.8
-    , secondary80 = colorSecondary |> darken 0.6
-    , secondary70 = colorSecondary |> darken 0.4
-    , secondary60 = colorSecondary |> darken 0.2
-    , secondary50 = colorSecondary
-    , secondary40 = colorSecondary |> lighten 0.2
-    , secondary30 = colorSecondary |> lighten 0.4
-    , secondary20 = colorSecondary |> lighten 0.6
-    , secondary10 = colorSecondary |> lighten 0.8
-    , secondary05 = colorSecondary |> lighten 0.9
     , transparent = Color.rgba 1 1 1 0
     , white = Color.rgb 1 1 1
     }
@@ -55,28 +51,8 @@ spacing =
     }
 
 
-padding =
-    { left = 0
-    , right = 0
-    , top = 0
-    , bottom = 0
-    }
-
-
 
 -- TYPOGRAPHY
-
-
-colorLayout =
-    rgb 0x00 0x00 0x00
-
-
-colorPrimary =
-    rgb 0xFF 0x00 0xCC
-
-
-colorSecondary =
-    rgb 0x00 0xEB 0xFF
 
 
 textSize =
@@ -110,9 +86,16 @@ blockPadding textSize_ interline_ =
 -- INTERNAL
 
 
-rgb : Int -> Int -> Int -> Color
-rgb red green blue =
-    Color.rgb255 red green blue
+colorLayout =
+    Color.hsl (25 / 360) 0.0526 0.447
+
+
+colorPrimary =
+    Color.hsl (258 / 360) 0.895 0.663
+
+
+colorSecondary =
+    Color.rgb255 0x00 0xEB 0xFF
 
 
 lighten : Float -> Color -> Color

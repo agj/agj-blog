@@ -1,19 +1,16 @@
 module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
 
-import Browser.Navigation
-import Data.Category as Category exposing (Category)
+import BackendTask exposing (BackendTask)
 import Data.Post as Post
-import Data.Tag as Tag exposing (Tag)
-import DataSource exposing (DataSource)
+import Effect exposing (Effect)
 import Element as Ui
+import FatalError exposing (FatalError)
 import Html exposing (Html)
-import Html.Attributes as Attr
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
-import Path exposing (Path)
-import QueryParams exposing (QueryParams)
 import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
+import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
@@ -24,29 +21,25 @@ template =
     , view = view
     , data = data
     , subscriptions = subscriptions
-    , onPageChange = Just OnPageChange
+    , onPageChange = Nothing
     }
 
 
 init :
-    Maybe Browser.Navigation.Key
-    -> Pages.Flags.Flags
+    Pages.Flags.Flags
     ->
         Maybe
             { path :
-                { path : Path
+                { path : UrlPath
                 , query : Maybe String
                 , fragment : Maybe String
                 }
             , metadata : route
             , pageUrl : Maybe PageUrl
             }
-    -> ( Model, Cmd Msg )
-init navigationKey flags maybePagePath =
-    ( { showMobileMenu = False
-      }
-    , Cmd.none
-    )
+    -> ( Model, Effect Msg )
+init flags maybePagePath =
+    ( {}, Effect.none )
 
 
 
@@ -58,10 +51,11 @@ type alias Data =
     }
 
 
-data : DataSource Data
+data : BackendTask FatalError Data
 data =
-    DataSource.map Data
+    BackendTask.map Data
         Post.listWithFrontmatterDataSource
+        |> BackendTask.allowFatal
 
 
 
@@ -69,12 +63,7 @@ data =
 
 
 type Msg
-    = OnPageChange
-        { path : Path
-        , query : Maybe String
-        , fragment : Maybe String
-        }
-    | SharedMsg SharedMsg
+    = SharedMsg SharedMsg
 
 
 type SharedMsg
@@ -82,25 +71,21 @@ type SharedMsg
 
 
 type alias Model =
-    { showMobileMenu : Bool
-    }
+    {}
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
-        OnPageChange _ ->
-            ( { model | showMobileMenu = False }, Cmd.none )
-
         SharedMsg globalMsg ->
-            ( model, Cmd.none )
+            ( model, Effect.none )
 
 
 
 -- SUBSCRIPTIONS
 
 
-subscriptions : Path -> Model -> Sub Msg
+subscriptions : UrlPath -> Model -> Sub Msg
 subscriptions _ _ =
     Sub.none
 
@@ -112,16 +97,15 @@ subscriptions _ _ =
 view :
     Data
     ->
-        { path : Path
+        { path : UrlPath
         , route : Maybe Route
         }
     -> Model
     -> (Msg -> msg)
     -> View msg
-    -> { body : Html msg, title : String }
+    -> { body : List (Html msg), title : String }
 view sharedData page model toMsg pageView =
     { body =
-        pageView.body
-            |> Ui.layout []
+        [ pageView.body ]
     , title = pageView.title
     }

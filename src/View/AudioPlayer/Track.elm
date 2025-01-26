@@ -95,7 +95,7 @@ view (TrackWithConfig track config) =
             case config.playState of
                 StatePlaying ph ->
                     { fontColor = Style.color.white
-                    , backgroundColor = Style.color.secondary50
+                    , backgroundColor = Style.color.primary50
                     , icon = Icon.pause
                     , newPlayStateOnPress = StatePaused ph
                     , events = []
@@ -103,17 +103,17 @@ view (TrackWithConfig track config) =
 
                 StatePaused ph ->
                     { fontColor = Style.color.white
-                    , backgroundColor = Style.color.secondary50
+                    , backgroundColor = Style.color.primary50
                     , icon = Icon.play
                     , newPlayStateOnPress = StatePlaying ph
                     , events = []
                     }
 
                 StateStopped ->
-                    { fontColor = Style.color.layout50
+                    { fontColor = Style.color.layout90
                     , backgroundColor =
                         if config.hovered then
-                            Style.color.secondary05
+                            Style.color.layout10
 
                         else
                             Style.color.transparent
@@ -229,7 +229,7 @@ seekBarView { currentTime, duration } =
                 , Svg.width (Svg.percent (currentTime / duration * 100))
                 , Html.Attributes.attribute "height"
                     (barWidth |> Css.expressionToString)
-                , Svg.fill (Svg.Paint Style.color.layout)
+                , Svg.fill (Svg.Paint Style.color.layout90)
                 ]
                 []
     in

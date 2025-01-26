@@ -1,40 +1,40 @@
-module Page.About exposing (Data, Model, Msg, page)
+module Route.About exposing (ActionData, Data, Model, Msg, route)
 
-import DataSource exposing (DataSource)
-import DataSource.File
+import BackendTask exposing (BackendTask)
+import BackendTask.File
 import Doc.ElmUi
 import Doc.Markdown
 import Element as Ui
+import FatalError exposing (FatalError)
 import Head
-import OptimizedDecoder as Decode exposing (Decoder)
-import OptimizedDecoder.Pipeline as Decode
-import Page exposing (Page, PageWithState, StaticPayload)
-import Pages.PageUrl exposing (PageUrl)
+import Json.Decode as Decode exposing (Decoder)
+import Json.Decode.Pipeline as Decode
+import PagesMsg exposing (PagesMsg)
+import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import Site
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Inline
 import View.PageBody
-import View.PageHeader
 import View.Paragraph
 
 
-page : Page RouteParams Data
-page =
-    Page.single
+route : StatelessRoute RouteParams Data ActionData
+route =
+    RouteBuilder.single
         { head = head
         , data = data
         }
-        |> Page.buildNoState { view = view }
+        |> RouteBuilder.buildNoState { view = view }
 
 
 type alias Model =
-    ()
+    {}
 
 
 type alias Msg =
-    Never
+    ()
 
 
 type alias RouteParams =
@@ -51,9 +51,14 @@ type alias Data =
     }
 
 
-data : DataSource Data
+type alias ActionData =
+    {}
+
+
+data : BackendTask FatalError Data
 data =
-    DataSource.File.bodyWithFrontmatter decoder "data/about.md"
+    BackendTask.File.bodyWithFrontmatter decoder "data/about.md"
+        |> BackendTask.allowFatal
 
 
 decoder : String -> Decoder Data
@@ -66,43 +71,42 @@ decoder content =
 -- VIEW
 
 
-title : StaticPayload Data {} -> String
-title static =
-    Site.windowTitle static.data.title
+title : App Data ActionData RouteParams -> String
+title app =
+    Site.windowTitle app.data.title
 
 
 head :
-    StaticPayload Data {}
+    App Data ActionData RouteParams
     -> List Head.Tag
-head static =
-    Site.pageMeta (title static)
+head app =
+    Site.pageMeta (title app)
 
 
 view :
-    Maybe PageUrl
+    App Data ActionData RouteParams
     -> Shared.Model
-    -> StaticPayload Data RouteParams
-    -> View Msg
-view maybeUrl sharedModel static =
+    -> View (PagesMsg Msg)
+view app shared =
     let
         titleEl =
-            [ Ui.text static.data.title ]
+            [ Ui.text app.data.title ]
 
         subtitle =
             [ Ui.text "Back to "
             , [ Ui.text "the index" ]
-                |> View.Inline.setLink "/"
+                |> View.Inline.setLink Nothing "/"
             , Ui.text "."
             ]
                 |> View.Paragraph.view
 
         content =
-            static.data.markdown
+            app.data.markdown
                 |> Doc.Markdown.parse
                     { audioPlayer = Nothing }
-                |> Doc.ElmUi.view Nothing
+                |> Doc.ElmUi.view Doc.ElmUi.noConfig
     in
-    { title = title static
+    { title = title app
     , body =
         View.PageBody.fromContent content
             |> View.PageBody.withTitleAndSubtitle titleEl subtitle

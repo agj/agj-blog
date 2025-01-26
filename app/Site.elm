@@ -5,50 +5,33 @@ module Site exposing
     , windowTitle
     )
 
+import BackendTask exposing (BackendTask)
 import Data.Category as Category exposing (Category)
-import Data.Date as Date
 import Data.Tag as Tag exposing (Tag)
-import DataSource
+import Date exposing (Date)
+import DateOrDateTime exposing (DateOrDateTime)
+import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Pages.Manifest as Manifest
 import Pages.Url
-import Route
 import SiteConfig exposing (SiteConfig)
 
 
-type alias Data =
-    ()
-
-
-config : SiteConfig Data
+config : SiteConfig
 config =
-    { data = data
-    , canonicalUrl = "http://agj.cl/blog"
-    , manifest = manifest
+    { canonicalUrl = "https://blog.agj.cl"
     , head = head
     }
 
 
-data : DataSource.DataSource Data
-data =
-    DataSource.succeed ()
+head : BackendTask FatalError (List Head.Tag)
+head =
+    [ Head.metaName "viewport" (Head.raw "width=device-width,initial-scale=1")
+    , Head.sitemapLink "/sitemap.xml"
 
-
-head : Data -> List Head.Tag
-head static =
-    [ Head.metaProperty "twitter:site" (Head.raw "@alegrilli")
+    -- , Head.metaProperty "twitter:site" (Head.raw "@alegrilli")
     ]
-
-
-manifest : Data -> Manifest.Config
-manifest static =
-    Manifest.init
-        { name = name
-        , description = description
-        , startUrl = Route.Index |> Route.toPath
-        , icons = []
-        }
+        |> BackendTask.succeed
 
 
 
@@ -80,9 +63,7 @@ pageMeta title =
 
 postMeta :
     { title : String
-    , year : String
-    , month : Int
-    , date : Int
+    , publishedDate : Date
     , mainCategory : Maybe Category
     , tags : List Tag
     }
@@ -90,7 +71,8 @@ postMeta :
 postMeta info =
     metaBase info.title
         |> Seo.article
-            { publishedTime = Just (Date.formatIso8601Date info.year info.month info.date)
+            -- { publishedTime = Just (Date.formatIso8601Date info.year info.month info.date)
+            { publishedTime = Just (DateOrDateTime.Date info.publishedDate)
             , modifiedTime = Nothing
             , section =
                 info.mainCategory

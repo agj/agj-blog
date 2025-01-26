@@ -7,7 +7,6 @@ categories:
   - interactive
   - musings
 tags:
-  - creativity
   - forum
   - industry
   - video-game

@@ -9,14 +9,15 @@ module Data.Post exposing
     , singleDataSource
     )
 
+import BackendTask exposing (BackendTask)
+import BackendTask.File exposing (FileReadError)
+import BackendTask.Glob as Glob
 import Data.Category as Category exposing (Category)
 import Data.Language as Language exposing (Language)
 import Data.Tag as Tag exposing (Tag)
-import DataSource exposing (DataSource)
-import DataSource.File
-import DataSource.Glob as Glob exposing (Glob)
-import OptimizedDecoder as Decode exposing (Decoder)
-import OptimizedDecoder.Pipeline as Decode
+import FatalError exposing (FatalError)
+import Json.Decode as Decode exposing (Decoder)
+import Json.Decode.Pipeline as Decode
 
 
 type alias Post =
@@ -55,7 +56,7 @@ type alias GlobMatchFrontmatter =
     }
 
 
-listDataSource : DataSource (List GlobMatch)
+listDataSource : BackendTask { fatal : FatalError, recoverable : FileReadError Decode.Error } (List GlobMatch)
 listDataSource =
     Glob.succeed GlobMatch
         |> Glob.match (Glob.literal "data/posts/")
@@ -77,17 +78,17 @@ listDataSource =
                 )
             )
         |> Glob.match (Glob.literal ".md")
-        |> Glob.toDataSource
-        |> DataSource.map (List.filter (.isHidden >> not))
+        |> Glob.toBackendTask
+        |> BackendTask.map (List.filter (.isHidden >> not))
 
 
-listWithFrontmatterDataSource : DataSource (List GlobMatchFrontmatter)
+listWithFrontmatterDataSource : BackendTask { fatal : FatalError, recoverable : FileReadError Decode.Error } (List GlobMatchFrontmatter)
 listWithFrontmatterDataSource =
     let
-        processPost : GlobMatch -> DataSource GlobMatchFrontmatter
+        processPost : GlobMatch -> BackendTask { fatal : FatalError, recoverable : FileReadError Decode.Error } GlobMatchFrontmatter
         processPost match =
-            DataSource.File.onlyFrontmatter frontmatterDecoder match.path
-                |> DataSource.map
+            BackendTask.File.onlyFrontmatter frontmatterDecoder match.path
+                |> BackendTask.map
                     (\frontmatter ->
                         { path = match.path
                         , year = match.year
@@ -99,16 +100,16 @@ listWithFrontmatterDataSource =
                     )
     in
     listDataSource
-        |> DataSource.andThen (List.map processPost >> DataSource.combine)
+        |> BackendTask.andThen (List.map processPost >> BackendTask.combine)
 
 
 singleDataSource :
     String
     -> String
     -> String
-    -> DataSource Post
+    -> BackendTask { fatal : FatalError, recoverable : FileReadError Decode.Error } Post
 singleDataSource year month post =
-    DataSource.File.bodyWithFrontmatter postDecoder
+    BackendTask.File.bodyWithFrontmatter postDecoder
         ("data/posts/{year}/{month}-{post}.md"
             |> String.replace "{year}" year
             |> String.replace "{month}" month

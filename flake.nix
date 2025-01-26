@@ -16,15 +16,12 @@
         pkgs = import nixpkgs {system = system;};
       in {
         devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            elmPackages.elm
-            elmPackages.elm-format
-            elmPackages.elm-optimize-level-2
-            elmPackages.elm-pages
-            elmPackages.elm-review
-            just
-            leiningen
-            nodejs_20
+          buildInputs = [
+            pkgs.just
+            pkgs.leiningen
+            pkgs.nodePackages.prettier
+            pkgs.nodejs-slim_18
+            pkgs.pnpm
           ];
         };
       }

@@ -44,7 +44,7 @@ view (Figure config) =
         content =
             Ui.el
                 [ Ui.varPadding Style.spacing.size2
-                , UiBackground.color (Color.toElmUi Style.color.secondary10)
+                , UiBackground.color (Color.toElmUi Style.color.layout05)
                 , Ui.centerX
                 ]
                 config.content

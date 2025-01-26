@@ -12,11 +12,11 @@ module Data.Tag exposing
     , toUrl
     )
 
-import DataSource exposing (DataSource)
 import Element as Ui
+import Json.Decode as Decode exposing (Decoder)
+import Json.Decode.Extra as Decode
 import List.Extra as List
 import Maybe.Extra as Maybe
-import OptimizedDecoder as Decode exposing (Decoder)
 import View.Inline
 import View.Paragraph
 
@@ -71,19 +71,19 @@ slugsToUrl firstSlug moreSlugs =
         |> String.replace "{slugs}" slugs
 
 
-toLink : List Tag -> Tag -> Ui.Element msg
-toLink tagsToAddTo tag =
+toLink : Maybe (String -> msg) -> List Tag -> Tag -> Ui.Element msg
+toLink onClick tagsToAddTo tag =
     let
         singleLink =
             [ Ui.text (getName tag) ]
-                |> View.Inline.setLink (toUrl tag [])
+                |> View.Inline.setLink onClick (toUrl tag [])
     in
     case tagsToAddTo of
         _ :: _ ->
             let
                 addLink =
                     [ Ui.text "+" ]
-                        |> View.Inline.setLink (toUrl tag tagsToAddTo)
+                        |> View.Inline.setLink onClick (toUrl tag tagsToAddTo)
             in
             [ singleLink
             , Ui.text "["
@@ -97,11 +97,12 @@ toLink tagsToAddTo tag =
 
 
 listView :
-    List Tag
+    Maybe (String -> msg)
+    -> List Tag
     -> List { a | frontmatter : { b | tags : List Tag } }
     -> List Tag
     -> Ui.Element msg
-listView selectedTags posts relatedTags =
+listView onClick selectedTags posts relatedTags =
     let
         tagsCount =
             relatedTags
@@ -130,7 +131,7 @@ listView selectedTags posts relatedTags =
                 |> Maybe.withDefault 0
     in
     tagsCount
-        |> List.map (\( tag, count ) -> toLink selectedTags tag)
+        |> List.map (\( tag, count ) -> toLink onClick selectedTags tag)
         |> List.intersperse (Ui.text ", ")
         |> View.Paragraph.view
 
@@ -183,10 +184,6 @@ all =
     , Tag
         { name = "audio games"
         , slug = "audio-games"
-        }
-    , Tag
-        { name = "bicycle"
-        , slug = "bicycle"
         }
     , Tag
         { name = "blog"
@@ -251,10 +248,6 @@ all =
     , Tag
         { name = "Construct"
         , slug = "construct"
-        }
-    , Tag
-        { name = "creativity"
-        , slug = "creativity"
         }
     , Tag
         { name = "dot-into"
@@ -355,10 +348,6 @@ all =
     , Tag
         { name = "Halloween"
         , slug = "halloween"
-        }
-    , Tag
-        { name = "HD"
-        , slug = "hd"
         }
     , Tag
         { name = "Heart"
@@ -465,10 +454,6 @@ all =
         , slug = "motion-graphics"
         }
     , Tag
-        { name = "moving photo"
-        , slug = "moving-photo"
-        }
-    , Tag
         { name = "Muévete"
         , slug = "muevete"
         }
@@ -547,10 +532,6 @@ all =
     , Tag
         { name = "Santiago en 100 palabras"
         , slug = "santiago-en-100-palabras"
-        }
-    , Tag
-        { name = "Sega"
-        , slug = "sega"
         }
     , Tag
         { name = "Sheets"
@@ -671,10 +652,6 @@ all =
     , Tag
         { name = "web"
         , slug = "web"
-        }
-    , Tag
-        { name = "web 2.0"
-        , slug = "web-20"
         }
     , Tag
         { name = "Weekly concern"

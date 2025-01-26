@@ -1,13 +1,14 @@
-module Page.Category.Category_ exposing (Data, Model, Msg, page)
+module Route.Category.Category_ exposing (ActionData, Data, Model, Msg, route)
 
+import BackendTask exposing (BackendTask)
 import Data.Category as Category exposing (Category)
 import Data.PostList
-import DataSource exposing (DataSource)
 import Element as Ui
+import FatalError exposing (FatalError)
 import Head
 import List.Extra as List
-import Page exposing (Page, StaticPayload)
-import Pages.PageUrl exposing (PageUrl)
+import PagesMsg exposing (PagesMsg)
+import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
 import View exposing (View)
@@ -17,22 +18,22 @@ import View.PageBody
 import View.Paragraph
 
 
-page : Page RouteParams Data
-page =
-    Page.prerender
+route : StatefulRoute RouteParams Data ActionData Model Msg
+route =
+    RouteBuilder.preRender
         { head = head
-        , routes = routes
+        , pages = pages
         , data = data
         }
-        |> Page.buildNoState { view = view }
+        |> RouteBuilder.buildNoState { view = view }
 
 
 type alias Model =
-    ()
+    {}
 
 
 type alias Msg =
-    Never
+    ()
 
 
 
@@ -43,12 +44,12 @@ type alias RouteParams =
     { category : String }
 
 
-routes : DataSource (List RouteParams)
-routes =
+pages : BackendTask FatalError (List RouteParams)
+pages =
     Category.all
         |> List.map Category.getSlug
         |> List.map (\slug -> { category = slug })
-        |> DataSource.succeed
+        |> BackendTask.succeed
 
 
 
@@ -59,41 +60,40 @@ type alias Data =
     Category
 
 
-data : RouteParams -> DataSource Data
+type alias ActionData =
+    {}
+
+
+data : RouteParams -> BackendTask FatalError Data
 data routeParams =
     Category.singleDataSource routeParams.category
+        |> BackendTask.mapError FatalError.fromString
 
 
 
 -- VIEW
 
 
-title : StaticPayload Data RouteParams -> String
-title static =
+title : App Data ActionData RouteParams -> String
+title app =
     "Category: {category}"
-        |> String.replace "{category}" static.routeParams.category
+        |> String.replace "{category}" app.routeParams.category
         |> Site.windowTitle
 
 
-head :
-    StaticPayload Data RouteParams
-    -> List Head.Tag
-head static =
-    Site.pageMeta (title static)
+head : App Data ActionData RouteParams -> List Head.Tag
+head app =
+    Site.pageMeta (title app)
 
 
-view :
-    Maybe PageUrl
-    -> Shared.Model
-    -> StaticPayload Data RouteParams
-    -> View Msg
-view maybeUrl sharedModel static =
+view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
+view app shared =
     let
         category =
-            static.data
+            app.data
 
         posts =
-            static.sharedData.posts
+            app.sharedData.posts
                 |> List.filter (.frontmatter >> .categories >> List.member category)
 
         titleEls =
@@ -105,7 +105,7 @@ view maybeUrl sharedModel static =
         backToIndexEls =
             [ Ui.text "Back to "
             , [ Ui.text "the index" ]
-                |> View.Inline.setLink "/"
+                |> View.Inline.setLink Nothing "/"
             , Ui.text "."
             ]
 
@@ -119,7 +119,7 @@ view maybeUrl sharedModel static =
         content =
             Data.PostList.view posts
     in
-    { title = title static
+    { title = title app
     , body =
         View.PageBody.fromContent content
             |> View.PageBody.withTitleAndSubtitle titleEls subtitle

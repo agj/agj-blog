@@ -1,24 +1,26 @@
-module Page.Tag exposing (Data, Model, Msg, page)
+module Route.Tag exposing (ActionData, Data, Model, Msg, route)
 
-import Browser.Navigation
+import AppUrl exposing (AppUrl)
+import BackendTask exposing (BackendTask)
 import Custom.Element as Ui
 import Custom.List as List
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
-import DataSource exposing (DataSource)
 import Dict exposing (Dict)
+import Effect exposing (Effect)
 import Element as Ui
+import FatalError exposing (FatalError)
 import Head
 import List.Extra as List
-import Page exposing (PageWithState, StaticPayload)
 import Pages.PageUrl exposing (PageUrl)
-import Path exposing (Path)
-import QueryParams exposing (QueryParams)
+import PagesMsg exposing (PagesMsg)
 import Result.Extra as Result
+import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
 import Style
-import Url.Builder exposing (QueryParameter)
+import Url
+import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.Column exposing (Spacing(..))
 import View.Inline
@@ -26,13 +28,13 @@ import View.PageBody
 import View.Paragraph
 
 
-page : PageWithState {} Data Model Msg
-page =
-    Page.single
+route : StatefulRoute RouteParams Data ActionData Model Msg
+route =
+    RouteBuilder.single
         { head = head
         , data = data
         }
-        |> Page.buildWithLocalState
+        |> RouteBuilder.buildWithLocalState
             { init = init
             , update = update
             , subscriptions = subscriptions
@@ -40,21 +42,26 @@ page =
             }
 
 
-init : Maybe PageUrl -> Shared.Model -> StaticPayload Data {} -> ( Model, Cmd Msg )
-init maybePageUrl sharedModel static =
+init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
+init app shared =
     let
-        queryTags =
-            maybePageUrl
-                |> Maybe.andThen .query
-                |> Maybe.map QueryParams.toDict
-                |> Maybe.andThen (Dict.get "t")
-                |> Maybe.withDefault []
-                |> List.map Tag.fromSlug
-                |> List.filter Result.isOk
-                |> Result.combine
-                |> Result.withDefault []
+        query : Dict String (List String)
+        query =
+            app.url
+                |> Maybe.map .query
+                |> Maybe.withDefault Dict.empty
     in
-    ( { queryTags = queryTags }, Cmd.none )
+    ( { queryTags = queryTags query }
+    , Effect.none
+    )
+
+
+
+-- PAGES
+
+
+type alias RouteParams =
+    {}
 
 
 
@@ -62,12 +69,16 @@ init maybePageUrl sharedModel static =
 
 
 type alias Data =
-    ()
+    {}
 
 
-data : DataSource Data
+type alias ActionData =
+    {}
+
+
+data : BackendTask FatalError Data
 data =
-    DataSource.succeed ()
+    BackendTask.succeed {}
 
 
 
@@ -79,28 +90,53 @@ type alias Model =
     }
 
 
-type alias Msg =
-    Never
+type Msg
+    = OnClick String
 
 
 update :
-    PageUrl
-    -> Maybe Browser.Navigation.Key
+    App Data ActionData RouteParams
     -> Shared.Model
-    -> StaticPayload Data {}
     -> Msg
     -> Model
-    -> ( Model, Cmd Msg )
-update pageUrl navKey sharedModel static msg model =
-    ( model, Cmd.none )
+    -> ( Model, Effect Msg )
+update app shared msg model =
+    case msg of
+        OnClick urlString ->
+            let
+                urlMaybe : Maybe AppUrl
+                urlMaybe =
+                    -- Plain paths don't get parsed, so we need to add something on the front.
+                    Url.fromString ("http://x.x" ++ urlString)
+                        |> Maybe.map AppUrl.fromUrl
+            in
+            case urlMaybe of
+                Just url ->
+                    ( { model | queryTags = queryTags url.queryParameters }
+                    , Effect.none
+                    )
+
+                Nothing ->
+                    ( model, Effect.none )
+
+
+queryTags : Dict String (List String) -> List Tag
+queryTags query =
+    query
+        |> Dict.get "t"
+        |> Maybe.withDefault []
+        |> List.map Tag.fromSlug
+        |> List.filter Result.isOk
+        |> Result.combine
+        |> Result.withDefault []
 
 
 
 -- SUBSCRIPTIONS
 
 
-subscriptions : Maybe PageUrl -> {} -> Path -> Model -> Sub Msg
-subscriptions maybePageUrl _ path model =
+subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
+subscriptions routeParams path shared model =
     Sub.none
 
 
@@ -108,28 +144,25 @@ subscriptions maybePageUrl _ path model =
 -- VIEW
 
 
-title : StaticPayload Data {} -> String
-title static =
+title : String
+title =
     Site.windowTitle "Tags"
 
 
-head :
-    StaticPayload Data {}
-    -> List Head.Tag
-head static =
-    Site.pageMeta (title static)
+head : App Data ActionData RouteParams -> List Head.Tag
+head app =
+    Site.pageMeta title
 
 
 view :
-    Maybe PageUrl
+    App Data ActionData RouteParams
     -> Shared.Model
     -> Model
-    -> StaticPayload Data {}
-    -> View Msg
-view maybeUrl sharedModel model static =
+    -> View (PagesMsg Msg)
+view app shared model =
     let
         posts =
-            static.sharedData.posts
+            app.sharedData.posts
                 |> List.filter
                     (\post ->
                         model.queryTags
@@ -156,7 +189,7 @@ view maybeUrl sharedModel model static =
                             Tag.baseUrl
             in
             [ Ui.text (Tag.getName tag) ]
-                |> View.Inline.setLink url
+                |> View.Inline.setLink (Just OnClick) url
 
         titleChildren =
             if List.length model.queryTags > 0 then
@@ -174,7 +207,7 @@ view maybeUrl sharedModel model static =
         subtitle =
             [ Ui.text "Back to "
             , [ Ui.text "the index" ]
-                |> View.Inline.setLink "/"
+                |> View.Inline.setLink Nothing "/"
             , Ui.text "."
             ]
                 |> View.Paragraph.view
@@ -188,7 +221,7 @@ view maybeUrl sharedModel model static =
                 Ui.none
 
         tagsColumn =
-            Tag.listView model.queryTags static.sharedData.posts subTags
+            Tag.listView (Just OnClick) model.queryTags app.sharedData.posts subTags
                 |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
 
         content =
@@ -200,7 +233,7 @@ view maybeUrl sharedModel model static =
                     , Ui.varSpacing Style.spacing.size5
                     ]
     in
-    { title = title static
+    { title = title
     , body =
         View.PageBody.fromContent content
             |> View.PageBody.withTitleAndSubtitle titleChildren subtitle

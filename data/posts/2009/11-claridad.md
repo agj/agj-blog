@@ -4,13 +4,12 @@ title: Claridad
 date: 13
 hour: 22
 categories:
-- videos
+  - videos
 tags:
-- bicycle
-- event
-- exhibition
-- release
-- video
+  - event
+  - exhibition
+  - release
+  - video
 language: eng
 ---
 

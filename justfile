@@ -9,9 +9,13 @@ init:
     nix develop -c "$$SHELL"
 
 # Run development server.
-dev:
-    elm-pages dev
+dev: install
+    pnpm run start
 
 # Build for release.
-build:
-    elm-pages build
+build: install
+    pnpm run build
+
+[private]
+install:
+    pnpm install

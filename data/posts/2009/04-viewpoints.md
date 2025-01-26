@@ -4,16 +4,15 @@ title: Viewpoints
 date: 3
 hour: 2
 categories:
-- my-games
+  - my-games
 tags:
-- competition
-- event
-- flash
-- release
-- sega
-- tigsource
-- video-game
-- viewpoints
+  - competition
+  - event
+  - flash
+  - release
+  - tigsource
+  - video-game
+  - viewpoints
 language: eng
 ---
 

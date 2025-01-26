@@ -4,15 +4,14 @@ title: Volcano
 date: 31
 hour: 1
 categories:
-- videos
+  - videos
 tags:
-- bicycle
-- chile
-- lofi
-- release
-- santiago
-- sound
-- video
+  - chile
+  - lofi
+  - release
+  - santiago
+  - sound
+  - video
 language: eng
 ---
 
