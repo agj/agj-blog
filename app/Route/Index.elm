@@ -158,7 +158,6 @@ view app shared model =
                     |> View.Heading.view 2
                     |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
               , Category.viewList
-                    |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
               , [ Html.text "Tags" ]
                     |> View.Heading.view 2
                     |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []

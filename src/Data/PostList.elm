@@ -99,26 +99,28 @@ viewGistMonth ( month, gists ) =
                 |> List.map (viewGist >> List.singleton)
                 |> View.List.fromItems
                 |> View.List.view
-                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
     in
     [ heading, gistsList ]
         |> View.Column.setSpaced MSpacing
 
 
-viewGist : Post.GlobMatchFrontmatter -> Ui.Element msg
+viewGist : Post.GlobMatchFrontmatter -> Html msg
 viewGist gist =
     let
+        postDate : Html msg
         postDate =
             "{date} – "
                 |> String.replace "{date}" (gist.frontmatter.date |> String.fromInt |> String.padLeft 2 '0')
                 |> Html.text
 
+        postLink : Html msg
         postLink =
             [ Html.text gist.frontmatter.title ]
                 |> View.Inline.setLink Nothing (Post.globMatchFrontmatterToUrl gist)
                 |> List.singleton
                 |> Html.b []
 
+        postCategoryEls : List (Html msg)
         postCategoryEls =
             gist.frontmatter.categories
                 |> List.map
@@ -127,11 +129,13 @@ viewGist gist =
                             |> View.Inline.setLink Nothing (Category.toUrl category)
                     )
 
+        postCategories : List (Html msg)
         postCategories =
             Html.text " ("
                 :: (postCategoryEls |> List.intersperse (Html.text ", "))
                 ++ [ Html.text ")" ]
     in
-    [ postDate, postLink ]
-        ++ postCategories
-        |> View.Paragraph.view
+    Html.div []
+        ([ postDate, postLink ]
+            ++ postCategories
+        )

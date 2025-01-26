@@ -88,15 +88,10 @@ view app shared =
             ]
                 |> View.Paragraph.view
                 |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
-
-        content : Html Msg
-        content =
-            Category.viewList
-                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
     in
     { title = title
     , body =
-        View.PageBody.fromContent content
+        View.PageBody.fromContent Category.viewList
             |> View.PageBody.withTitleAndSubtitle titleEls subtitle
             |> View.PageBody.view
     }

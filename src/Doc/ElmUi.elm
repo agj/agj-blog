@@ -57,11 +57,15 @@ toElmUiInternal config sectionDepth blocks =
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.OrderedList firstItem restItems) :: nextBlocks ->
-            viewList config sectionDepth (Just 1) firstItem restItems
+            (viewList config sectionDepth (Just 1) firstItem restItems
+                |> Ui.html
+            )
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.UnorderedList firstItem restItems) :: nextBlocks ->
-            viewList config sectionDepth Nothing firstItem restItems
+            (viewList config sectionDepth Nothing firstItem restItems
+                |> Ui.html
+            )
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.BlockQuote blockQuoteBlocks) :: nextBlocks ->
@@ -168,7 +172,7 @@ viewStyledText { text, styles } =
         [ Html.text text ]
 
 
-viewList : Config msg -> Int -> Maybe Int -> Doc.ListItem msg -> List (Doc.ListItem msg) -> Ui.Element msg
+viewList : Config msg -> Int -> Maybe Int -> Doc.ListItem msg -> List (Doc.ListItem msg) -> Html msg
 viewList config sectionDepth maybeStartNumber firstItem restItems =
     let
         list =
@@ -178,6 +182,7 @@ viewList config sectionDepth maybeStartNumber firstItem restItems =
                         (firstBlock :: restBlocks)
                             |> toElmUiInternal config sectionDepth
                     )
+                |> List.map (List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []))
                 |> View.List.fromItems
     in
     case maybeStartNumber of

@@ -3,12 +3,6 @@ module View.Inline exposing
     , setLink
     )
 
-import Custom.Color as Color
-import Custom.Element as Ui
-import Element as Ui
-import Element.Background as UiBackground
-import Element.Events as UiEvents
-import Element.Font as UiFont
 import Html exposing (Html)
 import Html.Attributes
 import Html.Events
