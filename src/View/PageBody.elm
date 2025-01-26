@@ -67,7 +67,7 @@ view (PageBody config) =
 
                 Just title_ ->
                     Ui.el
-                        [ Ui.width (Ui.px 900)
+                        [ Ui.width (Ui.maximum 900 Ui.fill)
                         , Ui.centerX
                         , Ui.varPadding Style.spacing.size4
                         ]
@@ -79,7 +79,7 @@ view (PageBody config) =
 
         content =
             Ui.el
-                [ Ui.width (Ui.px 900)
+                [ Ui.width (Ui.maximum 900 Ui.fill)
                 , Ui.centerX
                 , Ui.varPaddingTop Style.spacing.size6
                 , Ui.varPaddingLeft Style.spacing.size4
