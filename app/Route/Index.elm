@@ -167,7 +167,7 @@ view app shared model =
 
         content =
             Sand.gridCols
-                { cols = Sand.ResponsiveGridCols [ ( 0, [ Sand.GlFraction 2, Sand.GlFraction 1 ] ), ( 500, [ Sand.GlFraction 1 ] ) ]
+                { cols = Sand.ResponsiveGridCols [ ( 0, [ Sand.GlFraction 2, Sand.GlFraction 1 ] ), ( 650, [ Sand.GlFraction 1 ] ) ]
                 , gap = Sand.L4
                 }
                 cols
