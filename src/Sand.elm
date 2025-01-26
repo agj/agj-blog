@@ -1,6 +1,7 @@
-module Sand exposing (GridCols(..), GridLength(..), Length(..), fr, gridCols)
+module Sand exposing (GridCols(..), GridLength(..), Length(..), alightItemsCenter, backgroundColor, div, fr, gridCols, justifyContentCenter, maxWidth, none, padding, width)
 
-import Html exposing (Html)
+import Color exposing (Color)
+import Html exposing (Attribute, Html)
 import Html.Attributes
 
 
@@ -16,6 +17,7 @@ type Length
     | L8
     | L9
     | L10
+    | LRaw String
 
 
 type GridLength
@@ -26,6 +28,16 @@ type GridLength
 type GridCols
     = GridCols (List GridLength)
     | ResponsiveGridCols (List ( Int, List GridLength ))
+
+
+div : List (Html.Attribute msg) -> List (Html msg) -> Html msg
+div attrs =
+    Html.div
+        ([ Html.Attributes.style "display" "flex"
+         , Html.Attributes.style "flex-direction" "column"
+         ]
+            ++ attrs
+        )
 
 
 gridCols : { cols : GridCols, gap : Length } -> List (Html msg) -> Html msg
@@ -86,6 +98,41 @@ fr value =
     GlFraction value
 
 
+none : Html msg
+none =
+    Html.text ""
+
+
+width : Length -> Html.Attribute msg
+width length =
+    Html.Attributes.style "width" (lengthToString length)
+
+
+maxWidth : Length -> Html.Attribute msg
+maxWidth length =
+    Html.Attributes.style "max-width" (lengthToString length)
+
+
+backgroundColor : Color -> Html.Attribute msg
+backgroundColor color_ =
+    Html.Attributes.style "background-color" (Color.toCssString color_)
+
+
+justifyContentCenter : Html.Attribute msg
+justifyContentCenter =
+    Html.Attributes.style "justify-content" "center"
+
+
+alightItemsCenter : Html.Attribute msg
+alightItemsCenter =
+    Html.Attributes.style "align-items" "center"
+
+
+padding : Length -> Html.Attribute msg
+padding length =
+    Html.Attributes.style "padding" (lengthToString length)
+
+
 
 -- INTERNAL
 
@@ -132,6 +179,9 @@ lengthToString length =
 
         L10 ->
             "512px"
+
+        LRaw rawLength ->
+            rawLength
 
 
 gridLengthToString : GridLength -> String

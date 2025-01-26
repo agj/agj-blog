@@ -6,6 +6,7 @@ import Element as Ui
 import Element.Background as UiBackground
 import Html exposing (Html)
 import PagesMsg exposing (PagesMsg)
+import Sand
 import Style
 import View.Column exposing (Spacing(..))
 import View.Heading
@@ -61,22 +62,25 @@ view (PageBody config) =
                         |> View.Column.setSpaced MSpacing
                         |> Just
 
+        header : Html msg
         header =
             case title of
                 Nothing ->
-                    Ui.none
+                    Sand.none
 
                 Just title_ ->
-                    Ui.el
-                        [ Ui.width (Ui.maximum 900 Ui.fill)
-                        , Ui.centerX
-                        , Ui.varPadding Style.spacing.size4
+                    Sand.div
+                        [ Sand.width (Sand.LRaw "100%")
+                        , Sand.backgroundColor Style.color.layout05
                         ]
-                        title_
-                        |> Ui.el
-                            [ Ui.width Ui.fill
-                            , UiBackground.color (Style.color.layout05 |> Color.toElmUi)
+                        [ Sand.div
+                            [ Sand.maxWidth (Sand.LRaw "900px")
+                            , Sand.justifyContentCenter
+                            , Sand.alightItemsCenter
+                            , Sand.padding Sand.L4
                             ]
+                            [ Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [] title_ ]
+                        ]
 
         content =
             Ui.el
