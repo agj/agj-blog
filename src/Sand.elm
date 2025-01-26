@@ -1,4 +1,4 @@
-module Sand exposing (GridCols(..), GridLength(..), Length(..), gridCols)
+module Sand exposing (GridCols(..), GridLength(..), Length(..), fr, gridCols)
 
 import Html exposing (Html)
 import Html.Attributes
@@ -79,6 +79,11 @@ gridCols config els =
         , Html.Attributes.class className
         ]
         (styleEl :: els)
+
+
+fr : Int -> GridLength
+fr value =
+    GlFraction value
 
 
 
