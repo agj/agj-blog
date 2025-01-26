@@ -180,7 +180,7 @@ view app shared model =
                 |> List.unique
                 |> List.filter (List.memberOf model.queryTags >> not)
 
-        tagToEl : Tag -> Ui.Element Msg
+        tagToEl : Tag -> Html Msg
         tagToEl tag =
             let
                 url =
@@ -191,30 +191,29 @@ view app shared model =
                         [] ->
                             Tag.baseUrl
             in
-            [ Ui.text (Tag.getName tag) ]
+            [ Html.text (Tag.getName tag) ]
                 |> View.Inline.setLink (Just OnClick) url
 
         titleChildren : List (Html Msg)
         titleChildren =
             if List.length model.queryTags > 0 then
-                [ Ui.text "Tags: "
+                [ Html.text "Tags: "
                 , (model.queryTags
                     |> List.map tagToEl
-                    |> List.intersperse (Ui.text ", ")
+                    |> List.intersperse (Html.text ", ")
                   )
-                    |> View.Inline.setItalic
+                    |> Html.i []
                 ]
-                    |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
 
             else
                 [ Html.text "Tags" ]
 
         subtitle : Html Msg
         subtitle =
-            [ Ui.text "Back to "
-            , [ Ui.text "the index" ]
+            [ Html.text "Back to "
+            , [ Html.text "the index" ]
                 |> View.Inline.setLink Nothing "/"
-            , Ui.text "."
+            , Html.text "."
             ]
                 |> View.Paragraph.view
                 |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
@@ -230,7 +229,6 @@ view app shared model =
         tagsColumn : Html Msg
         tagsColumn =
             Tag.listView (Just OnClick) model.queryTags app.sharedData.posts subTags
-                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
         content =
             Sand.gridCols

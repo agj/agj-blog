@@ -7,6 +7,7 @@ import Element as Ui
 import Element.Background as UiBackground
 import Html exposing (Html)
 import Html.Attributes
+import Sand
 import Style
 import View.AudioPlayer
 import View.CodeBlock
@@ -125,7 +126,7 @@ toElmUiInternal config sectionDepth blocks =
                         :: toElmUiInternal config sectionDepth nextBlocks
 
                 Nothing ->
-                    ([ Ui.text "[AudioPlayer state not provided]" ]
+                    ([ Html.text "[AudioPlayer state not provided]" ]
                         |> View.Paragraph.view
                     )
                         :: toElmUiInternal config sectionDepth nextBlocks
@@ -134,7 +135,7 @@ toElmUiInternal config sectionDepth blocks =
             []
 
 
-viewInline : Maybe (String -> msg) -> Doc.Inline -> Ui.Element msg
+viewInline : Maybe (String -> msg) -> Doc.Inline -> Html msg
 viewInline onClickMaybe inline =
     case inline of
         Doc.Text styledText ->
@@ -144,32 +145,27 @@ viewInline onClickMaybe inline =
             View.Inline.setCode text
 
         Doc.Link { target, inlines } ->
-            inlines
+            (inlines
                 |> List.map viewStyledText
+            )
                 |> View.Inline.setLink onClickMaybe target
 
         Doc.LineBreak ->
             [ Html.text "\n" ]
                 |> Html.span [ Html.Attributes.style "white-space" "pre-wrap" ]
-                |> Ui.html
 
 
-viewStyledText : Doc.StyledText -> Ui.Element msg
+viewStyledText : Doc.StyledText -> Html msg
 viewStyledText { text, styles } =
-    [ Ui.text text ]
-        |> setStyleIf styles.bold View.Inline.setBold
-        |> setStyleIf styles.italic View.Inline.setItalic
-        |> setStyleIf styles.strikethrough View.Inline.setStrikethrough
-        |> Ui.paragraph []
-
-
-setStyleIf : Bool -> (List (Ui.Element msg) -> Ui.Element msg) -> List (Ui.Element msg) -> List (Ui.Element msg)
-setStyleIf cond styler children =
-    if cond then
-        [ styler children ]
-
-    else
-        children
+    Html.span
+        [ Sand.setAttributeIf styles.bold
+            (Html.Attributes.style "font-weight" "bold")
+        , Sand.setAttributeIf styles.italic
+            (Html.Attributes.style "font-style" "italic")
+        , Sand.setAttributeIf styles.strikethrough
+            (Html.Attributes.style "text-decoration" "line-through")
+        ]
+        [ Html.text text ]
 
 
 viewList : Config msg -> Int -> Maybe Int -> Doc.ListItem msg -> List (Doc.ListItem msg) -> Ui.Element msg

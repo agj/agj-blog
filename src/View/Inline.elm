@@ -1,9 +1,6 @@
 module View.Inline exposing
-    ( setBold
-    , setCode
-    , setItalic
+    ( setCode
     , setLink
-    , setStrikethrough
     )
 
 import Custom.Color as Color
@@ -12,70 +9,43 @@ import Element as Ui
 import Element.Background as UiBackground
 import Element.Events as UiEvents
 import Element.Font as UiFont
-import Html
+import Html exposing (Html)
 import Html.Attributes
+import Html.Events
+import Sand
 import Style
 
 
-setBold : List (Ui.Element msg) -> Ui.Element msg
-setBold children =
-    setStyle UiFont.bold children
-
-
-setItalic : List (Ui.Element msg) -> Ui.Element msg
-setItalic children =
-    setStyle UiFont.italic children
-
-
-setStrikethrough : List (Ui.Element msg) -> Ui.Element msg
-setStrikethrough children =
-    setStyle UiFont.strike children
-
-
-setCode : String -> Ui.Element msg
+setCode : String -> Html msg
 setCode code =
     [ Html.text code ]
         |> Html.span
-            [ Html.Attributes.style "white-space" "pre-wrap" ]
-        |> Ui.html
-        |> Ui.el
-            [ UiFont.family [ UiFont.monospace ]
-            , Ui.varFontSize Style.textSizeMonospace.m
-            , UiBackground.color (Style.color.layout05 |> Color.toElmUi)
-            , Ui.varPaddingLeft Style.spacing.size1
-            , Ui.varPaddingRight Style.spacing.size1
-            , Ui.varBorderRounded Style.spacing.size1
+            [ Html.Attributes.style "white-space" "pre-wrap"
+            , Html.Attributes.style "font-family" "monospace"
+            , Sand.fontSize Sand.TextM
+            , Sand.backgroundColor Style.color.layout05
+            , Sand.paddingLeft Sand.L2
+            , Sand.paddingRight Sand.L2
+            , Sand.borderRadius Sand.L2
             , Html.Attributes.style "box-decoration-break" "clone"
-                |> Ui.htmlAttribute
             ]
 
 
-setLink : Maybe (String -> msg) -> String -> List (Ui.Element msg) -> Ui.Element msg
+setLink : Maybe (String -> msg) -> String -> List (Html msg) -> Html msg
 setLink onClickMaybe destination children =
     let
         attrs =
             case onClickMaybe of
                 Just onClick ->
-                    [ UiEvents.onClick (onClick destination) ]
+                    [ Html.Events.onClick (onClick destination) ]
 
                 Nothing ->
                     []
     in
-    Ui.link attrs
-        { url = destination
-        , label =
-            Ui.paragraph
-                [ UiFont.underline
-                , UiFont.color (Style.color.primary70 |> Color.toElmUi)
-                ]
-                children
-        }
-
-
-
--- INTERNAL
-
-
-setStyle : Ui.Attribute msg -> List (Ui.Element msg) -> Ui.Element msg
-setStyle attr children =
-    Ui.paragraph [ attr ] children
+    Html.a
+        (attrs
+            ++ [ Html.Attributes.href destination
+               , Sand.fontColor Style.color.primary70
+               ]
+        )
+        children

@@ -5,10 +5,12 @@ import Custom.Element as Ui
 import Element as Ui
 import Element.Font as UiFont
 import Element.Region as UiRegion
+import Html exposing (Html)
+import Html.Attributes
 import Style
 
 
-view : Int -> List (Ui.Element msg) -> Ui.Element msg
+view : Int -> List (Html msg) -> Ui.Element msg
 view level content =
     let
         normalizedLevel =
@@ -58,17 +60,18 @@ view level content =
                     , Just (String.repeat (normalizedLevel - 4) "▹")
                     )
 
+        prependEl : Html msg
         prependEl =
             case prepend of
                 Just text ->
-                    Ui.text (text ++ " ")
-                        |> Ui.el
-                            [ Ui.hiddenToScreenReaders
-                            , Ui.nonSelectable
-                            ]
+                    Html.span
+                        [ Html.Attributes.attribute "aria-hidden" "true"
+                        , Html.Attributes.style "user-select" "none"
+                        ]
+                        [ Html.text (text ++ " ") ]
 
                 Nothing ->
-                    Ui.text ""
+                    Html.text ""
     in
     Ui.paragraph (baseStyles ++ styles)
-        (prependEl :: content)
+        (prependEl :: content |> List.map Ui.html)

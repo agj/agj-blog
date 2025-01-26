@@ -5,7 +5,10 @@ module Sand exposing
     , TextSize(..)
     , alightItemsCenter
     , backgroundColor
+    , borderRadius
     , div
+    , fontColor
+    , fontSize
     , fr
     , gap
     , gridCols
@@ -18,7 +21,7 @@ module Sand exposing
     , paddingLeft
     , paddingRight
     , paddingTop
-    , textSizeToString
+    , setAttributeIf
     , ul
     , width
     )
@@ -26,6 +29,7 @@ module Sand exposing
 import Color exposing (Color)
 import Html exposing (Html)
 import Html.Attributes
+import TypedSvg.Types exposing (FontSizeAdjust(..))
 
 
 type Length
@@ -206,6 +210,30 @@ paddingLeft length =
 gap : Length -> Html.Attribute msg
 gap length =
     Html.Attributes.style "gap" (lengthToString length)
+
+
+fontSize : TextSize -> Html.Attribute msg
+fontSize textSize =
+    Html.Attributes.style "font-size" (textSizeToString textSize)
+
+
+fontColor : Color -> Html.Attribute msg
+fontColor color =
+    Html.Attributes.style "color" (Color.toCssString color)
+
+
+borderRadius : Length -> Html.Attribute msg
+borderRadius length =
+    Html.Attributes.style "border-radius" (lengthToString length)
+
+
+setAttributeIf : Bool -> Html.Attribute msg -> Html.Attribute msg
+setAttributeIf cond attribute =
+    if cond then
+        attribute
+
+    else
+        Html.Attributes.classList []
 
 
 

@@ -69,7 +69,7 @@ viewGistYear : ( String, List ( Int, List Post.GlobMatchFrontmatter ) ) -> Html 
 viewGistYear ( year, gistMonths ) =
     let
         heading =
-            [ Ui.text year ]
+            [ Html.text year ]
                 |> View.Heading.view 2
                 |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
@@ -89,7 +89,7 @@ viewGistMonth ( month, gists ) =
 
         heading : Html msg
         heading =
-            [ Ui.text monthName ]
+            [ Html.text monthName ]
                 |> View.Heading.view 3
                 |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
@@ -111,26 +111,26 @@ viewGist gist =
         postDate =
             "{date} – "
                 |> String.replace "{date}" (gist.frontmatter.date |> String.fromInt |> String.padLeft 2 '0')
-                |> Ui.text
+                |> Html.text
 
         postLink =
-            [ Ui.text gist.frontmatter.title ]
+            [ Html.text gist.frontmatter.title ]
                 |> View.Inline.setLink Nothing (Post.globMatchFrontmatterToUrl gist)
                 |> List.singleton
-                |> View.Inline.setBold
+                |> Html.b []
 
         postCategoryEls =
             gist.frontmatter.categories
                 |> List.map
                     (\category ->
-                        [ Ui.text (Category.getName category) ]
+                        [ Html.text (Category.getName category) ]
                             |> View.Inline.setLink Nothing (Category.toUrl category)
                     )
 
         postCategories =
-            Ui.text " ("
-                :: (postCategoryEls |> List.intersperse (Ui.text ", "))
-                ++ [ Ui.text ")" ]
+            Html.text " ("
+                :: (postCategoryEls |> List.intersperse (Html.text ", "))
+                ++ [ Html.text ")" ]
     in
     [ postDate, postLink ]
         ++ postCategories

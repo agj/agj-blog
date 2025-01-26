@@ -16,6 +16,7 @@ module Data.Category exposing
 
 import BackendTask exposing (BackendTask)
 import Element as Ui
+import Html exposing (Html)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
 import List.Extra as List
@@ -84,9 +85,9 @@ viewList =
         |> View.List.view
 
 
-toLink : Category -> Ui.Element msg
+toLink : Category -> Html msg
 toLink category =
-    [ Ui.text (getName category) ]
+    [ Html.text (getName category) ]
         |> View.Inline.setLink Nothing (toUrl category)
 
 

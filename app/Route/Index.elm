@@ -154,14 +154,16 @@ view app shared model =
         cols : List (Html Msg)
         cols =
             [ Data.PostList.view app.sharedData.posts
-            , [ [ Ui.text "Categories" ]
+            , [ [ Html.text "Categories" ]
                     |> View.Heading.view 2
+                    |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
               , Category.viewList
-              , [ Ui.text "Tags" ]
+                    |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
+              , [ Html.text "Tags" ]
                     |> View.Heading.view 2
+                    |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
               , Tag.listView Nothing [] app.sharedData.posts Tag.all
               ]
-                |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
                 |> View.Column.setSpaced MSpacing
             ]
 

@@ -10,6 +10,7 @@ import Custom.Element as Ui
 import Element as Ui
 import Element.Background as UiBackground
 import Element.Font as UiFont
+import Html
 import Style
 import View.Paragraph
 
@@ -58,7 +59,7 @@ view (Figure config) =
                         , UiFont.color (Color.toElmUi Style.color.layout20)
                         , Ui.varPaddingTop Style.spacing.size3
                         ]
-                        (View.Paragraph.view [ Ui.text text ])
+                        (View.Paragraph.view [ Html.text text ])
                     ]
 
                 Nothing ->

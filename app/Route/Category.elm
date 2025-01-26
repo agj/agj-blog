@@ -81,10 +81,10 @@ view app shared =
 
         subtitle : Html msg
         subtitle =
-            [ Ui.text "Back to "
-            , [ Ui.text "the index" ]
+            [ Html.text "Back to "
+            , [ Html.text "the index" ]
                 |> View.Inline.setLink Nothing "/"
-            , Ui.text "."
+            , Html.text "."
             ]
                 |> View.Paragraph.view
                 |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []

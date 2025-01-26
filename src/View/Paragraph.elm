@@ -2,10 +2,11 @@ module View.Paragraph exposing (view)
 
 import Custom.Element as Ui
 import Element as Ui
+import Html exposing (Html)
 import Style
 
 
-view : List (Ui.Element msg) -> Ui.Element msg
+view : List (Html msg) -> Ui.Element msg
 view inlines =
     Ui.paragraph
         [ Ui.varFontSize Style.textSize.m
@@ -14,4 +15,4 @@ view inlines =
         , Ui.varPaddingBottom (Style.blockPadding Style.textSize.m Style.interline.m)
         , Ui.width Ui.fill
         ]
-        inlines
+        (inlines |> List.map Ui.html)

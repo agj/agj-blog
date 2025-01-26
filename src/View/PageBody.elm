@@ -53,12 +53,12 @@ view (PageBody config) =
                     Nothing
 
                 PageTitleOnly title_ ->
-                    View.Heading.view 1 (title_ |> List.map Ui.html)
+                    View.Heading.view 1 title_
                         |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
                         |> Just
 
                 PageTitleAndSubtitle title_ subtitle ->
-                    [ View.Heading.view 1 (title_ |> List.map Ui.html)
+                    [ View.Heading.view 1 title_
                         |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
                     , subtitle
                     ]

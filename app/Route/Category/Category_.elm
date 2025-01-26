@@ -99,24 +99,22 @@ view app shared =
 
         titleEls : List (Html Msg)
         titleEls =
-            [ Ui.text "Category: "
-            , [ Ui.text (Category.getName category) ]
-                |> View.Inline.setItalic
+            [ Html.text "Category: "
+            , Html.i [] [ Html.text (Category.getName category) ]
             ]
-                |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
 
         backToIndexEls =
-            [ Ui.text "Back to "
-            , [ Ui.text "the index" ]
+            [ Html.text "Back to "
+            , [ Html.text "the index" ]
                 |> View.Inline.setLink Nothing "/"
-            , Ui.text "."
+            , Html.text "."
             ]
 
         subtitle : Html Msg
         subtitle =
             Category.getDescription category
                 |> Maybe.map
-                    (\desc -> Ui.text (desc ++ " ") :: backToIndexEls)
+                    (\desc -> Html.text (desc ++ " ") :: backToIndexEls)
                 |> Maybe.withDefault backToIndexEls
                 |> View.Paragraph.view
                 |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
