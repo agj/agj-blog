@@ -12,7 +12,13 @@ module Sand exposing
     , fr
     , gap
     , gridCols
+    , height
     , justifyContentCenter
+    , margin
+    , marginBottom
+    , marginLeft
+    , marginRight
+    , marginTop
     , maxWidth
     , none
     , ol
@@ -162,6 +168,11 @@ width length =
     Html.Attributes.style "width" (lengthToString length)
 
 
+height : Length -> Html.Attribute msg
+height length =
+    Html.Attributes.style "height" (lengthToString length)
+
+
 maxWidth : Length -> Html.Attribute msg
 maxWidth length =
     Html.Attributes.style "max-width" (lengthToString length)
@@ -205,6 +216,31 @@ paddingBottom length =
 paddingLeft : Length -> Html.Attribute msg
 paddingLeft length =
     Html.Attributes.style "padding-left" (lengthToString length)
+
+
+margin : Length -> Html.Attribute msg
+margin length =
+    Html.Attributes.style "margin" (lengthToString length)
+
+
+marginTop : Length -> Html.Attribute msg
+marginTop length =
+    Html.Attributes.style "margin-top" (lengthToString length)
+
+
+marginRight : Length -> Html.Attribute msg
+marginRight length =
+    Html.Attributes.style "margin-right" (lengthToString length)
+
+
+marginBottom : Length -> Html.Attribute msg
+marginBottom length =
+    Html.Attributes.style "margin-bottom" (lengthToString length)
+
+
+marginLeft : Length -> Html.Attribute msg
+marginLeft length =
+    Html.Attributes.style "margin-left" (lengthToString length)
 
 
 gap : Length -> Html.Attribute msg

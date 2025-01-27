@@ -94,7 +94,7 @@ toElmUiInternal config sectionDepth blocks =
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         Doc.Separation :: nextBlocks ->
-            viewSeparation
+            Ui.html viewSeparation
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.Image { url, description, caption }) :: nextBlocks ->
@@ -218,24 +218,14 @@ viewBlockQuote config sectionDepth blocks =
         |> toQuote
 
 
-viewSeparation : Ui.Element msg
+viewSeparation : Html msg
 viewSeparation =
-    let
-        blank =
-            Ui.el [ Ui.width (Ui.fillPortion 1) ]
-                Ui.none
-
-        rule =
-            Ui.el
-                [ Ui.width (Ui.fillPortion 1)
-                , Ui.height (Ui.px 1)
-                , UiBackground.color (Style.color.primary50 |> Color.toElmUi)
-                ]
-                Ui.none
-    in
-    Ui.row
-        [ Ui.width Ui.fill
-        , Ui.varPaddingTop Style.spacing.size5
-        , Ui.varPaddingBottom Style.spacing.size5
+    Html.hr
+        [ Sand.marginTop Sand.L6
+        , Sand.marginBottom Sand.L6
+        , Sand.height Sand.L1
+        , Sand.width (Sand.LRaw "100%")
+        , Sand.backgroundColor Style.color.primary50
+        , Html.Attributes.style "border" "none"
         ]
-        [ blank, rule, blank ]
+        []
