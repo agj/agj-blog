@@ -1,7 +1,5 @@
 module View.PageBody exposing (..)
 
-import Custom.Element as Ui
-import Element as Ui
 import Html exposing (Html)
 import PagesMsg exposing (PagesMsg)
 import Sand
