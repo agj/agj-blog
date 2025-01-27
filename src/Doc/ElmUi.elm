@@ -1,5 +1,6 @@
 module Doc.ElmUi exposing (Config, noConfig, view)
 
+import Color
 import Custom.Color as Color
 import Custom.Element as Ui
 import Doc
@@ -69,7 +70,9 @@ toElmUiInternal config sectionDepth blocks =
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.BlockQuote blockQuoteBlocks) :: nextBlocks ->
-            viewBlockQuote config sectionDepth blockQuoteBlocks
+            (viewBlockQuote config sectionDepth blockQuoteBlocks
+                |> Ui.html
+            )
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.Section { heading, content }) :: nextBlocks ->
@@ -195,38 +198,23 @@ viewList config sectionDepth maybeStartNumber firstItem restItems =
                 |> View.List.view
 
 
-viewBlockQuote : Config msg -> Int -> List (Doc.Block msg) -> Ui.Element msg
+viewBlockQuote : Config msg -> Int -> List (Doc.Block msg) -> Html msg
 viewBlockQuote config sectionDepth blocks =
     let
-        line =
-            Ui.el
-                [ Ui.varWidth Style.spacing.size1
-                , Ui.height Ui.fill
-                , UiBackground.color (Style.color.primary10 |> Color.toElmUi)
-                , Ui.alignLeft
-                ]
-                Ui.none
-
-        side =
-            Ui.el
-                [ Ui.varWidth Style.spacing.size6
-                , Ui.varWidthFix
-                , Ui.height Ui.fill
-                ]
-                line
-
-        toQuote : Ui.Element msg -> Ui.Element msg
+        toQuote : Html msg -> Html msg
         toQuote content =
-            Ui.row [ Ui.width Ui.fill ]
-                [ side
-                , content
+            Sand.div
+                [ Html.Attributes.style "border-left-width" "4px"
+                , Html.Attributes.style "border-left-style" "solid"
+                , Html.Attributes.style "border-left-color" (Color.toCssString Style.color.primary10)
+                , Sand.paddingLeft Sand.L5
                 ]
+                [ content ]
     in
     blocks
         |> toElmUiInternal config sectionDepth
         |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
         |> View.Column.setSpaced MSpacing
-        |> Ui.html
         |> toQuote
 
 
