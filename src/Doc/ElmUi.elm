@@ -80,7 +80,6 @@ toElmUiInternal config sectionDepth blocks =
             ([ heading
                 |> List.map (viewInline config.onClick)
                 |> View.Heading.view newSectionDepth
-                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
              , content
                 |> toElmUiInternal config newSectionDepth
                 |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])

@@ -1,9 +1,7 @@
 module View.PageBody exposing (..)
 
-import Custom.Color as Color
 import Custom.Element as Ui
 import Element as Ui
-import Element.Background as UiBackground
 import Html exposing (Html)
 import PagesMsg exposing (PagesMsg)
 import Sand
@@ -54,12 +52,10 @@ view (PageBody config) =
 
                 PageTitleOnly title_ ->
                     View.Heading.view 1 title_
-                        |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
                         |> Just
 
                 PageTitleAndSubtitle title_ subtitle ->
                     [ View.Heading.view 1 title_
-                        |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
                     , subtitle
                     ]
                         |> View.Column.setSpaced MSpacing

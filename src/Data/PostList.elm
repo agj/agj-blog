@@ -11,7 +11,6 @@ import View.Column exposing (Spacing(..))
 import View.Heading
 import View.Inline
 import View.List
-import View.Paragraph
 
 
 view : List Post.GlobMatchFrontmatter -> Html msg
@@ -71,7 +70,6 @@ viewGistYear ( year, gistMonths ) =
         heading =
             [ Html.text year ]
                 |> View.Heading.view 2
-                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
         months =
             gistMonths
@@ -91,7 +89,6 @@ viewGistMonth ( month, gists ) =
         heading =
             [ Html.text monthName ]
                 |> View.Heading.view 3
-                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
         gistsList : Html msg
         gistsList =

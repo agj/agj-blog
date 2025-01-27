@@ -1,64 +1,66 @@
 module View.Heading exposing (..)
 
-import Css
-import Custom.Element as Ui
-import Element as Ui
-import Element.Font as UiFont
-import Element.Region as UiRegion
 import Html exposing (Html)
 import Html.Attributes
-import Style
+import Sand
 
 
-view : Int -> List (Html msg) -> Ui.Element msg
+view : Int -> List (Html msg) -> Html msg
 view level content =
     let
+        normalizedLevel : Int
         normalizedLevel =
             max 1 level
 
-        basePadding =
-            Style.blockPadding fontSize Style.interline.s
-
+        baseStyles : List (Html.Attribute msg)
         baseStyles =
-            [ Ui.varFontSize fontSize
-            , Ui.varLineSpacing (Style.interline.s fontSize)
-            , Ui.width Ui.fill
-            , UiRegion.heading normalizedLevel
-            , Ui.varPaddingTop (Css.CalcAddition basePadding Style.spacing.size5)
-            , Ui.varPaddingBottom basePadding
+            [ Sand.fontSize fontSize
+            , Html.Attributes.style "line-height" "1.4"
+            , Sand.width (Sand.LRaw "100%")
+            , Sand.paddingTop Sand.L4
             ]
 
-        ( fontSize, styles, prepend ) =
+        { el, fontSize, styles, prepend } =
             case normalizedLevel of
                 1 ->
-                    ( Style.textSize.xxl
-                    , [ UiFont.bold ]
-                    , Nothing
-                    )
+                    { el = Html.h1
+                    , fontSize = Sand.TextXxl
+                    , styles = [ Html.Attributes.style "font-weight" "bold" ]
+                    , prepend = Nothing
+                    }
 
                 2 ->
-                    ( Style.textSize.xl
-                    , [ UiFont.bold ]
-                    , Nothing
-                    )
+                    { el = Html.h2
+                    , fontSize = Sand.TextXl
+                    , styles = [ Html.Attributes.style "font-weight" "bold" ]
+                    , prepend = Nothing
+                    }
 
                 3 ->
-                    ( Style.textSize.l
-                    , [ UiFont.bold ]
-                    , Nothing
-                    )
+                    { el = Html.h3
+                    , fontSize = Sand.TextL
+                    , styles = [ Html.Attributes.style "font-weight" "bold" ]
+                    , prepend = Nothing
+                    }
 
                 4 ->
-                    ( Style.textSize.l
-                    , []
-                    , Nothing
-                    )
+                    { el = Html.h4
+                    , fontSize = Sand.TextL
+                    , styles = []
+                    , prepend = Nothing
+                    }
 
                 _ ->
-                    ( Style.textSize.l
-                    , []
-                    , Just (String.repeat (normalizedLevel - 4) "▹")
-                    )
+                    { el =
+                        if normalizedLevel == 5 then
+                            Html.h5
+
+                        else
+                            Html.h6
+                    , fontSize = Sand.TextL
+                    , styles = []
+                    , prepend = Just (String.repeat (normalizedLevel - 4) "▹")
+                    }
 
         prependEl : Html msg
         prependEl =
@@ -73,5 +75,5 @@ view level content =
                 Nothing ->
                     Html.text ""
     in
-    Ui.paragraph (baseStyles ++ styles)
-        (prependEl :: content |> List.map Ui.html)
+    el (baseStyles ++ styles)
+        (prependEl :: content)

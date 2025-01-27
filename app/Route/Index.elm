@@ -21,7 +21,6 @@ import RouteBuilder exposing (App, StatefulRoute)
 import Sand
 import Shared
 import Site
-import Style
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.Column exposing (Spacing(..))
@@ -156,11 +155,9 @@ view app shared model =
             [ Data.PostList.view app.sharedData.posts
             , [ [ Html.text "Categories" ]
                     |> View.Heading.view 2
-                    |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
               , Category.viewList
               , [ Html.text "Tags" ]
                     |> View.Heading.view 2
-                    |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
               , Tag.listView Nothing [] app.sharedData.posts Tag.all
               ]
                 |> View.Column.setSpaced MSpacing
