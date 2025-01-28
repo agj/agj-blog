@@ -127,7 +127,7 @@ toElmUiInternal config sectionDepth blocks =
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.LanguageBreak languageBreak) :: nextBlocks ->
-            View.LanguageBreak.view languageBreak
+            (View.LanguageBreak.view languageBreak |> Ui.html)
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.AudioPlayer audioPlayer) :: nextBlocks ->

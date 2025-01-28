@@ -9,7 +9,10 @@ import Custom.Element as Ui
 import Data.Language as Language exposing (Language)
 import Element as Ui
 import Element.Background as UiBackground
+import Html exposing (Html)
+import Html.Attributes
 import Markdown.Html
+import Sand
 import Style
 
 
@@ -24,24 +27,18 @@ renderer =
         |> Markdown.Html.withOptionalAttribute "language"
 
 
-view : LanguageBreak -> Ui.Element msg
+view : LanguageBreak -> Html msg
 view languageBreak =
-    let
-        rule =
-            Ui.el
-                [ Ui.width Ui.fill
-                , Ui.height (Ui.px 1)
-                , UiBackground.color (Style.color.primary50 |> Color.toElmUi)
-                , Ui.id "language"
-                ]
-                Ui.none
-    in
-    Ui.el
-        [ Ui.width Ui.fill
-        , Ui.varPaddingTop Style.spacing.size5
-        , Ui.varPaddingBottom Style.spacing.size5
+    Html.hr
+        [ Html.Attributes.id "language"
+        , Sand.marginTop Sand.L6
+        , Sand.marginBottom Sand.L6
+        , Sand.height Sand.L1
+        , Sand.width (Sand.LRaw "100%")
+        , Sand.backgroundColor Style.color.primary50
+        , Html.Attributes.style "border" "none"
         ]
-        rule
+        []
 
 
 
