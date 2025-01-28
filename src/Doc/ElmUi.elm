@@ -122,6 +122,7 @@ toElmUiInternal config sectionDepth blocks =
         (Doc.CodeBlock { code, language }) :: nextBlocks ->
             (View.CodeBlock.fromBody language code
                 |> View.CodeBlock.view
+                |> Ui.html
             )
                 :: toElmUiInternal config sectionDepth nextBlocks
 
