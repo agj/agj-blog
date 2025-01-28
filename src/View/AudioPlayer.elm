@@ -115,7 +115,7 @@ view (State state) (AudioPlayerWithConfig audioPlayer config) =
                         (State { state | playState = TrackSelected track newPlayState })
             }
     in
-    Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [] <|
+    Ui.layout [] <|
         case config.tracks of
             firstTrack :: _ ->
                 Ui.column
