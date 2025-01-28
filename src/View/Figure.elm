@@ -5,15 +5,9 @@ module View.Figure exposing
     , view
     )
 
-import Custom.Color as Color
-import Custom.Element as Ui
-import Element as Ui
-import Element.Background as UiBackground
-import Element.Font as UiFont
 import Html exposing (Html)
 import Sand
 import Style
-import View.Paragraph
 
 
 type Figure msg

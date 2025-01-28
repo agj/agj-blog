@@ -9,7 +9,6 @@ import Date
 import Doc.ElmUi
 import Doc.Markdown
 import Effect exposing (Effect)
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
@@ -215,7 +214,6 @@ view app shared model =
                 ++ tagsTextEls
             )
                 |> View.Paragraph.view
-                |> Ui.layout []
 
         contentEl : Html Msg
         contentEl =

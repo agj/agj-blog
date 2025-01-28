@@ -1,18 +1,17 @@
 module View.Paragraph exposing (view)
 
-import Custom.Element as Ui
-import Element as Ui
 import Html exposing (Html)
-import Style
+import Html.Attributes
+import Sand
 
 
-view : List (Html msg) -> Ui.Element msg
+view : List (Html msg) -> Html msg
 view inlines =
-    Ui.paragraph
-        [ Ui.varFontSize Style.textSize.m
-        , Ui.varLineSpacing (Style.interline.m Style.textSize.m)
-        , Ui.varPaddingTop (Style.blockPadding Style.textSize.m Style.interline.m)
-        , Ui.varPaddingBottom (Style.blockPadding Style.textSize.m Style.interline.m)
-        , Ui.width Ui.fill
+    Html.p
+        [ Sand.fontSize Sand.TextM
+        , Html.Attributes.style "line-height" "1.6"
+        , Sand.paddingTop (Sand.LRaw "0.5em")
+        , Sand.paddingBottom (Sand.LRaw "0.5em")
+        , Sand.width (Sand.LRaw "100%")
         ]
-        (inlines |> List.map Ui.html)
+        inlines

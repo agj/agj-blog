@@ -2,9 +2,7 @@ module Doc.ElmUi exposing (Config, noConfig, view)
 
 import Color
 import Custom.Color as Color
-import Custom.Element as Ui
 import Doc
-import Element as Ui
 import Html exposing (Html)
 import Html.Attributes
 import Sand
@@ -31,7 +29,6 @@ view : Config msg -> List (Doc.Block msg) -> Html msg
 view config blocks =
     blocks
         |> toElmUiInternal config 1
-        |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
         |> View.Column.setSpaced MSpacing
 
 
@@ -46,7 +43,7 @@ noConfig =
 -- INTERNAL
 
 
-toElmUiInternal : Config msg -> Int -> List (Doc.Block msg) -> List (Ui.Element msg)
+toElmUiInternal : Config msg -> Int -> List (Doc.Block msg) -> List (Html msg)
 toElmUiInternal config sectionDepth blocks =
     case blocks of
         (Doc.Paragraph inlines) :: nextBlocks ->
@@ -57,21 +54,15 @@ toElmUiInternal config sectionDepth blocks =
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.OrderedList firstItem restItems) :: nextBlocks ->
-            (viewList config sectionDepth (Just 1) firstItem restItems
-                |> Ui.html
-            )
+            viewList config sectionDepth (Just 1) firstItem restItems
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.UnorderedList firstItem restItems) :: nextBlocks ->
-            (viewList config sectionDepth Nothing firstItem restItems
-                |> Ui.html
-            )
+            viewList config sectionDepth Nothing firstItem restItems
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.BlockQuote blockQuoteBlocks) :: nextBlocks ->
-            (viewBlockQuote config sectionDepth blockQuoteBlocks
-                |> Ui.html
-            )
+            viewBlockQuote config sectionDepth blockQuoteBlocks
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.Section { heading, content }) :: nextBlocks ->
@@ -84,16 +75,14 @@ toElmUiInternal config sectionDepth blocks =
                 |> View.Heading.view newSectionDepth
              , content
                 |> toElmUiInternal config newSectionDepth
-                |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
                 |> View.Column.setSpaced MSpacing
              ]
                 |> View.Column.setSpaced MSpacing
-                |> Ui.html
             )
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         Doc.Separation :: nextBlocks ->
-            Ui.html viewSeparation
+            viewSeparation
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.Image { url, description, caption }) :: nextBlocks ->
@@ -111,23 +100,21 @@ toElmUiInternal config sectionDepth blocks =
                         identity
                    )
                 |> View.Figure.view
-                |> Ui.html
             )
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.Video videoEmbed) :: nextBlocks ->
-            (View.VideoEmbed.view videoEmbed |> Ui.html)
+            View.VideoEmbed.view videoEmbed
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.CodeBlock { code, language }) :: nextBlocks ->
             (View.CodeBlock.fromBody language code
                 |> View.CodeBlock.view
-                |> Ui.html
             )
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.LanguageBreak languageBreak) :: nextBlocks ->
-            (View.LanguageBreak.view languageBreak |> Ui.html)
+            View.LanguageBreak.view languageBreak
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.AudioPlayer audioPlayer) :: nextBlocks ->
@@ -189,7 +176,6 @@ viewList config sectionDepth maybeStartNumber firstItem restItems =
                         (firstBlock :: restBlocks)
                             |> toElmUiInternal config sectionDepth
                     )
-                |> List.map (List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []))
                 |> View.List.fromItems
     in
     case maybeStartNumber of
@@ -218,7 +204,6 @@ viewBlockQuote config sectionDepth blocks =
     in
     blocks
         |> toElmUiInternal config sectionDepth
-        |> List.map (Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [])
         |> View.Column.setSpaced MSpacing
         |> toQuote
 

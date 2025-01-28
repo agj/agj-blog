@@ -15,7 +15,6 @@ module Data.Category exposing
     )
 
 import BackendTask exposing (BackendTask)
-import Element as Ui
 import Html exposing (Html)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
@@ -24,7 +23,6 @@ import Sand
 import View.Column exposing (Spacing(..))
 import View.Inline
 import View.List
-import View.Paragraph
 
 
 type Category

@@ -2,7 +2,6 @@ module Route.Category exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
 import Data.Category as Category
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
@@ -87,7 +86,6 @@ view app shared =
             , Html.text "."
             ]
                 |> View.Paragraph.view
-                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
     in
     { title = title
     , body =

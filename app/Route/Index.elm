@@ -2,14 +2,12 @@ module Route.Index exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
 import Browser.Navigation
-import Custom.Element as Ui
 import Data.Category as Category exposing (Category, NestedCategory)
 import Data.Post as Post
 import Data.PostList
 import Data.Tag as Tag
 import Dict exposing (Dict)
 import Effect exposing (Effect)
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)

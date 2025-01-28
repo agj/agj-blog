@@ -4,7 +4,6 @@ import BackendTask exposing (BackendTask)
 import BackendTask.File
 import Doc.ElmUi
 import Doc.Markdown
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
@@ -102,7 +101,6 @@ view app shared =
             , Html.text "."
             ]
                 |> View.Paragraph.view
-                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
         content : Html Msg
         content =

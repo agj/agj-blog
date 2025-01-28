@@ -2,13 +2,11 @@ module Route.Tag exposing (ActionData, Data, Model, Msg, route)
 
 import AppUrl exposing (AppUrl)
 import BackendTask exposing (BackendTask)
-import Custom.Element as Ui
 import Custom.List as List
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
 import Dict exposing (Dict)
 import Effect exposing (Effect)
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
@@ -20,7 +18,6 @@ import RouteBuilder exposing (App, StatefulRoute)
 import Sand
 import Shared
 import Site
-import Style
 import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
@@ -216,7 +213,6 @@ view app shared model =
             , Html.text "."
             ]
                 |> View.Paragraph.view
-                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
         postColumn : Html Msg
         postColumn =

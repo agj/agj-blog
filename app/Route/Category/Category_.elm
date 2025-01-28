@@ -3,7 +3,6 @@ module Route.Category.Category_ exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Data.Category as Category exposing (Category)
 import Data.PostList
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
@@ -117,7 +116,6 @@ view app shared =
                     (\desc -> Html.text (desc ++ " ") :: backToIndexEls)
                 |> Maybe.withDefault backToIndexEls
                 |> View.Paragraph.view
-                |> Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } []
 
         content =
             Data.PostList.view posts

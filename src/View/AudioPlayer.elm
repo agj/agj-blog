@@ -17,6 +17,7 @@ import Element.Background as UiBackground
 import Element.Border as UiBorder
 import Element.Font as UiFont
 import Element.Input as UiInput
+import Html exposing (Html)
 import Icon
 import Markdown.Html
 import Style
@@ -72,7 +73,7 @@ withConfig config audioPlayer =
     AudioPlayerWithConfig audioPlayer config
 
 
-view : State -> AudioPlayerWithConfig msg -> Ui.Element msg
+view : State -> AudioPlayerWithConfig msg -> Html msg
 view (State state) (AudioPlayerWithConfig audioPlayer config) =
     let
         onHoverChanged : Track -> Bool -> msg
@@ -114,25 +115,26 @@ view (State state) (AudioPlayerWithConfig audioPlayer config) =
                         (State { state | playState = TrackSelected track newPlayState })
             }
     in
-    case config.tracks of
-        firstTrack :: _ ->
-            Ui.column
-                [ UiBackground.color (Style.color.layout05 |> Color.toElmUi)
-                ]
-                [ titleView state config firstTrack audioPlayer.title
-                , Ui.column []
-                    (config.tracks
-                        |> List.map
-                            (\track ->
-                                track
-                                    |> Track.withConfig (trackConfig track)
-                                    |> Track.view
-                            )
-                    )
-                ]
+    Ui.layoutWith { options = [ Ui.noStaticStyleSheet ] } [] <|
+        case config.tracks of
+            firstTrack :: _ ->
+                Ui.column
+                    [ UiBackground.color (Style.color.layout05 |> Color.toElmUi)
+                    ]
+                    [ titleView state config firstTrack audioPlayer.title
+                    , Ui.column []
+                        (config.tracks
+                            |> List.map
+                                (\track ->
+                                    track
+                                        |> Track.withConfig (trackConfig track)
+                                        |> Track.view
+                                )
+                        )
+                    ]
 
-        [] ->
-            Ui.none
+            [] ->
+                Ui.none
 
 
 

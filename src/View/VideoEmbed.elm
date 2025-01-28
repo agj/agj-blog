@@ -5,7 +5,6 @@ module View.VideoEmbed exposing
     , view
     )
 
-import Element as Ui
 import Html exposing (Html)
 import Html.Attributes
 import Markdown.Html

@@ -4,11 +4,7 @@ module View.LanguageBreak exposing
     , view
     )
 
-import Custom.Color as Color
-import Custom.Element as Ui
 import Data.Language as Language exposing (Language)
-import Element as Ui
-import Element.Background as UiBackground
 import Html exposing (Html)
 import Html.Attributes
 import Markdown.Html
