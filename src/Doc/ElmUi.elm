@@ -5,7 +5,6 @@ import Custom.Color as Color
 import Custom.Element as Ui
 import Doc
 import Element as Ui
-import Element.Background as UiBackground
 import Html exposing (Html)
 import Html.Attributes
 import Sand
@@ -98,9 +97,13 @@ toElmUiInternal config sectionDepth blocks =
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.Image { url, description, caption }) :: nextBlocks ->
-            (Ui.image [ Ui.centerX ]
-                { src = url, description = description }
-                |> View.Figure.figure
+            (View.Figure.figure
+                (Html.img
+                    [ Html.Attributes.src url
+                    , Html.Attributes.alt description
+                    ]
+                    []
+                )
                 |> (if caption /= "" then
                         View.Figure.setCaption caption
 
@@ -108,11 +111,12 @@ toElmUiInternal config sectionDepth blocks =
                         identity
                    )
                 |> View.Figure.view
+                |> Ui.html
             )
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.Video videoEmbed) :: nextBlocks ->
-            View.VideoEmbed.view videoEmbed
+            (View.VideoEmbed.view videoEmbed |> Ui.html)
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         (Doc.CodeBlock { code, language }) :: nextBlocks ->

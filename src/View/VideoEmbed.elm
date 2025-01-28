@@ -34,7 +34,7 @@ renderer =
         |> Markdown.Html.withAttribute "height"
 
 
-view : VideoEmbed -> Ui.Element msg
+view : VideoEmbed -> Html msg
 view videoEmbed =
     let
         src =
@@ -70,7 +70,7 @@ view videoEmbed =
                 ]
                 []
     in
-    View.Figure.figure (Ui.html iframe)
+    View.Figure.figure iframe
         |> View.Figure.view
 
 

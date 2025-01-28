@@ -28,6 +28,7 @@ module Sand exposing
     , paddingRight
     , paddingTop
     , setAttributeIf
+    , textAlignCenter
     , ul
     , width
     )
@@ -191,6 +192,11 @@ justifyContentCenter =
 alightItemsCenter : Html.Attribute msg
 alightItemsCenter =
     Html.Attributes.style "align-items" "center"
+
+
+textAlignCenter : Html.Attribute msg
+textAlignCenter =
+    Html.Attributes.style "text-align" "center"
 
 
 padding : Length -> Html.Attribute msg

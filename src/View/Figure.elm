@@ -10,19 +10,20 @@ import Custom.Element as Ui
 import Element as Ui
 import Element.Background as UiBackground
 import Element.Font as UiFont
-import Html
+import Html exposing (Html)
+import Sand
 import Style
 import View.Paragraph
 
 
 type Figure msg
     = Figure
-        { content : Ui.Element msg
+        { content : Html msg
         , caption : Maybe String
         }
 
 
-figure : Ui.Element msg -> Figure msg
+figure : Html msg -> Figure msg
 figure content =
     Figure
         { content = content
@@ -39,31 +40,33 @@ setCaption caption (Figure config) =
 -- VIEW
 
 
-view : Figure msg -> Ui.Element msg
+view : Figure msg -> Html msg
 view (Figure config) =
     let
+        content : Html msg
         content =
-            Ui.el
-                [ Ui.varPadding Style.spacing.size2
-                , UiBackground.color (Color.toElmUi Style.color.layout05)
-                , Ui.centerX
+            Sand.div
+                [ Sand.padding Sand.L4
+                , Sand.backgroundColor Style.color.layout05
                 ]
-                config.content
+                [ config.content ]
 
+        caption : List (Html msg)
         caption =
             case config.caption of
                 Just text ->
-                    [ Ui.el
-                        [ Ui.varPaddingLeft Style.spacing.size9
-                        , Ui.varPaddingRight Style.spacing.size9
-                        , UiFont.color (Color.toElmUi Style.color.layout20)
-                        , Ui.varPaddingTop Style.spacing.size3
+                    [ Sand.div
+                        [ Sand.paddingLeft Sand.L6
+                        , Sand.paddingRight Sand.L6
+                        , Sand.fontColor Style.color.layout20
+                        , Sand.paddingTop Sand.L5
+                        , Sand.textAlignCenter
                         ]
-                        (View.Paragraph.view [ Html.text text ])
+                        [ Html.p [] [ Html.text text ] ]
                     ]
 
                 Nothing ->
                     []
     in
-    Ui.column [ Ui.centerX ]
+    Sand.div [ Sand.alightItemsCenter ]
         (List.concat [ [ content ], caption ])
