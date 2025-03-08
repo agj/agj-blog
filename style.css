@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   --text-size-m: 18px;
   --text-size-l: 24px;
