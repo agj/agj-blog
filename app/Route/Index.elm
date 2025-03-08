@@ -11,12 +11,12 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
+import Html.Attributes exposing (class)
 import List.Extra as List
 import Maybe.Extra as Maybe
 import Pages.PageUrl exposing (PageUrl)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Sand
 import Shared
 import Site
 import UrlPath exposing (UrlPath)
@@ -163,14 +163,7 @@ view app shared model =
 
         content : Html Msg
         content =
-            Sand.gridCols
-                { cols =
-                    Sand.ResponsiveGridCols
-                        [ ( 0, [ Sand.fr 2, Sand.fr 1 ] )
-                        , ( 650, [ Sand.fr 1 ] )
-                        ]
-                , gap = Sand.L4
-                }
+            Html.div [ class "grid grid-cols-2 gap-5" ]
                 cols
     in
     { title = title

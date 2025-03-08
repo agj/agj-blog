@@ -1,6 +1,7 @@
 module View.PageBody exposing (..)
 
 import Html exposing (Html)
+import Html.Attributes exposing (class)
 import PagesMsg exposing (PagesMsg)
 import Sand
 import Style
@@ -66,31 +67,18 @@ view (PageBody config) =
                     Sand.none
 
                 Just title_ ->
-                    Sand.div
-                        [ Sand.width (Sand.LRaw "100%")
+                    Html.div
+                        [ class "flex w-full flex-col items-center"
                         , Sand.backgroundColor Style.color.layout05
                         ]
-                        [ Sand.div
-                            [ Sand.maxWidth (Sand.LRaw "900px")
-                            , Sand.justifyContentCenter
-                            , Sand.alightItemsCenter
-                            , Sand.padding Sand.L4
-                            ]
+                        [ Html.div [ class "w-full max-w-[900px] flex-grow p-4" ]
                             [ title_ ]
                         ]
 
         content : Html msg
         content =
-            Sand.div [ Sand.width (Sand.LRaw "100%") ]
-                [ Sand.div
-                    [ Sand.maxWidth (Sand.LRaw "900px")
-                    , Sand.justifyContentCenter
-                    , Sand.alightItemsCenter
-                    , Sand.paddingTop Sand.L6
-                    , Sand.paddingLeft Sand.L4
-                    , Sand.paddingRight Sand.L4
-                    , Sand.paddingBottom Sand.L9
-                    ]
+            Html.div [ class "flex w-full flex-col items-center" ]
+                [ Html.div [ class "w-full max-w-[900px] px-4 pb-14 pt-6" ]
                     [ config.content ]
                 ]
     in
