@@ -17,6 +17,7 @@
       in {
         devShell = pkgs.mkShell {
           buildInputs = [
+            pkgs.elmPackages.elm
             pkgs.just
             pkgs.leiningen
             pkgs.nodePackages.prettier

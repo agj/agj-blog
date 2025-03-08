@@ -12,8 +12,15 @@ when inside the directory containing this file.
 -}
 
 import Review.Rule exposing (Rule)
+import TailwindCss.ClassOrder exposing (classOrder)
+import TailwindCss.ConsistentClassOrder
+import TailwindCss.NoCssConflict
+import TailwindCss.NoUnknownClasses
 
 
 config : List Rule
 config =
-    []
+    [ TailwindCss.ConsistentClassOrder.rule (TailwindCss.ConsistentClassOrder.defaultOptions { order = TailwindCss.ClassOrder.classOrder })
+    , TailwindCss.NoCssConflict.rule (TailwindCss.NoCssConflict.defaultOptions { props = TailwindCss.ClassOrder.classProps })
+    , TailwindCss.NoUnknownClasses.rule (TailwindCss.NoUnknownClasses.defaultOptions { order = classOrder })
+    ]

@@ -16,6 +16,14 @@ dev: install
 build: install
     pnpm run build
 
+# Check for errors.
+review: install
+    pnpm exec elm-review --compiler ./node_modules/.bin/lamdera
+
+# Check for errors, and automatically fix them.
+review-fix: install
+    pnpm exec elm-review --compiler ./node_modules/.bin/lamdera --fix-all
+
 [private]
 install:
     pnpm install
