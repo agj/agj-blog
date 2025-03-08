@@ -10,14 +10,6 @@ module View.AudioPlayer.Track exposing
     )
 
 import Css
-import Custom.Color as Color
-import Custom.Element as Ui
-import Element as Ui
-import Element.Background as UiBackground
-import Element.Border as UiBorder
-import Element.Events as UiEvents
-import Element.Font as UiFont
-import Element.Input as UiInput
 import Html exposing (Html)
 import Html.Attributes exposing (class)
 import Html.Events

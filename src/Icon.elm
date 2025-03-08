@@ -9,7 +9,6 @@ module Icon exposing
     , stop
     )
 
-import Element as Ui
 import Heroicons.Solid
 import Html exposing (Attribute, Html)
 import Html.Attributes
