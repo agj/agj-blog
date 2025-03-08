@@ -18,12 +18,13 @@ import Element.Border as UiBorder
 import Element.Events as UiEvents
 import Element.Font as UiFont
 import Element.Input as UiInput
-import Html
-import Html.Attributes
+import Html exposing (Html)
+import Html.Attributes exposing (class)
 import Html.Events
 import Icon
 import Json.Decode as Decode exposing (Decoder)
 import Markdown.Html
+import Sand
 import Style
 import TypedSvg as Svg
 import TypedSvg.Attributes as Svg
@@ -72,7 +73,7 @@ withConfig config track =
     TrackWithConfig track config
 
 
-view : TrackWithConfig msg -> Ui.Element msg
+view : TrackWithConfig msg -> Html msg
 view (TrackWithConfig track config) =
     let
         ( isSelected, isPlaying, playhead ) =
@@ -87,8 +88,8 @@ view (TrackWithConfig track config) =
                     ( False, False, initialPlayhead )
 
         hoverEvents =
-            [ UiEvents.onMouseLeave (config.onHoverChanged False)
-            , UiEvents.onMouseEnter (config.onHoverChanged True)
+            [ Html.Events.onMouseLeave (config.onHoverChanged False)
+            , Html.Events.onMouseEnter (config.onHoverChanged True)
             ]
 
         { icon, fontColor, backgroundColor, newPlayStateOnPress, events } =
@@ -128,20 +129,8 @@ view (TrackWithConfig track config) =
                     }
 
         buttonStyles =
-            [ UiBorder.rounded 0
-            , UiBackground.color (Style.color.transparent |> Color.toElmUi)
-            , UiFont.color (fontColor |> Color.toElmUi)
-            , Ui.width Ui.fill
-            , Ui.varPaddingLeft Style.spacing.size3
-            , Ui.varPaddingRight Style.spacing.size3
-            , Ui.varPaddingTop Style.spacing.size2
-            , Ui.varPaddingBottom
-                (if isSelected then
-                    Css.Unitless 0
-
-                 else
-                    Style.spacing.size2
-                )
+            [ class "w-full px-3 pb-2 pt-2"
+            , Sand.fontColor fontColor
             ]
 
         audioPlayerEl =
@@ -155,20 +144,21 @@ view (TrackWithConfig track config) =
                     }
 
             else
-                Ui.none
+                Sand.none
 
         buttonEl =
-            UiInput.button (buttonStyles ++ events)
-                { onPress = Just (config.onPlayStateChanged newPlayStateOnPress)
-                , label =
-                    Ui.row
-                        [ Ui.varSpacing Style.spacing.size1
-                        ]
-                        [ icon Icon.Medium
-                        , Ui.text track.title
-                        , audioPlayerEl
-                        ]
-                }
+            Html.button
+                (buttonStyles
+                    ++ events
+                    ++ [ Html.Events.onClick (config.onPlayStateChanged newPlayStateOnPress)
+                       ]
+                )
+                [ Html.div [ class "flex flex-row gap-1" ]
+                    [ icon Icon.Medium
+                    , Html.text track.title
+                    , audioPlayerEl
+                    ]
+                ]
 
         seekPosToNewState : Float -> PlayState
         seekPosToNewState seekPos =
@@ -186,15 +176,15 @@ view (TrackWithConfig track config) =
             if isSelected then
                 [ buttonEl
                 , seekBarView playhead
-                    |> Ui.map (seekPosToNewState >> config.onPlayStateChanged)
+                    |> Html.map (seekPosToNewState >> config.onPlayStateChanged)
                 ]
 
             else
                 [ buttonEl ]
     in
-    Ui.column
-        [ Ui.width Ui.fill
-        , UiBackground.color (backgroundColor |> Color.toElmUi)
+    Html.div
+        [ class "flex w-full flex-col"
+        , Sand.backgroundColor backgroundColor
         ]
         columnEls
 
@@ -213,7 +203,7 @@ playingPlayState =
 -- INTERNAL
 
 
-seekBarView : Playhead -> Ui.Element Float
+seekBarView : Playhead -> Html Float
 seekBarView { currentTime, duration } =
     let
         barWidth =
@@ -233,19 +223,17 @@ seekBarView { currentTime, duration } =
                 ]
                 []
     in
-    Ui.el
-        [ Ui.width Ui.fill
+    Html.div
+        [ class "w-full"
         , Html.Events.on "mousedown" trackMouseEventSeekPositionDecoder
-            |> Ui.htmlAttribute
         ]
-        (Svg.svg
+        [ Svg.svg
             [ Svg.width (Svg.percent 100)
             , Html.Attributes.attribute "height"
                 (Style.spacing.size2 |> Css.expressionToString)
             ]
             [ progress ]
-            |> Ui.html
-        )
+        ]
 
 
 audioPlayerElement :
@@ -255,7 +243,7 @@ audioPlayerElement :
     , onPlayStateChanged : PlayState -> msg
     , playState : PlayState
     }
-    -> Ui.Element msg
+    -> Html msg
 audioPlayerElement { src, isPlaying, currentTime, onPlayStateChanged, playState } =
     Html.node "audio-player"
         [ Html.Attributes.attribute "src" src
@@ -271,7 +259,6 @@ audioPlayerElement { src, isPlaying, currentTime, onPlayStateChanged, playState 
             (playingTrackStateMsgDecoder { playState = playState, onPlayStateChanged = onPlayStateChanged })
         ]
         []
-        |> Ui.html
 
 
 initialPlayhead : Playhead

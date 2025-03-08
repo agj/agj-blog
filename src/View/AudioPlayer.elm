@@ -129,6 +129,7 @@ view (State state) (AudioPlayerWithConfig audioPlayer config) =
                                     track
                                         |> Track.withConfig (trackConfig track)
                                         |> Track.view
+                                        |> Ui.html
                                 )
                         )
                     ]
@@ -171,7 +172,7 @@ titleView state config firstTrack title =
             Ui.row
                 [ Ui.varSpacing Style.spacing.size1
                 ]
-                [ icon Icon.Medium
+                [ icon Icon.Medium |> Ui.html
                 , Ui.text title
                 ]
         }
