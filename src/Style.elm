@@ -1,15 +1,7 @@
-module Style exposing
-    ( blockPadding
-    , color
-    , interline
-    , spacing
-    , textSize
-    , textSizeMonospace
-    )
+module Style exposing (color)
 
 import Color exposing (Color)
 import Color.Manipulate
-import Css
 
 
 color =
@@ -36,50 +28,6 @@ color =
     , transparent = Color.rgba 1 1 1 0
     , white = Color.rgb 1 1 1
     }
-
-
-spacing =
-    { size1 = Css.Var "spacing-1"
-    , size2 = Css.Var "spacing-2"
-    , size3 = Css.Var "spacing-3"
-    , size4 = Css.Var "spacing-4"
-    , size5 = Css.Var "spacing-5"
-    , size6 = Css.Var "spacing-6"
-    , size7 = Css.Var "spacing-7"
-    , size8 = Css.Var "spacing-8"
-    , size9 = Css.Var "spacing-9"
-    }
-
-
-
--- TYPOGRAPHY
-
-
-textSize =
-    { m = Css.Var "text-size-m"
-    , l = Css.Var "text-size-l"
-    , xl = Css.Var "text-size-xl"
-    , xxl = Css.Var "text-size-xxl"
-    }
-
-
-textSizeMonospace =
-    { m = Css.CalcMultiplication (Css.Unitless 0.9) textSize.m
-    , l = Css.CalcMultiplication (Css.Unitless 0.9) textSize.l
-    , xl = Css.CalcMultiplication (Css.Unitless 0.9) textSize.xl
-    , xxl = Css.CalcMultiplication (Css.Unitless 0.9) textSize.xxl
-    }
-
-
-interline =
-    { s = Css.CalcMultiplication (Css.Unitless 0.4)
-    , m = Css.CalcMultiplication (Css.Unitless 0.6)
-    }
-
-
-blockPadding : Css.Expression -> (Css.Expression -> Css.Expression) -> Css.Expression
-blockPadding textSize_ interline_ =
-    Css.CalcMultiplication (interline_ textSize_) (Css.Unitless 0.5)
 
 
 
