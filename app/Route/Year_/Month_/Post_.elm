@@ -12,9 +12,9 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
+import Html.Attributes exposing (class)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Sand
 import Shared
 import Site
 import UrlPath exposing (UrlPath)
@@ -223,7 +223,7 @@ view app shared model =
                 |> Doc.ElmUi.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
             , View.CodeBlock.styles
             ]
-                |> Sand.div []
+                |> Html.div [ class "flex flex-col" ]
     in
     { title = title app
     , body =
