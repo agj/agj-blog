@@ -9,9 +9,8 @@ module View.AudioPlayer.Track exposing
     , withConfig
     )
 
-import Css
 import Html exposing (Html)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, classList)
 import Html.Events
 import Icon
 import Json.Decode as Decode exposing (Decoder)
@@ -20,6 +19,7 @@ import Sand
 import Style
 import TypedSvg as Svg
 import TypedSvg.Attributes as Svg
+import TypedSvg.Core
 import TypedSvg.Types as Svg
 
 
@@ -121,7 +121,8 @@ view (TrackWithConfig track config) =
                     }
 
         buttonStyles =
-            [ class "w-full px-3 pb-2 pt-2"
+            [ class "w-full px-3 pt-2"
+            , classList [ ( "pb-2", not isSelected ) ]
             , Sand.fontColor fontColor
             ]
 
@@ -199,18 +200,17 @@ seekBarView : Playhead -> Html Float
 seekBarView { currentTime, duration } =
     let
         barWidth =
-            Style.spacing.size1
+            "0.5rem"
+
+        halfBarWidth =
+            "0.25rem"
 
         progress =
             Svg.rect
                 [ Svg.x (Svg.px 0)
-                , Html.Attributes.attribute "y"
-                    (Css.CalcSubtraction Style.spacing.size2 barWidth
-                        |> Css.expressionToString
-                    )
+                , TypedSvg.Core.attribute "y" halfBarWidth
                 , Svg.width (Svg.percent (currentTime / duration * 100))
-                , Html.Attributes.attribute "height"
-                    (barWidth |> Css.expressionToString)
+                , TypedSvg.Core.attribute "height" halfBarWidth
                 , Svg.fill (Svg.Paint Style.color.layout90)
                 ]
                 []
@@ -221,8 +221,7 @@ seekBarView { currentTime, duration } =
         ]
         [ Svg.svg
             [ Svg.width (Svg.percent 100)
-            , Html.Attributes.attribute "height"
-                (Style.spacing.size2 |> Css.expressionToString)
+            , Html.Attributes.attribute "height" barWidth
             ]
             [ progress ]
         ]

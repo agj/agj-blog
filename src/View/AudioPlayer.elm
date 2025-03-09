@@ -153,7 +153,7 @@ titleView state config firstTrack title =
                     )
     in
     Html.button
-        [ class "w-full py-2 px-3"
+        [ class "w-full px-3 py-2"
         , Sand.backgroundColor Style.color.layout60
         , Sand.fontColor Style.color.white
         , Html.Events.onClick (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
