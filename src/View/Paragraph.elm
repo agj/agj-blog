@@ -1,17 +1,10 @@
 module View.Paragraph exposing (view)
 
-import Custom.Element as Ui
-import Element as Ui
-import Style
+import Html exposing (Html)
+import Html.Attributes exposing (class)
 
 
-view : List (Ui.Element msg) -> Ui.Element msg
+view : List (Html msg) -> Html msg
 view inlines =
-    Ui.paragraph
-        [ Ui.varFontSize Style.textSize.m
-        , Ui.varLineSpacing (Style.interline.m Style.textSize.m)
-        , Ui.varPaddingTop (Style.blockPadding Style.textSize.m Style.interline.m)
-        , Ui.varPaddingBottom (Style.blockPadding Style.textSize.m Style.interline.m)
-        , Ui.width Ui.fill
-        ]
+    Html.p [ class "w-full py-2 text-base" ]
         inlines

@@ -360,25 +360,26 @@ renderCustomWithCustomChildren :
     -> (value -> List child -> Doc.Block msg)
     -> Markdown.Html.Renderer value
     -> Markdown.Html.Renderer (List (Doc.Intermediate msg) -> Doc.Intermediate msg)
-renderCustomWithCustomChildren toElmUiTag metadataToChild toElmUi_ customRenderer =
+renderCustomWithCustomChildren toIntermediate metadataToChild toBlock customRenderer =
+    let
+        tagToChild tag =
+            case tag of
+                Doc.IntermediateCustom metadata ->
+                    metadataToChild metadata
+
+                _ ->
+                    Nothing
+    in
     customRenderer
         |> Markdown.Html.map
             (\value childrenTags ->
                 let
                     children =
                         childrenTags
-                            |> List.filterMap
-                                (\tag ->
-                                    case tag of
-                                        Doc.IntermediateCustom metadata ->
-                                            metadataToChild metadata
-
-                                        _ ->
-                                            Nothing
-                                )
+                            |> List.filterMap tagToChild
                 in
-                toElmUi_ value children
-                    |> toElmUiTag
+                toBlock value children
+                    |> toIntermediate
             )
 
 

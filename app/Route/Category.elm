@@ -2,9 +2,9 @@ module Route.Category exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
 import Data.Category as Category
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html exposing (Html)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
@@ -74,23 +74,22 @@ view :
     -> View (PagesMsg Msg)
 view app shared =
     let
+        titleEls : List (Html msg)
         titleEls =
-            [ Ui.text "Categories" ]
+            [ Html.text "Categories" ]
 
+        subtitle : Html msg
         subtitle =
-            [ Ui.text "Back to "
-            , [ Ui.text "the index" ]
+            [ Html.text "Back to "
+            , [ Html.text "the index" ]
                 |> View.Inline.setLink Nothing "/"
-            , Ui.text "."
+            , Html.text "."
             ]
                 |> View.Paragraph.view
-
-        content =
-            Category.viewList
     in
     { title = title
     , body =
-        View.PageBody.fromContent content
+        View.PageBody.fromContent Category.viewList
             |> View.PageBody.withTitleAndSubtitle titleEls subtitle
             |> View.PageBody.view
     }

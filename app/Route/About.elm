@@ -2,11 +2,11 @@ module Route.About exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File
-import Doc.ElmUi
+import Doc.Html
 import Doc.Markdown
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html exposing (Html)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Decode
 import PagesMsg exposing (PagesMsg)
@@ -89,22 +89,25 @@ view :
     -> View (PagesMsg Msg)
 view app shared =
     let
+        titleEl : List (Html Msg)
         titleEl =
-            [ Ui.text app.data.title ]
+            [ Html.text app.data.title ]
 
+        subtitle : Html Msg
         subtitle =
-            [ Ui.text "Back to "
-            , [ Ui.text "the index" ]
+            [ Html.text "Back to "
+            , [ Html.text "the index" ]
                 |> View.Inline.setLink Nothing "/"
-            , Ui.text "."
+            , Html.text "."
             ]
                 |> View.Paragraph.view
 
+        content : Html Msg
         content =
             app.data.markdown
                 |> Doc.Markdown.parse
                     { audioPlayer = Nothing }
-                |> Doc.ElmUi.view Doc.ElmUi.noConfig
+                |> Doc.Html.view Doc.Html.noConfig
     in
     { title = title app
     , body =

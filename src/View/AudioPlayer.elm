@@ -10,15 +10,12 @@ module View.AudioPlayer exposing
     )
 
 import Color exposing (Color)
-import Custom.Color as Color
-import Custom.Element as Ui
-import Element as Ui
-import Element.Background as UiBackground
-import Element.Border as UiBorder
-import Element.Font as UiFont
-import Element.Input as UiInput
+import Html exposing (Html)
+import Html.Attributes exposing (class)
+import Html.Events
 import Icon
 import Markdown.Html
+import Sand
 import Style
 import View.AudioPlayer.Track as Track exposing (Track)
 
@@ -72,7 +69,7 @@ withConfig config audioPlayer =
     AudioPlayerWithConfig audioPlayer config
 
 
-view : State -> AudioPlayerWithConfig msg -> Ui.Element msg
+view : State -> AudioPlayerWithConfig msg -> Html msg
 view (State state) (AudioPlayerWithConfig audioPlayer config) =
     let
         onHoverChanged : Track -> Bool -> msg
@@ -116,11 +113,12 @@ view (State state) (AudioPlayerWithConfig audioPlayer config) =
     in
     case config.tracks of
         firstTrack :: _ ->
-            Ui.column
-                [ UiBackground.color (Style.color.layout05 |> Color.toElmUi)
+            Html.div
+                [ class "flex flex-col"
+                , Sand.backgroundColor Style.color.layout05
                 ]
                 [ titleView state config firstTrack audioPlayer.title
-                , Ui.column []
+                , Html.div [ class "flex flex-col" ]
                     (config.tracks
                         |> List.map
                             (\track ->
@@ -132,14 +130,14 @@ view (State state) (AudioPlayerWithConfig audioPlayer config) =
                 ]
 
         [] ->
-            Ui.none
+            Sand.none
 
 
 
 -- INTERNAL
 
 
-titleView : StateInternal -> Config msg -> Track -> String -> Ui.Element msg
+titleView : StateInternal -> Config msg -> Track -> String -> Html msg
 titleView state config firstTrack title =
     let
         ( newPlayStateOnPress, icon ) =
@@ -154,22 +152,14 @@ titleView state config firstTrack title =
                     , Icon.play
                     )
     in
-    UiInput.button
-        [ UiBorder.rounded 0
-        , UiBackground.color (Style.color.layout60 |> Color.toElmUi)
-        , UiFont.color (Style.color.white |> Color.toElmUi)
-        , Ui.width Ui.fill
-        , Ui.varPaddingTop Style.spacing.size2
-        , Ui.varPaddingBottom Style.spacing.size2
-        , Ui.varPaddingLeft Style.spacing.size3
-        , Ui.varPaddingRight Style.spacing.size3
+    Html.button
+        [ class "w-full px-3 py-2"
+        , Sand.backgroundColor Style.color.layout60
+        , Sand.fontColor Style.color.white
+        , Html.Events.onClick (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
         ]
-        { onPress = Just (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
-        , label =
-            Ui.row
-                [ Ui.varSpacing Style.spacing.size1
-                ]
-                [ icon Icon.Medium
-                , Ui.text title
-                ]
-        }
+        [ Html.div [ class "flex flex-row gap-1" ]
+            [ icon Icon.Medium
+            , Html.text title
+            ]
+        ]

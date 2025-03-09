@@ -5,7 +5,6 @@ module View.VideoEmbed exposing
     , view
     )
 
-import Element as Ui
 import Html exposing (Html)
 import Html.Attributes
 import Markdown.Html
@@ -34,7 +33,7 @@ renderer =
         |> Markdown.Html.withAttribute "height"
 
 
-view : VideoEmbed -> Ui.Element msg
+view : VideoEmbed -> Html msg
 view videoEmbed =
     let
         src =
@@ -70,7 +69,7 @@ view videoEmbed =
                 ]
                 []
     in
-    View.Figure.figure (Ui.html iframe)
+    View.Figure.figure iframe
         |> View.Figure.view
 
 

@@ -2,9 +2,9 @@ module Route.Tag.Tag_ exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
 import Data.Tag as Tag
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
@@ -85,5 +85,5 @@ head app =
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app shared =
     { title = title
-    , body = Ui.none
+    , body = Html.text ""
     }

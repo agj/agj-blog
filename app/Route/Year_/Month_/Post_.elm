@@ -6,12 +6,13 @@ import Data.Date
 import Data.Post as Post exposing (Post)
 import Data.Tag as Tag
 import Date
-import Doc.ElmUi
+import Doc.Html
 import Doc.Markdown
 import Effect exposing (Effect)
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html exposing (Html)
+import Html.Attributes exposing (class)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
@@ -162,66 +163,73 @@ view :
     -> View (PagesMsg Msg)
 view app shared model =
     let
+        date : String
         date =
             Data.Date.formatShortDate
                 app.routeParams.year
                 (String.toInt app.routeParams.month |> Maybe.withDefault 0)
                 app.data.frontmatter.date
 
+        categoryEls : List (Html Msg)
         categoryEls =
             app.data.frontmatter.categories
                 |> List.map Category.toLink
-                |> List.intersperse (Ui.text ", ")
+                |> List.intersperse (Html.text ", ")
 
+        categoriesTextEls : List (Html Msg)
         categoriesTextEls =
             if List.length app.data.frontmatter.categories > 0 then
-                [ Ui.text "Categories: "
-                , View.Inline.setItalic categoryEls
-                , Ui.text ". "
+                [ Html.text "Categories: "
+                , Html.i [] categoryEls
+                , Html.text ". "
                 ]
 
             else
-                [ Ui.text "No categories. " ]
+                [ Html.text "No categories. " ]
 
+        tagEls : List (Html Msg)
         tagEls =
             app.data.frontmatter.tags
                 |> List.map (Tag.toLink Nothing [])
-                |> List.intersperse (Ui.text ", ")
+                |> List.intersperse (Html.text ", ")
 
+        tagsTextEls : List (Html Msg)
         tagsTextEls =
             if List.length app.data.frontmatter.tags > 0 then
-                [ Ui.text "Tags: "
-                , View.Inline.setItalic tagEls
-                , Ui.text "."
+                [ Html.text "Tags: "
+                , Html.i [] tagEls
+                , Html.text "."
                 ]
 
             else
-                [ Ui.text "No tags." ]
+                [ Html.text "No tags." ]
 
+        postInfo : Html Msg
         postInfo =
-            ([ Ui.text ("Posted {date}, on " |> String.replace "{date}" date)
-             , View.Inline.setLink Nothing "/" [ Ui.text "agj's blog" ]
-             , Ui.text ". "
+            ([ Html.text ("Posted {date}, on " |> String.replace "{date}" date)
+             , View.Inline.setLink Nothing "/" [ Html.text "agj's blog" ]
+             , Html.text ". "
              ]
                 ++ categoriesTextEls
                 ++ tagsTextEls
             )
                 |> View.Paragraph.view
 
+        contentEl : Html Msg
         contentEl =
             [ app.data.markdown
                 |> Doc.Markdown.parse
                     { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
-                |> Doc.ElmUi.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
-            , View.CodeBlock.styles |> Ui.html
+                |> Doc.Html.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
+            , View.CodeBlock.styles
             ]
-                |> Ui.column []
+                |> Html.div [ class "flex flex-col" ]
     in
     { title = title app
     , body =
         View.PageBody.fromContent contentEl
             |> View.PageBody.withTitleAndSubtitle
-                [ Ui.text app.data.frontmatter.title ]
+                [ Html.text app.data.frontmatter.title ]
                 postInfo
             |> View.PageBody.view
     }

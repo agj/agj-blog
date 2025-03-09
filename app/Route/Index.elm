@@ -2,16 +2,16 @@ module Route.Index exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
 import Browser.Navigation
-import Custom.Element as Ui
 import Data.Category as Category exposing (Category, NestedCategory)
 import Data.Post as Post
 import Data.PostList
 import Data.Tag as Tag
 import Dict exposing (Dict)
 import Effect exposing (Effect)
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html exposing (Html)
+import Html.Attributes exposing (class)
 import List.Extra as List
 import Maybe.Extra as Maybe
 import Pages.PageUrl exposing (PageUrl)
@@ -19,7 +19,6 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
-import Style
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.Column exposing (Spacing(..))
@@ -149,28 +148,28 @@ view :
     -> View (PagesMsg Msg)
 view app shared model =
     let
+        cols : List (Html Msg)
+        cols =
+            [ Data.PostList.view app.sharedData.posts
+            , [ [ Html.text "Categories" ]
+                    |> View.Heading.view 2
+              , Category.viewList
+              , [ Html.text "Tags" ]
+                    |> View.Heading.view 2
+              , Tag.listView Nothing [] app.sharedData.posts Tag.all
+              ]
+                |> View.Column.setSpaced MSpacing
+            ]
+
+        content : Html Msg
         content =
-            Ui.row
-                [ Ui.width Ui.fill
-                , Ui.varSpacing Style.spacing.size5
-                ]
-                [ Data.PostList.view app.sharedData.posts
-                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
-                , [ [ Ui.text "Categories" ]
-                        |> View.Heading.view 2
-                  , Category.viewList
-                  , [ Ui.text "Tags" ]
-                        |> View.Heading.view 2
-                  , Tag.listView Nothing [] app.sharedData.posts Tag.all
-                  ]
-                    |> View.Column.setSpaced MSpacing
-                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
-                ]
+            Html.div [ class "grid grid-cols-2 gap-5" ]
+                cols
     in
     { title = title
     , body =
         View.PageBody.fromContent content
             |> View.PageBody.withTitle
-                [ Ui.text "agj's blog" ]
+                [ Html.text "agj's blog" ]
             |> View.PageBody.view
     }

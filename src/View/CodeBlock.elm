@@ -5,7 +5,6 @@ module View.CodeBlock exposing
     , view
     )
 
-import Element as Ui
 import Html exposing (Html)
 import Html.Attributes
 import SyntaxHighlight
@@ -23,7 +22,7 @@ fromBody language body =
     CodeBlock { body = body, language = language }
 
 
-view : CodeBlock -> Ui.Element msg
+view : CodeBlock -> Html msg
 view (CodeBlock { body, language }) =
     let
         highlighter =
@@ -64,7 +63,6 @@ view (CodeBlock { body, language }) =
             (Html.div []
                 [ Html.text "[COULDN'T PARSE CODE BLOCK]" ]
             )
-        |> Ui.html
 
 
 styles : Html msg

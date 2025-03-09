@@ -2,23 +2,23 @@ module Route.Tag exposing (ActionData, Data, Model, Msg, route)
 
 import AppUrl exposing (AppUrl)
 import BackendTask exposing (BackendTask)
-import Custom.Element as Ui
 import Custom.List as List
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
 import Dict exposing (Dict)
 import Effect exposing (Effect)
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html exposing (Html)
+import Html.Attributes exposing (class)
 import List.Extra as List
 import Pages.PageUrl exposing (PageUrl)
 import PagesMsg exposing (PagesMsg)
 import Result.Extra as Result
 import RouteBuilder exposing (App, StatefulRoute)
+import Sand
 import Shared
 import Site
-import Style
 import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
@@ -178,6 +178,7 @@ view app shared model =
                 |> List.unique
                 |> List.filter (List.memberOf model.queryTags >> not)
 
+        tagToEl : Tag -> Html Msg
         tagToEl tag =
             let
                 url =
@@ -188,50 +189,49 @@ view app shared model =
                         [] ->
                             Tag.baseUrl
             in
-            [ Ui.text (Tag.getName tag) ]
+            [ Html.text (Tag.getName tag) ]
                 |> View.Inline.setLink (Just OnClick) url
 
+        titleChildren : List (Html Msg)
         titleChildren =
             if List.length model.queryTags > 0 then
-                [ Ui.text "Tags: "
+                [ Html.text "Tags: "
                 , (model.queryTags
                     |> List.map tagToEl
-                    |> List.intersperse (Ui.text ", ")
+                    |> List.intersperse (Html.text ", ")
                   )
-                    |> View.Inline.setItalic
+                    |> Html.i []
                 ]
 
             else
-                [ Ui.text "Tags" ]
+                [ Html.text "Tags" ]
 
+        subtitle : Html Msg
         subtitle =
-            [ Ui.text "Back to "
-            , [ Ui.text "the index" ]
+            [ Html.text "Back to "
+            , [ Html.text "the index" ]
                 |> View.Inline.setLink Nothing "/"
-            , Ui.text "."
+            , Html.text "."
             ]
                 |> View.Paragraph.view
 
+        postColumn : Html Msg
         postColumn =
             if List.length model.queryTags > 0 then
                 postViews
-                    |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
 
             else
-                Ui.none
+                Sand.none
 
+        tagsColumn : Html Msg
         tagsColumn =
             Tag.listView (Just OnClick) model.queryTags app.sharedData.posts subTags
-                |> Ui.el [ Ui.alignTop, Ui.width (Ui.fillPortion 1) ]
 
         content =
-            [ postColumn
-            , tagsColumn
-            ]
-                |> Ui.row
-                    [ Ui.width Ui.fill
-                    , Ui.varSpacing Style.spacing.size5
-                    ]
+            Html.div [ class "grid grid-cols-2 gap-4" ]
+                [ postColumn
+                , tagsColumn
+                ]
     in
     { title = title
     , body =

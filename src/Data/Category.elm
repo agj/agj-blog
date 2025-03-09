@@ -15,14 +15,14 @@ module Data.Category exposing
     )
 
 import BackendTask exposing (BackendTask)
-import Element as Ui
+import Html exposing (Html)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
 import List.Extra as List
+import Sand
 import View.Column exposing (Spacing(..))
 import View.Inline
 import View.List
-import View.Paragraph
 
 
 type Category
@@ -76,7 +76,7 @@ toUrl category =
         |> String.replace "{slug}" (getSlug category)
 
 
-viewList : Ui.Element msg
+viewList : Html msg
 viewList =
     allNested
         |> List.map viewCategory
@@ -84,9 +84,9 @@ viewList =
         |> View.List.view
 
 
-toLink : Category -> Ui.Element msg
+toLink : Category -> Html msg
 toLink category =
-    [ Ui.text (getName category) ]
+    [ Html.text (getName category) ]
         |> View.Inline.setLink Nothing (toUrl category)
 
 
@@ -106,9 +106,10 @@ unnest (NestedCategory category rest) =
     category :: List.andThen unnest rest
 
 
-viewCategory : NestedCategory -> List (Ui.Element msg)
+viewCategory : NestedCategory -> List (Html msg)
 viewCategory (NestedCategory category children) =
     let
+        childrenList : Html msg
         childrenList =
             if List.length children > 0 then
                 children
@@ -117,11 +118,12 @@ viewCategory (NestedCategory category children) =
                     |> View.List.view
 
             else
-                Ui.none
+                Sand.none
 
+        current : Html msg
         current =
-            [ toLink category ]
-                |> View.Paragraph.view
+            Html.div []
+                [ toLink category ]
     in
     [ current, childrenList ]
 

@@ -1,7 +1,6 @@
 module ErrorPage exposing (ErrorPage(..), Model, Msg, head, init, internalError, notFound, statusCode, update, view)
 
 import Effect exposing (Effect)
-import Element as Ui
 import Head
 import Html exposing (Html)
 import View exposing (View)
@@ -64,7 +63,6 @@ view error model =
                             "Something went wrong.\n" ++ string
                 ]
             ]
-            |> Ui.html
     , title =
         case error of
             NotFound ->

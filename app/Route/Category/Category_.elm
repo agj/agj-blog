@@ -3,9 +3,9 @@ module Route.Category.Category_ exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Data.Category as Category exposing (Category)
 import Data.PostList
-import Element as Ui
 import FatalError exposing (FatalError)
 import Head
+import Html exposing (Html)
 import List.Extra as List
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -96,23 +96,24 @@ view app shared =
             app.sharedData.posts
                 |> List.filter (.frontmatter >> .categories >> List.member category)
 
+        titleEls : List (Html Msg)
         titleEls =
-            [ Ui.text "Category: "
-            , [ Ui.text (Category.getName category) ]
-                |> View.Inline.setItalic
+            [ Html.text "Category: "
+            , Html.i [] [ Html.text (Category.getName category) ]
             ]
 
         backToIndexEls =
-            [ Ui.text "Back to "
-            , [ Ui.text "the index" ]
+            [ Html.text "Back to "
+            , [ Html.text "the index" ]
                 |> View.Inline.setLink Nothing "/"
-            , Ui.text "."
+            , Html.text "."
             ]
 
+        subtitle : Html Msg
         subtitle =
             Category.getDescription category
                 |> Maybe.map
-                    (\desc -> Ui.text (desc ++ " ") :: backToIndexEls)
+                    (\desc -> Html.text (desc ++ " ") :: backToIndexEls)
                 |> Maybe.withDefault backToIndexEls
                 |> View.Paragraph.view
 

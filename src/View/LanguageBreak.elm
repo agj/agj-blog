@@ -4,12 +4,11 @@ module View.LanguageBreak exposing
     , view
     )
 
-import Custom.Color as Color
-import Custom.Element as Ui
 import Data.Language as Language exposing (Language)
-import Element as Ui
-import Element.Background as UiBackground
+import Html exposing (Html)
+import Html.Attributes exposing (class)
 import Markdown.Html
+import Sand
 import Style
 
 
@@ -24,24 +23,14 @@ renderer =
         |> Markdown.Html.withOptionalAttribute "language"
 
 
-view : LanguageBreak -> Ui.Element msg
+view : LanguageBreak -> Html msg
 view languageBreak =
-    let
-        rule =
-            Ui.el
-                [ Ui.width Ui.fill
-                , Ui.height (Ui.px 1)
-                , UiBackground.color (Style.color.primary50 |> Color.toElmUi)
-                , Ui.id "language"
-                ]
-                Ui.none
-    in
-    Ui.el
-        [ Ui.width Ui.fill
-        , Ui.varPaddingTop Style.spacing.size5
-        , Ui.varPaddingBottom Style.spacing.size5
+    Html.hr
+        [ class "my-6 h-0.5 w-full border-0"
+        , Html.Attributes.id "language"
+        , Sand.backgroundColor Style.color.primary50
         ]
-        rule
+        []
 
 
 

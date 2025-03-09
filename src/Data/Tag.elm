@@ -12,13 +12,11 @@ module Data.Tag exposing
     , toUrl
     )
 
-import Element as Ui
+import Html exposing (Html)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
 import List.Extra as List
-import Maybe.Extra as Maybe
 import View.Inline
-import View.Paragraph
 
 
 type Tag
@@ -71,26 +69,27 @@ slugsToUrl firstSlug moreSlugs =
         |> String.replace "{slugs}" slugs
 
 
-toLink : Maybe (String -> msg) -> List Tag -> Tag -> Ui.Element msg
+toLink : Maybe (String -> msg) -> List Tag -> Tag -> Html msg
 toLink onClick tagsToAddTo tag =
     let
+        singleLink : Html msg
         singleLink =
-            [ Ui.text (getName tag) ]
+            [ Html.text (getName tag) ]
                 |> View.Inline.setLink onClick (toUrl tag [])
     in
     case tagsToAddTo of
         _ :: _ ->
             let
                 addLink =
-                    [ Ui.text "+" ]
+                    [ Html.text "+" ]
                         |> View.Inline.setLink onClick (toUrl tag tagsToAddTo)
             in
             [ singleLink
-            , Ui.text "["
+            , Html.text "["
             , addLink
-            , Ui.text "]"
+            , Html.text "]"
             ]
-                |> Ui.paragraph []
+                |> Html.span []
 
         [] ->
             singleLink
@@ -101,7 +100,7 @@ listView :
     -> List Tag
     -> List { a | frontmatter : { b | tags : List Tag } }
     -> List Tag
-    -> Ui.Element msg
+    -> Html msg
 listView onClick selectedTags posts relatedTags =
     let
         tagsCount =
@@ -117,23 +116,11 @@ listView onClick selectedTags posts relatedTags =
                             |> List.length
                         )
                     )
-
-        maxCount =
-            tagsCount
-                |> List.map Tuple.second
-                |> List.maximum
-                |> Maybe.withDefault 0
-
-        minCount =
-            tagsCount
-                |> List.map Tuple.second
-                |> List.minimum
-                |> Maybe.withDefault 0
     in
     tagsCount
         |> List.map (\( tag, count ) -> toLink onClick selectedTags tag)
-        |> List.intersperse (Ui.text ", ")
-        |> View.Paragraph.view
+        |> List.intersperse (Html.text ", ")
+        |> Html.p []
 
 
 decoder : Decoder Tag

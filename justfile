@@ -1,3 +1,4 @@
+lamdera := "./node_modules/.bin/lamdera"
 
 [private]
 default:
@@ -15,6 +16,18 @@ dev: install
 # Build for release.
 build: install
     pnpm run build
+
+# Check for errors.
+review: install
+    pnpm exec elm-review --compiler {{lamdera}}
+
+# Check for errors, and automatically fix them.
+review-fix: install
+    pnpm exec elm-review --compiler {{lamdera}} --fix-all
+
+# Check for errors, and listen for changes in files.
+review-watch: install
+    pnpm exec elm-review --compiler {{lamdera}} --watch --fix-all
 
 [private]
 install:

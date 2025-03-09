@@ -1,10 +1,9 @@
 module View.PageBody exposing (..)
 
-import Custom.Color as Color
-import Custom.Element as Ui
-import Element as Ui
-import Element.Background as UiBackground
+import Html exposing (Html)
+import Html.Attributes exposing (class)
 import PagesMsg exposing (PagesMsg)
+import Sand
 import Style
 import View.Column exposing (Spacing(..))
 import View.Heading
@@ -12,18 +11,18 @@ import View.Heading
 
 type PageBody msg
     = PageBody
-        { content : Ui.Element msg
+        { content : Html msg
         , title : PageTitle msg
         }
 
 
 type PageTitle msg
     = NoPageTitle
-    | PageTitleOnly (List (Ui.Element msg))
-    | PageTitleAndSubtitle (List (Ui.Element msg)) (Ui.Element msg)
+    | PageTitleOnly (List (Html msg))
+    | PageTitleAndSubtitle (List (Html msg)) (Html msg)
 
 
-fromContent : Ui.Element msg -> PageBody msg
+fromContent : Html msg -> PageBody msg
 fromContent content =
     PageBody
         { content = content
@@ -31,19 +30,20 @@ fromContent content =
         }
 
 
-withTitle : List (Ui.Element msg) -> PageBody msg -> PageBody msg
+withTitle : List (Html msg) -> PageBody msg -> PageBody msg
 withTitle titleInlines (PageBody config) =
     PageBody { config | title = PageTitleOnly titleInlines }
 
 
-withTitleAndSubtitle : List (Ui.Element msg) -> Ui.Element msg -> PageBody msg -> PageBody msg
+withTitleAndSubtitle : List (Html msg) -> Html msg -> PageBody msg -> PageBody msg
 withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
     PageBody { config | title = PageTitleAndSubtitle titleInlines subtitleBlock }
 
 
-view : PageBody msg -> Ui.Element (PagesMsg msg)
+view : PageBody msg -> Html (PagesMsg msg)
 view (PageBody config) =
     let
+        title : Maybe (Html msg)
         title =
             case config.title of
                 NoPageTitle ->
@@ -60,39 +60,30 @@ view (PageBody config) =
                         |> View.Column.setSpaced MSpacing
                         |> Just
 
+        header : Html msg
         header =
             case title of
                 Nothing ->
-                    Ui.none
+                    Sand.none
 
                 Just title_ ->
-                    Ui.el
-                        [ Ui.width (Ui.px 900)
-                        , Ui.centerX
-                        , Ui.varPadding Style.spacing.size4
+                    Html.div
+                        [ class "flex w-full flex-col items-center"
+                        , Sand.backgroundColor Style.color.layout05
                         ]
-                        title_
-                        |> Ui.el
-                            [ Ui.width Ui.fill
-                            , UiBackground.color (Style.color.layout05 |> Color.toElmUi)
-                            ]
+                        [ Html.div [ class "w-full max-w-[56rem] flex-grow p-4" ]
+                            [ title_ ]
+                        ]
 
+        content : Html msg
         content =
-            Ui.el
-                [ Ui.width (Ui.px 900)
-                , Ui.centerX
-                , Ui.varPaddingTop Style.spacing.size6
-                , Ui.varPaddingLeft Style.spacing.size4
-                , Ui.varPaddingRight Style.spacing.size4
-                , Ui.varPaddingBottom Style.spacing.size9
+            Html.div [ class "flex w-full flex-col items-center" ]
+                [ Html.div [ class "w-full max-w-[56rem] px-4 pb-14 pt-6" ]
+                    [ config.content ]
                 ]
-                config.content
-                |> Ui.el
-                    [ Ui.width Ui.fill
-                    ]
     in
     [ header
     , content
     ]
         |> View.Column.setSpaced NoSpacing
-        |> Ui.map PagesMsg.fromMsg
+        |> Html.map PagesMsg.fromMsg
