@@ -1,4 +1,4 @@
-module Doc.ElmUi exposing (Config, noConfig, view)
+module Doc.Html exposing (Config, noConfig, view)
 
 import Doc
 import Html exposing (Html)
@@ -26,7 +26,7 @@ type alias Config msg =
 view : Config msg -> List (Doc.Block msg) -> Html msg
 view config blocks =
     blocks
-        |> toElmUiInternal config 1
+        |> viewInternal config 1
         |> View.Column.setSpaced MSpacing
 
 
@@ -41,27 +41,27 @@ noConfig =
 -- INTERNAL
 
 
-toElmUiInternal : Config msg -> Int -> List (Doc.Block msg) -> List (Html msg)
-toElmUiInternal config sectionDepth blocks =
+viewInternal : Config msg -> Int -> List (Doc.Block msg) -> List (Html msg)
+viewInternal config sectionDepth blocks =
     case blocks of
         (Doc.Paragraph inlines) :: nextBlocks ->
             (inlines
                 |> List.map (viewInline config.onClick)
                 |> View.Paragraph.view
             )
-                :: toElmUiInternal config sectionDepth nextBlocks
+                :: viewInternal config sectionDepth nextBlocks
 
         (Doc.OrderedList firstItem restItems) :: nextBlocks ->
             viewList config sectionDepth (Just 1) firstItem restItems
-                :: toElmUiInternal config sectionDepth nextBlocks
+                :: viewInternal config sectionDepth nextBlocks
 
         (Doc.UnorderedList firstItem restItems) :: nextBlocks ->
             viewList config sectionDepth Nothing firstItem restItems
-                :: toElmUiInternal config sectionDepth nextBlocks
+                :: viewInternal config sectionDepth nextBlocks
 
         (Doc.BlockQuote blockQuoteBlocks) :: nextBlocks ->
             viewBlockQuote config sectionDepth blockQuoteBlocks
-                :: toElmUiInternal config sectionDepth nextBlocks
+                :: viewInternal config sectionDepth nextBlocks
 
         (Doc.Section { heading, content }) :: nextBlocks ->
             let
@@ -73,13 +73,13 @@ toElmUiInternal config sectionDepth blocks =
                     |> List.map (viewInline config.onClick)
                     |> View.Heading.view newSectionDepth
                 , Html.div [ class "flex w-full flex-col gap-4" ]
-                    (toElmUiInternal config newSectionDepth content)
+                    (viewInternal config newSectionDepth content)
                 ]
-                :: toElmUiInternal config sectionDepth nextBlocks
+                :: viewInternal config sectionDepth nextBlocks
 
         Doc.Separation :: nextBlocks ->
             viewSeparation
-                :: toElmUiInternal config sectionDepth nextBlocks
+                :: viewInternal config sectionDepth nextBlocks
 
         (Doc.Image { url, description, caption }) :: nextBlocks ->
             (View.Figure.figure
@@ -97,33 +97,33 @@ toElmUiInternal config sectionDepth blocks =
                    )
                 |> View.Figure.view
             )
-                :: toElmUiInternal config sectionDepth nextBlocks
+                :: viewInternal config sectionDepth nextBlocks
 
         (Doc.Video videoEmbed) :: nextBlocks ->
             View.VideoEmbed.view videoEmbed
-                :: toElmUiInternal config sectionDepth nextBlocks
+                :: viewInternal config sectionDepth nextBlocks
 
         (Doc.CodeBlock { code, language }) :: nextBlocks ->
             (View.CodeBlock.fromBody language code
                 |> View.CodeBlock.view
             )
-                :: toElmUiInternal config sectionDepth nextBlocks
+                :: viewInternal config sectionDepth nextBlocks
 
         (Doc.LanguageBreak languageBreak) :: nextBlocks ->
             View.LanguageBreak.view languageBreak
-                :: toElmUiInternal config sectionDepth nextBlocks
+                :: viewInternal config sectionDepth nextBlocks
 
         (Doc.AudioPlayer audioPlayer) :: nextBlocks ->
             case config.audioPlayerState of
                 Just aps ->
                     View.AudioPlayer.view aps audioPlayer
-                        :: toElmUiInternal config sectionDepth nextBlocks
+                        :: viewInternal config sectionDepth nextBlocks
 
                 Nothing ->
                     ([ Html.text "[AudioPlayer state not provided]" ]
                         |> View.Paragraph.view
                     )
-                        :: toElmUiInternal config sectionDepth nextBlocks
+                        :: viewInternal config sectionDepth nextBlocks
 
         [] ->
             []
@@ -169,7 +169,7 @@ viewList config sectionDepth maybeStartNumber firstItem restItems =
                 |> List.map
                     (\( firstBlock, restBlocks ) ->
                         (firstBlock :: restBlocks)
-                            |> toElmUiInternal config sectionDepth
+                            |> viewInternal config sectionDepth
                     )
                 |> View.List.fromItems
     in
@@ -196,7 +196,7 @@ viewBlockQuote config sectionDepth blocks =
                 [ content ]
     in
     blocks
-        |> toElmUiInternal config sectionDepth
+        |> viewInternal config sectionDepth
         |> View.Column.setSpaced MSpacing
         |> toQuote
 

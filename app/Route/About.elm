@@ -2,7 +2,7 @@ module Route.About exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File
-import Doc.ElmUi
+import Doc.Html
 import Doc.Markdown
 import FatalError exposing (FatalError)
 import Head
@@ -107,7 +107,7 @@ view app shared =
             app.data.markdown
                 |> Doc.Markdown.parse
                     { audioPlayer = Nothing }
-                |> Doc.ElmUi.view Doc.ElmUi.noConfig
+                |> Doc.Html.view Doc.Html.noConfig
     in
     { title = title app
     , body =

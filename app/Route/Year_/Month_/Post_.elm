@@ -6,7 +6,7 @@ import Data.Date
 import Data.Post as Post exposing (Post)
 import Data.Tag as Tag
 import Date
-import Doc.ElmUi
+import Doc.Html
 import Doc.Markdown
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
@@ -220,7 +220,7 @@ view app shared model =
             [ app.data.markdown
                 |> Doc.Markdown.parse
                     { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
-                |> Doc.ElmUi.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
+                |> Doc.Html.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
             , View.CodeBlock.styles
             ]
                 |> Html.div [ class "flex flex-col" ]
