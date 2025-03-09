@@ -1,7 +1,6 @@
 module Doc.ElmUi exposing (Config, noConfig, view)
 
 import Color
-import Custom.Color as Color
 import Doc
 import Html exposing (Html)
 import Html.Attributes
