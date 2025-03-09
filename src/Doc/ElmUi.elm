@@ -3,7 +3,7 @@ module Doc.ElmUi exposing (Config, noConfig, view)
 import Color
 import Doc
 import Html exposing (Html)
-import Html.Attributes
+import Html.Attributes exposing (class, classList)
 import Sand
 import Style
 import View.AudioPlayer
@@ -69,15 +69,13 @@ toElmUiInternal config sectionDepth blocks =
                 newSectionDepth =
                     sectionDepth + 1
             in
-            ([ heading
-                |> List.map (viewInline config.onClick)
-                |> View.Heading.view newSectionDepth
-             , content
-                |> toElmUiInternal config newSectionDepth
-                |> View.Column.setSpaced MSpacing
-             ]
-                |> View.Column.setSpaced MSpacing
-            )
+            Html.div [ class "w-full flex flex-col gap-4" ]
+                [ heading
+                    |> List.map (viewInline config.onClick)
+                    |> View.Heading.view newSectionDepth
+                , Html.div [ class "w-full flex flex-col gap-4" ]
+                    (toElmUiInternal config newSectionDepth content)
+                ]
                 :: toElmUiInternal config sectionDepth nextBlocks
 
         Doc.Separation :: nextBlocks ->
@@ -148,19 +146,18 @@ viewInline onClickMaybe inline =
                 |> View.Inline.setLink onClickMaybe target
 
         Doc.LineBreak ->
-            [ Html.text "\n" ]
-                |> Html.span [ Html.Attributes.style "white-space" "pre-wrap" ]
+            Html.span [ class "whitespace-pre-wrap" ]
+                [ Html.text "\n" ]
 
 
 viewStyledText : Doc.StyledText -> Html msg
 viewStyledText { text, styles } =
     Html.span
-        [ Sand.setAttributeIf styles.bold
-            (Html.Attributes.style "font-weight" "bold")
-        , Sand.setAttributeIf styles.italic
-            (Html.Attributes.style "font-style" "italic")
-        , Sand.setAttributeIf styles.strikethrough
-            (Html.Attributes.style "text-decoration" "line-through")
+        [ classList
+            [ ( "font-bold", styles.bold )
+            , ( "italic", styles.italic )
+            , ( "line-through", styles.strikethrough )
+            ]
         ]
         [ Html.text text ]
 
@@ -193,11 +190,9 @@ viewBlockQuote config sectionDepth blocks =
     let
         toQuote : Html msg -> Html msg
         toQuote content =
-            Sand.div
-                [ Html.Attributes.style "border-left-width" "4px"
-                , Html.Attributes.style "border-left-style" "solid"
-                , Html.Attributes.style "border-left-color" (Color.toCssString Style.color.primary10)
-                , Sand.paddingLeft Sand.L5
+            Html.div
+                [ class "flex flex-col border-l-4 border-solid pl-6"
+                , Html.Attributes.style "border-color" (Color.toCssString Style.color.primary10)
                 ]
                 [ content ]
     in

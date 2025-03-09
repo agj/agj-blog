@@ -1,8 +1,7 @@
 module View.Heading exposing (..)
 
 import Html exposing (Html)
-import Html.Attributes
-import Sand
+import Html.Attributes exposing (class)
 
 
 view : Int -> List (Html msg) -> Html msg
@@ -12,41 +11,29 @@ view level content =
         normalizedLevel =
             max 1 level
 
-        baseStyles : List (Html.Attribute msg)
-        baseStyles =
-            [ Sand.fontSize fontSize
-            , Html.Attributes.style "line-height" "1.4"
-            , Sand.width (Sand.LRaw "100%")
-            , Sand.paddingTop Sand.L4
-            ]
-
-        { el, fontSize, styles, prepend } =
+        { el, classes, prepend } =
             case normalizedLevel of
                 1 ->
                     { el = Html.h1
-                    , fontSize = Sand.TextXxl
-                    , styles = [ Html.Attributes.style "font-weight" "bold" ]
+                    , classes = "text-4xl font-bold"
                     , prepend = Nothing
                     }
 
                 2 ->
                     { el = Html.h2
-                    , fontSize = Sand.TextXl
-                    , styles = [ Html.Attributes.style "font-weight" "bold" ]
+                    , classes = "text-2xl font-bold"
                     , prepend = Nothing
                     }
 
                 3 ->
                     { el = Html.h3
-                    , fontSize = Sand.TextL
-                    , styles = [ Html.Attributes.style "font-weight" "bold" ]
+                    , classes = "text-xl font-bold"
                     , prepend = Nothing
                     }
 
                 4 ->
                     { el = Html.h4
-                    , fontSize = Sand.TextL
-                    , styles = []
+                    , classes = "text-lg font-bold"
                     , prepend = Nothing
                     }
 
@@ -57,8 +44,7 @@ view level content =
 
                         else
                             Html.h6
-                    , fontSize = Sand.TextL
-                    , styles = []
+                    , classes = "text-lg"
                     , prepend = Just (String.repeat (normalizedLevel - 4) "▹")
                     }
 
@@ -75,5 +61,5 @@ view level content =
                 Nothing ->
                     Html.text ""
     in
-    el (baseStyles ++ styles)
+    el [ class ("leading-snug w-full pt-4 " ++ classes) ]
         (prependEl :: content)

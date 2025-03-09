@@ -4,7 +4,7 @@ module View.Inline exposing
     )
 
 import Html exposing (Html)
-import Html.Attributes
+import Html.Attributes exposing (class)
 import Html.Events
 import Sand
 import Style
@@ -14,14 +14,8 @@ setCode : String -> Html msg
 setCode code =
     [ Html.text code ]
         |> Html.span
-            [ Html.Attributes.style "white-space" "pre-wrap"
-            , Html.Attributes.style "font-family" "monospace"
-            , Sand.fontSize Sand.TextM
+            [ class "whitespace-pre-wrap font-mono px-2 rounded box-decoration-clone"
             , Sand.backgroundColor Style.color.layout05
-            , Sand.paddingLeft Sand.L2
-            , Sand.paddingRight Sand.L2
-            , Sand.borderRadius Sand.L2
-            , Html.Attributes.style "box-decoration-break" "clone"
             ]
 
 

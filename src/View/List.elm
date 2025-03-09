@@ -6,9 +6,7 @@ module View.List exposing
     )
 
 import Html exposing (Html)
-import Html.Attributes
-import Sand
-import View.Column exposing (Spacing(..))
+import Html.Attributes exposing (class)
 
 
 type ViewList msg
@@ -36,9 +34,9 @@ view (ViewList { items, startNumber }) =
     let
         renderItem : List (Html msg) -> Html msg
         renderItem item =
-            Html.li []
-                [ item
-                    |> View.Column.setSpaced SSpacing
+            Html.li [ class "ml-4" ]
+                [ Html.div [ class "flex flex-col" ]
+                    item
                 ]
 
         renderedItems : List (Html msg)
@@ -48,13 +46,13 @@ view (ViewList { items, startNumber }) =
     in
     case startNumber of
         Just num ->
-            Sand.ol
-                [ Sand.gap Sand.L3
+            Html.ol
+                [ class "flex list-decimal flex-col"
                 , Html.Attributes.attribute "start" (String.fromInt num)
                 ]
                 renderedItems
 
         Nothing ->
-            Sand.ul
-                [ Sand.gap Sand.L3 ]
+            Html.ul
+                [ class "flex list-disc flex-col" ]
                 renderedItems
