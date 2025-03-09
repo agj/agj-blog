@@ -43,6 +43,9 @@ withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
 view : PageBody msg -> Html (PagesMsg msg)
 view (PageBody config) =
     let
+        pageMaxWidth =
+            "max-w-[40rem]"
+
         title : Maybe (Html msg)
         title =
             case config.title of
@@ -71,14 +74,14 @@ view (PageBody config) =
                         [ class "flex w-full flex-col items-center"
                         , Sand.backgroundColor Style.color.layout05
                         ]
-                        [ Html.div [ class "w-full max-w-[56rem] flex-grow p-4" ]
+                        [ Html.div [ class ("w-full flex-grow p-4 " ++ pageMaxWidth) ]
                             [ title_ ]
                         ]
 
         content : Html msg
         content =
             Html.div [ class "flex w-full flex-col items-center" ]
-                [ Html.div [ class "w-full max-w-[56rem] px-4 pb-14 pt-6" ]
+                [ Html.div [ class ("w-full px-4 pb-32 pt-6 " ++ pageMaxWidth) ]
                     [ config.content ]
                 ]
     in
