@@ -6,6 +6,7 @@ module View.Figure exposing
     )
 
 import Html exposing (Html)
+import Html.Attributes exposing (class)
 import Sand
 import Style
 
@@ -39,8 +40,8 @@ view (Figure config) =
     let
         content : Html msg
         content =
-            Sand.div
-                [ Sand.padding Sand.L4
+            Html.div
+                [ class "flex flex-col p-3"
                 , Sand.backgroundColor Style.color.layout05
                 ]
                 [ config.content ]
@@ -49,12 +50,9 @@ view (Figure config) =
         caption =
             case config.caption of
                 Just text ->
-                    [ Sand.div
-                        [ Sand.paddingLeft Sand.L6
-                        , Sand.paddingRight Sand.L6
+                    [ Html.div
+                        [ class "flex flex-col px-6 pt-5 text-center"
                         , Sand.fontColor Style.color.layout20
-                        , Sand.paddingTop Sand.L5
-                        , Sand.textAlignCenter
                         ]
                         [ Html.p [] [ Html.text text ] ]
                     ]
@@ -62,5 +60,5 @@ view (Figure config) =
                 Nothing ->
                     []
     in
-    Sand.div [ Sand.alightItemsCenter ]
+    Html.div [ class "flex flex-col items-center" ]
         (List.concat [ [ content ], caption ])

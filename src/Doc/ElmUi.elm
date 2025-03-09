@@ -1,6 +1,5 @@
 module Doc.ElmUi exposing (Config, noConfig, view)
 
-import Color
 import Doc
 import Html exposing (Html)
 import Html.Attributes exposing (class, classList)
@@ -69,11 +68,11 @@ toElmUiInternal config sectionDepth blocks =
                 newSectionDepth =
                     sectionDepth + 1
             in
-            Html.div [ class "w-full flex flex-col gap-4" ]
+            Html.div [ class "flex w-full flex-col gap-4" ]
                 [ heading
                     |> List.map (viewInline config.onClick)
                     |> View.Heading.view newSectionDepth
-                , Html.div [ class "w-full flex flex-col gap-4" ]
+                , Html.div [ class "flex w-full flex-col gap-4" ]
                     (toElmUiInternal config newSectionDepth content)
                 ]
                 :: toElmUiInternal config sectionDepth nextBlocks
@@ -192,7 +191,7 @@ viewBlockQuote config sectionDepth blocks =
         toQuote content =
             Html.div
                 [ class "flex flex-col border-l-4 border-solid pl-6"
-                , Html.Attributes.style "border-color" (Color.toCssString Style.color.primary10)
+                , Sand.borderColor Style.color.primary10
                 ]
                 [ content ]
     in
@@ -205,11 +204,7 @@ viewBlockQuote config sectionDepth blocks =
 viewSeparation : Html msg
 viewSeparation =
     Html.hr
-        [ Sand.marginTop Sand.L6
-        , Sand.marginBottom Sand.L6
-        , Sand.height Sand.L1
-        , Sand.width (Sand.LRaw "100%")
+        [ class "my-6 h-0.5 w-full border-0"
         , Sand.backgroundColor Style.color.primary50
-        , Html.Attributes.style "border" "none"
         ]
         []

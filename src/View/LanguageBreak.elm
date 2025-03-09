@@ -6,7 +6,7 @@ module View.LanguageBreak exposing
 
 import Data.Language as Language exposing (Language)
 import Html exposing (Html)
-import Html.Attributes
+import Html.Attributes exposing (class)
 import Markdown.Html
 import Sand
 import Style
@@ -26,13 +26,9 @@ renderer =
 view : LanguageBreak -> Html msg
 view languageBreak =
     Html.hr
-        [ Html.Attributes.id "language"
-        , Sand.marginTop Sand.L6
-        , Sand.marginBottom Sand.L6
-        , Sand.height Sand.L1
-        , Sand.width (Sand.LRaw "100%")
+        [ class "my-6 h-0.5 w-full border-0"
+        , Html.Attributes.id "language"
         , Sand.backgroundColor Style.color.primary50
-        , Html.Attributes.style "border" "none"
         ]
         []
 

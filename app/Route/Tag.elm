@@ -10,6 +10,7 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
+import Html.Attributes exposing (class)
 import List.Extra as List
 import Pages.PageUrl exposing (PageUrl)
 import PagesMsg exposing (PagesMsg)
@@ -227,10 +228,7 @@ view app shared model =
             Tag.listView (Just OnClick) model.queryTags app.sharedData.posts subTags
 
         content =
-            Sand.gridCols
-                { cols = Sand.GridCols [ Sand.fr 1, Sand.fr 1 ]
-                , gap = Sand.L4
-                }
+            Html.div [ class "grid grid-cols-2 gap-4" ]
                 [ postColumn
                 , tagsColumn
                 ]

@@ -14,7 +14,7 @@ setCode : String -> Html msg
 setCode code =
     [ Html.text code ]
         |> Html.span
-            [ class "whitespace-pre-wrap font-mono px-2 rounded box-decoration-clone"
+            [ class "whitespace-pre-wrap rounded box-decoration-clone px-2 font-mono"
             , Sand.backgroundColor Style.color.layout05
             ]
 

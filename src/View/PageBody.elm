@@ -71,14 +71,14 @@ view (PageBody config) =
                         [ class "flex w-full flex-col items-center"
                         , Sand.backgroundColor Style.color.layout05
                         ]
-                        [ Html.div [ class "w-full max-w-[900px] flex-grow p-4" ]
+                        [ Html.div [ class "w-full max-w-[56rem] flex-grow p-4" ]
                             [ title_ ]
                         ]
 
         content : Html msg
         content =
             Html.div [ class "flex w-full flex-col items-center" ]
-                [ Html.div [ class "w-full max-w-[900px] px-4 pb-14 pt-6" ]
+                [ Html.div [ class "w-full max-w-[56rem] px-4 pb-14 pt-6" ]
                     [ config.content ]
                 ]
     in

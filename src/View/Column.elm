@@ -4,6 +4,7 @@ module View.Column exposing
     )
 
 import Html exposing (Html)
+import Html.Attributes exposing (class)
 import Sand
 
 
@@ -19,16 +20,13 @@ setSpaced spacing blocks =
         spacingSize =
             case spacing of
                 NoSpacing ->
-                    Sand.L0
+                    "gap-0"
 
                 SSpacing ->
-                    Sand.L1
+                    "gap-1"
 
                 MSpacing ->
-                    Sand.L4
+                    "gap-4"
     in
-    Sand.div
-        [ Sand.gap spacingSize
-        , Sand.width (Sand.LRaw "100%")
-        ]
+    Html.div [ class ("w-full flex flex-col " ++ spacingSize) ]
         blocks
