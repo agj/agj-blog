@@ -3,5 +3,5 @@ procs:
     shell: pnpm run start
     autostart: true
   review:
-    shell: pnpm exec elm-review --compiler "./node_modules/.bin/lamdera" --fix-all --watch
+    shell: pnpm exec elm-review ./src ./app --compiler "./node_modules/.bin/lamdera" --fix-all --watch
     autostart: true
