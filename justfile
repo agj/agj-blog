@@ -11,7 +11,7 @@ init:
 
 # Run development server.
 dev: install
-    pnpm run start
+    mprocs
 
 # Build for release.
 build: install

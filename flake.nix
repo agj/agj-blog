@@ -23,6 +23,7 @@
             pkgs.nodePackages.prettier
             pkgs.nodejs-slim_18
             pkgs.pnpm
+            pkgs.mprocs
           ];
         };
       }
