@@ -61,7 +61,8 @@ view (PageBody config) =
 
                 PageTitleAndSubtitle title_ subtitle ->
                     [ View.Heading.view 1 title_
-                    , Html.div [ class "text-sm" ] [ subtitle ]
+                    , Html.div [ class "text-layout-40 text-sm" ]
+                        [ subtitle ]
                     ]
                         |> View.Column.setSpaced MSpacing
                         |> Just
