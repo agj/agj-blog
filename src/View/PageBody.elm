@@ -90,6 +90,30 @@ view (PageBody config) =
     in
     Html.div
         [ class "flex w-full flex-col"
+        , customProperties
+            [ ( "color-layout-90", Style.color.layout90 |> Color.toCssString )
+            , ( "color-layout-80", Style.color.layout80 |> Color.toCssString )
+            , ( "color-layout-70", Style.color.layout70 |> Color.toCssString )
+            , ( "color-layout-60", Style.color.layout60 |> Color.toCssString )
+            , ( "color-layout-50", Style.color.layout50 |> Color.toCssString )
+            , ( "color-layout-40", Style.color.layout40 |> Color.toCssString )
+            , ( "color-layout-30", Style.color.layout30 |> Color.toCssString )
+            , ( "color-layout-20", Style.color.layout20 |> Color.toCssString )
+            , ( "color-layout-10", Style.color.layout10 |> Color.toCssString )
+            , ( "color-layout-05", Style.color.layout05 |> Color.toCssString )
+            , ( "color-primary-90", Style.color.primary90 |> Color.toCssString )
+            , ( "color-primary-80", Style.color.primary80 |> Color.toCssString )
+            , ( "color-primary-70", Style.color.primary70 |> Color.toCssString )
+            , ( "color-primary-60", Style.color.primary60 |> Color.toCssString )
+            , ( "color-primary-50", Style.color.primary50 |> Color.toCssString )
+            , ( "color-primary-40", Style.color.primary40 |> Color.toCssString )
+            , ( "color-primary-30", Style.color.primary30 |> Color.toCssString )
+            , ( "color-primary-20", Style.color.primary20 |> Color.toCssString )
+            , ( "color-primary-10", Style.color.primary10 |> Color.toCssString )
+            , ( "color-primary-05", Style.color.primary05 |> Color.toCssString )
+            , ( "color-transparent", "transparent" )
+            , ( "color-white", "white" )
+            ]
         ]
         [ header
         , content

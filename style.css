@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  font-size: 20px;
+@layer base {
+  :root {
+    font-size: 20px;
+  }
+
+  a {
+    @apply text-primary-70;
+  }
 }

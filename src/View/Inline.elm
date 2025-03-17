@@ -33,7 +33,6 @@ setLink onClickMaybe destination children =
     Html.a
         (attrs
             ++ [ Html.Attributes.href destination
-               , Sand.fontColor Style.color.primary70
                ]
         )
         children
