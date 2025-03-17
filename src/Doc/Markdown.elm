@@ -4,7 +4,6 @@ module Doc.Markdown exposing
     , parse
     )
 
-import Custom.List as List
 import Doc
 import List.Extra as List
 import Markdown.Block
@@ -13,8 +12,7 @@ import Markdown.Parser
 import Markdown.Renderer
 import Result.Extra as Result
 import View.AudioPlayer
-import View.AudioPlayer.Track exposing (Track)
-import View.Column exposing (Spacing(..))
+import View.AudioPlayer.Track
 import View.LanguageBreak
 import View.VideoEmbed
 

@@ -9,7 +9,6 @@ module Sand exposing
 import Color exposing (Color)
 import Html exposing (Html)
 import Html.Attributes
-import TypedSvg.Types exposing (FontSizeAdjust(..))
 
 
 none : Html msg

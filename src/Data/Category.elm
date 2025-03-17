@@ -20,7 +20,6 @@ import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
 import List.Extra as List
 import Sand
-import View.Column exposing (Spacing(..))
 import View.Inline
 import View.List
 

@@ -8,8 +8,6 @@ import Data.Language as Language exposing (Language)
 import Html exposing (Html)
 import Html.Attributes exposing (class)
 import Markdown.Html
-import Sand
-import Style
 
 
 type alias LanguageBreak =

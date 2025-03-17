@@ -12,7 +12,6 @@ import Head
 import Html exposing (Html)
 import Html.Attributes exposing (class)
 import List.Extra as List
-import Pages.PageUrl exposing (PageUrl)
 import PagesMsg exposing (PagesMsg)
 import Result.Extra as Result
 import RouteBuilder exposing (App, StatefulRoute)
@@ -22,7 +21,6 @@ import Site
 import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-import View.Column exposing (Spacing(..))
 import View.Inline
 import View.PageBody
 import View.Paragraph

@@ -3,11 +3,10 @@ module View.PageBody exposing (..)
 import Color
 import Custom.Html.Attributes exposing (customProperties)
 import Html exposing (Html)
-import Html.Attributes exposing (class, style)
+import Html.Attributes exposing (class)
 import PagesMsg exposing (PagesMsg)
 import Sand
 import Style
-import View.CodeBlock exposing (styles)
 import View.Column exposing (Spacing(..))
 import View.Heading
 

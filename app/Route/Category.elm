@@ -10,7 +10,6 @@ import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
 import View exposing (View)
-import View.Column exposing (Spacing(..))
 import View.Inline
 import View.PageBody
 import View.Paragraph

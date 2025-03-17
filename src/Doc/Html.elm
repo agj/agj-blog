@@ -3,8 +3,6 @@ module Doc.Html exposing (Config, noConfig, view)
 import Doc
 import Html exposing (Html)
 import Html.Attributes exposing (class, classList)
-import Sand
-import Style
 import View.AudioPlayer
 import View.CodeBlock
 import View.Column exposing (Spacing(..))

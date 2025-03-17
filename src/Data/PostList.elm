@@ -1,11 +1,10 @@
 module Data.PostList exposing (view)
 
 import Custom.List as List
-import Data.Category as Category exposing (Category)
+import Data.Category as Category
 import Data.Date as Date
 import Data.Post as Post
 import Html exposing (Html)
-import List.Extra as List
 import View.Column exposing (Spacing(..))
 import View.Heading
 import View.Inline

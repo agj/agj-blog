@@ -9,7 +9,7 @@ import BackendTask exposing (BackendTask)
 import Data.Category as Category exposing (Category)
 import Data.Tag as Tag exposing (Tag)
 import Date exposing (Date)
-import DateOrDateTime exposing (DateOrDateTime)
+import DateOrDateTime
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo

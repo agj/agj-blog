@@ -7,8 +7,6 @@ module View.Figure exposing
 
 import Html exposing (Html)
 import Html.Attributes exposing (class)
-import Sand
-import Style
 
 
 type Figure msg

@@ -5,7 +5,6 @@ module View.Column exposing
 
 import Html exposing (Html)
 import Html.Attributes exposing (class)
-import Sand
 
 
 type Spacing

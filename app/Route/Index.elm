@@ -2,19 +2,17 @@ module Route.Index exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
 import Browser.Navigation
-import Data.Category as Category exposing (Category, NestedCategory)
+import Data.Category as Category
 import Data.Post as Post
 import Data.PostList
 import Data.Tag as Tag
-import Dict exposing (Dict)
+import Dict
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
 import Html.Attributes exposing (class)
 import List.Extra as List
-import Maybe.Extra as Maybe
-import Pages.PageUrl exposing (PageUrl)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared

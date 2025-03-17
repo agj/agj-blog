@@ -6,13 +6,11 @@ import Data.PostList
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
-import List.Extra as List
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
 import View exposing (View)
-import View.Column exposing (Spacing(..))
 import View.Inline
 import View.PageBody
 import View.Paragraph

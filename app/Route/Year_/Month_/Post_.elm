@@ -21,7 +21,6 @@ import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.AudioPlayer
 import View.CodeBlock
-import View.Column exposing (Spacing(..))
 import View.Inline
 import View.PageBody
 

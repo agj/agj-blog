@@ -9,7 +9,6 @@ module View.AudioPlayer exposing
     , withConfig
     )
 
-import Color exposing (Color)
 import Html exposing (Html)
 import Html.Attributes exposing (class)
 import Html.Events
