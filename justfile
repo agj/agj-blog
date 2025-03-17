@@ -33,6 +33,14 @@ review-fix: install
 review-watch: install
     pnpm exec elm-review ./src ./app --compiler {{lamdera}} --watch --fix
 
+# Suppress remaining review errors.
+review-suppress: install
+    pnpm exec elm-review suppress ./src ./app --compiler {{lamdera}}
+
+# Resurface suppressed review errors.
+review-unsuppress: install
+    pnpm exec elm-review ./src ./app --compiler {{lamdera}} --unsuppress
+
 [private]
 install:
     pnpm install
