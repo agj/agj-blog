@@ -30,11 +30,11 @@ config =
     [ TailwindCss.ConsistentClassOrder.rule (TailwindCss.ConsistentClassOrder.defaultOptions { order = TailwindCss.ClassOrder.classOrder })
     , TailwindCss.NoCssConflict.rule (TailwindCss.NoCssConflict.defaultOptions { props = TailwindCss.ClassOrder.classProps })
     , TailwindCss.NoUnknownClasses.rule (TailwindCss.NoUnknownClasses.defaultOptions { order = classOrder })
-    -- , NoUnused.CustomTypeConstructors.rule []
-    -- , NoUnused.CustomTypeConstructorArgs.rule
-    -- , NoUnused.Dependencies.rule
-    -- , NoUnused.Exports.rule
-    -- , NoUnused.Parameters.rule
-    -- , NoUnused.Patterns.rule
+    , NoUnused.CustomTypeConstructorArgs.rule
+    , NoUnused.CustomTypeConstructors.rule []
+    , NoUnused.Exports.rule
+    , NoUnused.Parameters.rule
     , NoUnused.Variables.rule
+    -- , NoUnused.Dependencies.rule
+    -- , NoUnused.Patterns.rule
     ]
