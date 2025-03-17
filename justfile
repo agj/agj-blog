@@ -23,15 +23,15 @@ dev-review: install
 
 # Check for errors.
 review: install
-    pnpm exec elm-review --compiler {{lamdera}}
+    pnpm exec elm-review ./src ./app --compiler {{lamdera}}
 
 # Check for errors, and automatically fix them.
 review-fix: install
-    pnpm exec elm-review --compiler {{lamdera}} --fix
+    pnpm exec elm-review ./src ./app --compiler {{lamdera}} --fix
 
 # Check for errors, and listen for changes in files.
 review-watch: install
-    pnpm exec elm-review --compiler {{lamdera}} --watch --fix
+    pnpm exec elm-review ./src ./app --compiler {{lamdera}} --watch --fix
 
 [private]
 install:
