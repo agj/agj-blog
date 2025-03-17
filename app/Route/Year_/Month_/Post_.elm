@@ -24,7 +24,6 @@ import View.CodeBlock
 import View.Column exposing (Spacing(..))
 import View.Inline
 import View.PageBody
-import View.Paragraph
 
 
 route : StatefulRoute RouteParams Data ActionData Model Msg
