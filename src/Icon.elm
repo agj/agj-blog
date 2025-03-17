@@ -1,11 +1,9 @@
 module Icon exposing
     ( Icon
     , Size(..)
-    , fastForward
     , none
     , pause
     , play
-    , rewind
     , stop
     )
 
@@ -31,18 +29,6 @@ play size =
 pause : Icon msg
 pause size =
     Heroicons.Solid.pause
-        |> style size
-
-
-rewind : Icon msg
-rewind size =
-    Heroicons.Solid.backward
-        |> style size
-
-
-fastForward : Icon msg
-fastForward size =
-    Heroicons.Solid.forward
         |> style size
 
 

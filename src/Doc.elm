@@ -59,11 +59,6 @@ plainText text =
     Text { text = text, styles = emptyStyles }
 
 
-link : String -> List StyledText -> Inline
-link target inlines =
-    Link { target = target, inlines = inlines }
-
-
 inlineCode : String -> Inline
 inlineCode text =
     InlineCode text

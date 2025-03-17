@@ -9,14 +9,6 @@ formatShortDate year month date =
         |> String.replace "{date}" (String.fromInt date)
 
 
-formatIso8601Date : String -> Int -> Int -> String
-formatIso8601Date year month date =
-    "{year}-{month}-{date}"
-        |> String.replace "{year}" year
-        |> String.replace "{month}" (String.fromInt month |> String.padLeft 2 '0')
-        |> String.replace "{date}" (String.fromInt date)
-
-
 monthNumberToShortName : Int -> String
 monthNumberToShortName num =
     case num of
