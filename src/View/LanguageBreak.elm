@@ -26,9 +26,8 @@ renderer =
 view : LanguageBreak -> Html msg
 view languageBreak =
     Html.hr
-        [ class "my-6 h-0.5 w-full border-0"
+        [ class "bg-primary-50 my-6 h-0.5 w-full border-0"
         , Html.Attributes.id "language"
-        , Sand.backgroundColor Style.color.primary50
         ]
         []
 

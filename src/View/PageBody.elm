@@ -73,10 +73,7 @@ view (PageBody config) =
                     Sand.none
 
                 Just title_ ->
-                    Html.div
-                        [ class "flex w-full flex-col items-center"
-                        , Sand.backgroundColor Style.color.layout05
-                        ]
+                    Html.div [ class "bg-layout-05 flex w-full flex-col items-center" ]
                         [ Html.div [ class ("w-full flex-grow p-4 " ++ pageMaxWidth) ]
                             [ title_ ]
                         ]

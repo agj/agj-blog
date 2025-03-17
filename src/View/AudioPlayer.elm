@@ -16,7 +16,6 @@ import Html.Events
 import Icon
 import Markdown.Html
 import Sand
-import Style
 import View.AudioPlayer.Track as Track exposing (Track)
 
 
@@ -113,10 +112,7 @@ view (State state) (AudioPlayerWithConfig audioPlayer config) =
     in
     case config.tracks of
         firstTrack :: _ ->
-            Html.div
-                [ class "flex flex-col"
-                , Sand.backgroundColor Style.color.layout05
-                ]
+            Html.div [ class "bg-layout-05 flex flex-col" ]
                 [ titleView state config firstTrack audioPlayer.title
                 , Html.div [ class "flex flex-col" ]
                     (config.tracks
@@ -153,9 +149,7 @@ titleView state config firstTrack title =
                     )
     in
     Html.button
-        [ class "w-full px-3 py-2"
-        , Sand.backgroundColor Style.color.layout60
-        , Sand.fontColor Style.color.white
+        [ class "bg-layout-60 w-full px-3 py-2 text-white"
         , Html.Events.onClick (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
         ]
         [ Html.div [ class "flex flex-row gap-1" ]

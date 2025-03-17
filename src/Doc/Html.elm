@@ -189,10 +189,7 @@ viewBlockQuote config sectionDepth blocks =
     let
         toQuote : Html msg -> Html msg
         toQuote content =
-            Html.div
-                [ class "flex flex-col border-l-4 border-solid pl-6"
-                , Sand.borderColor Style.color.primary10
-                ]
+            Html.div [ class "border-primary-10 flex flex-col border-l-4 border-solid pl-6" ]
                 [ content ]
     in
     blocks
@@ -203,8 +200,5 @@ viewBlockQuote config sectionDepth blocks =
 
 viewSeparation : Html msg
 viewSeparation =
-    Html.hr
-        [ class "my-6 h-0.5 w-full border-0"
-        , Sand.backgroundColor Style.color.primary50
-        ]
+    Html.hr [ class "bg-primary-50 my-6 h-0.5 w-full border-0" ]
         []

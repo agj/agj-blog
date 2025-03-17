@@ -87,29 +87,29 @@ view (TrackWithConfig track config) =
         { icon, fontColor, backgroundColor, newPlayStateOnPress, events } =
             case config.playState of
                 StatePlaying ph ->
-                    { fontColor = Style.color.white
-                    , backgroundColor = Style.color.primary50
+                    { fontColor = "text-white"
+                    , backgroundColor = "bg-primary-50"
                     , icon = Icon.pause
                     , newPlayStateOnPress = StatePaused ph
                     , events = []
                     }
 
                 StatePaused ph ->
-                    { fontColor = Style.color.white
-                    , backgroundColor = Style.color.primary50
+                    { fontColor = "text-white"
+                    , backgroundColor = "bg-primary-50"
                     , icon = Icon.play
                     , newPlayStateOnPress = StatePlaying ph
                     , events = []
                     }
 
                 StateStopped ->
-                    { fontColor = Style.color.layout90
+                    { fontColor = "text-layout-90"
                     , backgroundColor =
                         if config.hovered then
-                            Style.color.layout10
+                            "bg-layout-10"
 
                         else
-                            Style.color.transparent
+                            "bg-transparent"
                     , icon =
                         if config.hovered then
                             Icon.play
@@ -121,9 +121,8 @@ view (TrackWithConfig track config) =
                     }
 
         buttonStyles =
-            [ class "w-full px-3 pt-2"
+            [ class ("w-full px-3 pt-2 " ++ fontColor)
             , classList [ ( "pb-2", not isSelected ) ]
-            , Sand.fontColor fontColor
             ]
 
         audioPlayerEl =
@@ -143,8 +142,7 @@ view (TrackWithConfig track config) =
             Html.button
                 (buttonStyles
                     ++ events
-                    ++ [ Html.Events.onClick (config.onPlayStateChanged newPlayStateOnPress)
-                       ]
+                    ++ [ Html.Events.onClick (config.onPlayStateChanged newPlayStateOnPress) ]
                 )
                 [ Html.div [ class "flex flex-row gap-1" ]
                     [ icon Icon.Medium
@@ -175,10 +173,7 @@ view (TrackWithConfig track config) =
             else
                 [ buttonEl ]
     in
-    Html.div
-        [ class "flex w-full flex-col"
-        , Sand.backgroundColor backgroundColor
-        ]
+    Html.div [ class ("flex w-full flex-col " ++ backgroundColor) ]
         columnEls
 
 
