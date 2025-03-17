@@ -11,6 +11,13 @@ when inside the directory containing this file.
 
 -}
 
+import NoUnused.CustomTypeConstructorArgs
+import NoUnused.CustomTypeConstructors
+import NoUnused.Dependencies
+import NoUnused.Exports
+import NoUnused.Parameters
+import NoUnused.Patterns
+import NoUnused.Variables
 import Review.Rule exposing (Rule)
 import TailwindCss.ClassOrder exposing (classOrder)
 import TailwindCss.ConsistentClassOrder
@@ -23,4 +30,11 @@ config =
     [ TailwindCss.ConsistentClassOrder.rule (TailwindCss.ConsistentClassOrder.defaultOptions { order = TailwindCss.ClassOrder.classOrder })
     , TailwindCss.NoCssConflict.rule (TailwindCss.NoCssConflict.defaultOptions { props = TailwindCss.ClassOrder.classProps })
     , TailwindCss.NoUnknownClasses.rule (TailwindCss.NoUnknownClasses.defaultOptions { order = classOrder })
+    -- , NoUnused.CustomTypeConstructors.rule []
+    -- , NoUnused.CustomTypeConstructorArgs.rule
+    -- , NoUnused.Dependencies.rule
+    -- , NoUnused.Exports.rule
+    -- , NoUnused.Parameters.rule
+    -- , NoUnused.Patterns.rule
+    , NoUnused.Variables.rule
     ]
