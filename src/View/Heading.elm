@@ -53,8 +53,8 @@ view level content =
             case prepend of
                 Just text ->
                     Html.span
-                        [ Html.Attributes.attribute "aria-hidden" "true"
-                        , Html.Attributes.style "user-select" "none"
+                        [ class "select-none"
+                        , Html.Attributes.attribute "aria-hidden" "true"
                         ]
                         [ Html.text (text ++ " ") ]
 

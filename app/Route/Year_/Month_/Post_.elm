@@ -206,14 +206,14 @@ view app shared model =
 
         postInfo : Html Msg
         postInfo =
-            ([ Html.text ("Posted {date}, on " |> String.replace "{date}" date)
-             , View.Inline.setLink Nothing "/" [ Html.text "agj's blog" ]
-             , Html.text ". "
-             ]
-                ++ categoriesTextEls
-                ++ tagsTextEls
-            )
-                |> View.Paragraph.view
+            Html.p [ class "w-full py-2" ]
+                ([ Html.text ("Posted {date}, on " |> String.replace "{date}" date)
+                 , View.Inline.setLink Nothing "/" [ Html.text "agj's blog" ]
+                 , Html.text ". "
+                 ]
+                    ++ categoriesTextEls
+                    ++ tagsTextEls
+                )
 
         contentEl : Html Msg
         contentEl =

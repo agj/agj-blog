@@ -1,10 +1,13 @@
 module View.PageBody exposing (..)
 
+import Color
+import Custom.Html.Attributes exposing (customProperties)
 import Html exposing (Html)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, style)
 import PagesMsg exposing (PagesMsg)
 import Sand
 import Style
+import View.CodeBlock exposing (styles)
 import View.Column exposing (Spacing(..))
 import View.Heading
 
@@ -58,7 +61,7 @@ view (PageBody config) =
 
                 PageTitleAndSubtitle title_ subtitle ->
                     [ View.Heading.view 1 title_
-                    , subtitle
+                    , Html.div [ class "text-sm" ] [ subtitle ]
                     ]
                         |> View.Column.setSpaced MSpacing
                         |> Just
@@ -85,8 +88,10 @@ view (PageBody config) =
                     [ config.content ]
                 ]
     in
-    [ header
-    , content
-    ]
-        |> View.Column.setSpaced NoSpacing
+    Html.div
+        [ class "flex w-full flex-col"
+        ]
+        [ header
+        , content
+        ]
         |> Html.map PagesMsg.fromMsg
