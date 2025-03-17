@@ -8,9 +8,7 @@ import Html.Attributes exposing (class)
 
 
 type Spacing
-    = NoSpacing
-    | SSpacing
-    | MSpacing
+    = MSpacing
 
 
 setSpaced : Spacing -> List (Html msg) -> Html msg
@@ -18,12 +16,6 @@ setSpaced spacing blocks =
     let
         spacingSize =
             case spacing of
-                NoSpacing ->
-                    "gap-0"
-
-                SSpacing ->
-                    "gap-1"
-
                 MSpacing ->
                     "gap-4"
     in
