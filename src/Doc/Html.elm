@@ -5,7 +5,6 @@ import Html exposing (Html)
 import Html.Attributes exposing (class, classList)
 import View.AudioPlayer
 import View.CodeBlock
-import View.Column exposing (Spacing(..))
 import View.Figure
 import View.Heading
 import View.Inline
@@ -23,9 +22,8 @@ type alias Config msg =
 
 view : Config msg -> List (Doc.Block msg) -> Html msg
 view config blocks =
-    blocks
-        |> viewInternal config 1
-        |> View.Column.setSpaced MSpacing
+    Html.div [ class "flex flex-col gap-4" ]
+        (viewInternal config 1 blocks)
 
 
 noConfig : Config msg
@@ -184,16 +182,10 @@ viewList config sectionDepth maybeStartNumber firstItem restItems =
 
 viewBlockQuote : Config msg -> Int -> List (Doc.Block msg) -> Html msg
 viewBlockQuote config sectionDepth blocks =
-    let
-        toQuote : Html msg -> Html msg
-        toQuote content =
-            Html.div [ class "border-primary-10 flex flex-col border-l-4 border-solid pl-6" ]
-                [ content ]
-    in
-    blocks
-        |> viewInternal config sectionDepth
-        |> View.Column.setSpaced MSpacing
-        |> toQuote
+    Html.div [ class "border-primary-10 flex flex-col border-l-4 border-solid pl-6" ]
+        [ Html.div [ class "flex flex-col gap-4" ]
+            (viewInternal config sectionDepth blocks)
+        ]
 
 
 viewSeparation : Html msg

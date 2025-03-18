@@ -7,7 +7,6 @@ import Html.Attributes exposing (class)
 import PagesMsg exposing (PagesMsg)
 import Sand
 import Style
-import View.Column exposing (Spacing(..))
 import View.Heading
 
 
@@ -59,11 +58,11 @@ view (PageBody config) =
                         |> Just
 
                 PageTitleAndSubtitle title_ subtitle ->
-                    [ View.Heading.view 1 title_
-                    , Html.div [ class "text-layout-40 text-sm" ]
-                        [ subtitle ]
-                    ]
-                        |> View.Column.setSpaced MSpacing
+                    Html.div [ class "flex flex-col gap-4" ]
+                        [ View.Heading.view 1 title_
+                        , Html.div [ class "text-layout-40 text-sm" ]
+                            [ subtitle ]
+                        ]
                         |> Just
 
         header : Html msg

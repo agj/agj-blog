@@ -5,7 +5,7 @@ import Data.Category as Category
 import Data.Date as Date
 import Data.Post as Post
 import Html exposing (Html)
-import View.Column exposing (Spacing(..))
+import Html.Attributes exposing (class)
 import View.Heading
 import View.Inline
 import View.List
@@ -53,9 +53,8 @@ view posts =
                         )
                     )
     in
-    gistsByYearAndMonth
-        |> List.map viewGistYear
-        |> View.Column.setSpaced MSpacing
+    Html.div [ class "flex flex-col gap-4" ]
+        (List.map viewGistYear gistsByYearAndMonth)
 
 
 
@@ -73,8 +72,8 @@ viewGistYear ( year, gistMonths ) =
             gistMonths
                 |> List.map viewGistMonth
     in
-    (heading :: months)
-        |> View.Column.setSpaced MSpacing
+    Html.div [ class "flex flex-col gap-4" ]
+        (heading :: months)
 
 
 viewGistMonth : ( Int, List Post.GlobMatchFrontmatter ) -> Html msg
@@ -95,8 +94,8 @@ viewGistMonth ( month, gists ) =
                 |> View.List.fromItems
                 |> View.List.view
     in
-    [ heading, gistsList ]
-        |> View.Column.setSpaced MSpacing
+    Html.div [ class "flex flex-col gap-4" ]
+        [ heading, gistsList ]
 
 
 viewGist : Post.GlobMatchFrontmatter -> Html msg

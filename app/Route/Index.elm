@@ -19,7 +19,6 @@ import Shared
 import Site
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-import View.Column exposing (Spacing(..))
 import View.Heading
 import View.PageBody
 
@@ -149,14 +148,14 @@ view app shared model =
         cols : List (Html Msg)
         cols =
             [ Data.PostList.view app.sharedData.posts
-            , [ [ Html.text "Categories" ]
+            , Html.div [ class "flex flex-col gap-4" ]
+                [ [ Html.text "Categories" ]
                     |> View.Heading.view 2
-              , Category.viewList
-              , [ Html.text "Tags" ]
+                , Category.viewList
+                , [ Html.text "Tags" ]
                     |> View.Heading.view 2
-              , Tag.listView Nothing [] app.sharedData.posts Tag.all
-              ]
-                |> View.Column.setSpaced MSpacing
+                , Tag.listView Nothing [] app.sharedData.posts Tag.all
+                ]
             ]
 
         content : Html Msg
