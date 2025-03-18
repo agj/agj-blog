@@ -5,9 +5,8 @@ import Data.Category as Category
 import Data.Date as Date
 import Data.Post as Post
 import Html exposing (Html)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, href)
 import View.Heading
-import View.Inline
 import View.List
 
 
@@ -109,18 +108,18 @@ viewGist gist =
 
         postLink : Html msg
         postLink =
-            [ Html.text gist.frontmatter.title ]
-                |> View.Inline.setLink Nothing (Post.globMatchFrontmatterToUrl gist)
-                |> List.singleton
-                |> Html.b []
+            Html.b []
+                [ Html.a [ href (Post.globMatchFrontmatterToUrl gist) ]
+                    [ Html.text gist.frontmatter.title ]
+                ]
 
         postCategoryEls : List (Html msg)
         postCategoryEls =
             gist.frontmatter.categories
                 |> List.map
                     (\category ->
-                        [ Html.text (Category.getName category) ]
-                            |> View.Inline.setLink Nothing (Category.toUrl category)
+                        Html.a [ href (Category.toUrl category) ]
+                            [ Html.text (Category.getName category) ]
                     )
 
         postCategories : List (Html msg)

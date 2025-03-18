@@ -6,12 +6,12 @@ import Data.PostList
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
+import Html.Attributes exposing (href)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
 import View exposing (View)
-import View.Inline
 import View.PageBody
 
 
@@ -111,8 +111,8 @@ view app shared =
             Html.p []
                 (categoryDescription
                     ++ [ Html.text "Back to "
-                       , [ Html.text "the index" ]
-                            |> View.Inline.setLink Nothing "/"
+                       , Html.a [ href "/" ]
+                            [ Html.text "the index" ]
                        , Html.text "."
                        ]
                 )

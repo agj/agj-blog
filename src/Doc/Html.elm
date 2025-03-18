@@ -1,8 +1,10 @@
 module Doc.Html exposing (Config, noConfig, view)
 
+import Custom.Html.Attributes
 import Doc
 import Html exposing (Html)
-import Html.Attributes exposing (class, classList)
+import Html.Attributes exposing (class, classList, href)
+import Html.Events
 import View.AudioPlayer
 import View.CodeBlock
 import View.Figure
@@ -134,10 +136,16 @@ viewInline onClickMaybe inline =
             View.Inline.setCode text
 
         Doc.Link { target, inlines } ->
-            (inlines
-                |> List.map viewStyledText
-            )
-                |> View.Inline.setLink onClickMaybe target
+            Html.a
+                [ href target
+                , case onClickMaybe of
+                    Just msg ->
+                        Html.Events.onClick (msg target)
+
+                    Nothing ->
+                        Custom.Html.Attributes.none
+                ]
+                (List.map viewStyledText inlines)
 
         Doc.LineBreak ->
             Html.span [ class "whitespace-pre-wrap" ]

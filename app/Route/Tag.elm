@@ -12,6 +12,7 @@ import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
+import Html.Events
 import List.Extra as List
 import PagesMsg exposing (PagesMsg)
 import Result.Extra as Result
@@ -21,7 +22,6 @@ import Site
 import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-import View.Inline
 import View.PageBody
 
 
@@ -186,8 +186,8 @@ view app shared model =
                         [] ->
                             Tag.baseUrl
             in
-            [ Html.text (Tag.getName tag) ]
-                |> View.Inline.setLink (Just OnClick) url
+            Html.a [ href url, Html.Events.onClick (OnClick url) ]
+                [ Html.text (Tag.getName tag) ]
 
         titleChildren : List (Html Msg)
         titleChildren =

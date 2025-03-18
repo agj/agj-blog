@@ -1,7 +1,12 @@
-module Custom.Html.Attributes exposing (customProperties)
+module Custom.Html.Attributes exposing (customProperties, none)
 
 import Html exposing (Attribute)
 import Html.Attributes
+
+
+none : Attribute msg
+none =
+    Html.Attributes.classList []
 
 
 {-| Define a list of CSS custom properties (otherwise known as variables, those

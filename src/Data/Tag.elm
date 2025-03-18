@@ -12,11 +12,13 @@ module Data.Tag exposing
     , toUrl
     )
 
+import Custom.Html.Attributes
 import Html exposing (Html)
+import Html.Attributes exposing (href)
+import Html.Events
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
 import List.Extra as List
-import View.Inline
 
 
 type Tag
@@ -74,15 +76,17 @@ toLink onClick tagsToAddTo tag =
     let
         singleLink : Html msg
         singleLink =
-            [ Html.text (getName tag) ]
-                |> View.Inline.setLink onClick (toUrl tag [])
+            linkWithOnClick onClick
+                (toUrl tag [])
+                [ Html.text (getName tag) ]
     in
     case tagsToAddTo of
         _ :: _ ->
             let
                 addLink =
-                    [ Html.text "+" ]
-                        |> View.Inline.setLink onClick (toUrl tag tagsToAddTo)
+                    linkWithOnClick onClick
+                        (toUrl tag tagsToAddTo)
+                        [ Html.text "+" ]
             in
             [ singleLink
             , Html.text "["
@@ -665,3 +669,20 @@ all =
         , slug = "nihongo"
         }
     ]
+
+
+
+-- INTERNAL
+
+
+linkWithOnClick : Maybe (String -> msg) -> String -> List (Html msg) -> Html msg
+linkWithOnClick maybeMsg url =
+    Html.a
+        [ href url
+        , case maybeMsg of
+            Just msg ->
+                Html.Events.onClick (msg url)
+
+            Nothing ->
+                Custom.Html.Attributes.none
+        ]

@@ -15,10 +15,10 @@ module Data.Category exposing
 import BackendTask exposing (BackendTask)
 import Custom.Html
 import Html exposing (Html)
+import Html.Attributes exposing (href)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
 import List.Extra as List
-import View.Inline
 import View.List
 
 
@@ -83,8 +83,8 @@ viewList =
 
 toLink : Category -> Html msg
 toLink category =
-    [ Html.text (getName category) ]
-        |> View.Inline.setLink Nothing (toUrl category)
+    Html.a [ href (toUrl category) ]
+        [ Html.text (getName category) ]
 
 
 decoder : Decoder Category

@@ -12,7 +12,7 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, href)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
@@ -21,7 +21,6 @@ import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.AudioPlayer
 import View.CodeBlock
-import View.Inline
 import View.PageBody
 
 
@@ -206,7 +205,8 @@ view app shared model =
         postInfo =
             Html.p [ class "w-full py-2" ]
                 ([ Html.text ("Posted {date}, on " |> String.replace "{date}" date)
-                 , View.Inline.setLink Nothing "/" [ Html.text "agj's blog" ]
+                 , Html.a [ href "/" ]
+                    [ Html.text "agj's blog" ]
                  , Html.text ". "
                  ]
                     ++ categoriesTextEls
