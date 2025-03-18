@@ -2,6 +2,7 @@ module Route.Tag exposing (ActionData, Data, Model, Msg, route)
 
 import AppUrl exposing (AppUrl)
 import BackendTask exposing (BackendTask)
+import Custom.Html
 import Custom.List as List
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
@@ -15,7 +16,6 @@ import List.Extra as List
 import PagesMsg exposing (PagesMsg)
 import Result.Extra as Result
 import RouteBuilder exposing (App, StatefulRoute)
-import Sand
 import Shared
 import Site
 import Url
@@ -218,7 +218,7 @@ view app shared model =
                 postViews
 
             else
-                Sand.none
+                Custom.Html.none
 
         tagsColumn : Html Msg
         tagsColumn =

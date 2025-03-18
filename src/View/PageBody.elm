@@ -1,11 +1,11 @@
 module View.PageBody exposing (..)
 
 import Color
+import Custom.Html
 import Custom.Html.Attributes exposing (customProperties)
 import Html exposing (Html)
 import Html.Attributes exposing (class)
 import PagesMsg exposing (PagesMsg)
-import Sand
 import Style
 import View.Heading
 
@@ -69,7 +69,7 @@ view (PageBody config) =
         header =
             case title of
                 Nothing ->
-                    Sand.none
+                    Custom.Html.none
 
                 Just title_ ->
                     Html.div [ class "bg-layout-05 flex w-full flex-col items-center" ]

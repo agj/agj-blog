@@ -9,12 +9,12 @@ module View.AudioPlayer exposing
     , withConfig
     )
 
+import Custom.Html
 import Html exposing (Html)
 import Html.Attributes exposing (class)
 import Html.Events
 import Icon
 import Markdown.Html
-import Sand
 import View.AudioPlayer.Track as Track exposing (Track)
 
 
@@ -125,7 +125,7 @@ view (State state) (AudioPlayerWithConfig audioPlayer config) =
                 ]
 
         [] ->
-            Sand.none
+            Custom.Html.none
 
 
 

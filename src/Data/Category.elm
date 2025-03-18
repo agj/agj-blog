@@ -13,11 +13,11 @@ module Data.Category exposing
     )
 
 import BackendTask exposing (BackendTask)
+import Custom.Html
 import Html exposing (Html)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
 import List.Extra as List
-import Sand
 import View.Inline
 import View.List
 
@@ -115,7 +115,7 @@ viewCategory (NestedCategory category children) =
                     |> View.List.view
 
             else
-                Sand.none
+                Custom.Html.none
 
         current : Html msg
         current =

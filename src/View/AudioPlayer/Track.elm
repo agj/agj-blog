@@ -9,13 +9,13 @@ module View.AudioPlayer.Track exposing
     , withConfig
     )
 
+import Custom.Html
 import Html exposing (Html)
 import Html.Attributes exposing (class, classList)
 import Html.Events
 import Icon
 import Json.Decode as Decode exposing (Decoder)
 import Markdown.Html
-import Sand
 import Style
 import TypedSvg as Svg
 import TypedSvg.Attributes as Svg
@@ -136,7 +136,7 @@ view (TrackWithConfig track config) =
                     }
 
             else
-                Sand.none
+                Custom.Html.none
 
         buttonEl =
             Html.button
