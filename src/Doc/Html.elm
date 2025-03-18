@@ -133,7 +133,7 @@ viewInline onClickMaybe inline =
             viewStyledText styledText
 
         Doc.InlineCode text ->
-            View.Inline.setCode text
+            View.Inline.code text
 
         Doc.Link { target, inlines } ->
             Html.a
