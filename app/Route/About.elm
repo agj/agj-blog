@@ -7,6 +7,7 @@ import Doc.Markdown
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
+import Html.Attributes exposing (href)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Decode
 import PagesMsg exposing (PagesMsg)
@@ -14,9 +15,7 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import Site
 import View exposing (View)
-import View.Inline
 import View.PageBody
-import View.Paragraph
 
 
 route : StatelessRoute RouteParams Data ActionData
@@ -94,12 +93,12 @@ view app shared =
 
         subtitle : Html Msg
         subtitle =
-            [ Html.text "Back to "
-            , [ Html.text "the index" ]
-                |> View.Inline.setLink Nothing "/"
-            , Html.text "."
-            ]
-                |> View.Paragraph.view
+            Html.p []
+                [ Html.text "Back to "
+                , Html.a [ href "/" ]
+                    [ Html.text "the index" ]
+                , Html.text "."
+                ]
 
         content : Html Msg
         content =

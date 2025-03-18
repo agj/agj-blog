@@ -10,7 +10,6 @@ import View.Heading
 import View.Inline
 import View.LanguageBreak
 import View.List
-import View.Paragraph
 import View.VideoEmbed
 
 
@@ -43,7 +42,7 @@ viewInternal config sectionDepth blocks =
         (Doc.Paragraph inlines) :: nextBlocks ->
             (inlines
                 |> List.map (viewInline config.onClick)
-                |> View.Paragraph.view
+                |> paragraph
             )
                 :: viewInternal config sectionDepth nextBlocks
 
@@ -117,7 +116,7 @@ viewInternal config sectionDepth blocks =
 
                 Nothing ->
                     ([ Html.text "[AudioPlayer state not provided]" ]
-                        |> View.Paragraph.view
+                        |> paragraph
                     )
                         :: viewInternal config sectionDepth nextBlocks
 
@@ -192,3 +191,9 @@ viewSeparation : Html msg
 viewSeparation =
     Html.hr [ class "bg-primary-50 my-6 h-0.5 w-full border-0" ]
         []
+
+
+paragraph : List (Html msg) -> Html msg
+paragraph inlines =
+    Html.p [ class "w-full py-2 text-base" ]
+        inlines

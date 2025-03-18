@@ -10,7 +10,7 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, href)
 import List.Extra as List
 import PagesMsg exposing (PagesMsg)
 import Result.Extra as Result
@@ -23,7 +23,6 @@ import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.Inline
 import View.PageBody
-import View.Paragraph
 
 
 route : StatefulRoute RouteParams Data ActionData Model Msg
@@ -206,12 +205,12 @@ view app shared model =
 
         subtitle : Html Msg
         subtitle =
-            [ Html.text "Back to "
-            , [ Html.text "the index" ]
-                |> View.Inline.setLink Nothing "/"
-            , Html.text "."
-            ]
-                |> View.Paragraph.view
+            Html.p []
+                [ Html.text "Back to "
+                , Html.a [ href "/" ]
+                    [ Html.text "the index" ]
+                , Html.text "."
+                ]
 
         postColumn : Html Msg
         postColumn =

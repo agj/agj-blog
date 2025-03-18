@@ -13,7 +13,6 @@ import Site
 import View exposing (View)
 import View.Inline
 import View.PageBody
-import View.Paragraph
 
 
 route : StatefulRoute RouteParams Data ActionData Model Msg
@@ -100,20 +99,23 @@ view app shared =
             , Html.i [] [ Html.text (Category.getName category) ]
             ]
 
-        backToIndexEls =
-            [ Html.text "Back to "
-            , [ Html.text "the index" ]
-                |> View.Inline.setLink Nothing "/"
-            , Html.text "."
-            ]
+        categoryDescription : List (Html Msg)
+        categoryDescription =
+            Category.getDescription category
+                |> Maybe.map
+                    (\desc -> [ Html.text (desc ++ " ") ])
+                |> Maybe.withDefault []
 
         subtitle : Html Msg
         subtitle =
-            Category.getDescription category
-                |> Maybe.map
-                    (\desc -> Html.text (desc ++ " ") :: backToIndexEls)
-                |> Maybe.withDefault backToIndexEls
-                |> View.Paragraph.view
+            Html.p []
+                (categoryDescription
+                    ++ [ Html.text "Back to "
+                       , [ Html.text "the index" ]
+                            |> View.Inline.setLink Nothing "/"
+                       , Html.text "."
+                       ]
+                )
 
         content =
             Data.PostList.view posts
