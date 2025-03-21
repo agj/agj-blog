@@ -7,7 +7,6 @@ import Doc.Markdown
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
-import Html.Attributes exposing (href)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Decode
 import PagesMsg exposing (PagesMsg)
