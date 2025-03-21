@@ -34,16 +34,14 @@ color =
 -- INTERNAL
 
 
+colorLayout : Color
 colorLayout =
-    Color.hsl (25 / 360) 0.0526 0.447
+    Color.hsl (deg 20) (pct 32) (pct 55)
 
 
+colorPrimary : Color
 colorPrimary =
-    Color.hsl (258 / 360) 0.895 0.663
-
-
-colorSecondary =
-    Color.rgb255 0x00 0xEB 0xFF
+    Color.hsl (deg 258) (pct 89.5) (pct 66.3)
 
 
 lighten : Float -> Color -> Color
@@ -59,3 +57,13 @@ lighten amount color_ =
 darken : Float -> Color -> Color
 darken amount =
     lighten -amount
+
+
+deg : Float -> Float
+deg n =
+    n / 360
+
+
+pct : Float -> Float
+pct n =
+    n / 100

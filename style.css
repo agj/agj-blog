@@ -8,6 +8,6 @@
   }
 
   a {
-    @apply text-primary-70;
+    @apply text-inherit underline decoration-primary-20 underline-offset-4 decoration-2 hover:text-primary-50;
   }
 }

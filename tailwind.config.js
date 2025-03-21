@@ -29,6 +29,7 @@ export default {
       },
       transparent: "transparent",
       white: "white",
+      inherit: "inherit",
     },
   },
   plugins: [],

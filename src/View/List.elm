@@ -47,12 +47,12 @@ view (ViewList { items, startNumber }) =
     case startNumber of
         Just num ->
             Html.ol
-                [ class "flex list-decimal flex-col"
+                [ class "marker:text-layout-60 flex list-decimal flex-col"
                 , Html.Attributes.attribute "start" (String.fromInt num)
                 ]
                 renderedItems
 
         Nothing ->
             Html.ul
-                [ class "flex list-disc flex-col" ]
+                [ class "marker:text-layout-60 flex list-disc flex-col" ]
                 renderedItems
