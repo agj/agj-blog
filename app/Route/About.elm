@@ -16,6 +16,7 @@ import Shared
 import Site
 import View exposing (View)
 import View.PageBody
+import View.Snippets
 
 
 route : StatelessRoute RouteParams Data ActionData
@@ -94,11 +95,7 @@ view app shared =
         subtitle : Html Msg
         subtitle =
             Html.p []
-                [ Html.text "Back to "
-                , Html.a [ href "/" ]
-                    [ Html.text "the index" ]
-                , Html.text "."
-                ]
+                View.Snippets.backToIndex
 
         content : Html Msg
         content =

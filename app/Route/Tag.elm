@@ -23,6 +23,7 @@ import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.PageBody
+import View.Snippets
 
 
 route : StatefulRoute RouteParams Data ActionData Model Msg
@@ -206,11 +207,7 @@ view app shared model =
         subtitle : Html Msg
         subtitle =
             Html.p []
-                [ Html.text "Back to "
-                , Html.a [ href "/" ]
-                    [ Html.text "the index" ]
-                , Html.text "."
-                ]
+                View.Snippets.backToIndex
 
         postColumn : Html Msg
         postColumn =

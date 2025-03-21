@@ -204,7 +204,10 @@ view app shared model =
         postInfo : Html Msg
         postInfo =
             Html.p [ class "w-full py-2" ]
-                ([ Html.text ("Posted {date}, on " |> String.replace "{date}" date)
+                ([ Html.text
+                    ("Posted {date}, on "
+                        |> String.replace "{date}" date
+                    )
                  , Html.a [ href "/" ]
                     [ Html.text "agj's blog" ]
                  , Html.text ". "
