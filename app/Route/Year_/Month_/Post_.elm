@@ -31,7 +31,7 @@ route =
         , pages = pages
         , data = data
         }
-        |> RouteBuilder.buildWithLocalState
+        |> RouteBuilder.buildWithSharedState
             { view = view
             , init = init
             , update = update
@@ -103,20 +103,20 @@ type alias Model =
 
 type Msg
     = AudioPlayerStateUpdated View.AudioPlayer.State
+    | SharedMsg Shared.Msg
 
 
-update :
-    App Data ActionData RouteParams
-    -> Shared.Model
-    -> Msg
-    -> Model
-    -> ( Model, Effect Msg )
+update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg, Maybe Shared.Msg )
 update app shared msg model =
     case msg of
         AudioPlayerStateUpdated state ->
             ( { audioPlayerState = state }
             , Effect.none
+            , Nothing
             )
+
+        SharedMsg sharedMsg ->
+            ( model, Effect.none, Just sharedMsg )
 
 
 
@@ -229,6 +229,7 @@ view app shared model =
     { title = title app
     , body =
         View.PageBody.fromContent contentEl
+            |> View.PageBody.withListener { onRequestedChangeTheme = SharedMsg Shared.SelectedChangeTheme }
             |> View.PageBody.withTitleAndSubtitle
                 [ Html.text app.data.frontmatter.title ]
                 postInfo

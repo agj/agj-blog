@@ -1,4 +1,11 @@
-module View.PageBody exposing (..)
+module View.PageBody exposing
+    ( PageBody
+    , fromContent
+    , view
+    , withListener
+    , withTitle
+    , withTitleAndSubtitle
+    )
 
 import Color
 import Custom.Html
@@ -24,10 +31,6 @@ type PageTitle msg
     = NoPageTitle
     | PageTitleOnly (List (Html msg))
     | PageTitleAndSubtitle (List (Html msg)) (Html msg)
-
-
-type Msg
-    = RequestedThemeChange
 
 
 fromContent : Html msg -> PageBody msg

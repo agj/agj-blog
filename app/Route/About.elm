@@ -11,7 +11,7 @@ import Html exposing (Html)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Decode
 import PagesMsg exposing (PagesMsg)
-import RouteBuilder exposing (App, StatefulRoute, StatelessRoute)
+import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
 import UrlPath exposing (UrlPath)
