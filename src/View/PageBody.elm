@@ -5,6 +5,8 @@ import Custom.Html
 import Custom.Html.Attributes exposing (customProperties)
 import Html exposing (Html)
 import Html.Attributes exposing (class)
+import Html.Events
+import Icon
 import PagesMsg exposing (PagesMsg)
 import Style
 import View.Heading
@@ -14,6 +16,7 @@ type PageBody msg
     = PageBody
         { content : Html msg
         , title : PageTitle msg
+        , onMsg : Maybe (Msg -> msg)
         }
 
 
@@ -23,12 +26,22 @@ type PageTitle msg
     | PageTitleAndSubtitle (List (Html msg)) (Html msg)
 
 
+type Msg
+    = RequestedThemeChange
+
+
 fromContent : Html msg -> PageBody msg
 fromContent content =
     PageBody
         { content = content
         , title = NoPageTitle
+        , onMsg = Nothing
         }
+
+
+withListener : (Msg -> msg) -> PageBody msg -> PageBody msg
+withListener onMsg (PageBody config) =
+    PageBody { config | onMsg = Just onMsg }
 
 
 withTitle : List (Html msg) -> PageBody msg -> PageBody msg
@@ -73,7 +86,19 @@ view (PageBody config) =
 
                 Just title_ ->
                     Html.div [ class "bg-layout-05 flex w-full flex-col items-center" ]
-                        [ Html.div [ class ("w-full flex-grow p-4 " ++ pageMaxWidth) ]
+                        [ Html.div [ class ("flex w-full flex-row justify-end mt-2 " ++ pageMaxWidth) ]
+                            [ Html.button
+                                [ class "text-layout-50 hover:bg-layout-20 flex size-6 justify-center rounded bg-white align-middle hover:text-white"
+                                , case config.onMsg of
+                                    Just om ->
+                                        Html.Events.onClick (om RequestedThemeChange)
+
+                                    Nothing ->
+                                        Custom.Html.Attributes.none
+                                ]
+                                [ Icon.moon Icon.Small ]
+                            ]
+                        , Html.div [ class ("w-full flex-grow p-4 pt-0 " ++ pageMaxWidth) ]
                             [ title_ ]
                         ]
 
@@ -85,7 +110,7 @@ view (PageBody config) =
                 ]
     in
     Html.div
-        [ class "flex w-full flex-col"
+        [ class "text-layout-90 flex w-full flex-col"
         , customProperties
             [ ( "color-layout-90", Style.color.layout90 |> Color.toCssString )
             , ( "color-layout-80", Style.color.layout80 |> Color.toCssString )

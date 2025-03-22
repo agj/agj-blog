@@ -1,6 +1,7 @@
 module Icon exposing
     ( Icon
     , Size(..)
+    , moon
     , none
     , pause
     , play
@@ -18,6 +19,7 @@ type alias Icon msg =
 
 type Size
     = Medium
+    | Small
 
 
 play : Icon msg
@@ -38,11 +40,17 @@ stop size =
         |> style size
 
 
+moon : Icon msg
+moon size =
+    Heroicons.Solid.moon
+        |> style size
+
+
 none : Icon msg
 none size =
     Html.div
-        [ Html.Attributes.style "width" (sizeToEms size)
-        , Html.Attributes.style "height" (sizeToEms size)
+        [ Html.Attributes.style "width" (sizeToRems size)
+        , Html.Attributes.style "height" (sizeToRems size)
         ]
         []
 
@@ -53,11 +61,14 @@ none size =
 
 style : Size -> (List (Attribute msg) -> Html msg) -> Html msg
 style size icon =
-    icon [ Html.Attributes.style "width" (sizeToEms size) ]
+    icon [ Html.Attributes.style "width" (sizeToRems size) ]
 
 
-sizeToEms : Size -> String
-sizeToEms size =
+sizeToRems : Size -> String
+sizeToRems size =
     case size of
         Medium ->
-            "1em"
+            "1rem"
+
+        Small ->
+            "0.75rem"
