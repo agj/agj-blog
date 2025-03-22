@@ -10,4 +10,8 @@
   a {
     @apply text-inherit underline decoration-primary-20 underline-offset-4 decoration-2 hover:text-primary-50;
   }
+
+  button {
+    @apply text-layout-50 hover:bg-layout-20 flex flex-row justify-center rounded bg-white align-middle hover:text-white;
+  }
 }
