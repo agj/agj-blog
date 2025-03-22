@@ -22,7 +22,7 @@ type PageBody msg
     = PageBody
         { content : Html msg
         , title : PageTitle msg
-        , onRequestedChangeTheme : Maybe msg
+        , onRequestedChangeTheme : msg
         }
 
 
@@ -40,7 +40,7 @@ fromContent listeners content =
     PageBody
         { content = content
         , title = NoPageTitle
-        , onRequestedChangeTheme = Just listeners.onRequestedChangeTheme
+        , onRequestedChangeTheme = listeners.onRequestedChangeTheme
         }
 
 
@@ -89,12 +89,7 @@ view (PageBody config) =
                         [ Html.div [ class ("flex w-full flex-row justify-end mt-2 " ++ pageMaxWidth) ]
                             [ Html.button
                                 [ class "text-layout-50 hover:bg-layout-20 flex size-6 justify-center rounded bg-white align-middle hover:text-white"
-                                , case config.onRequestedChangeTheme of
-                                    Just orct ->
-                                        Html.Events.onClick orct
-
-                                    Nothing ->
-                                        Custom.Html.Attributes.none
+                                , Html.Events.onClick config.onRequestedChangeTheme
                                 ]
                                 [ Icon.moon Icon.Small ]
                             ]
