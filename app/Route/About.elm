@@ -4,39 +4,39 @@ import BackendTask exposing (BackendTask)
 import BackendTask.File
 import Doc.Html
 import Doc.Markdown
+import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Decode
 import PagesMsg exposing (PagesMsg)
-import RouteBuilder exposing (App, StatelessRoute)
+import RouteBuilder exposing (App, StatefulRoute, StatelessRoute)
 import Shared
 import Site
+import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.PageBody
 import View.Snippets
 
 
-route : StatelessRoute RouteParams Data ActionData
+route : StatefulRoute RouteParams Data ActionData Model Msg
 route =
     RouteBuilder.single
         { head = head
         , data = data
         }
-        |> RouteBuilder.buildNoState { view = view }
+        |> RouteBuilder.buildWithSharedState
+            { init = init
+            , update = update
+            , subscriptions = subscriptions
+            , view = view
+            }
 
 
-type alias Model =
-    {}
-
-
-type alias Msg =
-    ()
-
-
-type alias RouteParams =
-    {}
+init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
+init app shared =
+    ( {}, Effect.none )
 
 
 
@@ -66,6 +66,38 @@ decoder content =
 
 
 
+-- UPDATE
+
+
+type alias Model =
+    {}
+
+
+type Msg
+    = SharedMsg Shared.Msg
+
+
+type alias RouteParams =
+    {}
+
+
+update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg, Maybe Shared.Msg )
+update app shared msg model =
+    case msg of
+        SharedMsg sharedMsg ->
+            ( model, Effect.none, Just sharedMsg )
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub msg
+subscriptions routeParams path shared model =
+    Sub.none
+
+
+
 -- VIEW
 
 
@@ -84,8 +116,9 @@ head app =
 view :
     App Data ActionData RouteParams
     -> Shared.Model
+    -> Model
     -> View (PagesMsg Msg)
-view app shared =
+view app shared model =
     let
         titleEl : List (Html Msg)
         titleEl =
@@ -99,13 +132,13 @@ view app shared =
         content : Html Msg
         content =
             app.data.markdown
-                |> Doc.Markdown.parse
-                    { audioPlayer = Nothing }
+                |> Doc.Markdown.parse { audioPlayer = Nothing }
                 |> Doc.Html.view Doc.Html.noConfig
     in
     { title = title app
     , body =
         View.PageBody.fromContent content
+            |> View.PageBody.withListener { onRequestedChangeTheme = SharedMsg Shared.SelectedChangeTheme }
             |> View.PageBody.withTitleAndSubtitle titleEl subtitle
             |> View.PageBody.view
     }

@@ -16,7 +16,7 @@ type PageBody msg
     = PageBody
         { content : Html msg
         , title : PageTitle msg
-        , onMsg : Maybe (Msg -> msg)
+        , onRequestedChangeTheme : Maybe msg
         }
 
 
@@ -35,13 +35,13 @@ fromContent content =
     PageBody
         { content = content
         , title = NoPageTitle
-        , onMsg = Nothing
+        , onRequestedChangeTheme = Nothing
         }
 
 
-withListener : (Msg -> msg) -> PageBody msg -> PageBody msg
-withListener onMsg (PageBody config) =
-    PageBody { config | onMsg = Just onMsg }
+withListener : { onRequestedChangeTheme : msg } -> PageBody msg -> PageBody msg
+withListener { onRequestedChangeTheme } (PageBody config) =
+    PageBody { config | onRequestedChangeTheme = Just onRequestedChangeTheme }
 
 
 withTitle : List (Html msg) -> PageBody msg -> PageBody msg
@@ -88,10 +88,10 @@ view (PageBody config) =
                     Html.div [ class "bg-layout-05 flex w-full flex-col items-center" ]
                         [ Html.div [ class ("flex w-full flex-row justify-end mt-2 " ++ pageMaxWidth) ]
                             [ Html.button
-                                [ class "size-6"
-                                , case config.onMsg of
-                                    Just om ->
-                                        Html.Events.onClick (om RequestedThemeChange)
+                                [ class "text-layout-50 hover:bg-layout-20 flex size-6 justify-center rounded bg-white align-middle hover:text-white"
+                                , case config.onRequestedChangeTheme of
+                                    Just orct ->
+                                        Html.Events.onClick orct
 
                                     Nothing ->
                                         Custom.Html.Attributes.none

@@ -102,8 +102,8 @@ type alias Model =
     {}
 
 
-type alias Msg =
-    Never
+type Msg
+    = SharedMsg Shared.Msg
 
 
 type alias RouteParams =
@@ -112,7 +112,9 @@ type alias RouteParams =
 
 update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg, Maybe Shared.Msg )
 update app shared msg model =
-    ( {}, Effect.none, Nothing )
+    case msg of
+        SharedMsg sharedMsg ->
+            ( model, Effect.none, Just sharedMsg )
 
 
 
@@ -166,6 +168,7 @@ view app shared model =
     { title = title
     , body =
         View.PageBody.fromContent content
+            |> View.PageBody.withListener { onRequestedChangeTheme = SharedMsg Shared.SelectedChangeTheme }
             |> View.PageBody.withTitle
                 [ Html.text "agj's blog" ]
             |> View.PageBody.view

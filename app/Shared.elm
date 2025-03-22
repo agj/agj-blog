@@ -1,4 +1,4 @@
-module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
+module Shared exposing (Data, Model, Msg(..), template)
 
 import BackendTask exposing (BackendTask)
 import Data.Post as Post
@@ -9,6 +9,7 @@ import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
+import Theme exposing (Theme)
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -38,7 +39,9 @@ init :
             }
     -> ( Model, Effect Msg )
 init flags maybePagePath =
-    ( {}, Effect.none )
+    ( { theme = Theme.Default }
+    , Effect.none
+    )
 
 
 
@@ -62,22 +65,36 @@ data =
 
 
 type Msg
-    = SharedMsg SharedMsg
-
-
-type SharedMsg
     = NoOp
+    | SelectedChangeTheme
 
 
 type alias Model =
-    {}
+    { theme : Theme
+    }
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
-        SharedMsg globalMsg ->
+        NoOp ->
             ( model, Effect.none )
+
+        SelectedChangeTheme ->
+            ( { model
+                | theme =
+                    case Debug.log "theme" model.theme of
+                        Theme.Default ->
+                            Theme.Light
+
+                        Theme.Light ->
+                            Theme.Dark
+
+                        Theme.Dark ->
+                            Theme.Default
+              }
+            , Effect.none
+            )
 
 
 
