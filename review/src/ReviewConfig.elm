@@ -33,8 +33,9 @@ config =
     , NoUnused.CustomTypeConstructorArgs.rule
     , NoUnused.CustomTypeConstructors.rule []
     , NoUnused.Exports.rule
-    , NoUnused.Parameters.rule
     , NoUnused.Variables.rule
+
+    -- , NoUnused.Parameters.rule
     -- , NoUnused.Dependencies.rule
     -- , NoUnused.Patterns.rule
     ]
