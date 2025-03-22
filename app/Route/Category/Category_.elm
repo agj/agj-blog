@@ -3,6 +3,7 @@ module Route.Category.Category_ exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Data.Category as Category exposing (Category)
 import Data.PostList
+import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
@@ -10,6 +11,7 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
+import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.PageBody
 import View.Snippets
@@ -22,15 +24,17 @@ route =
         , pages = pages
         , data = data
         }
-        |> RouteBuilder.buildNoState { view = view }
+        |> RouteBuilder.buildWithSharedState
+            { init = init
+            , update = update
+            , subscriptions = subscriptions
+            , view = view
+            }
 
 
-type alias Model =
-    {}
-
-
-type alias Msg =
-    ()
+init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
+init app shared =
+    ( {}, Effect.none )
 
 
 
@@ -68,6 +72,34 @@ data routeParams =
 
 
 
+-- UPDATE
+
+
+type alias Model =
+    {}
+
+
+type Msg
+    = SharedMsg Shared.Msg
+
+
+update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg, Maybe Shared.Msg )
+update app shared msg model =
+    case msg of
+        SharedMsg sharedMsg ->
+            ( model, Effect.none, Just sharedMsg )
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub msg
+subscriptions routeParams path shared model =
+    Sub.none
+
+
+
 -- VIEW
 
 
@@ -83,8 +115,12 @@ head app =
     Site.pageMeta (title app)
 
 
-view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
-view app shared =
+view :
+    App Data ActionData RouteParams
+    -> Shared.Model
+    -> Model
+    -> View (PagesMsg Msg)
+view app shared model =
     let
         category =
             app.data
@@ -119,6 +155,7 @@ view app shared =
     { title = title app
     , body =
         View.PageBody.fromContent content
+            |> View.PageBody.withListener { onRequestedChangeTheme = SharedMsg Shared.SelectedChangeTheme }
             |> View.PageBody.withTitleAndSubtitle titleEls subtitle
             |> View.PageBody.view
     }

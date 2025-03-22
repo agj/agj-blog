@@ -32,7 +32,7 @@ route =
         { head = head
         , data = data
         }
-        |> RouteBuilder.buildWithLocalState
+        |> RouteBuilder.buildWithSharedState
             { init = init
             , update = update
             , subscriptions = subscriptions
@@ -52,14 +52,6 @@ init app shared =
     ( { queryTags = queryTags query }
     , Effect.none
     )
-
-
-
--- PAGES
-
-
-type alias RouteParams =
-    {}
 
 
 
@@ -90,14 +82,14 @@ type alias Model =
 
 type Msg
     = OnClick String
+    | SharedMsg Shared.Msg
 
 
-update :
-    App Data ActionData RouteParams
-    -> Shared.Model
-    -> Msg
-    -> Model
-    -> ( Model, Effect Msg )
+type alias RouteParams =
+    {}
+
+
+update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg, Maybe Shared.Msg )
 update app shared msg model =
     case msg of
         OnClick urlString ->
@@ -112,10 +104,14 @@ update app shared msg model =
                 Just url ->
                     ( { model | queryTags = queryTags url.queryParameters }
                     , Effect.none
+                    , Nothing
                     )
 
                 Nothing ->
-                    ( model, Effect.none )
+                    ( model, Effect.none, Nothing )
+
+        SharedMsg sharedMsg ->
+            ( model, Effect.none, Just sharedMsg )
 
 
 queryTags : Dict String (List String) -> List Tag
@@ -230,6 +226,7 @@ view app shared model =
     { title = title
     , body =
         View.PageBody.fromContent content
+            |> View.PageBody.withListener { onRequestedChangeTheme = SharedMsg Shared.SelectedChangeTheme }
             |> View.PageBody.withTitleAndSubtitle titleChildren subtitle
             |> View.PageBody.view
     }
