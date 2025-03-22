@@ -87,6 +87,10 @@ view (PageBody config) =
                     Custom.Html.none
 
                 Just title_ ->
+                    let
+                        nextTheme =
+                            Theme.change config.theme
+                    in
                     Html.div [ class "bg-layout-05 flex w-full flex-col items-center" ]
                         [ Html.div [ class ("flex w-full flex-row justify-end mt-2 " ++ pageMaxWidth) ]
                             [ Html.button
@@ -94,21 +98,15 @@ view (PageBody config) =
                                 , class "button"
                                 , Html.Events.onClick config.onRequestedChangeTheme
                                 ]
-                                [ (case config.theme of
-                                    Theme.Light ->
+                                [ (case ( nextTheme.set, nextTheme.default ) of
+                                    ( Just Theme.Dark, _ ) ->
                                         Icon.moon
 
-                                    Theme.Dark ->
+                                    ( Just Theme.Light, _ ) ->
                                         Icon.sun
 
-                                    Theme.Default Theme.Light ->
-                                        Icon.moon
-
-                                    Theme.Default Theme.Dark ->
-                                        Icon.sun
-
-                                    _ ->
-                                        Icon.moon
+                                    ( Nothing, _ ) ->
+                                        Icon.minus
                                   )
                                     Icon.Small
                                 ]

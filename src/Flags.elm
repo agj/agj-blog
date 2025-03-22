@@ -11,7 +11,7 @@ type alias Flags =
 
 default : Flags
 default =
-    { theme = Theme.Default Theme.Light }
+    { theme = Theme.default }
 
 
 decoder : Decoder Flags
