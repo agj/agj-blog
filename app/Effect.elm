@@ -7,15 +7,18 @@ module Effect exposing (Effect(..), batch, fromCmd, map, none, perform)
 -}
 
 import Browser.Navigation
+import Flags exposing (Flags)
 import Form
 import Http
 import Pages.Fetcher
+import Ports
 import Url exposing (Url)
 
 
 {-| -}
 type Effect msg
-    = None
+    = SaveConfig Flags
+    | None
     | Cmd (Cmd msg)
     | Batch (List (Effect msg))
 
@@ -42,6 +45,9 @@ fromCmd =
 map : (a -> b) -> Effect a -> Effect b
 map fn effect =
     case effect of
+        SaveConfig flags ->
+            SaveConfig flags
+
         None ->
             None
 
@@ -75,6 +81,9 @@ perform :
     -> Cmd msg
 perform ({ fromPageMsg, key } as helpers) effect =
     case effect of
+        SaveConfig flags ->
+            Ports.saveConfig (Flags.encode flags)
+
         None ->
             Cmd.none
 

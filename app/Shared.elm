@@ -89,19 +89,23 @@ update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
         SelectedChangeTheme ->
-            ( { model
-                | theme =
-                    case Debug.log "theme" model.theme of
-                        Theme.Default _ ->
-                            Theme.Light
+            let
+                newModel =
+                    { model
+                        | theme =
+                            case Debug.log "theme" model.theme of
+                                Theme.Default _ ->
+                                    Theme.Light
 
-                        Theme.Light ->
-                            Theme.Dark
+                                Theme.Light ->
+                                    Theme.Dark
 
-                        Theme.Dark ->
-                            Theme.Default Theme.Light
-              }
-            , Effect.none
+                                Theme.Dark ->
+                                    Theme.Default Theme.Light
+                    }
+            in
+            ( newModel
+            , Effect.SaveConfig { theme = newModel.theme }
             )
 
 

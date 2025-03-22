@@ -8,11 +8,20 @@ type ElmPagesInit = {
 };
 
 const config: ElmPagesInit = {
+  flags: () => {
+    const configRaw = localStorage.getItem("config");
+    const config = configRaw ? JSON.parse(configRaw) : null;
+    return config;
+  },
+
   load: async function (elmLoaded) {
     const app = await elmLoaded;
     console.log("App loaded", app);
+
+    app.ports.saveConfig.subscribe((config) => {
+      localStorage.setItem("config", JSON.stringify(config));
+    });
   },
-  flags: () => ({ theme: "light" }),
 };
 
 export default config;
