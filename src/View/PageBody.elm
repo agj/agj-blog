@@ -89,6 +89,7 @@ view (PageBody config) =
                         [ Html.div [ class ("flex w-full flex-row justify-end mt-2 " ++ pageMaxWidth) ]
                             [ Html.button
                                 [ class "text-layout-50 hover:bg-layout-20 flex size-6 justify-center rounded bg-white align-middle hover:text-white"
+                                , class "button"
                                 , Html.Events.onClick config.onRequestedChangeTheme
                                 ]
                                 [ Icon.moon Icon.Small ]
