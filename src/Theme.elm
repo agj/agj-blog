@@ -12,20 +12,20 @@ type Theme
 
 decoder : Decoder Theme
 decoder =
-    Json.Decode.string
+    Json.Decode.nullable Json.Decode.string
         |> Json.Decode.map
-            (\string ->
-                case string of
-                    "default-light" ->
+            (\maybeString ->
+                case maybeString of
+                    Just "default-light" ->
                         Default Light
 
-                    "default-dark" ->
+                    Just "default-dark" ->
                         Default Dark
 
-                    "light" ->
+                    Just "light" ->
                         Light
 
-                    "dark" ->
+                    Just "dark" ->
                         Dark
 
                     _ ->

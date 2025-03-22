@@ -11,7 +11,16 @@ const config: ElmPagesInit = {
   flags: () => {
     const configRaw = localStorage.getItem("config");
     const config = configRaw ? JSON.parse(configRaw) : null;
-    return config;
+    return {
+      ...config,
+      theme: config.theme
+        ? config.theme
+        : window.matchMedia?.("(prefers-color-scheme: dark)").matches
+          ? "default-dark"
+          : window.matchMedia?.("(prefers-color-scheme: light)").matches
+            ? "default-light"
+            : null,
+    };
   },
 
   load: async function (elmLoaded) {

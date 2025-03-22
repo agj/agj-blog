@@ -138,7 +138,9 @@ view app shared model =
     { title = title app
     , body =
         View.PageBody.fromContent
-            { onRequestedChangeTheme = SharedMsg Shared.SelectedChangeTheme }
+            { theme = shared.theme
+            , onRequestedChangeTheme = SharedMsg Shared.SelectedChangeTheme
+            }
             content
             |> View.PageBody.withTitleAndSubtitle titleEl subtitle
             |> View.PageBody.view

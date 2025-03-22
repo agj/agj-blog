@@ -1,11 +1,13 @@
 module Icon exposing
     ( Icon
     , Size(..)
+    , minus
     , moon
     , none
     , pause
     , play
     , stop
+    , sun
     )
 
 import Heroicons.Solid
@@ -43,6 +45,18 @@ stop size =
 moon : Icon msg
 moon size =
     Heroicons.Solid.moon
+        |> style size
+
+
+sun : Icon msg
+sun size =
+    Heroicons.Solid.sun
+        |> style size
+
+
+minus : Icon msg
+minus size =
+    Heroicons.Solid.minus
         |> style size
 
 

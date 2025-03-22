@@ -6,15 +6,13 @@ module View.PageBody exposing
     , withTitleAndSubtitle
     )
 
-import Color
 import Custom.Html
-import Custom.Html.Attributes exposing (customProperties)
 import Html exposing (Html)
 import Html.Attributes exposing (class)
 import Html.Events
 import Icon
 import PagesMsg exposing (PagesMsg)
-import Style
+import Theme exposing (Theme)
 import View.Heading
 
 
@@ -22,6 +20,7 @@ type PageBody msg
     = PageBody
         { content : Html msg
         , title : PageTitle msg
+        , theme : Theme
         , onRequestedChangeTheme : msg
         }
 
@@ -33,14 +32,17 @@ type PageTitle msg
 
 
 fromContent :
-    { onRequestedChangeTheme : msg }
+    { theme : Theme
+    , onRequestedChangeTheme : msg
+    }
     -> Html msg
     -> PageBody msg
-fromContent listeners content =
+fromContent config content =
     PageBody
         { content = content
         , title = NoPageTitle
-        , onRequestedChangeTheme = listeners.onRequestedChangeTheme
+        , theme = config.theme
+        , onRequestedChangeTheme = config.onRequestedChangeTheme
         }
 
 
@@ -92,7 +94,24 @@ view (PageBody config) =
                                 , class "button"
                                 , Html.Events.onClick config.onRequestedChangeTheme
                                 ]
-                                [ Icon.moon Icon.Small ]
+                                [ (case config.theme of
+                                    Theme.Light ->
+                                        Icon.moon
+
+                                    Theme.Dark ->
+                                        Icon.sun
+
+                                    Theme.Default Theme.Light ->
+                                        Icon.moon
+
+                                    Theme.Default Theme.Dark ->
+                                        Icon.sun
+
+                                    _ ->
+                                        Icon.moon
+                                  )
+                                    Icon.Small
+                                ]
                             ]
                         , Html.div [ class ("w-full flex-grow p-4 pt-0 " ++ pageMaxWidth) ]
                             [ title_ ]
