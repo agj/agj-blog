@@ -2,7 +2,6 @@ module View.PageBody exposing
     ( PageBody
     , fromContent
     , view
-    , withListener
     , withTitle
     , withTitleAndSubtitle
     )
@@ -33,18 +32,16 @@ type PageTitle msg
     | PageTitleAndSubtitle (List (Html msg)) (Html msg)
 
 
-fromContent : Html msg -> PageBody msg
-fromContent content =
+fromContent :
+    { onRequestedChangeTheme : msg }
+    -> Html msg
+    -> PageBody msg
+fromContent listeners content =
     PageBody
         { content = content
         , title = NoPageTitle
-        , onRequestedChangeTheme = Nothing
+        , onRequestedChangeTheme = Just listeners.onRequestedChangeTheme
         }
-
-
-withListener : { onRequestedChangeTheme : msg } -> PageBody msg -> PageBody msg
-withListener { onRequestedChangeTheme } (PageBody config) =
-    PageBody { config | onRequestedChangeTheme = Just onRequestedChangeTheme }
 
 
 withTitle : List (Html msg) -> PageBody msg -> PageBody msg

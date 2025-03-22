@@ -228,8 +228,9 @@ view app shared model =
     in
     { title = title app
     , body =
-        View.PageBody.fromContent contentEl
-            |> View.PageBody.withListener { onRequestedChangeTheme = SharedMsg Shared.SelectedChangeTheme }
+        View.PageBody.fromContent
+            { onRequestedChangeTheme = SharedMsg Shared.SelectedChangeTheme }
+            contentEl
             |> View.PageBody.withTitleAndSubtitle
                 [ Html.text app.data.frontmatter.title ]
                 postInfo

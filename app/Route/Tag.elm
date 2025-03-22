@@ -225,8 +225,9 @@ view app shared model =
     in
     { title = title
     , body =
-        View.PageBody.fromContent content
-            |> View.PageBody.withListener { onRequestedChangeTheme = SharedMsg Shared.SelectedChangeTheme }
+        View.PageBody.fromContent
+            { onRequestedChangeTheme = SharedMsg Shared.SelectedChangeTheme }
+            content
             |> View.PageBody.withTitleAndSubtitle titleChildren subtitle
             |> View.PageBody.view
     }
