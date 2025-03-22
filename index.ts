@@ -1,5 +1,4 @@
-
-import { defineAudioPlayerCustomElement } from './src-ts/custom-elements/audio-player.js';
+import { defineAudioPlayerCustomElement } from "./src-ts/custom-elements/audio-player.js";
 
 defineAudioPlayerCustomElement();
 
@@ -13,9 +12,7 @@ const config: ElmPagesInit = {
     const app = await elmLoaded;
     console.log("App loaded", app);
   },
-  flags: function () {
-    return "You can decode this in Shared.elm using Json.Decode.string!";
-  },
+  flags: () => ({ theme: "light" }),
 };
 
 export default config;

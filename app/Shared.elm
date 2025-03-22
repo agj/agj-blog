@@ -4,7 +4,9 @@ import BackendTask exposing (BackendTask)
 import Data.Post as Post
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
+import Flags
 import Html exposing (Html)
+import Json.Decode
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Route exposing (Route)
@@ -39,7 +41,17 @@ init :
             }
     -> ( Model, Effect Msg )
 init flags maybePagePath =
-    ( { theme = Theme.Default }
+    let
+        flagsR =
+            case flags of
+                Pages.Flags.BrowserFlags value ->
+                    Json.Decode.decodeValue Flags.decoder value
+                        |> Result.withDefault Flags.default
+
+                Pages.Flags.PreRenderFlags ->
+                    Flags.default
+    in
+    ( { theme = Debug.log "theme" flagsR.theme }
     , Effect.none
     )
 
@@ -80,14 +92,14 @@ update msg model =
             ( { model
                 | theme =
                     case Debug.log "theme" model.theme of
-                        Theme.Default ->
+                        Theme.Default _ ->
                             Theme.Light
 
                         Theme.Light ->
                             Theme.Dark
 
                         Theme.Dark ->
-                            Theme.Default
+                            Theme.Default Theme.Light
               }
             , Effect.none
             )
