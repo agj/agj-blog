@@ -3,7 +3,7 @@
 $color-layout: hsl(20deg 32% 55%);
 $color-primary: hsl(258deg 89.5% 66.3%);
 
-:root {
+@mixin light {
   --color-layout-90: #{color.scale($color-layout, $lightness: -80%)};
   --color-layout-80: #{color.scale($color-layout, $lightness: -60%)};
   --color-layout-70: #{color.scale($color-layout, $lightness: -40%)};
@@ -14,6 +14,7 @@ $color-primary: hsl(258deg 89.5% 66.3%);
   --color-layout-20: #{color.scale($color-layout, $lightness: 60%)};
   --color-layout-10: #{color.scale($color-layout, $lightness: 80%)};
   --color-layout-05: #{color.scale($color-layout, $lightness: 90%)};
+  --color-layout-02: #{color.scale($color-layout, $lightness: 95%)};
   --color-primary-90: #{color.scale($color-primary, $lightness: -80%)};
   --color-primary-80: #{color.scale($color-primary, $lightness: -60%)};
   --color-primary-70: #{color.scale($color-primary, $lightness: -40%)};
@@ -37,6 +38,7 @@ $color-primary: hsl(258deg 89.5% 66.3%);
   --color-layout-20: #{color.scale($color-layout, $lightness: -60%)};
   --color-layout-10: #{color.scale($color-layout, $lightness: -80%)};
   --color-layout-05: #{color.scale($color-layout, $lightness: -90%)};
+  --color-layout-02: #{color.scale($color-layout, $lightness: -95%)};
   --color-primary-90: #{color.scale($color-primary, $lightness: 80%)};
   --color-primary-80: #{color.scale($color-primary, $lightness: 60%)};
   --color-primary-70: #{color.scale($color-primary, $lightness: 40%)};
@@ -53,6 +55,14 @@ $color-primary: hsl(258deg 89.5% 66.3%);
   :root {
     @include dark;
   }
+}
+
+:root {
+  @include light;
+}
+
+.light-theme {
+  @include light;
 }
 
 .dark-theme {

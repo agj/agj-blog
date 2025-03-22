@@ -21,6 +21,14 @@ const config: ElmPagesInit = {
     app.ports.saveConfig.subscribe((config) => {
       localStorage.setItem("config", JSON.stringify(config));
     });
+
+    app.ports.setTheme.subscribe((theme: string) => {
+      document.body.classList.remove("dark-theme");
+      document.body.classList.remove("light-theme");
+      if (["dark", "light"].includes(theme)) {
+        document.body.classList.add(`${theme}-theme`);
+      }
+    });
   },
 };
 

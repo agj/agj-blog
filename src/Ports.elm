@@ -8,3 +8,6 @@ import Json.Decode exposing (Value)
 
 
 port saveConfig : Value -> Cmd msg
+
+
+port setTheme : Value -> Cmd msg

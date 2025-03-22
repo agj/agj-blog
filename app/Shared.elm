@@ -105,7 +105,10 @@ update msg model =
                     }
             in
             ( newModel
-            , Effect.SaveConfig { theme = newModel.theme }
+            , Effect.batch
+                [ Effect.SaveConfig { theme = newModel.theme }
+                , Effect.SetTheme newModel.theme
+                ]
             )
 
 

@@ -14,6 +14,7 @@ export default {
         "20": "var(--color-layout-20)",
         "10": "var(--color-layout-10)",
         "05": "var(--color-layout-05)",
+        "02": "var(--color-layout-02)",
       },
       primary: {
         "90": "var(--color-primary-90)",

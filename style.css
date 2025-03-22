@@ -9,6 +9,10 @@
     font-size: 20px;
   }
 
+  body {
+    @apply bg-layout-02;
+  }
+
   a {
     @apply text-inherit underline decoration-primary-20 underline-offset-4 decoration-2 hover:text-primary-50;
   }

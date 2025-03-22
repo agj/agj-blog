@@ -12,12 +12,14 @@ import Form
 import Http
 import Pages.Fetcher
 import Ports
+import Theme exposing (Theme)
 import Url exposing (Url)
 
 
 {-| -}
 type Effect msg
     = SaveConfig Flags
+    | SetTheme Theme
     | None
     | Cmd (Cmd msg)
     | Batch (List (Effect msg))
@@ -47,6 +49,9 @@ map fn effect =
     case effect of
         SaveConfig flags ->
             SaveConfig flags
+
+        SetTheme theme ->
+            SetTheme theme
 
         None ->
             None
@@ -83,6 +88,9 @@ perform ({ fromPageMsg, key } as helpers) effect =
     case effect of
         SaveConfig flags ->
             Ports.saveConfig (Flags.encode flags)
+
+        SetTheme theme ->
+            Ports.setTheme (Theme.encode theme)
 
         None ->
             Cmd.none
