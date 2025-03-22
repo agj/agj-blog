@@ -65,8 +65,7 @@ data =
 
 
 type Msg
-    = NoOp
-    | SelectedChangeTheme
+    = SelectedChangeTheme
 
 
 type alias Model =
@@ -77,9 +76,6 @@ type alias Model =
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
-        NoOp ->
-            ( model, Effect.none )
-
         SelectedChangeTheme ->
             ( { model
                 | theme =
