@@ -7,19 +7,32 @@ type ElmPagesInit = {
   flags: unknown;
 };
 
+const setTheme = (theme: string) => {
+  document.body.classList.remove("dark-theme");
+  document.body.classList.remove("light-theme");
+  if (["dark", "light"].includes(theme)) {
+    document.body.classList.add(`${theme}-theme`);
+  }
+};
+
 const config: ElmPagesInit = {
   flags: () => {
     const configRaw = localStorage.getItem("config");
     const config = configRaw ? JSON.parse(configRaw) : null;
+    const theme = {
+      set: config.theme,
+      default: window.matchMedia?.("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : window.matchMedia?.("(prefers-color-scheme: light)").matches
+          ? "light"
+          : null,
+    };
+
+    setTheme(theme.set);
+
     return {
       ...config,
-      theme: config.theme
-        ? config.theme
-        : window.matchMedia?.("(prefers-color-scheme: dark)").matches
-          ? "default-dark"
-          : window.matchMedia?.("(prefers-color-scheme: light)").matches
-            ? "default-light"
-            : null,
+      theme,
     };
   },
 
@@ -31,13 +44,7 @@ const config: ElmPagesInit = {
       localStorage.setItem("config", JSON.stringify(config));
     });
 
-    app.ports.setTheme.subscribe((theme: string) => {
-      document.body.classList.remove("dark-theme");
-      document.body.classList.remove("light-theme");
-      if (["dark", "light"].includes(theme)) {
-        document.body.classList.add(`${theme}-theme`);
-      }
-    });
+    app.ports.setTheme.subscribe(setTheme);
   },
 };
 

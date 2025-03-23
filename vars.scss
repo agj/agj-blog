@@ -51,14 +51,14 @@ $color-primary: hsl(258deg 89.5% 66.3%);
   --color-primary-05: #{color.scale($color-primary, $lightness: -90%)};
 }
 
+:root {
+  @include light;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     @include dark;
   }
-}
-
-:root {
-  @include light;
 }
 
 .light-theme {
