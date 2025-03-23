@@ -16,7 +16,6 @@ import Html.Events
 import Icon
 import Json.Decode as Decode exposing (Decoder)
 import Markdown.Html
-import Style
 import TypedSvg as Svg
 import TypedSvg.Attributes as Svg
 import TypedSvg.Core
@@ -206,7 +205,7 @@ seekBarView { currentTime, duration } =
                 , TypedSvg.Core.attribute "y" halfBarWidth
                 , Svg.width (Svg.percent (currentTime / duration * 100))
                 , TypedSvg.Core.attribute "height" halfBarWidth
-                , Svg.fill (Svg.Paint Style.color.layout90)
+                , Svg.fill (Svg.CSSVariable "--color-layout-90")
                 ]
                 []
     in
