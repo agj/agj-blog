@@ -87,30 +87,9 @@ view (PageBody config) =
                     Custom.Html.none
 
                 Just title_ ->
-                    let
-                        nextTheme =
-                            Theme.change config.theme
-                    in
                     Html.div [ class "bg-layout-05 flex w-full flex-col items-center" ]
                         [ Html.div [ class ("flex w-full flex-row justify-end mt-2 " ++ pageMaxWidth) ]
-                            [ Html.button
-                                [ class "text-layout-50 hover:bg-layout-20 flex size-6 justify-center rounded bg-white align-middle hover:text-white"
-                                , class "button"
-                                , Html.Events.onClick config.onRequestedChangeTheme
-                                ]
-                                [ (case ( nextTheme.set, nextTheme.default ) of
-                                    ( Just Theme.Dark, _ ) ->
-                                        Icon.moon
-
-                                    ( Just Theme.Light, _ ) ->
-                                        Icon.sun
-
-                                    ( Nothing, _ ) ->
-                                        Icon.minus
-                                  )
-                                    Icon.Small
-                                ]
-                            ]
+                            [ changeThemeButtonView config ]
                         , Html.div [ class ("w-full flex-grow p-4 pt-0 " ++ pageMaxWidth) ]
                             [ title_ ]
                         ]
@@ -127,3 +106,33 @@ view (PageBody config) =
         , content
         ]
         |> Html.map PagesMsg.fromMsg
+
+
+changeThemeButtonView :
+    { a
+        | theme : Theme
+        , onRequestedChangeTheme : msg
+    }
+    -> Html msg
+changeThemeButtonView config =
+    let
+        nextTheme =
+            Theme.change config.theme
+    in
+    Html.button
+        [ class "text-layout-50 hover:bg-layout-20 flex size-6 justify-center rounded bg-white align-middle hover:text-white"
+        , class "button"
+        , Html.Events.onClick config.onRequestedChangeTheme
+        ]
+        [ (case ( nextTheme.set, nextTheme.default ) of
+            ( Just Theme.Dark, _ ) ->
+                Icon.moon
+
+            ( Just Theme.Light, _ ) ->
+                Icon.sun
+
+            ( Nothing, _ ) ->
+                Icon.minus
+          )
+            Icon.Small
+        ]
