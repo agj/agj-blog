@@ -156,7 +156,8 @@ view app shared model =
                 , Category.viewList
                 , [ Html.text "Tags" ]
                     |> View.Heading.view 2
-                , Tag.listView Nothing [] app.sharedData.posts Tag.all
+                , Html.p [ class "text-sm" ]
+                    (Tag.listView Nothing [] app.sharedData.posts Tag.all)
                 ]
             ]
 

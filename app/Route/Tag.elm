@@ -215,7 +215,8 @@ view app shared model =
 
         tagsColumn : Html Msg
         tagsColumn =
-            Tag.listView (Just OnClick) model.queryTags app.sharedData.posts subTags
+            Html.p [ class "text-sm" ]
+                (Tag.listView (Just OnClick) model.queryTags app.sharedData.posts subTags)
 
         content =
             Html.div [ class "grid grid-cols-2 gap-4" ]

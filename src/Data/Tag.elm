@@ -104,7 +104,7 @@ listView :
     -> List Tag
     -> List { a | frontmatter : { b | tags : List Tag } }
     -> List Tag
-    -> Html msg
+    -> List (Html msg)
 listView onClick selectedTags posts relatedTags =
     let
         tagsCount =
@@ -124,7 +124,6 @@ listView onClick selectedTags posts relatedTags =
     tagsCount
         |> List.map (\( tag, count ) -> toLink onClick selectedTags tag)
         |> List.intersperse (Html.text ", ")
-        |> Html.p []
 
 
 decoder : Decoder Tag
