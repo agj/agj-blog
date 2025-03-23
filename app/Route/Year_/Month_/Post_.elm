@@ -203,7 +203,7 @@ view app shared model =
 
         postInfo : Html Msg
         postInfo =
-            Html.p [ class "w-full py-2" ]
+            Html.p [ class "w-full" ]
                 ([ Html.text
                     ("Posted {date}, on "
                         |> String.replace "{date}" date

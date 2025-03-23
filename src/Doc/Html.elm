@@ -203,5 +203,5 @@ viewSeparation =
 
 paragraph : List (Html msg) -> Html msg
 paragraph inlines =
-    Html.p [ class "w-full py-2 text-base" ]
+    Html.p [ class "w-full text-base" ]
         inlines

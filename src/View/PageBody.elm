@@ -69,12 +69,14 @@ view (PageBody config) =
                     Nothing
 
                 PageTitleOnly title_ ->
-                    View.Heading.view 1 title_
+                    Html.h1 [ class "text-4xl leading-snug w-full font-light" ]
+                        title_
                         |> Just
 
                 PageTitleAndSubtitle title_ subtitle ->
-                    Html.div [ class "flex flex-col gap-4" ]
-                        [ View.Heading.view 1 title_
+                    Html.div [ class "flex flex-col" ]
+                        [ Html.h1 [ class "text-4xl leading-snug w-full font-light" ]
+                            title_
                         , Html.div [ class "text-layout-40 text-sm" ]
                             [ subtitle ]
                         ]
@@ -87,17 +89,19 @@ view (PageBody config) =
                     Custom.Html.none
 
                 Just title_ ->
-                    Html.div [ class "bg-layout-05 flex w-full flex-col items-center" ]
-                        [ Html.div [ class ("flex w-full flex-row justify-end mt-2 " ++ pageMaxWidth) ]
-                            [ changeThemeButtonView config ]
-                        , Html.div [ class ("w-full flex-grow p-4 pt-0 " ++ pageMaxWidth) ]
-                            [ title_ ]
+                    Html.div [ class "p-2 pb-0" ]
+                        [ Html.header [ class "bg-layout-05 flex w-full flex-col items-center rounded-lg" ]
+                            [ Html.div [ class ("flex w-full flex-row justify-end mt-2 " ++ pageMaxWidth) ]
+                                [ changeThemeButtonView config ]
+                            , Html.div [ class ("w-full flex-grow px-4 pb-2 " ++ pageMaxWidth) ]
+                                [ title_ ]
+                            ]
                         ]
 
         content : Html msg
         content =
             Html.div [ class "flex w-full flex-col items-center" ]
-                [ Html.div [ class ("w-full px-4 pb-32 pt-6 " ++ pageMaxWidth) ]
+                [ Html.main_ [ class ("w-full px-4 pb-32 pt-6 " ++ pageMaxWidth) ]
                     [ config.content ]
                 ]
     in
