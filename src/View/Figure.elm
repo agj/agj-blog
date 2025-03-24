@@ -38,7 +38,7 @@ view (Figure config) =
     let
         content : Html msg
         content =
-            Html.div [ class "bg-layout-05 flex flex-col p-3" ]
+            Html.div [ class "bg-layout-20 flex flex-col p-3" ]
                 [ config.content ]
 
         caption : List (Html msg)

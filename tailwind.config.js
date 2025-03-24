@@ -13,8 +13,6 @@ export default {
         "30": "var(--color-layout-30)",
         "20": "var(--color-layout-20)",
         "10": "var(--color-layout-10)",
-        "05": "var(--color-layout-05)",
-        "02": "var(--color-layout-02)",
       },
       primary: {
         "90": "var(--color-primary-90)",
@@ -26,7 +24,6 @@ export default {
         "30": "var(--color-primary-30)",
         "20": "var(--color-primary-20)",
         "10": "var(--color-primary-10)",
-        "05": "var(--color-primary-05)",
       },
       transparent: "transparent",
       white: "white",

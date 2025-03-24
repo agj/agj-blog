@@ -189,7 +189,7 @@ viewList config sectionDepth maybeStartNumber firstItem restItems =
 
 viewBlockQuote : Config msg -> Int -> List (Doc.Block msg) -> Html msg
 viewBlockQuote config sectionDepth blocks =
-    Html.div [ class "border-layout-05 flex flex-col border-l-[1rem] border-solid pl-6" ]
+    Html.div [ class "border-layout-20 flex flex-col border-l-[1rem] border-solid pl-6" ]
         [ Html.div [ class "flex flex-col gap-4" ]
             (viewInternal config sectionDepth blocks)
         ]

@@ -13,7 +13,6 @@ import Html.Events
 import Icon
 import PagesMsg exposing (PagesMsg)
 import Theme exposing (Theme)
-import View.Heading
 
 
 type PageBody msg
@@ -69,13 +68,13 @@ view (PageBody config) =
                     Nothing
 
                 PageTitleOnly title_ ->
-                    Html.h1 [ class "text-4xl leading-snug w-full font-light" ]
+                    Html.h1 [ class "w-full text-4xl font-light leading-snug" ]
                         title_
                         |> Just
 
                 PageTitleAndSubtitle title_ subtitle ->
                     Html.div [ class "flex flex-col" ]
-                        [ Html.h1 [ class "text-4xl leading-snug w-full font-light" ]
+                        [ Html.h1 [ class "w-full text-4xl font-light leading-snug" ]
                             title_
                         , Html.div [ class "text-layout-40 text-sm" ]
                             [ subtitle ]
@@ -90,7 +89,7 @@ view (PageBody config) =
 
                 Just title_ ->
                     Html.div [ class "p-2 pb-0" ]
-                        [ Html.header [ class "bg-layout-05 flex w-full flex-col items-center rounded-lg" ]
+                        [ Html.header [ class "bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
                             [ Html.div [ class ("flex w-full flex-row justify-end mt-2 " ++ pageMaxWidth) ]
                                 [ changeThemeButtonView config ]
                             , Html.div [ class ("w-full flex-grow px-4 pb-2 " ++ pageMaxWidth) ]
@@ -124,7 +123,7 @@ changeThemeButtonView config =
             Theme.change config.theme
     in
     Html.button
-        [ class "text-layout-50 hover:bg-layout-20 flex size-6 justify-center rounded bg-white align-middle hover:text-white"
+        [ class "text-layout-50 hover:bg-layout-30 flex size-6 justify-center rounded bg-white align-middle hover:text-white"
         , class "button"
         , Html.Events.onClick config.onRequestedChangeTheme
         ]

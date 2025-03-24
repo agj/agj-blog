@@ -10,7 +10,7 @@
   }
 
   body {
-    @apply bg-layout-02;
+    @apply bg-layout-10;
   }
 
   a {
@@ -18,6 +18,6 @@
   }
 
   button .button {
-    @apply text-layout-50 hover:bg-layout-20 flex flex-row justify-center rounded bg-white align-middle hover:text-white;
+    @apply text-layout-50 hover:bg-layout-40 flex flex-row justify-center rounded bg-white align-middle hover:text-white;
   }
 }

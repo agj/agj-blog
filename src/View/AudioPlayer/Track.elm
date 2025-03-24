@@ -105,7 +105,7 @@ view (TrackWithConfig track config) =
                     { fontColor = "text-layout-90"
                     , backgroundColor =
                         if config.hovered then
-                            "bg-layout-10"
+                            "bg-layout-20"
 
                         else
                             "bg-transparent"

@@ -111,7 +111,7 @@ view (State state) (AudioPlayerWithConfig audioPlayer config) =
     in
     case config.tracks of
         firstTrack :: _ ->
-            Html.div [ class "bg-layout-05 flex flex-col" ]
+            Html.div [ class "bg-layout-20 flex flex-col" ]
                 [ titleView state config firstTrack audioPlayer.title
                 , Html.div [ class "flex flex-col" ]
                     (config.tracks
