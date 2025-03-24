@@ -1,8 +1,7 @@
 @use "sass:color";
 
-$color-primary: hsl(258deg 89.5% 66.3%);
+$color-primary: hsl(346, 100%, 66%);
 $color-layout: color.scale($color-primary, $saturation: -70%);
-/* $color-layout: hsl(20deg 32% 55%); */
 
 @mixin light {
   --color-layout-90: #{color.scale($color-layout, $lightness: -80%)};
