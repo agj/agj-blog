@@ -6,6 +6,7 @@ module Icon exposing
     , none
     , pause
     , play
+    , plus
     , stop
     , sun
     )
@@ -57,6 +58,12 @@ sun size =
 minus : Icon msg
 minus size =
     Heroicons.Solid.minus
+        |> style size
+
+
+plus : Icon msg
+plus size =
+    Heroicons.Solid.plus
         |> style size
 
 

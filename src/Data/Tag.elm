@@ -13,9 +13,10 @@ module Data.Tag exposing
     )
 
 import Custom.Html.Attributes
-import Html exposing (Html)
-import Html.Attributes exposing (href)
+import Html exposing (Attribute, Html)
+import Html.Attributes exposing (attribute, class, href)
 import Html.Events
+import Icon exposing (Icon)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
 import List.Extra as List
@@ -80,23 +81,26 @@ toLink onClick tagsToAddTo tag =
                 (toUrl tag [])
                 [ Html.text (getName tag) ]
     in
-    case tagsToAddTo of
-        _ :: _ ->
-            let
-                addLink =
-                    linkWithOnClick onClick
-                        (toUrl tag tagsToAddTo)
-                        [ Html.text "+" ]
-            in
-            [ singleLink
-            , Html.text "["
-            , addLink
-            , Html.text "]"
-            ]
-                |> Html.span []
+    Html.span [ class "whitespace-nowrap" ] <|
+        case tagsToAddTo of
+            _ :: _ ->
+                let
+                    addButton =
+                        Html.a
+                            [ attribute "aria" "button"
+                            , class "text-layout-50 rounded size-4 inline-flex justify-center items-center align-middle mx-0.5"
+                            , class "hover:text-layout-20 hover:bg-layout-50"
+                            , href (toUrl tag tagsToAddTo)
+                            , maybeOnClick onClick (toUrl tag tagsToAddTo)
+                            ]
+                            [ Icon.plus Icon.Small ]
+                in
+                [ singleLink
+                , addButton
+                ]
 
-        [] ->
-            singleLink
+            [] ->
+                [ singleLink ]
 
 
 listView :
@@ -678,10 +682,15 @@ linkWithOnClick : Maybe (String -> msg) -> String -> List (Html msg) -> Html msg
 linkWithOnClick maybeMsg url =
     Html.a
         [ href url
-        , case maybeMsg of
-            Just msg ->
-                Html.Events.onClick (msg url)
-
-            Nothing ->
-                Custom.Html.Attributes.none
+        , maybeOnClick maybeMsg url
         ]
+
+
+maybeOnClick : Maybe (String -> msg) -> String -> Attribute msg
+maybeOnClick maybeMsg url =
+    case maybeMsg of
+        Just msg ->
+            Html.Events.onClick (msg url)
+
+        Nothing ->
+            Custom.Html.Attributes.none
