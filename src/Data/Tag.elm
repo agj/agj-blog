@@ -16,7 +16,7 @@ import Custom.Html.Attributes
 import Html exposing (Attribute, Html)
 import Html.Attributes exposing (attribute, class, href)
 import Html.Events
-import Icon exposing (Icon)
+import Icon
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
 import List.Extra as List
@@ -88,7 +88,7 @@ toLink onClick tagsToAddTo tag =
                     addButton =
                         Html.a
                             [ attribute "aria" "button"
-                            , class "text-layout-50 rounded size-4 inline-flex justify-center items-center align-middle mx-0.5"
+                            , class "text-layout-50 mx-0.5 inline-flex size-4 items-center justify-center rounded align-middle"
                             , class "hover:text-layout-20 hover:bg-layout-50"
                             , href (toUrl tag tagsToAddTo)
                             , maybeOnClick onClick (toUrl tag tagsToAddTo)
