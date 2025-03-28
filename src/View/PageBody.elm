@@ -4,11 +4,12 @@ module View.PageBody exposing
     , view
     , withTitle
     , withTitleAndSubtitle
+    , withoutAboutLink
     )
 
 import Custom.Html
 import Html exposing (Html)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, href)
 import Html.Events
 import Icon
 import PagesMsg exposing (PagesMsg)
@@ -21,6 +22,7 @@ type PageBody msg
         , title : PageTitle msg
         , theme : Theme
         , onRequestedChangeTheme : msg
+        , showAboutLink : Bool
         }
 
 
@@ -42,6 +44,7 @@ fromContent config content =
         , title = NoPageTitle
         , theme = config.theme
         , onRequestedChangeTheme = config.onRequestedChangeTheme
+        , showAboutLink = True
         }
 
 
@@ -53,6 +56,11 @@ withTitle titleInlines (PageBody config) =
 withTitleAndSubtitle : List (Html msg) -> Html msg -> PageBody msg -> PageBody msg
 withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
     PageBody { config | title = PageTitleAndSubtitle titleInlines subtitleBlock }
+
+
+withoutAboutLink : PageBody msg -> PageBody msg
+withoutAboutLink (PageBody config) =
+    PageBody { config | showAboutLink = False }
 
 
 view : PageBody msg -> Html (PagesMsg msg)
@@ -68,18 +76,27 @@ view (PageBody config) =
                     Nothing
 
                 PageTitleOnly title_ ->
-                    Html.h1 [ class "w-full text-4xl font-light leading-snug" ]
+                    Html.h1 [ class "text-layout-90 w-full text-4xl font-light leading-snug" ]
                         title_
                         |> Just
 
                 PageTitleAndSubtitle title_ subtitle ->
                     Html.div [ class "flex flex-col" ]
-                        [ Html.h1 [ class "w-full text-4xl font-light leading-snug" ]
+                        [ Html.h1 [ class "text-layout-90 w-full text-4xl font-light leading-snug" ]
                             title_
-                        , Html.div [ class "text-layout-40 text-sm" ]
+                        , Html.div [ class "text-sm" ]
                             [ subtitle ]
                         ]
                         |> Just
+
+        aboutLink : Html msg
+        aboutLink =
+            if config.showAboutLink then
+                Html.a [ href "/about" ]
+                    [ Html.text "About" ]
+
+            else
+                Custom.Html.none
 
         header : Html msg
         header =
@@ -88,10 +105,12 @@ view (PageBody config) =
                     Custom.Html.none
 
                 Just title_ ->
-                    Html.div [ class "p-2 pb-0" ]
-                        [ Html.header [ class "bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
-                            [ Html.div [ class ("flex w-full flex-row justify-end mt-2 " ++ pageMaxWidth) ]
-                                [ changeThemeButtonView config ]
+                    Html.div [ class "p-2 pb-0 " ]
+                        [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
+                            [ Html.div [ class ("flex w-full flex-row gap-4 justify-end mt-2 " ++ pageMaxWidth) ]
+                                [ aboutLink
+                                , changeThemeButtonView config
+                                ]
                             , Html.div [ class ("w-full flex-grow px-4 pb-2 " ++ pageMaxWidth) ]
                                 [ title_ ]
                             ]
@@ -123,8 +142,8 @@ changeThemeButtonView config =
             Theme.change config.theme
     in
     Html.button
-        [ class "text-layout-50 flex size-6 justify-center rounded align-middle"
-        , class "hover:bg-layout-30 hover:text-layout-10"
+        [ class "flex size-6 justify-center rounded align-middle text-inherit"
+        , class "hover:bg-layout-50 hover:text-layout-20"
         , Html.Events.onClick config.onRequestedChangeTheme
         ]
         [ (case ( nextTheme.set, nextTheme.default ) of
