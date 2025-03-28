@@ -87,7 +87,7 @@ view (TrackWithConfig track config) =
             case config.playState of
                 StatePlaying ph ->
                     { fontColor = "text-white"
-                    , backgroundColor = "bg-primary-50"
+                    , backgroundColor = "bg-primary-30"
                     , icon = Icon.pause
                     , newPlayStateOnPress = StatePaused ph
                     , events = []
@@ -95,7 +95,7 @@ view (TrackWithConfig track config) =
 
                 StatePaused ph ->
                     { fontColor = "text-white"
-                    , backgroundColor = "bg-primary-50"
+                    , backgroundColor = "bg-primary-30"
                     , icon = Icon.play
                     , newPlayStateOnPress = StatePlaying ph
                     , events = []
