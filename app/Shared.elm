@@ -40,10 +40,10 @@ init :
             , pageUrl : Maybe PageUrl
             }
     -> ( Model, Effect Msg )
-init flags maybePagePath =
+init flagsRaw maybePagePath =
     let
-        flagsR =
-            case flags of
+        flags =
+            case flagsRaw of
                 Pages.Flags.BrowserFlags value ->
                     Json.Decode.decodeValue Flags.decoder value
                         |> Result.withDefault Flags.default
@@ -51,8 +51,8 @@ init flags maybePagePath =
                 Pages.Flags.PreRenderFlags ->
                     Flags.default
     in
-    ( { theme = Debug.log "theme" flagsR.theme }
-    , Effect.none
+    ( { theme = Debug.log "theme" flags.theme }
+    , Effect.SetTheme flags.theme
     )
 
 
