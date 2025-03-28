@@ -197,7 +197,7 @@ viewBlockQuote config sectionDepth blocks =
 
 viewSeparation : Html msg
 viewSeparation =
-    Html.hr [ class "bg-primary-50 my-6 h-0.5 w-full border-0" ]
+    Html.hr [ class "bg-layout-20 my-6 h-1 w-full border-0" ]
         []
 
 
