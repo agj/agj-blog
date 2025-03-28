@@ -107,7 +107,7 @@ view (PageBody config) =
                 Just title_ ->
                     Html.div [ class "p-2 pb-0 " ]
                         [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
-                            [ Html.div [ class ("flex w-full flex-row gap-4 justify-end mt-2 " ++ pageMaxWidth) ]
+                            [ Html.div [ class ("text-sm items-center flex w-full flex-row gap-4 justify-end mt-2 " ++ pageMaxWidth) ]
                                 [ aboutLink
                                 , changeThemeButtonView config
                                 ]
