@@ -123,8 +123,8 @@ changeThemeButtonView config =
             Theme.change config.theme
     in
     Html.button
-        [ class "text-layout-50 hover:bg-layout-30 flex size-6 justify-center rounded bg-white align-middle hover:text-white"
-        , class "button"
+        [ class "text-layout-50 flex size-6 justify-center rounded align-middle"
+        , class "hover:bg-layout-30 hover:text-layout-10"
         , Html.Events.onClick config.onRequestedChangeTheme
         ]
         [ (case ( nextTheme.set, nextTheme.default ) of

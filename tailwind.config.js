@@ -26,7 +26,6 @@ export default {
         "10": "var(--color-primary-10)",
       },
       transparent: "transparent",
-      white: "white",
       inherit: "inherit",
     },
   },
