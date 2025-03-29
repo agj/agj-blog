@@ -6,8 +6,6 @@ import Data.Date as Date
 import Data.Post as Post
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
-import View.Heading
-import View.List
 
 
 view : List Post.GlobMatchFrontmatter -> Html msg
@@ -52,7 +50,7 @@ view posts =
                         )
                     )
     in
-    Html.div [ class "flex flex-col gap-4" ]
+    Html.div [ class "flex flex-col gap-8" ]
         (List.map viewGistYear gistsByYearAndMonth)
 
 
@@ -64,8 +62,8 @@ viewGistYear : ( String, List ( Int, List Post.GlobMatchFrontmatter ) ) -> Html 
 viewGistYear ( year, gistMonths ) =
     let
         heading =
-            [ Html.text year ]
-                |> View.Heading.view 2
+            Html.h2 [ class "text-layout-70 text-2xl" ]
+                [ Html.text year ]
 
         months =
             gistMonths
@@ -83,18 +81,15 @@ viewGistMonth ( month, gists ) =
 
         heading : Html msg
         heading =
-            [ Html.text monthName ]
-                |> View.Heading.view 3
+            Html.h3 [ class "text-layout-70" ]
+                [ Html.text monthName ]
 
-        gistsList : Html msg
+        gistsList : List (Html msg)
         gistsList =
-            gists
-                |> List.map (viewGist >> List.singleton)
-                |> View.List.fromItems
-                |> View.List.view
+            List.map viewGist gists
     in
-    Html.div [ class "flex flex-col gap-4" ]
-        [ heading, gistsList ]
+    Html.div [ class "flex flex-col gap-1" ]
+        (heading :: gistsList)
 
 
 viewGist : Post.GlobMatchFrontmatter -> Html msg
@@ -102,9 +97,10 @@ viewGist gist =
     let
         postDate : Html msg
         postDate =
-            "{date} – "
-                |> String.replace "{date}" (gist.frontmatter.date |> String.fromInt |> String.padLeft 2 '0')
-                |> Html.text
+            Html.div [ class "text-layout-70 min-w-5" ]
+                [ Html.text
+                    (gist.frontmatter.date |> String.fromInt |> String.padLeft 2 '0')
+                ]
 
         postLink : Html msg
         postLink =
@@ -122,13 +118,15 @@ viewGist gist =
                             [ Html.text (Category.getName category) ]
                     )
 
-        postCategories : List (Html msg)
+        postCategories : Html msg
         postCategories =
-            Html.text " ("
-                :: (postCategoryEls |> List.intersperse (Html.text ", "))
-                ++ [ Html.text ")" ]
+            Html.span [ class "text-layout-50 text-sm" ]
+                (Html.text " ("
+                    :: (postCategoryEls |> List.intersperse (Html.text ", "))
+                    ++ [ Html.text ")" ]
+                )
     in
-    Html.div []
-        ([ postDate, postLink ]
-            ++ postCategories
-        )
+    Html.div [ class "flex flex-row gap-2" ]
+        [ postDate
+        , Html.div [] [ postLink, postCategories ]
+        ]
