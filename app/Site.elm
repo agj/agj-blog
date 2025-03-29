@@ -28,8 +28,6 @@ head : BackendTask FatalError (List Head.Tag)
 head =
     [ Head.metaName "viewport" (Head.raw "width=device-width,initial-scale=1")
     , Head.sitemapLink "/sitemap.xml"
-
-    -- , Head.metaProperty "twitter:site" (Head.raw "@alegrilli")
     ]
         |> BackendTask.succeed
 

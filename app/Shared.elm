@@ -51,7 +51,7 @@ init flagsRaw maybePagePath =
                 Pages.Flags.PreRenderFlags ->
                     Flags.default
     in
-    ( { theme = Debug.log "theme" flags.theme }
+    ( { theme = flags.theme }
     , Effect.SetTheme flags.theme
     )
 
