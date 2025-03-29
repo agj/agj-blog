@@ -1,5 +1,8 @@
 module Site exposing
-    ( config
+    ( canonicalUrl
+    , config
+    , description
+    , name
     , pageMeta
     , postMeta
     , windowTitle
@@ -44,6 +47,11 @@ name =
 description : String
 description =
     "Writing about coding weird things, strange thoughts and more random nonsense."
+
+
+canonicalUrl : String
+canonicalUrl =
+    "https://blog.agj.cl"
 
 
 windowTitle : String -> String
