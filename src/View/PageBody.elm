@@ -69,6 +69,11 @@ view (PageBody config) =
         pageMaxWidth =
             "max-w-[40rem]"
 
+        titleEl : List (Html msg) -> Html msg
+        titleEl text =
+            Html.h1 [ class "text-layout-90 w-full text-4xl font-light leading-[1.1]" ]
+                text
+
         title : Maybe (Html msg)
         title =
             case config.title of
@@ -76,14 +81,12 @@ view (PageBody config) =
                     Nothing
 
                 PageTitleOnly title_ ->
-                    Html.h1 [ class "text-layout-90 w-full text-4xl font-light leading-snug" ]
-                        title_
+                    titleEl title_
                         |> Just
 
                 PageTitleAndSubtitle title_ subtitle ->
-                    Html.div [ class "flex flex-col" ]
-                        [ Html.h1 [ class "text-layout-90 w-full text-4xl font-light leading-snug" ]
-                            title_
+                    Html.div [ class "flex flex-col gap-3" ]
+                        [ titleEl title_
                         , Html.div [ class "text-sm" ]
                             [ subtitle ]
                         ]

@@ -183,7 +183,11 @@ view app shared model =
                         [] ->
                             Tag.baseUrl
             in
-            Html.a [ href url, Html.Events.onClick (OnClick url) ]
+            Html.a
+                [ href url
+                , Html.Events.onClick (OnClick url)
+                , class "hover:line-through"
+                ]
                 [ Html.text (Tag.getName tag) ]
 
         titleChildren : List (Html Msg)
