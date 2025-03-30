@@ -174,5 +174,6 @@ view app shared model =
             content
             |> View.PageBody.withTitle
                 [ Html.text "agj's blog" ]
+            |> View.PageBody.withRssFeed (View.PageBody.RssFeedUrl "/rss.xml")
             |> View.PageBody.view
     }
