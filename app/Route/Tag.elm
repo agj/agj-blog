@@ -238,13 +238,18 @@ view app shared model =
             case model.queryTags of
                 [ tag ] ->
                     pageBody
-                        |> View.PageBody.withRssFeedLink
+                        |> View.PageBody.withRssFeed
                             ("/tag/{tagSlug}/rss.xml"
                                 |> String.replace "{tagSlug}" (Tag.getSlug tag)
+                                |> View.PageBody.RssFeedUrl
                             )
 
                 _ ->
                     pageBody
+                        |> View.PageBody.withRssFeed
+                            (View.PageBody.NoRssFeedWithExplanation
+                                "RSS feeds are available for single tags only. You currently have multiple tags selected."
+                            )
     in
     { title = title
     , body =

@@ -1,16 +1,18 @@
 module View.PageBody exposing
     ( PageBody
+    , RssFeed(..)
     , fromContent
     , view
-    , withRssFeedLink
+    , withRssFeed
     , withTitle
     , withTitleAndSubtitle
     , withoutAboutLink
     )
 
 import Custom.Html
+import Custom.Html.Attributes exposing (ariaDescribedBy, roleTooltip)
 import Html exposing (Html)
-import Html.Attributes exposing (class, href)
+import Html.Attributes exposing (class, href, id)
 import Html.Events
 import Icon
 import PagesMsg exposing (PagesMsg)
@@ -23,7 +25,7 @@ type PageBody msg
         , title : PageTitle msg
         , theme : Theme
         , onRequestedChangeTheme : msg
-        , rssFeedUrl : Maybe String
+        , rssFeed : RssFeed
         , showAboutLink : Bool
         }
 
@@ -32,6 +34,12 @@ type PageTitle msg
     = NoPageTitle
     | PageTitleOnly (List (Html msg))
     | PageTitleAndSubtitle (List (Html msg)) (Html msg)
+
+
+type RssFeed
+    = RssFeedUrl String
+    | NoRssFeedWithExplanation String
+    | NoRssFeed
 
 
 fromContent :
@@ -46,7 +54,7 @@ fromContent config content =
         , title = NoPageTitle
         , theme = config.theme
         , onRequestedChangeTheme = config.onRequestedChangeTheme
-        , rssFeedUrl = Nothing
+        , rssFeed = NoRssFeed
         , showAboutLink = True
         }
 
@@ -61,9 +69,9 @@ withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
     PageBody { config | title = PageTitleAndSubtitle titleInlines subtitleBlock }
 
 
-withRssFeedLink : String -> PageBody msg -> PageBody msg
-withRssFeedLink url (PageBody config) =
-    PageBody { config | rssFeedUrl = Just url }
+withRssFeed : RssFeed -> PageBody msg -> PageBody msg
+withRssFeed rssFeed (PageBody config) =
+    PageBody { config | rssFeed = rssFeed }
 
 
 withoutAboutLink : PageBody msg -> PageBody msg
@@ -111,12 +119,32 @@ view (PageBody config) =
 
         rssFeedLink : Html msg
         rssFeedLink =
-            case config.rssFeedUrl of
-                Just url ->
+            case config.rssFeed of
+                RssFeedUrl url ->
                     Html.a [ href url ]
                         [ Html.text "RSS feed" ]
 
-                Nothing ->
+                NoRssFeedWithExplanation explanation ->
+                    let
+                        tooltipId =
+                            "no-rss-feed-explanation"
+                    in
+                    Html.div [ class "group relative flex flex-col items-end" ]
+                        [ Html.div
+                            [ ariaDescribedBy [ tooltipId ]
+                            , class "cursor-help"
+                            ]
+                            [ Html.text "No RSS feed" ]
+                        , Html.div
+                            [ roleTooltip
+                            , id tooltipId
+                            , class "bg-layout-80 text-layout-30 pointer-events-none invisible absolute top-8 w-max max-w-60 rounded p-3 text-xs leading-normal opacity-0 transition-all delay-100"
+                            , class "group-hover:visible group-hover:opacity-100"
+                            ]
+                            [ Html.text explanation ]
+                        ]
+
+                NoRssFeed ->
                     Custom.Html.none
 
         header : Html msg
