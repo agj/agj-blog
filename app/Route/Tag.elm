@@ -4,6 +4,7 @@ import AppUrl exposing (AppUrl)
 import BackendTask exposing (BackendTask)
 import Custom.Html
 import Custom.List as List
+import Data.Post as Post
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
 import Dict exposing (Dict)
@@ -22,7 +23,7 @@ import Site
 import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-import View.PageBody
+import View.PageBody exposing (PageBody)
 import View.Snippets
 
 
@@ -155,6 +156,7 @@ view :
     -> View (PagesMsg Msg)
 view app shared model =
     let
+        posts : List Post.GlobMatchFrontmatter
         posts =
             app.sharedData.posts
                 |> List.filter
@@ -163,9 +165,11 @@ view app shared model =
                             |> List.all (List.memberOf post.frontmatter.tags)
                     )
 
+        postViews : Html msg
         postViews =
             Data.PostList.view posts
 
+        subTags : List Tag
         subTags =
             posts
                 |> List.andThen (.frontmatter >> .tags)
@@ -222,11 +226,25 @@ view app shared model =
             Html.p [ class "text-sm" ]
                 (Tag.listView (Just OnClick) model.queryTags app.sharedData.posts subTags)
 
+        content : Html Msg
         content =
             Html.div [ class "grid grid-cols-2 gap-4" ]
                 [ postColumn
                 , tagsColumn
                 ]
+
+        withRssFeedLinkMaybe : PageBody Msg -> PageBody Msg
+        withRssFeedLinkMaybe pageBody =
+            case model.queryTags of
+                [ tag ] ->
+                    pageBody
+                        |> View.PageBody.withRssFeedLink
+                            ("/tag/{tagSlug}/rss.xml"
+                                |> String.replace "{tagSlug}" (Tag.getSlug tag)
+                            )
+
+                _ ->
+                    pageBody
     in
     { title = title
     , body =
@@ -236,5 +254,6 @@ view app shared model =
             }
             content
             |> View.PageBody.withTitleAndSubtitle titleChildren subtitle
+            |> withRssFeedLinkMaybe
             |> View.PageBody.view
     }

@@ -2,6 +2,7 @@ module View.PageBody exposing
     ( PageBody
     , fromContent
     , view
+    , withRssFeedLink
     , withTitle
     , withTitleAndSubtitle
     , withoutAboutLink
@@ -22,6 +23,7 @@ type PageBody msg
         , title : PageTitle msg
         , theme : Theme
         , onRequestedChangeTheme : msg
+        , rssFeedUrl : Maybe String
         , showAboutLink : Bool
         }
 
@@ -44,6 +46,7 @@ fromContent config content =
         , title = NoPageTitle
         , theme = config.theme
         , onRequestedChangeTheme = config.onRequestedChangeTheme
+        , rssFeedUrl = Nothing
         , showAboutLink = True
         }
 
@@ -56,6 +59,11 @@ withTitle titleInlines (PageBody config) =
 withTitleAndSubtitle : List (Html msg) -> Html msg -> PageBody msg -> PageBody msg
 withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
     PageBody { config | title = PageTitleAndSubtitle titleInlines subtitleBlock }
+
+
+withRssFeedLink : String -> PageBody msg -> PageBody msg
+withRssFeedLink url (PageBody config) =
+    PageBody { config | rssFeedUrl = Just url }
 
 
 withoutAboutLink : PageBody msg -> PageBody msg
@@ -101,6 +109,16 @@ view (PageBody config) =
             else
                 Custom.Html.none
 
+        rssFeedLink : Html msg
+        rssFeedLink =
+            case config.rssFeedUrl of
+                Just url ->
+                    Html.a [ href url ]
+                        [ Html.text "RSS feed" ]
+
+                Nothing ->
+                    Custom.Html.none
+
         header : Html msg
         header =
             case title of
@@ -112,6 +130,7 @@ view (PageBody config) =
                         [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
                             [ Html.div [ class ("text-sm items-center flex w-full flex-row gap-4 justify-end mt-2 " ++ pageMaxWidth) ]
                                 [ aboutLink
+                                , rssFeedLink
                                 , changeThemeButtonView config
                                 ]
                             , Html.div [ class ("w-full flex-grow px-4 pb-2 " ++ pageMaxWidth) ]

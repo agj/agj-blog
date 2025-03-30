@@ -76,9 +76,6 @@ routes getStaticRoutes htmlToString =
                     |> List.map (\tag -> route (Tag.getSlug tag))
                     |> BackendTask.succeed
             )
-        -- TODO
-        |> ApiRoute.withGlobalHeadTags
-            (BackendTask.succeed [ Head.rssLink "/rss.xml" ])
     ]
 
 
