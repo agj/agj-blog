@@ -38,8 +38,6 @@ routes getStaticRoutes htmlToString =
         )
         |> ApiRoute.literal "rss.xml"
         |> ApiRoute.single
-        |> ApiRoute.withGlobalHeadTags
-            (BackendTask.succeed [ Head.rssLink "/rss.xml" ])
 
     -- Tag RSS feeds.
     , ApiRoute.succeed
