@@ -28,13 +28,15 @@ routes getStaticRoutes htmlToString =
 
     -- Global RSS feed.
     , ApiRoute.succeed
-        (rss
-            { title = Site.name
-            , description = Site.description
-            , url = Site.canonicalUrl
-            }
-            []
-            |> BackendTask.succeed
+        (Post.listWithFrontmatterDataSource
+            |> BackendTask.map
+                (rss
+                    { title = Site.name
+                    , description = Site.description
+                    , url = Site.canonicalUrl
+                    }
+                )
+            |> BackendTask.allowFatal
         )
         |> ApiRoute.literal "rss.xml"
         |> ApiRoute.single
