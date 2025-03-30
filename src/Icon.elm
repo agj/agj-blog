@@ -1,6 +1,7 @@
 module Icon exposing
     ( Icon
     , Size(..)
+    , info
     , minus
     , moon
     , none
@@ -11,6 +12,7 @@ module Icon exposing
     , sun
     )
 
+import Heroicons.Micro
 import Heroicons.Solid
 import Html exposing (Attribute, Html)
 import Html.Attributes
@@ -64,6 +66,12 @@ minus size =
 plus : Icon msg
 plus size =
     Heroicons.Solid.plus
+        |> style size
+
+
+info : Icon msg
+info size =
+    Heroicons.Micro.informationCircle
         |> style size
 
 

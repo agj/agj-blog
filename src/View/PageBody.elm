@@ -132,9 +132,11 @@ view (PageBody config) =
                     Html.div [ class "group relative flex flex-col items-end" ]
                         [ Html.div
                             [ ariaDescribedBy [ tooltipId ]
-                            , class "cursor-help"
+                            , class "flex cursor-help flex-row items-center gap-1"
                             ]
-                            [ Html.text "No RSS feed" ]
+                            [ Html.text "No RSS feed"
+                            , Icon.info Icon.Small
+                            ]
                         , Html.div
                             [ roleTooltip
                             , id tooltipId
