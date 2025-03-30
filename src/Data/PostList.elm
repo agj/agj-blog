@@ -105,7 +105,7 @@ viewGist gist =
     let
         postDate : Html msg
         postDate =
-            Html.div [ class "text-layout-70 min-w-5" ]
+            Html.div [ class "text-layout-70 min-w-5 tabular-nums" ]
                 [ Html.text
                     (gist.frontmatter.date |> String.fromInt |> String.padLeft 2 '0')
                 ]
