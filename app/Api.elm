@@ -2,6 +2,11 @@ module Api exposing (routes)
 
 import ApiRoute exposing (ApiRoute)
 import BackendTask exposing (BackendTask)
+import Data.Category exposing (Category)
+import Data.Post as Post
+import Data.PostList as PostList
+import Data.Tag as Tag
+import Date
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
@@ -12,7 +17,6 @@ import Pages.Manifest as Manifest
 import Route exposing (Route)
 import Rss
 import Site
-import Time
 
 
 routes :
@@ -39,26 +43,40 @@ routes getStaticRoutes htmlToString =
 
     -- Tag RSS feeds.
     , ApiRoute.succeed
-        (\tagName ->
-            rss
-                { title = Site.name
-                , description = Site.description
-                , url = Site.canonicalUrl
-                }
-                []
-                |> BackendTask.succeed
+        (\tagSlug ->
+            Post.listWithFrontmatterDataSource
+                |> BackendTask.map
+                    (\posts ->
+                        posts
+                            |> List.filter
+                                (\post ->
+                                    List.member tagSlug (List.map Tag.getSlug post.frontmatter.tags)
+                                        && not post.isHidden
+                                )
+                            |> rss
+                                { title = Site.name
+                                , description = Site.description
+                                , url =
+                                    "{root}/tag?t={tagSlug}"
+                                        |> String.replace "{root}" Site.canonicalUrl
+                                        |> String.replace "{tagSlug}" tagSlug
+                                }
+                    )
+                |> BackendTask.allowFatal
         )
         |> ApiRoute.literal "tag"
         |> ApiRoute.slash
-        -- Tag name.
+        -- Tag slug.
         |> ApiRoute.capture
         |> ApiRoute.slash
         |> ApiRoute.literal "rss.xml"
         |> ApiRoute.preRender
             (\route ->
-                BackendTask.succeed
-                    [ route "javascript" ]
+                Tag.all
+                    |> List.map (\tag -> route (Tag.getSlug tag))
+                    |> BackendTask.succeed
             )
+        -- TODO
         |> ApiRoute.withGlobalHeadTags
             (BackendTask.succeed [ Head.rssLink "/rss.xml" ])
     ]
@@ -99,13 +117,43 @@ rss :
     , url : String
     , description : String
     }
-    -> List Rss.Item
+    -> List Post.GlobMatchFrontmatter
     -> String
-rss config items =
+rss config posts =
+    let
+        items : List Rss.Item
+        items =
+            posts
+                |> PostList.sortByTime
+                |> List.map postToItem
+
+        postToItem : Post.GlobMatchFrontmatter -> Rss.Item
+        postToItem post =
+            let
+                year =
+                    String.toInt post.year
+                        |> Maybe.withDefault 1990
+
+                month =
+                    String.toInt post.month
+                        |> Maybe.withDefault 1
+                        |> Date.numberToMonth
+            in
+            { title = post.frontmatter.title
+            , description = ""
+            , url = Post.globMatchFrontmatterToUrl post
+            , categories = List.map Data.Category.getSlug post.frontmatter.categories
+            , author = "agj"
+            , pubDate = Rss.Date (Date.fromCalendarDate year month post.frontmatter.date)
+            , content = Nothing
+            , contentEncoded = Nothing
+            , enclosure = Nothing
+            }
+    in
     Rss.generate
-        { title = Site.name
-        , description = Site.description
-        , url = Site.canonicalUrl
+        { title = config.title
+        , description = config.description
+        , url = config.url
         , lastBuildTime = Pages.builtAt
         , generator = Nothing
         , items = items
