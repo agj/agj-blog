@@ -87,10 +87,10 @@ perform :
 perform ({ fromPageMsg, key } as helpers) effect =
     case effect of
         SaveConfig flags ->
-            Ports.saveConfig (Flags.encode flags)
+            Ports.saveConfig flags
 
         SetTheme theme ->
-            Ports.setTheme (Theme.encode theme)
+            Ports.setTheme theme
 
         None ->
             Cmd.none

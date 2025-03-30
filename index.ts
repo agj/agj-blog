@@ -7,7 +7,7 @@ type ElmPagesInit = {
   flags: unknown;
 };
 
-const setTheme = (theme: string) => {
+const setTheme = (theme: string | null) => {
   document.body.classList.remove("dark-theme");
   document.body.classList.remove("light-theme");
   if (["dark", "light"].includes(theme)) {
@@ -30,21 +30,22 @@ const config: ElmPagesInit = {
 
     setTheme(theme.set);
 
-    return {
-      ...config,
-      theme,
-    };
+    return { ...config, theme };
   },
 
   load: async function (elmLoaded) {
     const app = await elmLoaded;
     console.log("App loaded", app);
 
-    app.ports.saveConfig.subscribe((config) => {
-      localStorage.setItem("config", JSON.stringify(config));
-    });
-
-    app.ports.setTheme.subscribe(setTheme);
+    app.ports.sendToJs.subscribe(
+      ({ msg, value }: { msg: string; value: any }) => {
+        if (msg === "saveConfig") {
+          localStorage.setItem("config", JSON.stringify(value));
+        } else if (msg === "setTheme") {
+          setTheme(value);
+        }
+      },
+    );
   },
 };
 
