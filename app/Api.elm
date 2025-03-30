@@ -2,13 +2,12 @@ module Api exposing (routes)
 
 import ApiRoute exposing (ApiRoute)
 import BackendTask exposing (BackendTask)
-import Data.Category exposing (Category)
+import Data.Category
 import Data.Post as Post
 import Data.PostList as PostList
 import Data.Tag as Tag
 import Date
 import FatalError exposing (FatalError)
-import Head
 import Html exposing (Html)
 import LanguageTag exposing (emptySubtags)
 import LanguageTag.Language
