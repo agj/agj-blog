@@ -1,6 +1,6 @@
 module Route.Tag exposing (ActionData, Data, Model, Msg, route)
 
-import AppUrl exposing (AppUrl)
+import AppUrl exposing (AppUrl, QueryParameters)
 import BackendTask exposing (BackendTask)
 import Custom.Html
 import Custom.List as List
@@ -16,6 +16,7 @@ import Html.Attributes exposing (class, href)
 import Html.Events
 import List.Extra as List
 import PagesMsg exposing (PagesMsg)
+import Ports
 import Result.Extra as Result
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
@@ -50,7 +51,7 @@ init app shared =
                 |> Maybe.map .query
                 |> Maybe.withDefault Dict.empty
     in
-    ( { queryTags = queryTags query }
+    ( { queryTags = getTagsFromQueryParams query }
     , Effect.none
     )
 
@@ -83,7 +84,9 @@ type alias Model =
 
 type Msg
     = OnClick String
+    | QueryParamsChanged QueryParameters
     | SharedMsg Shared.Msg
+    | NoOp
 
 
 type alias RouteParams =
@@ -103,7 +106,7 @@ update app shared msg model =
             in
             case urlMaybe of
                 Just url ->
-                    ( { model | queryTags = queryTags url.queryParameters }
+                    ( { model | queryTags = getTagsFromQueryParams url.queryParameters }
                     , Effect.none
                     , Nothing
                     )
@@ -111,13 +114,22 @@ update app shared msg model =
                 Nothing ->
                     ( model, Effect.none, Nothing )
 
+        QueryParamsChanged queryParams ->
+            ( { model | queryTags = getTagsFromQueryParams queryParams }
+            , Effect.none
+            , Nothing
+            )
+
         SharedMsg sharedMsg ->
             ( model, Effect.none, Just sharedMsg )
 
+        NoOp ->
+            ( model, Effect.none, Nothing )
 
-queryTags : Dict String (List String) -> List Tag
-queryTags query =
-    query
+
+getTagsFromQueryParams : Dict String (List String) -> List Tag
+getTagsFromQueryParams queryParams =
+    queryParams
         |> Dict.get "t"
         |> Maybe.withDefault []
         |> List.map Tag.fromSlug
@@ -132,7 +144,7 @@ queryTags query =
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
 subscriptions routeParams path shared model =
-    Sub.none
+    Ports.listenQueryParamsChanges QueryParamsChanged NoOp
 
 
 
