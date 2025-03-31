@@ -48,16 +48,9 @@ const config: ElmPagesInit = {
     );
 
     window.addEventListener("popstate", (event) => {
-      const url = new URL(location.href);
-
-      const queryParams = {};
-      [...url.searchParams.entries()].forEach(([key, value]) => {
-        queryParams[key] = [...(queryParams[key] ?? []), value];
-      });
-
       app.ports.receiveFromJs.send({
-        msg: "changedQueryParams",
-        value: queryParams,
+        msg: "urlChanged",
+        value: location.href,
       });
     });
   },

@@ -1,11 +1,11 @@
 port module Ports exposing (listenQueryParamsChanges, saveConfig, setTheme)
 
 import AppUrl exposing (QueryParameters)
-import Dict exposing (Dict)
 import Flags exposing (Flags)
 import Json.Decode exposing (Decoder, Value)
 import Json.Encode
 import Theme exposing (Theme)
+import Url
 
 
 
@@ -28,12 +28,18 @@ setTheme theme =
 
 listenQueryParamsChanges : (QueryParameters -> msg) -> msg -> Sub msg
 listenQueryParamsChanges onQueryParams onNoOp =
-    listenIn "changedQueryParams" queryParamsDecoder onQueryParams onNoOp
+    let
+        listener url =
+            case Url.fromString url of
+                Just u ->
+                    AppUrl.fromUrl u
+                        |> .queryParameters
+                        |> onQueryParams
 
-
-queryParamsDecoder : Decoder QueryParameters
-queryParamsDecoder =
-    Json.Decode.dict (Json.Decode.list Json.Decode.string)
+                Nothing ->
+                    onNoOp
+    in
+    listenIn "urlChanged" Json.Decode.string listener onNoOp
 
 
 
@@ -44,13 +50,6 @@ type alias MsgValue a =
     { msg : String
     , value : a
     }
-
-
-msgValueDecoder : Decoder value -> Decoder (MsgValue value)
-msgValueDecoder valueDecoder =
-    Json.Decode.map2 MsgValue
-        (Json.Decode.field "msg" Json.Decode.string)
-        (Json.Decode.field "value" valueDecoder)
 
 
 sendOut : String -> Value -> Cmd msg
@@ -79,6 +78,17 @@ listenIn msg valueDecoder toMsg noOpMsg =
                     )
                 |> Maybe.withDefault noOpMsg
         )
+
+
+
+-- DECODERS
+
+
+msgValueDecoder : Decoder value -> Decoder (MsgValue value)
+msgValueDecoder valueDecoder =
+    Json.Decode.map2 MsgValue
+        (Json.Decode.field "msg" Json.Decode.string)
+        (Json.Decode.field "value" valueDecoder)
 
 
 
