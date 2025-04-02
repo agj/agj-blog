@@ -2,7 +2,7 @@ module Api exposing (routes)
 
 import ApiRoute exposing (ApiRoute)
 import BackendTask exposing (BackendTask)
-import Data.Category
+import Data.Category as Category
 import Data.Post as Post
 import Data.PostList as PostList
 import Data.Tag as Tag
@@ -39,6 +39,42 @@ routes getStaticRoutes htmlToString =
         )
         |> ApiRoute.literal "rss.xml"
         |> ApiRoute.single
+
+    -- Categories RSS feeds.
+    , ApiRoute.succeed
+        (\categorySlug ->
+            Post.listWithFrontmatterDataSource
+                |> BackendTask.map
+                    (\posts ->
+                        posts
+                            |> List.filter
+                                (\post ->
+                                    List.member categorySlug (List.map Category.getSlug post.frontmatter.categories)
+                                        && not post.isHidden
+                                )
+                            |> rss
+                                { title = Site.name
+                                , description = Site.description
+                                , url =
+                                    "{root}/category/{categorySlug}"
+                                        |> String.replace "{root}" Site.canonicalUrl
+                                        |> String.replace "{categorySlug}" categorySlug
+                                }
+                    )
+                |> BackendTask.allowFatal
+        )
+        |> ApiRoute.literal "category"
+        |> ApiRoute.slash
+        -- Category slug.
+        |> ApiRoute.capture
+        |> ApiRoute.slash
+        |> ApiRoute.literal "rss.xml"
+        |> ApiRoute.preRender
+            (\route ->
+                Category.all
+                    |> List.map (\category -> route (Category.getSlug category))
+                    |> BackendTask.succeed
+            )
 
     -- Tag RSS feeds.
     , ApiRoute.succeed
@@ -138,7 +174,7 @@ rss config posts =
             { title = post.frontmatter.title
             , description = ""
             , url = Post.globMatchFrontmatterToUrl post
-            , categories = List.map Data.Category.getSlug post.frontmatter.categories
+            , categories = List.map Category.getSlug post.frontmatter.categories
             , author = "agj"
             , pubDate = Rss.Date (Date.fromCalendarDate year month post.frontmatter.date)
             , content = Nothing
