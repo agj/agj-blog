@@ -4,18 +4,18 @@ title: Heart & Hope
 date: 20
 hour: 18
 categories:
-- my-games
+  - my-games
 tags:
-- competition
-- construct
-- event
-- flash
-- heart
-- kotm
-- ludum-dare
-- release
-- video
-- video-game
+  - competition
+  - construct
+  - event
+  - flash
+  - heart
+  - kotm
+  - ludum-dare
+  - release
+  - video
+  - video-game
 language: eng
 ---
 

@@ -4,12 +4,12 @@ title: Infidelidad
 date: 7
 hour: 18
 categories:
-- interactive
-- language
+  - interactive
+  - language
 tags:
-- competition
-- espanol
-- translation
+  - competition
+  - espanol
+  - translation
 language: eng
 ---
 

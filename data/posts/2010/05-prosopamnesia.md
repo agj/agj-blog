@@ -4,15 +4,15 @@ title: Prosopamnesia
 date: 5
 hour: 23
 categories:
-- my-games
+  - my-games
 tags:
-- event
-- flash
-- prosopamnesia
-- release
-- the-games-collective
-- video-game
-- wirewalk
+  - event
+  - flash
+  - prosopamnesia
+  - release
+  - the-games-collective
+  - video-game
+  - wirewalk
 language: eng
 ---
 

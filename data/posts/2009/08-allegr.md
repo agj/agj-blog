@@ -4,12 +4,12 @@ title: Allegr
 date: 16
 hour: 3
 categories:
-- my-games
+  - my-games
 tags:
-- construct
-- kotm
-- release
-- video-game
+  - construct
+  - kotm
+  - release
+  - video-game
 language: eng
 ---
 

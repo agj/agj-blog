@@ -4,13 +4,13 @@ title: Walker
 date: 18
 hour: 3
 categories:
-- my-games
+  - my-games
 tags:
-- construct
-- kotm
-- release
-- video-game
-- walker
+  - construct
+  - kotm
+  - release
+  - video-game
+  - walker
 language: eng
 ---
 

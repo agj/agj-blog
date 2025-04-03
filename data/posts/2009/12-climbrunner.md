@@ -4,16 +4,16 @@ title: Climbrunner
 date: 14
 hour: 4
 categories:
-- my-games
+  - my-games
 tags:
-- climbrunner
-- competition
-- event
-- flash
-- flixel
-- ludum-dare
-- release
-- video-game
+  - climbrunner
+  - competition
+  - event
+  - flash
+  - flixel
+  - ludum-dare
+  - release
+  - video-game
 language: eng
 ---
 

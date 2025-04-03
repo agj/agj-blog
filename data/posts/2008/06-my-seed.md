@@ -4,10 +4,10 @@ title: My seed
 date: 30
 hour: 1
 categories:
-- musings
+  - musings
 tags:
-- blog
-- espanol
+  - blog
+  - espanol
 language: eng
 ---
 

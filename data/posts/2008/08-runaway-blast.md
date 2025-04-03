@@ -4,12 +4,12 @@ title: Runaway Blast
 date: 18
 hour: 1
 categories:
-- my-games
+  - my-games
 tags:
-- event
-- kotm
-- release
-- video-game
+  - event
+  - kotm
+  - release
+  - video-game
 language: eng
 ---
 

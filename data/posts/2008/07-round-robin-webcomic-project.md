@@ -4,13 +4,13 @@ title: Round-robin webcomic project!
 date: 28
 hour: 1
 categories:
-- projects
+  - projects
 tags:
-- collaboration
-- comic
-- espanol
-- the-ants-parade
-- web
+  - collaboration
+  - comic
+  - espanol
+  - the-ants-parade
+  - web
 language: eng
 ---
 
@@ -22,14 +22,14 @@ Round-robins are a format in which a group of authors take turns in writing the 
 
 I will eventually be creating a dedicated website for the comic, and, I guess, draw the very first one myself. In the meantime, in case this idea interests you, here are a few anticipated rules of play, or rather a statement of principles:
 
-	1. Comics should be original, use no copyrighted content and be made specifically for this project.
-	2. There will be no restrictions in their aesthetics, plot, characters used, etc. Except for those in the following two points.
-	3. At least one element of the preceding strip should be used or developed in yours, to keep a modicum of continuity. Examples: a character, colors used, a part of the plot.
-	4. No text may be used at all, no matter what language it's in (unless it's a fictional one.)
-	5. Strips should consist of a single image file of png, jpg or gif format, in any proportions (there might be a maximum width decided at a later time,) but made to be read on a screen. Maybe we should keep an archive of 300 dpi originals just in case, too?
-	6. Those interested in contributing need to be of my acquaintance, or of an author of one of the strips (this is not a completely open project.) No special talent is required.
-	7. Authors may not draw a strip again if they have already drawn one before, unless there are no fresh candidates.
-	8. The use of a particular logo of the project somewhere in the strip might be a requirement in the future. Maybe a name/pseudonym as well.
+    1. Comics should be original, use no copyrighted content and be made specifically for this project.
+    2. There will be no restrictions in their aesthetics, plot, characters used, etc. Except for those in the following two points.
+    3. At least one element of the preceding strip should be used or developed in yours, to keep a modicum of continuity. Examples: a character, colors used, a part of the plot.
+    4. No text may be used at all, no matter what language it's in (unless it's a fictional one.)
+    5. Strips should consist of a single image file of png, jpg or gif format, in any proportions (there might be a maximum width decided at a later time,) but made to be read on a screen. Maybe we should keep an archive of 300 dpi originals just in case, too?
+    6. Those interested in contributing need to be of my acquaintance, or of an author of one of the strips (this is not a completely open project.) No special talent is required.
+    7. Authors may not draw a strip again if they have already drawn one before, unless there are no fresh candidates.
+    8. The use of a particular logo of the project somewhere in the strip might be a requirement in the future. Maybe a name/pseudonym as well.
 
 Take your strip as seriously or as lightly as you like; that's the whole point! The rules above are only to make sure that the spirit is maintained, and for basic coherence. Things not mentioned are that I'd like it to be weekly, if we can pull that off, and that we'll have to decide what to do in terms of authorial rights; some [creative commons](http://creativecommons.org/) license should be okay, I suppose. Contact me if you're totally in, and also to suggest a name for the comic.
 
@@ -43,13 +43,13 @@ Con el formato _round-robin,_ un grupo de autores se turna escribiendo la histor
 
 Eventualmente haré el sitio web del proyecto, y supongo que dibujaré la primera tira yo mismo. Por mientras, y si esta idea te parece interesante, aquí dispongo unas pocas reglas anticipadas, o manifiesto de principios:
 
-	1. Cada cómic debe ser original; no debe usar contenido con copyright, y debe ser creado específicamente para este proyecto.
-	2. No existirán restricciones en estética, trama, personajes, etc. Excepto por las indicadas en los dos siguientes puntos.
-	3. Al menos un elemento de la tira anterior debe ser usado o desarrollado en la tuya, para mantener un mínimo de continuidad. Ejemplos: un personaje, colores, parte de la historia.
-	4. El texto está absolutamente vetado, sin importar el idioma (a no ser que sea uno ficticio.)
-	5. Las tiras deben consistir de una sola imagen en formato png, jpg o gif, en cualquier proporción (tal vez se decida un ancho máximo posteriormente), y hecho para ser leído en pantalla. ¿Tal vez debamos archivar los originales a 300 dpi también, por si acaso?
-	6. Aquellos interesados en contribuir tienen que ser conocidos míos o de algún autor de una tira (este no es un proyecto completamente abierto). No se requiere tener ningún talento especial.
-	7. Los autores no pueden dibujar una nueva tira si ya han dibujado una antes, a no ser que no existan candidatos nuevos.
-	8. Tal vez sea un requerimiento en el futuro usar un logo del proyecto en algún lugar de la imagen. Lo mismo respecto a un nombre o pseudónimo.
+    1. Cada cómic debe ser original; no debe usar contenido con copyright, y debe ser creado específicamente para este proyecto.
+    2. No existirán restricciones en estética, trama, personajes, etc. Excepto por las indicadas en los dos siguientes puntos.
+    3. Al menos un elemento de la tira anterior debe ser usado o desarrollado en la tuya, para mantener un mínimo de continuidad. Ejemplos: un personaje, colores, parte de la historia.
+    4. El texto está absolutamente vetado, sin importar el idioma (a no ser que sea uno ficticio.)
+    5. Las tiras deben consistir de una sola imagen en formato png, jpg o gif, en cualquier proporción (tal vez se decida un ancho máximo posteriormente), y hecho para ser leído en pantalla. ¿Tal vez debamos archivar los originales a 300 dpi también, por si acaso?
+    6. Aquellos interesados en contribuir tienen que ser conocidos míos o de algún autor de una tira (este no es un proyecto completamente abierto). No se requiere tener ningún talento especial.
+    7. Los autores no pueden dibujar una nueva tira si ya han dibujado una antes, a no ser que no existan candidatos nuevos.
+    8. Tal vez sea un requerimiento en el futuro usar un logo del proyecto en algún lugar de la imagen. Lo mismo respecto a un nombre o pseudónimo.
 
 Tómate tu turno tan seria o ligeramente como quieras; ¡ese es el punto! Las reglas de arriba son sólo para asegurar que el espíritu se mantenga, y para una coherencia elemental. Algunas cosas que no mencioné son que me gustaría que sea semanal, si es que lo logramos, y que habrá que decidir qué hacer en cuanto a derechos de autoría; una licencia [creative commons](http://creativecommons.org/) podría funcionar bien. Contáctame si ya te "vendí la pomada", o para sugerir un nombre para el cómic.

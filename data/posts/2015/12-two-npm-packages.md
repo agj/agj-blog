@@ -4,13 +4,13 @@ title: Two npm packages
 date: 2
 hour: 13
 categories:
-- interactive
+  - interactive
 tags:
-- dot-into
-- function-promisifier
-- javascript
-- library
-- release
+  - dot-into
+  - function-promisifier
+  - javascript
+  - library
+  - release
 language: eng
 ---
 
@@ -18,7 +18,6 @@ I decided to try my hand at creating and releasing some reusable code. I have a 
 
 The first is called **[dot-into,](https://www.npmjs.com/package/dot-into)** and it does something icky for most Javascript programmers; extending prototypes. It's still under your control, as you can choose what prototype(s) to extend, but its power comes from extending the 'holy' _Object_ prototype; that is, basically every object's root prototype. All it does is put there an 'into' method that allows you to effectively reorder terms to fit a left-to-right flow, when you would otherwise be nesting functions. That is to say:
 
-> 
 > ```
 > third(second(first(a), b));
 > // becomes

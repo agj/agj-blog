@@ -4,13 +4,13 @@ title: han'you tokimeki
 date: 16
 hour: 16
 categories:
-- my-games
+  - my-games
 tags:
-- javascript
-- kotm
-- release
-- video-game
-- visual-novel
+  - javascript
+  - kotm
+  - release
+  - video-game
+  - visual-novel
 language: eng
 ---
 

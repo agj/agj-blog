@@ -4,14 +4,14 @@ title: Weekly concern
 date: 17
 hour: 1
 categories:
-- interactive
-- language
+  - interactive
+  - language
 tags:
-- php
-- release
-- super-friendship-club
-- web
-- weekly-concern
+  - php
+  - release
+  - super-friendship-club
+  - web
+  - weekly-concern
 language: eng
 ---
 

@@ -4,12 +4,12 @@ title: Charade
 date: 15
 hour: 19
 categories:
-- musings
-- my-games
-- projects
+  - musings
+  - my-games
+  - projects
 tags:
-- event
-- video-game
+  - event
+  - video-game
 language: eng
 ---
 
@@ -25,10 +25,10 @@ I have a hard time reconciling my selfish desires with my outlook on life. I bel
 
 The people who participated were [Jonathan Whiting](http://jonathanwhiting.com/blog/?p=56) (a.k.a. MrPiglet), [Michael Brough](http://mightyvision.blogspot.com/2010/12/masquerade.html) (a.k.a. brog), [Noyb](http://noyb.retroremakes.com/Games/tsoc.html), and I. A theme was convened, 'masquerade', which seemed appropriate. The games are the following:
 
-	- _[Ascension](http://www.thegamescollective.org/index.php/topic,129.0.html)_
-	- _[The sense of connectedness](http://forums.tigsource.com/index.php?topic=16151.0)_
-	- _[Face time](http://forums.tigsource.com/index.php?topic=16154.0)_
-	- _[Doppelganger](http://forums.tigsource.com/index.php?topic=16155.0)_
+    - _[Ascension](http://www.thegamescollective.org/index.php/topic,129.0.html)_
+    - _[The sense of connectedness](http://forums.tigsource.com/index.php?topic=16151.0)_
+    - _[Face time](http://forums.tigsource.com/index.php?topic=16154.0)_
+    - _[Doppelganger](http://forums.tigsource.com/index.php?topic=16155.0)_
 
 They were all released on December the 1st. During this last month or so I haven't been in my best mind, so I didn't concern myself as much with the outcome (or even the preparations) as I could have, but I believe that it was a positive experience for us all. From reading my fellow conspirators' thoughts, I understand that they were not entirely comfortable throughout, and this mirrors my initial dilemma; I think that being aware of such unpleasant emotions results in a higher understanding of our self, so I'm not sorry for having sparked this charade. Me, I was surprised to find myself so anxious about what to do with the game I was to display, not because of the game itself, but because I had to consider the actual author's feelings for their own game, their attachment to it, their willingness to place it in my hands. Even though it wasn't my game, I made it a point to treat this one as I would any of my releases, but whatever I usually did with one, Jonathan might not have agreed. Frustratingly dealing with this dual standard (in my own mind, as he never argued) was the low point of the experience for me.
 

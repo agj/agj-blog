@@ -4,13 +4,13 @@ title: Intervalo lúcido del individuo inconsciente
 date: 13
 hour: 18
 categories:
-- my-games
+  - my-games
 tags:
-- espanol
-- flash
-- intervalo-lucido-del-individuo-inconsciente
-- release
-- video-game
+  - espanol
+  - flash
+  - intervalo-lucido-del-individuo-inconsciente
+  - release
+  - video-game
 language: eng
 ---
 

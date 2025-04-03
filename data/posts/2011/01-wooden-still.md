@@ -4,14 +4,14 @@ title: Wooden still
 date: 28
 hour: 0
 categories:
-- videos
+  - videos
 tags:
-- animation
-- photomotion
-- release
-- sound-design
-- timelapse
-- video
+  - animation
+  - photomotion
+  - release
+  - sound-design
+  - timelapse
+  - video
 language: eng
 ---
 

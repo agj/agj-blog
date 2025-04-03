@@ -4,11 +4,11 @@ title: Explode
 date: 21
 hour: 4
 categories:
-- my-games
+  - my-games
 tags:
-- kotm
-- release
-- video-game
+  - kotm
+  - release
+  - video-game
 language: eng
 ---
 

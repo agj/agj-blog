@@ -4,16 +4,16 @@ title: The Lake
 date: 27
 hour: 17
 categories:
-- my-games
+  - my-games
 tags:
-- competition
-- construct
-- event
-- release
-- surrealism
-- the-lake
-- tigsource
-- video-game
+  - competition
+  - construct
+  - event
+  - release
+  - surrealism
+  - the-lake
+  - tigsource
+  - video-game
 language: eng
 ---
 

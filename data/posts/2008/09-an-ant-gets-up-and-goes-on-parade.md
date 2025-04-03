@@ -4,12 +4,12 @@ title: An ant gets up and goes on parade
 date: 20
 hour: 6
 categories:
-- projects
+  - projects
 tags:
-- collaboration
-- comic
-- release
-- the-ants-parade
+  - collaboration
+  - comic
+  - release
+  - the-ants-parade
 language: eng
 ---
 

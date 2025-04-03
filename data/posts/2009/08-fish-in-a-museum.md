@@ -4,10 +4,10 @@ title: Fish in a museum
 date: 21
 hour: 6
 categories:
-- graphics
+  - graphics
 tags:
-- museography
-- university
+  - museography
+  - university
 language: eng
 ---
 

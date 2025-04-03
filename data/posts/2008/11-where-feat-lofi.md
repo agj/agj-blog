@@ -4,13 +4,13 @@ title: Where, feat. lofi
 date: 17
 hour: 17
 categories:
-- my-games
+  - my-games
 tags:
-- construct
-- kotm
-- lofi
-- release
-- video-game
+  - construct
+  - kotm
+  - lofi
+  - release
+  - video-game
 language: eng
 ---
 

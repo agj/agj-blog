@@ -4,10 +4,10 @@ title: Portfolio renewed
 date: 15
 hour: 3
 categories:
-- interactive
+  - interactive
 tags:
-- portfolio
-- web
+  - portfolio
+  - web
 language: eng
 ---
 

@@ -4,9 +4,9 @@ title: Tiles visualizer
 date: 26
 hour: 23
 categories:
-- interactive
+  - interactive
 tags:
-- javascript
+  - javascript
 language: eng
 ---
 

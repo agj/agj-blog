@@ -4,12 +4,12 @@ title: Drawing thing for KOTM
 date: 18
 hour: 18
 categories:
-- my-games
+  - my-games
 tags:
-- flash
-- kotm
-- release
-- video-game
+  - flash
+  - kotm
+  - release
+  - video-game
 language: eng
 ---
 

@@ -4,17 +4,17 @@ title: Ambitions of pushing the envelope
 date: 13
 hour: 2
 categories:
-- musings
-- my-games
-- projects
+  - musings
+  - my-games
+  - projects
 tags:
-- campodecolor
-- final-years-project
-- flash
-- graphic-design
-- industry
-- university
-- video-game
+  - campodecolor
+  - final-years-project
+  - flash
+  - graphic-design
+  - industry
+  - university
+  - video-game
 language: eng
 ---
 

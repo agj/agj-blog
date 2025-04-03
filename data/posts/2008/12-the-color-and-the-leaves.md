@@ -4,14 +4,14 @@ title: The Color and the Leaves
 date: 16
 hour: 2
 categories:
-- sound
+  - sound
 tags:
-- album
-- game-boy
-- game-boy-camera
-- lofi
-- release
-- the-color-and-the-leaves
+  - album
+  - game-boy
+  - game-boy-camera
+  - lofi
+  - release
+  - the-color-and-the-leaves
 language: eng
 ---
 

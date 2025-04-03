@@ -4,14 +4,14 @@ title: Gently
 date: 23
 hour: 5
 categories:
-- my-games
+  - my-games
 tags:
-- gently
-- kotm
-- release
-- text-game
-- twine
-- video-game
+  - gently
+  - kotm
+  - release
+  - text-game
+  - twine
+  - video-game
 language: eng
 ---
 

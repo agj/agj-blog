@@ -4,19 +4,19 @@ title: Several installations
 date: 3
 hour: 14
 categories:
-- interactive
-- projects
-- videos
+  - interactive
+  - projects
+  - videos
 tags:
-- asymmetric-feedback
-- exhibition
-- japan
-- nendo-project
-- openframeworks
-- racket
-- release
-- university
-- video
+  - asymmetric-feedback
+  - exhibition
+  - japan
+  - nendo-project
+  - openframeworks
+  - racket
+  - release
+  - university
+  - video
 language: eng
 ---
 

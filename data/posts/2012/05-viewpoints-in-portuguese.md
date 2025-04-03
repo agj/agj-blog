@@ -4,11 +4,11 @@ title: Viewpoints in Portuguese
 date: 26
 hour: 2
 categories:
-- my-games
+  - my-games
 tags:
-- translation
-- video-game
-- viewpoints
+  - translation
+  - video-game
+  - viewpoints
 language: eng
 ---
 

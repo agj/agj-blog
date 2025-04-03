@@ -4,12 +4,12 @@ title: More on lakes
 date: 22
 hour: 18
 categories:
-- my-games
+  - my-games
 tags:
-- competition
-- magazine
-- the-lake
-- video-game
+  - competition
+  - magazine
+  - the-lake
+  - video-game
 language: eng
 ---
 

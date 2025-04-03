@@ -4,12 +4,12 @@ title: Japoñol（ハポニョール）
 date: 14
 hour: 13
 categories:
-- language
-- projects
+  - language
+  - projects
 tags:
-- japonol
-- language
-- nihongo
+  - japonol
+  - language
+  - nihongo
 language: eng
 ---
 

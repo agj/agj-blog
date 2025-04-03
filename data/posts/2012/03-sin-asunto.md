@@ -4,14 +4,14 @@ title: (Sin asunto)
 date: 25
 hour: 22
 categories:
-- my-games
+  - my-games
 tags:
-- sin-asunto
-- espanol
-- javascript
-- release
-- text-game
-- video-game
+  - sin-asunto
+  - espanol
+  - javascript
+  - release
+  - text-game
+  - video-game
 language: eng
 ---
 

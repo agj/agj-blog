@@ -4,11 +4,11 @@ title: New portfolio design
 date: 24
 hour: 16
 categories:
-- interactive
+  - interactive
 tags:
-- elm
-- portfolio
-- web
+  - elm
+  - portfolio
+  - web
 language: eng
 ---
 

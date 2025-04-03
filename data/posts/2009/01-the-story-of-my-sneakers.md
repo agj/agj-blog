@@ -1,18 +1,18 @@
 ---
 id: 73
-title: '''The story of my sneakers'''
+title: "'The story of my sneakers'"
 date: 5
 hour: 19
 categories:
-- videos
+  - videos
 tags:
-- chile
-- competition
-- entretenimientos-diana
-- espanol
-- short-film
-- storyboard
-- university
+  - chile
+  - competition
+  - entretenimientos-diana
+  - espanol
+  - short-film
+  - storyboard
+  - university
 language: eng
 ---
 
@@ -25,6 +25,7 @@ This is a video I made in 2007; it was my final exam for an experimental video c
 As you can see, the video could not have been made without the help of the star, Sigal, who was also the main camera-person. In fact, the concept was created around her, so, had she not agreed to help, I would have been forced to make something else entirely.
 
 And since I'm on the subject, [here's another video](http://vimeo.com/1260555) I made for that same class, as an exercise in shooting and editing. All of the material was recorded at the Diana arcade in San Diego, Santiago. My original idea was to make it much more musical, but due to time constraints, I was only able to do so much.
+
 <!-- more -->
 
 <language-break />

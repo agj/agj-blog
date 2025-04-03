@@ -4,11 +4,11 @@ title: Reactions to The Lake
 date: 1
 hour: 21
 categories:
-- my-games
+  - my-games
 tags:
-- blog
-- the-lake
-- video-game
+  - blog
+  - the-lake
+  - video-game
 language: eng
 ---
 

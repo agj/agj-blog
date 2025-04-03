@@ -4,17 +4,17 @@ title: Muévete
 date: 17
 hour: 23
 categories:
-- interactive
+  - interactive
 tags:
-- adobe-air
-- ccplm
-- chile
-- espanol
-- flash
-- interactive
-- muevete
-- santiago
-- video
+  - adobe-air
+  - ccplm
+  - chile
+  - espanol
+  - flash
+  - interactive
+  - muevete
+  - santiago
+  - video
 language: eng
 ---
 

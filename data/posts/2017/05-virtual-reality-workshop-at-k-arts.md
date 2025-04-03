@@ -4,24 +4,24 @@ title: Virtual reality workshop at K-Arts
 date: 8
 hour: 2
 categories:
-- interactive
-- language
-- musings
-- videos
+  - interactive
+  - language
+  - musings
+  - videos
 tags:
-- japan
-- language
-- release
-- the-tea-room
-- university
-- video
-- virtual-reality
+  - japan
+  - language
+  - release
+  - the-tea-room
+  - university
+  - video
+  - virtual-reality
 language: eng
 ---
 
 <video-embed service="vimeo" id="216446958" width="500" height="281" />
 
-One of the cooler things I was involved in during my studies at Tokyo University of the Arts was the two-week virtual reality workshop in Seoul I was invited in, last February—the ["VR Cubic Workshop."](http://caica.online/special-event/vr-workshop) Students from three universities corresponding to three countries (Korea National University of Arts, Communication University of China, and ours) studied the technology and created content for the [HTC Vive](https://en.wikipedia.org/wiki/HTC_Vive) using [Unity.](https://en.wikipedia.org/wiki/Unity_(game_engine)) Teams were split according to university, and given the task of creating a VR space inspired by a historical figure representative of their country. In our case, we chose [Sen no Rikyu,](https://en.wikipedia.org/wiki/Sen_no_Riky%C5%AB) a master of the tea ceremony that cemented most of its traditions during the 16th century. We based our space on one of his designs, the _Taian,_ a two-tatami-small tea room that embodies the rustic simplicity of _[wabi-cha.](https://en.wikipedia.org/wiki/Wabi-cha)_ While the video above shows a demonstration of our project, _The tea room,_ I also edited a video (below) with the closing presentation for the workshop, which was held in Seoul with all of the students and professors. In it you can see demonstrations of the whole three projects.<!-- more -->
+One of the cooler things I was involved in during my studies at Tokyo University of the Arts was the two-week virtual reality workshop in Seoul I was invited in, last February—the ["VR Cubic Workshop."](http://caica.online/special-event/vr-workshop) Students from three universities corresponding to three countries (Korea National University of Arts, Communication University of China, and ours) studied the technology and created content for the [HTC Vive](https://en.wikipedia.org/wiki/HTC_Vive) using [Unity.](<https://en.wikipedia.org/wiki/Unity_(game_engine)>) Teams were split according to university, and given the task of creating a VR space inspired by a historical figure representative of their country. In our case, we chose [Sen no Rikyu,](https://en.wikipedia.org/wiki/Sen_no_Riky%C5%AB) a master of the tea ceremony that cemented most of its traditions during the 16th century. We based our space on one of his designs, the _Taian,_ a two-tatami-small tea room that embodies the rustic simplicity of _[wabi-cha.](https://en.wikipedia.org/wiki/Wabi-cha)_ While the video above shows a demonstration of our project, _The tea room,_ I also edited a video (below) with the closing presentation for the workshop, which was held in Seoul with all of the students and professors. In it you can see demonstrations of the whole three projects.<!-- more -->
 
 <video-embed service="vimeo" id="215927986" width="500" height="281" />
 

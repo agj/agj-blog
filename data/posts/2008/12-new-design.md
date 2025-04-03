@@ -4,13 +4,13 @@ title: New design
 date: 28
 hour: 21
 categories:
-- interactive
-- musings
+  - interactive
+  - musings
 tags:
-- archive
-- blog
-- graphic-design
-- web
+  - archive
+  - blog
+  - graphic-design
+  - web
 language: eng
 ---
 

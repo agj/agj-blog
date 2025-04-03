@@ -4,15 +4,15 @@ title: Anything
 date: 18
 hour: 1
 categories:
-- my-games
+  - my-games
 tags:
-- anything
-- inform-7
-- interactive-fiction
-- kotm
-- release
-- text-game
-- video-game
+  - anything
+  - inform-7
+  - interactive-fiction
+  - kotm
+  - release
+  - text-game
+  - video-game
 language: eng
 ---
 

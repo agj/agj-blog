@@ -4,13 +4,13 @@ title: The Tomb
 date: 19
 hour: 2
 categories:
-- my-games
+  - my-games
 tags:
-- construct
-- kotm
-- nitrotracker
-- release
-- video-game
+  - construct
+  - kotm
+  - nitrotracker
+  - release
+  - video-game
 language: eng
 ---
 

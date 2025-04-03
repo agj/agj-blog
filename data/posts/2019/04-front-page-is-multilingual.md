@@ -4,14 +4,14 @@ title: Front page is multilingual
 date: 12
 hour: 15
 categories:
-- interactive
-- musings
-- videos
+  - interactive
+  - musings
+  - videos
 tags:
-- cinema
-- elm
-- front-page-design
-- web
+  - cinema
+  - elm
+  - front-page-design
+  - web
 language: eng
 ---
 

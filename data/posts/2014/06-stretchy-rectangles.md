@@ -4,9 +4,9 @@ title: Stretchy rectangles
 date: 17
 hour: 14
 categories:
-- interactive
+  - interactive
 tags:
-- javascript
+  - javascript
 language: eng
 ---
 

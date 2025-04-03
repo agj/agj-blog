@@ -4,13 +4,13 @@ title: An unlikely update to Flower Pattern
 date: 22
 hour: 23
 categories:
-- interactive
-- my-games
+  - interactive
+  - my-games
 tags:
-- flower-pattern
-- javascript
-- release
-- video-game
+  - flower-pattern
+  - javascript
+  - release
+  - video-game
 language: eng
 ---
 

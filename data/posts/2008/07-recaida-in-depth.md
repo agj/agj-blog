@@ -1,14 +1,14 @@
 ---
 id: 6
-title: '''Recaída'' in depth'
+title: "'Recaída' in depth"
 date: 12
 hour: 0
 categories:
-- videos
+  - videos
 tags:
-- animation
-- story
-- university
+  - animation
+  - story
+  - university
 language: eng
 ---
 

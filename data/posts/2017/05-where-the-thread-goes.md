@@ -4,13 +4,13 @@ title: Where the thread goes
 date: 9
 hour: 16
 categories:
-- videos
+  - videos
 tags:
-- japan
-- release
-- university
-- video
-- nihongo
+  - japan
+  - release
+  - university
+  - video
+  - nihongo
 language: eng
 ---
 

@@ -4,14 +4,14 @@ title: Runnerby
 date: 17
 hour: 1
 categories:
-- my-games
+  - my-games
 tags:
-- climbrunner
-- flash
-- flixel
-- release
-- runnerby
-- video-game
+  - climbrunner
+  - flash
+  - flixel
+  - release
+  - runnerby
+  - video-game
 language: eng
 ---
 
@@ -31,8 +31,8 @@ I didn't really take it where I wanted it to go, as my ambition clashed with my 
 
 # Credits
 
-	- Uses Adam Saltsman's [Flixel](http://flixel.org/).
-	- Sounds by [ltibbits](http://www.freesound.org/usersViewSingle.php?id=49141), [RealRhodesSounds](http://www.freesound.org/usersViewSingle.php?id=7740), and [teleport8](http://www.freesound.org/usersViewSingle.php?id=62541).
-	- Some implemented ideas as suggested by Noyb.
-	- Testers: Sigal, Javi, Javy, Ilan, Mariposa, Stephen Lavelle, Terry Cavanagh, Bennett Foddy, Zaphos, Greg Wohlwend, Jasper Byrne.
-	- Texts quoted from Miss Mulock's Tom Thumb.
+    - Uses Adam Saltsman's [Flixel](http://flixel.org/).
+    - Sounds by [ltibbits](http://www.freesound.org/usersViewSingle.php?id=49141), [RealRhodesSounds](http://www.freesound.org/usersViewSingle.php?id=7740), and [teleport8](http://www.freesound.org/usersViewSingle.php?id=62541).
+    - Some implemented ideas as suggested by Noyb.
+    - Testers: Sigal, Javi, Javy, Ilan, Mariposa, Stephen Lavelle, Terry Cavanagh, Bennett Foddy, Zaphos, Greg Wohlwend, Jasper Byrne.
+    - Texts quoted from Miss Mulock's Tom Thumb.

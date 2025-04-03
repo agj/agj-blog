@@ -4,13 +4,13 @@ title: Reel
 date: 6
 hour: 13
 categories:
-- interactive
-- videos
+  - interactive
+  - videos
 tags:
-- japan
-- release
-- university
-- video
+  - japan
+  - release
+  - university
+  - video
 language: eng
 ---
 

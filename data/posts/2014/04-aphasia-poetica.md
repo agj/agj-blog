@@ -4,13 +4,13 @@ title: Aphasia poetica
 date: 16
 hour: 20
 categories:
-- interactive
-- language
+  - interactive
+  - language
 tags:
-- espanol
-- javascript
-- release
-- web
+  - espanol
+  - javascript
+  - release
+  - web
 language: eng
 ---
 

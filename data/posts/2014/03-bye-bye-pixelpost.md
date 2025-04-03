@@ -4,8 +4,8 @@ title: Bye bye Pixelpost
 date: 28
 hour: 0
 categories:
-- interactive
-- musings
+  - interactive
+  - musings
 tags: []
 language: eng
 ---

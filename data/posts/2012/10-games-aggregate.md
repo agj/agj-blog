@@ -4,14 +4,14 @@ title: Games aggregate
 date: 1
 hour: 15
 categories:
-- interactive
-- my-games
-- graphics
+  - interactive
+  - my-games
+  - graphics
 tags:
-- games-aggregate
-- graphic-design
-- javascript
-- web
+  - games-aggregate
+  - graphic-design
+  - javascript
+  - web
 language: eng
 ---
 

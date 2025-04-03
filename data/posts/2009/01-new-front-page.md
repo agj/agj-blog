@@ -4,15 +4,15 @@ title: New front page
 date: 7
 hour: 3
 categories:
-- interactive
-- graphics
+  - interactive
+  - graphics
 tags:
-- archive
-- front-page-design
-- graphic-design
-- javascript
-- php
-- web
+  - archive
+  - front-page-design
+  - graphic-design
+  - javascript
+  - php
+  - web
 language: eng
 ---
 

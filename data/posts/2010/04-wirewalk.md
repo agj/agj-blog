@@ -4,14 +4,14 @@ title: Wirewalk
 date: 5
 hour: 21
 categories:
-- my-games
+  - my-games
 tags:
-- event
-- flash
-- release
-- the-games-collective
-- video-game
-- wirewalk
+  - event
+  - flash
+  - release
+  - the-games-collective
+  - video-game
+  - wirewalk
 language: eng
 ---
 

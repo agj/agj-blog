@@ -4,12 +4,12 @@ title: Flower pattern
 date: 29
 hour: 18
 categories:
-- my-games
+  - my-games
 tags:
-- flower-pattern
-- javascript
-- release
-- video-game
+  - flower-pattern
+  - javascript
+  - release
+  - video-game
 language: eng
 ---
 

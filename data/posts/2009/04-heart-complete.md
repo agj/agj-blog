@@ -4,14 +4,14 @@ title: Heart, complete
 date: 28
 hour: 20
 categories:
-- my-games
+  - my-games
 tags:
-- flash
-- heart
-- post-mortem
-- release
-- sound
-- video-game
+  - flash
+  - heart
+  - post-mortem
+  - release
+  - sound
+  - video-game
 language: eng
 ---
 

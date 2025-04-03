@@ -4,11 +4,11 @@ title: Ascension
 date: 1
 hour: 1
 categories:
-- my-games
+  - my-games
 tags:
-- flash
-- release
-- video-game
+  - flash
+  - release
+  - video-game
 language: eng
 ---
 

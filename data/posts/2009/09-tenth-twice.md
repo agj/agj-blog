@@ -4,15 +4,15 @@ title: Tenth twice
 date: 14
 hour: 4
 categories:
-- musings
-- my-games
+  - musings
+  - my-games
 tags:
-- competition
-- event
-- sheets
-- tigsource
-- video-game
-- viewpoints
+  - competition
+  - event
+  - sheets
+  - tigsource
+  - video-game
+  - viewpoints
 language: eng
 ---
 

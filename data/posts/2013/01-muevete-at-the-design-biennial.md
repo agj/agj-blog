@@ -4,13 +4,13 @@ title: Muévete at the Design Biennale
 date: 4
 hour: 16
 categories:
-- interactive
+  - interactive
 tags:
-- chile
-- espanol
-- event
-- muevete
-- santiago
+  - chile
+  - espanol
+  - event
+  - muevete
+  - santiago
 language: eng
 ---
 

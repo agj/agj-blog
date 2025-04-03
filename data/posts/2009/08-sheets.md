@@ -4,17 +4,17 @@ title: Sheets
 date: 13
 hour: 18
 categories:
-- my-games
+  - my-games
 tags:
-- competition
-- event
-- flash
-- game-engine
-- release
-- sheets
-- text-game
-- tigsource
-- video-game
+  - competition
+  - event
+  - flash
+  - game-engine
+  - release
+  - sheets
+  - text-game
+  - tigsource
+  - video-game
 language: eng
 ---
 

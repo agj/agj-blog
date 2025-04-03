@@ -4,13 +4,13 @@ title: Metaclase de Kanji v2
 date: 16
 hour: 22
 categories:
-- language
-- projects
+  - language
+  - projects
 tags:
-- espanol
-- japanese
-- language
-- metaclase-de-kanji
+  - espanol
+  - japanese
+  - language
+  - metaclase-de-kanji
 language: eng
 ---
 

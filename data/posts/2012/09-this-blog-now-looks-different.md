@@ -4,14 +4,14 @@ title: This blog now looks different
 date: 23
 hour: 21
 categories:
-- interactive
-- musings
+  - interactive
+  - musings
 tags:
-- archive
-- blog
-- graphic-design
-- php
-- web
+  - archive
+  - blog
+  - graphic-design
+  - php
+  - web
 language: eng
 ---
 

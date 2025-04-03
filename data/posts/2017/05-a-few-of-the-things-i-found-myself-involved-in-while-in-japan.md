@@ -4,13 +4,13 @@ title: A few of the things I found myself involved in while in Japan
 date: 4
 hour: 23
 categories:
-- interactive
-- graphics
+  - interactive
+  - graphics
 tags:
-- graphic-design
-- japan
-- video
-- web
+  - graphic-design
+  - japan
+  - video
+  - web
 language: eng
 ---
 

@@ -4,10 +4,10 @@ title: Fade EP
 date: 13
 hour: 20
 categories:
-- sound
+  - sound
 tags:
-- album
-- release
+  - album
+  - release
 language: eng
 ---
 

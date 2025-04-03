@@ -4,16 +4,16 @@ title: Front page design update
 date: 22
 hour: 13
 categories:
-- interactive
-- musings
-- graphics
+  - interactive
+  - musings
+  - graphics
 tags:
-- archive
-- elm
-- front-page-design
-- graphic-design
-- javascript
-- web
+  - archive
+  - elm
+  - front-page-design
+  - graphic-design
+  - javascript
+  - web
 language: eng
 ---
 

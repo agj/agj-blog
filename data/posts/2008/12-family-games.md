@@ -4,10 +4,10 @@ title: Family games
 date: 25
 hour: 19
 categories:
-- my-games
+  - my-games
 tags:
-- family
-- video-game
+  - family
+  - video-game
 language: eng
 ---
 

@@ -4,14 +4,14 @@ title: Creepy and dreadful sounds
 date: 31
 hour: 4
 categories:
-- musings
-- sound
+  - musings
+  - sound
 tags:
-- composition
-- halloween
-- nitrotracker
-- sound
-- tracker
+  - composition
+  - halloween
+  - nitrotracker
+  - sound
+  - tracker
 language: eng
 ---
 
@@ -19,7 +19,7 @@ After salivating a bit for the [Korg DS-10](http://www.ds10blog.jp/), a software
 
 The little horrors are in extended module (XM) format, which should play fine in Winamp if you have a not-too-old version, and probably in other audio players as well. The first in the list below is my latest 'oeuvre', and you could consider it my contribution to this year's Halloween. The others (chronologically ordered, with the oldest last) are unintentionally terrifying. Boo.
 
-	- [Funebre](//www.agj.cl/files/music/mod/funebre6.xm)
-	- [Speedy](//www.agj.cl/files/music/mod/speedy2.xm)
-	- [Second song ever](//www.agj.cl/files/music/mod/second_ever_2.xm)
-	- [Shit song](//www.agj.cl/files/music/mod/shit3.xm)
+    - [Funebre](//www.agj.cl/files/music/mod/funebre6.xm)
+    - [Speedy](//www.agj.cl/files/music/mod/speedy2.xm)
+    - [Second song ever](//www.agj.cl/files/music/mod/second_ever_2.xm)
+    - [Shit song](//www.agj.cl/files/music/mod/shit3.xm)

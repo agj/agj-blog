@@ -4,14 +4,14 @@ title: In memory
 date: 9
 hour: 20
 categories:
-- interactive
-- musings
-- graphics
+  - interactive
+  - musings
+  - graphics
 tags:
-- archive
-- front-page-design
-- graphic-design
-- web
+  - archive
+  - front-page-design
+  - graphic-design
+  - web
 language: eng
 ---
 

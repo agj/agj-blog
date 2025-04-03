@@ -4,12 +4,12 @@ title: Colormatch
 date: 17
 hour: 16
 categories:
-- my-games
+  - my-games
 tags:
-- construct
-- kotm
-- release
-- video-game
+  - construct
+  - kotm
+  - release
+  - video-game
 language: eng
 ---
 

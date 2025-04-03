@@ -4,11 +4,11 @@ title: Copy&Paste JS
 date: 13
 hour: 18
 categories:
-- interactive
+  - interactive
 tags:
-- javascript
-- library
-- release
+  - javascript
+  - library
+  - release
 language: eng
 ---
 

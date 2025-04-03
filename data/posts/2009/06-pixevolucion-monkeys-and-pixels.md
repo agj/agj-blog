@@ -1,19 +1,19 @@
 ---
 id: 262
-title: 'Pixevolución: Monkeys and pixels'
+title: "Pixevolución: Monkeys and pixels"
 date: 4
 hour: 5
 categories:
-- videos
-- graphics
+  - videos
+  - graphics
 tags:
-- animation
-- graphic-design
-- illustration
-- pixel-art
-- sound-design
-- university
-- video-game
+  - animation
+  - graphic-design
+  - illustration
+  - pixel-art
+  - sound-design
+  - university
+  - video-game
 language: eng
 ---
 

@@ -4,16 +4,16 @@ title: Spwords
 date: 2
 hour: 12
 categories:
-- language
-- my-games
+  - language
+  - my-games
 tags:
-- competition
-- event
-- release
-- spwords
-- text-game
-- tigsource
-- video-game
+  - competition
+  - event
+  - release
+  - spwords
+  - text-game
+  - tigsource
+  - video-game
 language: eng
 ---
 

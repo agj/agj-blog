@@ -4,13 +4,13 @@ title: kyntt
 date: 17
 hour: 8
 categories:
-- my-games
+  - my-games
 tags:
-- knytt-of-the-month
-- knytt-stories
-- kotm
-- release
-- video-game
+  - knytt-of-the-month
+  - knytt-stories
+  - kotm
+  - release
+  - video-game
 language: eng
 ---
 

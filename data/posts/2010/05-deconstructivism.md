@@ -4,14 +4,14 @@ title: Deconstructivism
 date: 16
 hour: 3
 categories:
-- my-games
+  - my-games
 tags:
-- flash
-- kotm
-- prosopamnesia
-- release
-- video-game
-- wirewalk
+  - flash
+  - kotm
+  - prosopamnesia
+  - release
+  - video-game
+  - wirewalk
 language: eng
 ---
 

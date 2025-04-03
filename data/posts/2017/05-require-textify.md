@@ -4,11 +4,11 @@ title: require-textify
 date: 11
 hour: 22
 categories:
-- interactive
+  - interactive
 tags:
-- javascript
-- library
-- release
+  - javascript
+  - library
+  - release
 language: eng
 ---
 

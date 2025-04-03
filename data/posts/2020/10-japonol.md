@@ -4,12 +4,12 @@ title: Japoñol
 date: 14
 hour: 14
 categories:
-- language
-- projects
+  - language
+  - projects
 tags:
-- espanol
-- japonol
-- language
+  - espanol
+  - japonol
+  - language
 language: eng
 ---
 

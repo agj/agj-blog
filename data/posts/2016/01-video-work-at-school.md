@@ -4,13 +4,13 @@ title: Video work at school
 date: 8
 hour: 2
 categories:
-- videos
+  - videos
 tags:
-- japan
-- release
-- university
-- video
-- nihongo
+  - japan
+  - release
+  - university
+  - video
+  - nihongo
 language: eng
 ---
 

@@ -4,16 +4,16 @@ title: Pillow fable
 date: 5
 hour: 21
 categories:
-- videos
+  - videos
 tags:
-- animation
-- chile
-- competition
-- espanol
-- release
-- santiago
-- sound-design
-- video
+  - animation
+  - chile
+  - competition
+  - espanol
+  - release
+  - santiago
+  - sound-design
+  - video
 language: eng
 ---
 

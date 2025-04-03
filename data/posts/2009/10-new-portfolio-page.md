@@ -4,12 +4,12 @@ title: New portfolio page
 date: 14
 hour: 22
 categories:
-- musings
+  - musings
 tags:
-- archive
-- flash
-- portfolio
-- web
+  - archive
+  - flash
+  - portfolio
+  - web
 language: eng
 ---
 

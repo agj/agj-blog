@@ -4,14 +4,14 @@ title: Buranko
 date: 3
 hour: 12
 categories:
-- interactive
+  - interactive
 tags:
-- buranko
-- japan
-- javascript
-- release
-- university
-- web
+  - buranko
+  - japan
+  - javascript
+  - release
+  - university
+  - web
 language: eng
 ---
 

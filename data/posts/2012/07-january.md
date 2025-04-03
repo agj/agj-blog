@@ -4,16 +4,16 @@ title: January
 date: 22
 hour: 1
 categories:
-- my-games
+  - my-games
 tags:
-- collaboration
-- gregws
-- january
-- release
-- super-friendship-club
-- text-game
-- twine
-- video-game
+  - collaboration
+  - gregws
+  - january
+  - release
+  - super-friendship-club
+  - text-game
+  - twine
+  - video-game
 language: eng
 ---
 

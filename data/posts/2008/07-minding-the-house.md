@@ -4,10 +4,10 @@ title: Minding the 'house'
 date: 1
 hour: 3
 categories:
-- interactive
-- musings
+  - interactive
+  - musings
 tags:
-- blog
+  - blog
 language: eng
 ---
 

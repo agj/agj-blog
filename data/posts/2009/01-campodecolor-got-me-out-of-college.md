@@ -4,17 +4,17 @@ title: Campodecolor got me out of college
 date: 21
 hour: 0
 categories:
-- my-games
-- projects
+  - my-games
+  - projects
 tags:
-- campodecolor
-- espanol
-- final-years-project
-- flash
-- graphic-design
-- sound-design
-- video
-- video-game
+  - campodecolor
+  - espanol
+  - final-years-project
+  - flash
+  - graphic-design
+  - sound-design
+  - video
+  - video-game
 language: eng
 ---
 

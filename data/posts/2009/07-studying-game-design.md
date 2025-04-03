@@ -4,8 +4,8 @@ title: Studying game design
 date: 31
 hour: 3
 categories:
-- interactive
-- musings
+  - interactive
+  - musings
 tags: []
 language: eng
 ---

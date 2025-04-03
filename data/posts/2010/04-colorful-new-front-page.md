@@ -4,14 +4,14 @@ title: Colorful new front page
 date: 9
 hour: 1
 categories:
-- interactive
-- graphics
+  - interactive
+  - graphics
 tags:
-- archive
-- front-page-design
-- graphic-design
-- javascript
-- web
+  - archive
+  - front-page-design
+  - graphic-design
+  - javascript
+  - web
 language: eng
 ---
 

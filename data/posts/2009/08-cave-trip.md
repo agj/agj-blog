@@ -4,16 +4,16 @@ title: Cave Trip
 date: 31
 hour: 2
 categories:
-- my-games
+  - my-games
 tags:
-- cave-trip
-- competition
-- event
-- flash
-- ludum-dare
-- release
-- video
-- video-game
+  - cave-trip
+  - competition
+  - event
+  - flash
+  - ludum-dare
+  - release
+  - video
+  - video-game
 language: eng
 ---
 

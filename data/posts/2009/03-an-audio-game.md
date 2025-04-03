@@ -4,12 +4,12 @@ title: An audio game
 date: 23
 hour: 21
 categories:
-- my-games
+  - my-games
 tags:
-- audio-games
-- kotm
-- release
-- sound-design
+  - audio-games
+  - kotm
+  - release
+  - sound-design
 language: eng
 ---
 
