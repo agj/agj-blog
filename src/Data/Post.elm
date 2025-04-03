@@ -13,11 +13,13 @@ import BackendTask exposing (BackendTask)
 import BackendTask.File exposing (FileReadError)
 import BackendTask.Glob as Glob
 import Data.Category as Category exposing (Category)
+import Data.Date as Date
 import Data.Language as Language exposing (Language)
 import Data.Tag as Tag exposing (Tag)
 import FatalError exposing (FatalError)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Decode
+import Time
 
 
 type alias Post =
@@ -32,8 +34,8 @@ type alias Frontmatter =
     , language : Language
     , categories : List Category
     , tags : List Tag
-    , date : Int
-    , hour : Maybe Int
+    , dayOfMonth : Int
+    , dateTime : Maybe Time.Posix
     }
 
 
@@ -143,5 +145,9 @@ frontmatterDecoder =
         |> Decode.required "language" Language.decoder
         |> Decode.required "categories" (Decode.list Category.decoder)
         |> Decode.required "tags" (Decode.list Tag.decoder)
-        |> Decode.required "date" Decode.int
-        |> Decode.required "hour" (Decode.maybe Decode.int)
+        |> Decode.required "day-of-month" Decode.int
+        |> Decode.optional "date"
+            (Decode.string
+                |> Decode.map Date.wordpressToPosix
+            )
+            Nothing

@@ -145,7 +145,7 @@ head app =
             Date.fromCalendarDate
                 (String.toInt app.routeParams.year |> Maybe.withDefault 1990)
                 (String.toInt app.routeParams.month |> Maybe.withDefault 1 |> Date.numberToMonth)
-                app.data.frontmatter.date
+                app.data.frontmatter.dayOfMonth
         , tags = app.data.frontmatter.tags
         , mainCategory =
             app.data.frontmatter.categories
@@ -165,7 +165,7 @@ view app shared model =
             Data.Date.formatShortDate
                 app.routeParams.year
                 (String.toInt app.routeParams.month |> Maybe.withDefault 0)
-                app.data.frontmatter.date
+                app.data.frontmatter.dayOfMonth
 
         categoryEls : List (Html Msg)
         categoryEls =

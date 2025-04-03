@@ -6,12 +6,14 @@ import Data.Date as Date
 import Data.Post as Post
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
+import Time
+import Time.Extra
 
 
 sortByTime : List Post.GlobMatchFrontmatter -> List Post.GlobMatchFrontmatter
 sortByTime posts =
     posts
-        |> List.sortBy getTime
+        |> List.sortBy (getTime >> Time.posixToMillis)
         |> List.reverse
 
 
@@ -48,22 +50,28 @@ view posts =
 -- INTERNAL
 
 
-padNumber : Int -> String
-padNumber num =
-    num
-        |> String.fromInt
-        |> String.padLeft 2 '0'
-
-
-getDateHour : Post.GlobMatchFrontmatter -> String
-getDateHour gist =
-    padNumber gist.frontmatter.date
-        ++ padNumber (gist.frontmatter.hour |> Maybe.withDefault 0)
-
-
-getTime : Post.GlobMatchFrontmatter -> String
+getTime : Post.GlobMatchFrontmatter -> Time.Posix
 getTime gist =
-    gist.year ++ gist.month ++ getDateHour gist
+    case gist.frontmatter.dateTime of
+        Just date ->
+            date
+
+        Nothing ->
+            Time.Extra.partsToPosix
+                Time.utc
+                { year =
+                    String.toInt gist.year
+                        |> Maybe.withDefault 1990
+                , month =
+                    String.toInt gist.month
+                        |> Maybe.map Date.intToMonth
+                        |> Maybe.withDefault Time.Jan
+                , day = gist.frontmatter.dayOfMonth
+                , hour = 0
+                , minute = 0
+                , second = 0
+                , millisecond = 0
+                }
 
 
 viewGistYear : ( String, List ( Int, List Post.GlobMatchFrontmatter ) ) -> Html msg
@@ -84,13 +92,10 @@ viewGistYear ( year, gistMonths ) =
 viewGistMonth : ( Int, List Post.GlobMatchFrontmatter ) -> Html msg
 viewGistMonth ( month, gists ) =
     let
-        monthName =
-            Date.monthNumberToFullName month
-
         heading : Html msg
         heading =
             Html.h3 [ class "text-layout-70" ]
-                [ Html.text monthName ]
+                [ Html.text (Date.intToMonthFullName month) ]
 
         gistsList : List (Html msg)
         gistsList =
@@ -103,11 +108,11 @@ viewGistMonth ( month, gists ) =
 viewGist : Post.GlobMatchFrontmatter -> Html msg
 viewGist gist =
     let
-        postDate : Html msg
-        postDate =
+        postDayOfMonth : Html msg
+        postDayOfMonth =
             Html.div [ class "text-layout-70 min-w-5 tabular-nums" ]
                 [ Html.text
-                    (gist.frontmatter.date |> String.fromInt |> String.padLeft 2 '0')
+                    (gist.frontmatter.dayOfMonth |> String.fromInt |> String.padLeft 2 '0')
                 ]
 
         postLink : Html msg
@@ -135,6 +140,6 @@ viewGist gist =
                 )
     in
     Html.div [ class "flex flex-row gap-2" ]
-        [ postDate
+        [ postDayOfMonth
         , Html.div [] [ postLink, postCategories ]
         ]
