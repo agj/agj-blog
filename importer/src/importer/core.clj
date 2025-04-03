@@ -10,7 +10,6 @@
             [importer.media :as media]
             [clojure.pprint :refer [pprint]]))
 
-
 ;; Data
 
 (def wordpress-xml-root (-> "wordpress-data.xml"
@@ -22,7 +21,6 @@
                         :content
                         first
                         :content))
-
 
 ;; Main
 
@@ -40,8 +38,6 @@
       :else (do
               (println "Run with one of the following commands to generate the corresponding blog data:")
               (println "    posts, taxonomy, media [live]")))))
-
-
 
 (comment
   (->> wordpress-xml

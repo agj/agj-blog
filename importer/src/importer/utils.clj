@@ -33,7 +33,6 @@
 (defn normalize [text]
   (Normalizer/normalize text Normalizer$Form/NFC))
 
-
 ;; Data traversal
 
 (defn vector-find [pred arr]

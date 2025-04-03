@@ -23,7 +23,6 @@
           (str "---\n"
                (utils/data->yaml items)))))
 
-
 ;; Main
 
 (defn output-taxonomy [wordpress-xml]

@@ -37,7 +37,6 @@
       (do (pprint medium)
           (println "")))))
 
-
 ;; Main
 
 (defn output-media [wordpress-xml do-live]

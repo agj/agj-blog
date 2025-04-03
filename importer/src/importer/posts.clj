@@ -10,7 +10,6 @@
 (declare els->md
          el->md)
 
-
 (defn get-taxonomy [domain item-xml]
   (->> item-xml
        :content
@@ -25,7 +24,6 @@
 (defn medium-url->medium [media medium-url]
   (utils/vector-find #(= (:url %) medium-url)
                      media))
-
 
 ;; Conversion
 
@@ -66,7 +64,6 @@
                   "\n")
      :description (utils/get-tag-text :description post-xml)
      :excerpt (utils/get-tag-text :excerpt:encoded post-xml)}))
-
 
 ;; Markdown generation
 
@@ -264,7 +261,6 @@
        str/trim
        (#(str/replace % #"\n\n\n+" "\n\n"))))
 
-
 ;; Final processing
 
 (defn post->string [media post]
@@ -298,7 +294,6 @@
     (io/make-parents filename)
     (println (str "Output: " filename))
     (spit filename (post->string media post))))
-
 
 ;; Main
 
