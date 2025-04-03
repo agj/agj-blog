@@ -55,6 +55,7 @@
             (or (utils/get-tag-text :wp:post_name post-xml)
                 (->slug title)))
      :date (utils/parse-date (utils/get-tag-text :wp:post_date post-xml))
+     :date-gmt (utils/get-tag-text :wp:post_date_gmt post-xml)
      :categories (get-taxonomy "category" post-xml)
      :tags (get-taxonomy "post_tag" post-xml)
      :parent (utils/get-tag-text :wp:post_parent post-xml)
@@ -266,8 +267,8 @@
 (defn post->string [media post]
   (let [frontmatter-data {:id (Integer/parseInt (:id post))
                           :title (:title post)
-                          :date (->> post :date :date)
-                          :hour (->> post :date :hour)
+                          :day-of-month (->> post :date :date)
+                          :date (->> post :date-gmt)
                           :categories (->> post :categories (map :slug))
                           :tags (->> post :tags (map :slug))
                           :language "eng"}]
