@@ -41,6 +41,10 @@ review-suppress: install
 review-unsuppress: install
     pnpm exec elm-review ./src ./app --compiler {{lamdera}} --unsuppress
 
+# Format files.
+format:
+    prettier --write data/**/*.md
+
 [private]
 install:
     pnpm install
