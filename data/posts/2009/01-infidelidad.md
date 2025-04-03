@@ -1,8 +1,8 @@
 ---
 id: 100
 title: Infidelidad
-date: 7
-hour: 18
+day-of-month: 7
+date: "2009-01-07 21:19:46"
 categories:
   - interactive
   - language

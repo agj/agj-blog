@@ -1,8 +1,8 @@
 ---
 id: 879
 title: Aphasia poetica
-date: 16
-hour: 20
+day-of-month: 16
+date: "2014-04-16 23:57:41"
 categories:
   - interactive
   - language

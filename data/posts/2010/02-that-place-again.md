@@ -1,8 +1,8 @@
 ---
 id: 429
 title: That place, again
-date: 15
-hour: 22
+day-of-month: 15
+date: "2010-02-16 01:30:18"
 categories:
   - sound
   - videos

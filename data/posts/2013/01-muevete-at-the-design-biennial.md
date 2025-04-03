@@ -1,8 +1,8 @@
 ---
 id: 789
 title: Muévete at the Design Biennale
-date: 4
-hour: 16
+day-of-month: 4
+date: "2013-01-04 19:21:57"
 categories:
   - interactive
 tags:

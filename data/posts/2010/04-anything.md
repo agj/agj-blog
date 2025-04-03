@@ -1,8 +1,8 @@
 ---
 id: 455
 title: Anything
-date: 18
-hour: 1
+day-of-month: 18
+date: "2010-04-18 04:21:41"
 categories:
   - my-games
 tags:

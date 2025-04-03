@@ -1,8 +1,8 @@
 ---
 id: 94
 title: New front page
-date: 7
-hour: 3
+day-of-month: 7
+date: "2009-01-07 06:44:06"
 categories:
   - interactive
   - graphics

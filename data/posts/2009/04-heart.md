@@ -1,8 +1,8 @@
 ---
 id: 175
 title: Heart & Hope
-date: 20
-hour: 18
+day-of-month: 20
+date: "2009-04-20 21:19:28"
 categories:
   - my-games
 tags:

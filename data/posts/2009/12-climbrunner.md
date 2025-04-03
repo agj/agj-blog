@@ -1,8 +1,8 @@
 ---
 id: 394
 title: Climbrunner
-date: 14
-hour: 4
+day-of-month: 14
+date: "2009-12-14 07:23:55"
 categories:
   - my-games
 tags:

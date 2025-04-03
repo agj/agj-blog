@@ -1,8 +1,8 @@
 ---
 id: 18
 title: An ant gets up and goes on parade
-date: 20
-hour: 6
+day-of-month: 20
+date: "2008-09-20 09:26:17"
 categories:
   - projects
 tags:

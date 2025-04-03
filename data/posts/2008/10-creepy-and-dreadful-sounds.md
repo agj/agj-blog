@@ -1,8 +1,8 @@
 ---
 id: 21
 title: Creepy and dreadful sounds
-date: 31
-hour: 4
+day-of-month: 31
+date: "2008-10-31 07:10:35"
 categories:
   - musings
   - sound

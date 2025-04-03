@@ -1,8 +1,8 @@
 ---
 id: 30
 title: Reactions to The Lake
-date: 1
-hour: 21
+day-of-month: 1
+date: "2008-12-02 00:03:30"
 categories:
   - my-games
 tags:

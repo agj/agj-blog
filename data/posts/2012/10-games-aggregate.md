@@ -1,8 +1,8 @@
 ---
 id: 721
 title: Games aggregate
-date: 1
-hour: 15
+day-of-month: 1
+date: "2012-10-01 18:33:36"
 categories:
   - interactive
   - my-games

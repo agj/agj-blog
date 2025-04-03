@@ -1,8 +1,8 @@
 ---
 id: 510
 title: Ascension
-date: 1
-hour: 1
+day-of-month: 1
+date: "2010-12-01 04:30:41"
 categories:
   - my-games
 tags:

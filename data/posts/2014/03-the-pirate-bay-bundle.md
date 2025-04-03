@@ -1,8 +1,8 @@
 ---
 id: 874
 title: The Pirate Bay Bundle
-date: 30
-hour: 9
+day-of-month: 30
+date: "2014-03-30 12:58:15"
 categories:
   - interactive
   - my-games

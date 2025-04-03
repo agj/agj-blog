@@ -1,8 +1,8 @@
 ---
 id: 536
 title: While telling with the eyes
-date: 21
-hour: 17
+day-of-month: 21
+date: "2011-02-21 20:31:20"
 categories:
   - my-games
 tags:

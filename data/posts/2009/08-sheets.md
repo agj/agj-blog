@@ -1,8 +1,8 @@
 ---
 id: 325
 title: Sheets
-date: 13
-hour: 18
+day-of-month: 13
+date: "2009-08-13 21:04:25"
 categories:
   - my-games
 tags:

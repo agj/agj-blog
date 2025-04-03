@@ -1,8 +1,8 @@
 ---
 id: 567
 title: Frogs Drink Faces
-date: 1
-hour: 21
+day-of-month: 1
+date: "2012-03-02 00:22:10"
 categories:
   - my-games
 tags:

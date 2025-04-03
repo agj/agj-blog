@@ -1,8 +1,8 @@
 ---
 id: 262
 title: "Pixevolución: Monkeys and pixels"
-date: 4
-hour: 5
+day-of-month: 4
+date: "2009-06-04 08:00:06"
 categories:
   - videos
   - graphics

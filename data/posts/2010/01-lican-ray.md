@@ -1,8 +1,8 @@
 ---
 id: 421
 title: Lican Ray
-date: 12
-hour: 4
+day-of-month: 12
+date: "2010-01-12 07:33:55"
 categories:
   - videos
 tags:

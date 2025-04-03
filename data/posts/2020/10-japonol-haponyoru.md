@@ -1,8 +1,8 @@
 ---
 id: 1163
 title: Japoñol（ハポニョール）
-date: 14
-hour: 13
+day-of-month: 14
+date: "2020-10-14 16:59:48"
 categories:
   - language
   - projects

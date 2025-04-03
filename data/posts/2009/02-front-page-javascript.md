@@ -1,8 +1,8 @@
 ---
 id: 140
 title: Front page, Javascript
-date: 21
-hour: 14
+day-of-month: 21
+date: "2009-02-21 17:49:50"
 categories:
   - interactive
   - graphics

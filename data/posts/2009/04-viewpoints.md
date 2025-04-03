@@ -1,8 +1,8 @@
 ---
 id: 145
 title: Viewpoints
-date: 3
-hour: 2
+day-of-month: 3
+date: "2009-04-03 05:20:38"
 categories:
   - my-games
 tags:

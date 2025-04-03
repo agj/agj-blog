@@ -1,8 +1,8 @@
 ---
 id: 371
 title: Tenth twice
-date: 14
-hour: 4
+day-of-month: 14
+date: "2009-09-14 07:23:04"
 categories:
   - musings
   - my-games

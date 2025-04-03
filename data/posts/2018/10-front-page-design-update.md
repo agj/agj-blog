@@ -1,8 +1,8 @@
 ---
 id: 1126
 title: Front page design update
-date: 22
-hour: 13
+day-of-month: 22
+date: "2018-10-22 16:12:10"
 categories:
   - interactive
   - musings

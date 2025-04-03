@@ -1,8 +1,8 @@
 ---
 id: 87
 title: We dreamt of music
-date: 6
-hour: 20
+day-of-month: 6
+date: "2009-01-06 23:44:15"
 categories:
   - musings
 tags:

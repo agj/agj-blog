@@ -1,8 +1,8 @@
 ---
 id: 333
 title: Allegr
-date: 16
-hour: 3
+day-of-month: 16
+date: "2009-08-16 06:25:54"
 categories:
   - my-games
 tags:

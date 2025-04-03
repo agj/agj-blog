@@ -1,8 +1,8 @@
 ---
 id: 376
 title: New portfolio page
-date: 14
-hour: 22
+day-of-month: 14
+date: "2009-10-15 01:08:02"
 categories:
   - musings
 tags:

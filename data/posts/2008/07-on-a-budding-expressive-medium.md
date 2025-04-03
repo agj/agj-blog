@@ -1,8 +1,8 @@
 ---
 id: 5
 title: On a budding expressive medium
-date: 4
-hour: 17
+day-of-month: 4
+date: "2008-07-04 20:29:34"
 categories:
   - interactive
   - musings

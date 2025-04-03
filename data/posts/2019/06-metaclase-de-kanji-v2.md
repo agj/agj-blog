@@ -1,8 +1,8 @@
 ---
 id: 1143
 title: Metaclase de Kanji v2
-date: 16
-hour: 22
+day-of-month: 16
+date: "2019-06-17 01:42:43"
 categories:
   - language
   - projects

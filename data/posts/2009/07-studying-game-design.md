@@ -1,8 +1,8 @@
 ---
 id: 301
 title: Studying game design
-date: 31
-hour: 3
+day-of-month: 31
+date: "2009-07-31 06:27:29"
 categories:
   - interactive
   - musings

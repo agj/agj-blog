@@ -1,8 +1,8 @@
 ---
 id: 403
 title: Cookbook for children
-date: 5
-hour: 17
+day-of-month: 5
+date: "2010-01-05 20:19:41"
 categories:
   - graphics
 tags:

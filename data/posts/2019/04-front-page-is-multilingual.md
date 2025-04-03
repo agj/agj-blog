@@ -1,8 +1,8 @@
 ---
 id: 1134
 title: Front page is multilingual
-date: 12
-hour: 15
+day-of-month: 12
+date: "2019-04-12 18:52:31"
 categories:
   - interactive
   - musings

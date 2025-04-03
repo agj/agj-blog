@@ -1,8 +1,8 @@
 ---
 id: 11
 title: Runaway Blast
-date: 18
-hour: 1
+day-of-month: 18
+date: "2008-08-18 04:50:13"
 categories:
   - my-games
 tags:

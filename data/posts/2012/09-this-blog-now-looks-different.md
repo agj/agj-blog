@@ -1,8 +1,8 @@
 ---
 id: 609
 title: This blog now looks different
-date: 23
-hour: 21
+day-of-month: 23
+date: "2012-09-24 00:38:15"
 categories:
   - interactive
   - musings

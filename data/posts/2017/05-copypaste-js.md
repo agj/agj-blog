@@ -1,8 +1,8 @@
 ---
 id: 1103
 title: Copy&Paste JS
-date: 13
-hour: 18
+day-of-month: 13
+date: "2017-05-13 21:02:33"
 categories:
   - interactive
 tags:

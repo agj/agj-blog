@@ -1,8 +1,8 @@
 ---
 id: 980
 title: Video work at school
-date: 8
-hour: 2
+day-of-month: 8
+date: "2016-01-08 05:15:42"
 categories:
   - videos
 tags:

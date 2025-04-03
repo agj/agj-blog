@@ -1,8 +1,8 @@
 ---
 id: 35
 title: Explode
-date: 21
-hour: 4
+day-of-month: 21
+date: "2008-12-21 07:22:39"
 categories:
   - my-games
 tags:

@@ -1,8 +1,8 @@
 ---
 id: 28
 title: The Lake
-date: 27
-hour: 17
+day-of-month: 27
+date: "2008-11-27 20:54:17"
 categories:
   - my-games
 tags:

@@ -1,8 +1,8 @@
 ---
 id: 4
 title: Minding the 'house'
-date: 1
-hour: 3
+day-of-month: 1
+date: "2008-07-01 06:57:55"
 categories:
   - interactive
   - musings

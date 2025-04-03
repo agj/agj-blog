@@ -1,8 +1,8 @@
 ---
 id: 467
 title: Deconstructivism
-date: 16
-hour: 3
+day-of-month: 16
+date: "2010-05-16 06:01:37"
 categories:
   - my-games
 tags:

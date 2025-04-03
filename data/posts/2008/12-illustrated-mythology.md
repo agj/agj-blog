@@ -1,8 +1,8 @@
 ---
 id: 52
 title: Illustrated mythology
-date: 30
-hour: 18
+day-of-month: 30
+date: "2008-12-30 21:30:21"
 categories:
   - graphics
 tags:

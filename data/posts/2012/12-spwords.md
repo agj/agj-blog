@@ -1,8 +1,8 @@
 ---
 id: 776
 title: Spwords
-date: 2
-hour: 12
+day-of-month: 2
+date: "2012-12-02 15:31:00"
 categories:
   - language
   - my-games

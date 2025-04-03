@@ -1,8 +1,8 @@
 ---
 id: 518
 title: Charade
-date: 15
-hour: 19
+day-of-month: 15
+date: "2010-12-15 22:48:52"
 categories:
   - musings
   - my-games

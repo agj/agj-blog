@@ -1,8 +1,8 @@
 ---
 id: 354
 title: Cave Trip
-date: 31
-hour: 2
+day-of-month: 31
+date: "2009-08-31 05:22:43"
 categories:
   - my-games
 tags:

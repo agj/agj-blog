@@ -1,8 +1,8 @@
 ---
 id: 184
 title: What (video) games are
-date: 24
-hour: 0
+day-of-month: 24
+date: "2009-04-24 03:35:37"
 categories:
   - my-games
   - musings

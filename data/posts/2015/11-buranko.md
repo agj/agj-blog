@@ -1,8 +1,8 @@
 ---
 id: 968
 title: Buranko
-date: 3
-hour: 12
+day-of-month: 3
+date: "2015-11-03 15:45:33"
 categories:
   - interactive
 tags:

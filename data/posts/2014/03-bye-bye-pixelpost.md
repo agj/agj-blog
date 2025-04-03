@@ -1,8 +1,8 @@
 ---
 id: 868
 title: Bye bye Pixelpost
-date: 28
-hour: 0
+day-of-month: 28
+date: "2014-03-28 03:16:26"
 categories:
   - interactive
   - musings

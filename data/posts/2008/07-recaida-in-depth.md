@@ -1,8 +1,8 @@
 ---
 id: 6
 title: "'Recaída' in depth"
-date: 12
-hour: 0
+day-of-month: 12
+date: "2008-07-12 03:41:50"
 categories:
   - videos
 tags:

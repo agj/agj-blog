@@ -1,8 +1,8 @@
 ---
 id: 20
 title: Ambitions of pushing the envelope
-date: 13
-hour: 2
+day-of-month: 13
+date: "2008-10-13 05:15:19"
 categories:
   - musings
   - my-games

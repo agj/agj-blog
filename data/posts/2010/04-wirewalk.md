@@ -1,8 +1,8 @@
 ---
 id: 446
 title: Wirewalk
-date: 5
-hour: 21
+day-of-month: 5
+date: "2010-04-06 00:00:48"
 categories:
   - my-games
 tags:

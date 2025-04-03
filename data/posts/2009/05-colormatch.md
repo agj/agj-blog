@@ -1,8 +1,8 @@
 ---
 id: 254
 title: Colormatch
-date: 17
-hour: 16
+day-of-month: 17
+date: "2009-05-17 19:15:08"
 categories:
   - my-games
 tags:

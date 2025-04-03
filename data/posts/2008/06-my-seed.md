@@ -1,8 +1,8 @@
 ---
 id: 3
 title: My seed
-date: 30
-hour: 1
+day-of-month: 30
+date: "2008-06-30 04:34:16"
 categories:
   - musings
 tags:

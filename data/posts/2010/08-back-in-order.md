@@ -1,8 +1,8 @@
 ---
 id: 484
 title: Back in order
-date: 14
-hour: 0
+day-of-month: 14
+date: "2010-08-14 03:11:25"
 categories:
   - my-games
 tags:

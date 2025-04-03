@@ -1,8 +1,8 @@
 ---
 id: 37
 title: Family games
-date: 25
-hour: 19
+day-of-month: 25
+date: "2008-12-25 22:25:57"
 categories:
   - my-games
 tags:

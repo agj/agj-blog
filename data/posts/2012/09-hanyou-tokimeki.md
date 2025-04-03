@@ -1,8 +1,8 @@
 ---
 id: 599
 title: han'you tokimeki
-date: 16
-hour: 16
+day-of-month: 16
+date: "2012-09-16 19:28:23"
 categories:
   - my-games
 tags:

@@ -1,8 +1,8 @@
 ---
 id: 998
 title: A constructed language
-date: 24
-hour: 13
+day-of-month: 24
+date: "2016-11-24 16:27:16"
 categories:
   - language
   - musings

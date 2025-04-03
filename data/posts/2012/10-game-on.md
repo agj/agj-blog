@@ -1,8 +1,8 @@
 ---
 id: 734
 title: Game On
-date: 27
-hour: 14
+day-of-month: 27
+date: "2012-10-27 17:42:48"
 categories:
   - my-games
 tags:

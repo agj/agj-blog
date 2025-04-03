@@ -1,8 +1,8 @@
 ---
 id: 1150
 title: An unlikely update to Flower Pattern
-date: 22
-hour: 23
+day-of-month: 22
+date: "2020-01-23 02:22:17"
 categories:
   - interactive
   - my-games

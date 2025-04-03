@@ -1,8 +1,8 @@
 ---
 id: 936
 title: A 'metaclass'
-date: 11
-hour: 7
+day-of-month: 11
+date: "2014-11-11 10:04:25"
 categories:
   - language
   - musings

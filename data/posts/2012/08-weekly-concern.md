@@ -1,8 +1,8 @@
 ---
 id: 589
 title: Weekly concern
-date: 17
-hour: 1
+day-of-month: 17
+date: "2012-08-17 04:59:44"
 categories:
   - interactive
   - language

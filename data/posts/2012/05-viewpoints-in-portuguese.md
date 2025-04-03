@@ -1,8 +1,8 @@
 ---
 id: 580
 title: Viewpoints in Portuguese
-date: 26
-hour: 2
+day-of-month: 26
+date: "2012-05-26 05:39:39"
 categories:
   - my-games
 tags:

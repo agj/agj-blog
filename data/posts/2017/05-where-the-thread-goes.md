@@ -1,8 +1,8 @@
 ---
 id: 1090
 title: Where the thread goes
-date: 9
-hour: 16
+day-of-month: 9
+date: "2017-05-09 19:13:12"
 categories:
   - videos
 tags:

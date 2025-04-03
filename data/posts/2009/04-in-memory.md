@@ -1,8 +1,8 @@
 ---
 id: 168
 title: In memory
-date: 9
-hour: 20
+day-of-month: 9
+date: "2009-04-09 23:55:30"
 categories:
   - interactive
   - musings

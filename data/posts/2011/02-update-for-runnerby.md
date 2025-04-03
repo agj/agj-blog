@@ -1,8 +1,8 @@
 ---
 id: 539
 title: Update for Runnerby
-date: 24
-hour: 16
+day-of-month: 24
+date: "2011-02-24 19:03:47"
 categories:
   - my-games
 tags:

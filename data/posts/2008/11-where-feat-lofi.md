@@ -1,8 +1,8 @@
 ---
 id: 26
 title: Where, feat. lofi
-date: 17
-hour: 17
+day-of-month: 17
+date: "2008-11-17 20:04:04"
 categories:
   - my-games
 tags:

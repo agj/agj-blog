@@ -1,8 +1,8 @@
 ---
 id: 277
 title: The Tomb
-date: 19
-hour: 2
+day-of-month: 19
+date: "2009-07-19 05:07:46"
 categories:
   - my-games
 tags:

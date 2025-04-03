@@ -1,8 +1,8 @@
 ---
 id: 338
 title: Fish in a museum
-date: 21
-hour: 6
+day-of-month: 21
+date: "2009-08-21 09:08:07"
 categories:
   - graphics
 tags:

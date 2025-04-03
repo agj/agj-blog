@@ -1,8 +1,8 @@
 ---
 id: 560
 title: Updated front page
-date: 9
-hour: 16
+day-of-month: 9
+date: "2011-12-09 19:51:00"
 categories:
   - interactive
   - graphics

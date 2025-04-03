@@ -1,8 +1,8 @@
 ---
 id: 424
 title: Within
-date: 17
-hour: 1
+day-of-month: 17
+date: "2010-01-17 04:48:20"
 categories:
   - my-games
 tags:
