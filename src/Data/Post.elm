@@ -41,8 +41,19 @@ type alias Frontmatter =
 
 type alias GlobMatch =
     { path : String
-    , year : String
-    , month : String
+    , yearString : String
+    , year : Int
+    , monthString : String
+    , month : Time.Month
+    , post : String
+    , isHidden : Bool
+    }
+
+
+type alias GlobMatchRaw =
+    { path : String
+    , yearString : String
+    , monthString : String
     , post : String
     , isHidden : Bool
     }
@@ -50,17 +61,19 @@ type alias GlobMatch =
 
 type alias GlobMatchFrontmatter =
     { path : String
-    , year : String
-    , month : String
+    , yearString : String
+    , year : Int
+    , monthString : String
+    , month : Time.Month
     , post : String
     , isHidden : Bool
     , frontmatter : Frontmatter
     }
 
 
-listDataSource : BackendTask { fatal : FatalError, recoverable : FileReadError Decode.Error } (List GlobMatch)
+listDataSource : BackendTask FatalError (List GlobMatch)
 listDataSource =
-    Glob.succeed GlobMatch
+    Glob.succeed GlobMatchRaw
         |> Glob.match (Glob.literal "data/posts/")
         -- Path
         |> Glob.captureFilePath
@@ -82,18 +95,30 @@ listDataSource =
         |> Glob.match (Glob.literal ".md")
         |> Glob.toBackendTask
         |> BackendTask.map (List.filter (.isHidden >> not))
+        |> BackendTask.allowFatal
+        |> BackendTask.andThen
+            (List.map
+                (globMatchRawToGlobMatch
+                    >> Maybe.map BackendTask.succeed
+                    >> Maybe.withDefault (BackendTask.fail (FatalError.fromString "Wrong date in post."))
+                )
+                >> BackendTask.combine
+            )
 
 
-listWithFrontmatterDataSource : BackendTask { fatal : FatalError, recoverable : FileReadError Decode.Error } (List GlobMatchFrontmatter)
+listWithFrontmatterDataSource : BackendTask FatalError (List GlobMatchFrontmatter)
 listWithFrontmatterDataSource =
     let
-        processPost : GlobMatch -> BackendTask { fatal : FatalError, recoverable : FileReadError Decode.Error } GlobMatchFrontmatter
+        processPost : GlobMatch -> BackendTask FatalError GlobMatchFrontmatter
         processPost match =
             BackendTask.File.onlyFrontmatter frontmatterDecoder match.path
+                |> BackendTask.allowFatal
                 |> BackendTask.map
                     (\frontmatter ->
                         { path = match.path
+                        , yearString = match.yearString
                         , year = match.year
+                        , monthString = match.monthString
                         , month = match.month
                         , post = match.post
                         , isHidden = match.isHidden
@@ -103,6 +128,35 @@ listWithFrontmatterDataSource =
     in
     listDataSource
         |> BackendTask.andThen (List.map processPost >> BackendTask.combine)
+
+
+globMatchRawToGlobMatch : GlobMatchRaw -> Maybe GlobMatch
+globMatchRawToGlobMatch raw =
+    let
+        yearMaybe : Maybe Int
+        yearMaybe =
+            String.toInt raw.yearString
+
+        monthMaybe : Maybe Time.Month
+        monthMaybe =
+            raw.monthString
+                |> String.toInt
+                |> Maybe.map Date.intToMonth
+    in
+    case ( yearMaybe, monthMaybe ) of
+        ( Just year, Just month ) ->
+            Just
+                { path = raw.path
+                , yearString = raw.yearString
+                , year = year
+                , monthString = raw.monthString
+                , month = month
+                , post = raw.post
+                , isHidden = raw.isHidden
+                }
+
+        _ ->
+            Nothing
 
 
 singleDataSource :
@@ -122,8 +176,8 @@ singleDataSource year month post =
 globMatchFrontmatterToUrl : GlobMatchFrontmatter -> String
 globMatchFrontmatterToUrl gist =
     "/{year}/{month}/{post}"
-        |> String.replace "{year}" gist.year
-        |> String.replace "{month}" gist.month
+        |> String.replace "{year}" gist.yearString
+        |> String.replace "{month}" gist.monthString
         |> String.replace "{post}" gist.post
 
 

@@ -23,14 +23,14 @@ view posts =
         gistsByYearAndMonth : List ( String, List ( Int, List Post.GlobMatchFrontmatter ) )
         gistsByYearAndMonth =
             posts
-                |> List.gatherUnder .year
+                |> List.gatherUnder .yearString
                 |> List.sortBy Tuple.first
                 |> List.reverse
                 |> List.map
                     (\( year, yearGists ) ->
                         ( year
                         , yearGists
-                            |> List.gatherUnder .month
+                            |> List.gatherUnder .monthString
                             |> List.sortBy Tuple.first
                             |> List.reverse
                             |> List.map
@@ -59,13 +59,8 @@ getTime gist =
         Nothing ->
             Time.Extra.partsToPosix
                 Time.utc
-                { year =
-                    String.toInt gist.year
-                        |> Maybe.withDefault 1990
-                , month =
-                    String.toInt gist.month
-                        |> Maybe.map Date.intToMonth
-                        |> Maybe.withDefault Time.Jan
+                { year = gist.year
+                , month = gist.month
                 , day = gist.frontmatter.dayOfMonth
                 , hour = 0
                 , minute = 0

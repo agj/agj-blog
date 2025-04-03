@@ -63,13 +63,12 @@ pages =
         |> BackendTask.map
             (List.map
                 (\match ->
-                    { year = match.year
-                    , month = match.month
+                    { year = match.yearString
+                    , month = match.monthString
                     , post = match.post
                     }
                 )
             )
-        |> BackendTask.allowFatal
 
 
 

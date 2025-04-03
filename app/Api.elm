@@ -35,7 +35,6 @@ routes getStaticRoutes htmlToString =
                     , url = Site.canonicalUrl
                     }
                 )
-            |> BackendTask.allowFatal
         )
         |> ApiRoute.literal "rss.xml"
         |> ApiRoute.single
@@ -61,7 +60,6 @@ routes getStaticRoutes htmlToString =
                                         |> String.replace "{categorySlug}" categorySlug
                                 }
                     )
-                |> BackendTask.allowFatal
         )
         |> ApiRoute.literal "category"
         |> ApiRoute.slash
@@ -97,7 +95,6 @@ routes getStaticRoutes htmlToString =
                                         |> String.replace "{tagSlug}" tagSlug
                                 }
                     )
-                |> BackendTask.allowFatal
         )
         |> ApiRoute.literal "tag"
         |> ApiRoute.slash
@@ -161,22 +158,12 @@ rss config posts =
 
         postToItem : Post.GlobMatchFrontmatter -> Rss.Item
         postToItem post =
-            let
-                year =
-                    String.toInt post.year
-                        |> Maybe.withDefault 1990
-
-                month =
-                    String.toInt post.month
-                        |> Maybe.withDefault 1
-                        |> Date.numberToMonth
-            in
             { title = post.frontmatter.title
             , description = ""
             , url = Post.globMatchFrontmatterToUrl post
             , categories = List.map Category.getSlug post.frontmatter.categories
             , author = "agj"
-            , pubDate = Rss.Date (Date.fromCalendarDate year month post.frontmatter.dayOfMonth)
+            , pubDate = Rss.Date (Date.fromCalendarDate post.year post.month post.frontmatter.dayOfMonth)
             , content = Nothing
             , contentEncoded = Nothing
             , enclosure = Nothing

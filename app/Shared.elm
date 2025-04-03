@@ -69,7 +69,6 @@ data : BackendTask FatalError Data
 data =
     BackendTask.map Data
         Post.listWithFrontmatterDataSource
-        |> BackendTask.allowFatal
 
 
 
