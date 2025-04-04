@@ -442,6 +442,9 @@ ensureBlocks tags =
                 Doc.IntermediateInline _ ->
                     ( tag :: inlines, blocks )
 
+                Doc.IntermediateInlineList _ ->
+                    ( tag :: inlines, blocks )
+
                 _ ->
                     ( [], tag :: wrapUpInlines ( inlines, blocks ) )
 
