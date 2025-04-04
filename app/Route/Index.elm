@@ -3,7 +3,7 @@ module Route.Index exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Browser.Navigation
 import Data.Category as Category
-import Data.Post as Post
+import Data.Post as Post exposing (PostGist)
 import Data.PostList
 import Data.Tag as Tag
 import Dict
@@ -39,6 +39,7 @@ route =
 init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
 init app shared =
     let
+        maybeRequestedPostId : Maybe Int
         maybeRequestedPostId =
             app.url
                 |> Maybe.map .query
@@ -46,18 +47,21 @@ init app shared =
                 |> Maybe.andThen List.head
                 |> Maybe.andThen String.toInt
 
+        maybeUrlFragment : Maybe String
         maybeUrlFragment =
             app.url
                 |> Maybe.andThen .fragment
 
+        findPostGistById : Int -> Maybe PostGist
         findPostGistById id =
             app.sharedData.posts
-                |> List.find (\pg -> pg.frontmatter.id == Just id)
+                |> List.find (\post -> post.id == Just id)
 
-        maybePostRedirectCommand =
+        maybePostRedirectCmd : Maybe (Cmd msg)
+        maybePostRedirectCmd =
             maybeRequestedPostId
                 |> Maybe.andThen findPostGistById
-                |> Maybe.map Post.globMatchFrontmatterToUrl
+                |> Maybe.map Post.gistToUrl
                 |> Maybe.map
                     (\url ->
                         case maybeUrlFragment of
@@ -70,7 +74,7 @@ init app shared =
                 |> Maybe.map Browser.Navigation.load
     in
     ( {}
-    , maybePostRedirectCommand
+    , maybePostRedirectCmd
         |> Maybe.withDefault Cmd.none
         |> Effect.fromCmd
     )

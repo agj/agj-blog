@@ -127,7 +127,7 @@ view app shared model =
 
         posts =
             app.sharedData.posts
-                |> List.filter (.frontmatter >> .categories >> List.member category)
+                |> List.filter (.categories >> List.member category)
 
         titleEls : List (Html Msg)
         titleEls =

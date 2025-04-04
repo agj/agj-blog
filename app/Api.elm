@@ -3,7 +3,7 @@ module Api exposing (routes)
 import ApiRoute exposing (ApiRoute)
 import BackendTask exposing (BackendTask)
 import Data.Category as Category
-import Data.Post as Post
+import Data.Post as Post exposing (PostGist)
 import Data.PostList as PostList
 import Data.Tag as Tag
 import Date
@@ -27,7 +27,7 @@ routes getStaticRoutes htmlToString =
 
     -- Global RSS feed.
     , ApiRoute.succeed
-        (Post.listWithFrontmatterDataSource
+        (Post.gistsList
             |> BackendTask.map
                 (rss
                     { title = Site.name
@@ -42,13 +42,13 @@ routes getStaticRoutes htmlToString =
     -- Categories RSS feeds.
     , ApiRoute.succeed
         (\categorySlug ->
-            Post.listWithFrontmatterDataSource
+            Post.gistsList
                 |> BackendTask.map
                     (\posts ->
                         posts
                             |> List.filter
                                 (\post ->
-                                    List.member categorySlug (List.map Category.getSlug post.frontmatter.categories)
+                                    List.member categorySlug (List.map Category.getSlug post.categories)
                                         && not post.isHidden
                                 )
                             |> rss
@@ -77,13 +77,13 @@ routes getStaticRoutes htmlToString =
     -- Tag RSS feeds.
     , ApiRoute.succeed
         (\tagSlug ->
-            Post.listWithFrontmatterDataSource
+            Post.gistsList
                 |> BackendTask.map
                     (\posts ->
                         posts
                             |> List.filter
                                 (\post ->
-                                    List.member tagSlug (List.map Tag.getSlug post.frontmatter.tags)
+                                    List.member tagSlug (List.map Tag.getSlug post.tags)
                                         && not post.isHidden
                                 )
                             |> rss
@@ -146,7 +146,7 @@ rss :
     , url : String
     , description : String
     }
-    -> List Post.GlobMatchFrontmatter
+    -> List PostGist
     -> String
 rss config posts =
     let
@@ -156,14 +156,14 @@ rss config posts =
                 |> PostList.sortByTime
                 |> List.map postToItem
 
-        postToItem : Post.GlobMatchFrontmatter -> Rss.Item
+        postToItem : PostGist -> Rss.Item
         postToItem post =
-            { title = post.frontmatter.title
+            { title = post.title
             , description = ""
-            , url = Post.globMatchFrontmatterToUrl post
-            , categories = List.map Category.getSlug post.frontmatter.categories
+            , url = Post.gistToUrl post
+            , categories = List.map Category.getSlug post.categories
             , author = "agj"
-            , pubDate = Rss.Date (Date.fromCalendarDate post.year post.month post.frontmatter.dayOfMonth)
+            , pubDate = Rss.DateTime post.dateTime
             , content = Nothing
             , contentEncoded = Nothing
             , enclosure = Nothing

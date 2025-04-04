@@ -1,6 +1,7 @@
 module Route.Year_.Month_.Post_ exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import Custom.Int as Int
 import Data.Category as Category
 import Data.Date
 import Data.Post as Post exposing (Post)
@@ -59,13 +60,13 @@ type alias RouteParams =
 
 pages : BackendTask FatalError (List RouteParams)
 pages =
-    Post.listDataSource
+    Post.gistsList
         |> BackendTask.map
             (List.map
-                (\match ->
-                    { year = match.yearString
-                    , month = match.monthString
-                    , post = match.post
+                (\postGist ->
+                    { year = Date.year postGist.date |> Int.padLeft 4
+                    , month = Date.monthNumber postGist.date |> Int.padLeft 2
+                    , post = postGist.slug
                     }
                 )
             )

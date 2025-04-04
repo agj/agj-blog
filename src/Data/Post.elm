@@ -3,28 +3,45 @@ module Data.Post exposing
     , GlobMatch
     , GlobMatchFrontmatter
     , Post
-    , globMatchFrontmatterToUrl
-    , listDataSource
-    , listWithFrontmatterDataSource
+    , PostGist
+    , gistToUrl
+    , gistsList
     , singleDataSource
     )
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File exposing (FileReadError)
 import BackendTask.Glob as Glob
+import Custom.Int as Int
 import Data.Category as Category exposing (Category)
 import Data.Date as Date
 import Data.Language as Language exposing (Language)
 import Data.Tag as Tag exposing (Tag)
+import Date exposing (Date)
 import FatalError exposing (FatalError)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Decode
 import Time
+import Time.Extra
+import TimeZone
 
 
 type alias Post =
     { markdown : String
     , frontmatter : Frontmatter
+    }
+
+
+type alias PostGist =
+    { id : Maybe Int
+    , slug : String
+    , title : String
+    , language : Language
+    , categories : List Category
+    , tags : List Tag
+    , date : Date
+    , dateTime : Time.Posix
+    , isHidden : Bool
     }
 
 
@@ -130,6 +147,47 @@ listWithFrontmatterDataSource =
         |> BackendTask.andThen (List.map processPost >> BackendTask.combine)
 
 
+gistsList : BackendTask FatalError (List PostGist)
+gistsList =
+    let
+        toGist : GlobMatchFrontmatter -> PostGist
+        toGist post =
+            let
+                date =
+                    Date.fromCalendarDate post.year post.month post.frontmatter.dayOfMonth
+
+                dateTime =
+                    case post.frontmatter.dateTime of
+                        Just dt ->
+                            dt
+
+                        Nothing ->
+                            Time.Extra.partsToPosix
+                                (TimeZone.america__santiago ())
+                                { year = post.year
+                                , month = post.month
+                                , day = post.frontmatter.dayOfMonth
+                                , hour = 12
+                                , minute = 0
+                                , second = 0
+                                , millisecond = 0
+                                }
+            in
+            { id = post.frontmatter.id
+            , title = post.frontmatter.title
+            , slug = post.post
+            , language = post.frontmatter.language
+            , categories = post.frontmatter.categories
+            , tags = post.frontmatter.tags
+            , date = date
+            , dateTime = dateTime
+            , isHidden = post.isHidden
+            }
+    in
+    listWithFrontmatterDataSource
+        |> BackendTask.map (List.map toGist)
+
+
 globMatchRawToGlobMatch : GlobMatchRaw -> Maybe GlobMatch
 globMatchRawToGlobMatch raw =
     let
@@ -173,12 +231,12 @@ singleDataSource year month post =
         )
 
 
-globMatchFrontmatterToUrl : GlobMatchFrontmatter -> String
-globMatchFrontmatterToUrl gist =
+gistToUrl : PostGist -> String
+gistToUrl gist =
     "/{year}/{month}/{post}"
-        |> String.replace "{year}" gist.yearString
-        |> String.replace "{month}" gist.monthString
-        |> String.replace "{post}" gist.post
+        |> String.replace "{year}" (gist.date |> Date.year |> Int.padLeft 4)
+        |> String.replace "{month}" (gist.date |> Date.monthNumber |> Int.padLeft 2)
+        |> String.replace "{post}" gist.slug
 
 
 

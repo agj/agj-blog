@@ -4,7 +4,7 @@ import AppUrl exposing (AppUrl, QueryParameters)
 import BackendTask exposing (BackendTask)
 import Custom.Html
 import Custom.List as List
-import Data.Post as Post
+import Data.Post as Post exposing (PostGist)
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
 import Dict exposing (Dict)
@@ -168,13 +168,13 @@ view :
     -> View (PagesMsg Msg)
 view app shared model =
     let
-        posts : List Post.GlobMatchFrontmatter
+        posts : List PostGist
         posts =
             app.sharedData.posts
                 |> List.filter
                     (\post ->
                         model.queryTags
-                            |> List.all (List.memberOf post.frontmatter.tags)
+                            |> List.all (List.memberOf post.tags)
                     )
 
         postViews : Html msg
@@ -184,7 +184,7 @@ view app shared model =
         subTags : List Tag
         subTags =
             posts
-                |> List.andThen (.frontmatter >> .tags)
+                |> List.andThen .tags
                 |> List.unique
                 |> List.filter (List.memberOf model.queryTags >> not)
 

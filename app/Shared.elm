@@ -1,7 +1,7 @@
 module Shared exposing (Data, Model, Msg(..), template)
 
 import BackendTask exposing (BackendTask)
-import Data.Post as Post
+import Data.Post as Post exposing (PostGist)
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Flags
@@ -61,14 +61,14 @@ init flagsRaw maybePagePath =
 
 
 type alias Data =
-    { posts : List Post.GlobMatchFrontmatter
+    { posts : List PostGist
     }
 
 
 data : BackendTask FatalError Data
 data =
     BackendTask.map Data
-        Post.listWithFrontmatterDataSource
+        Post.gistsList
 
 
 

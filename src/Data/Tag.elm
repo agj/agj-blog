@@ -106,7 +106,7 @@ toLink onClick tagsToAddTo tag =
 listView :
     Maybe (String -> msg)
     -> List Tag
-    -> List { a | frontmatter : { b | tags : List Tag } }
+    -> List { a | tags : List Tag }
     -> List Tag
     -> List (Html msg)
 listView onClick selectedTags posts relatedTags =
@@ -117,10 +117,7 @@ listView onClick selectedTags posts relatedTags =
                     (\tag ->
                         ( tag
                         , posts
-                            |> List.filter
-                                (\post ->
-                                    List.any ((==) tag) post.frontmatter.tags
-                                )
+                            |> List.filter (.tags >> List.member tag)
                             |> List.length
                         )
                     )

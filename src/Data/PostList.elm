@@ -1,49 +1,51 @@
 module Data.PostList exposing (sortByTime, view)
 
+import Custom.Int as Int
 import Custom.List as List
 import Data.Category as Category
 import Data.Date as Date
-import Data.Post as Post
+import Data.Post as Post exposing (PostGist)
+import Date
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
 import Time
 import Time.Extra
 
 
-sortByTime : List Post.GlobMatchFrontmatter -> List Post.GlobMatchFrontmatter
+sortByTime : List PostGist -> List PostGist
 sortByTime posts =
     posts
-        |> List.sortBy (getTime >> Time.posixToMillis)
+        |> List.sortBy (.dateTime >> Time.posixToMillis)
         |> List.reverse
 
 
-view : List Post.GlobMatchFrontmatter -> Html msg
+view : List PostGist -> Html msg
 view posts =
     let
-        gistsByYearAndMonth : List ( String, List ( Int, List Post.GlobMatchFrontmatter ) )
-        gistsByYearAndMonth =
+        postsByYearAndMonth : List ( Int, List ( Int, List PostGist ) )
+        postsByYearAndMonth =
             posts
-                |> List.gatherUnder .yearString
+                |> List.gatherUnder (.date >> Date.year)
                 |> List.sortBy Tuple.first
                 |> List.reverse
                 |> List.map
-                    (\( year, yearGists ) ->
+                    (\( year, yearPosts ) ->
                         ( year
-                        , yearGists
-                            |> List.gatherUnder .monthString
+                        , yearPosts
+                            |> List.gatherUnder (.date >> Date.monthNumber)
                             |> List.sortBy Tuple.first
                             |> List.reverse
                             |> List.map
-                                (\( month, monthGists ) ->
-                                    ( String.toInt month |> Maybe.withDefault 0
-                                    , sortByTime monthGists
+                                (\( month, monthPosts ) ->
+                                    ( month
+                                    , sortByTime monthPosts
                                     )
                                 )
                         )
                     )
     in
     Html.div [ class "flex flex-col gap-8" ]
-        (List.map viewGistYear gistsByYearAndMonth)
+        (List.map viewPostYear postsByYearAndMonth)
 
 
 
@@ -69,23 +71,23 @@ getTime gist =
                 }
 
 
-viewGistYear : ( String, List ( Int, List Post.GlobMatchFrontmatter ) ) -> Html msg
-viewGistYear ( year, gistMonths ) =
+viewPostYear : ( Int, List ( Int, List PostGist ) ) -> Html msg
+viewPostYear ( year, postMonths ) =
     let
         heading =
             Html.h2 [ class "text-layout-70 text-2xl" ]
-                [ Html.text year ]
+                [ Html.text (Int.padLeft 4 year) ]
 
         months =
-            gistMonths
-                |> List.map viewGistMonth
+            postMonths
+                |> List.map viewPostMonth
     in
     Html.div [ class "flex flex-col gap-4" ]
         (heading :: months)
 
 
-viewGistMonth : ( Int, List Post.GlobMatchFrontmatter ) -> Html msg
-viewGistMonth ( month, gists ) =
+viewPostMonth : ( Int, List PostGist ) -> Html msg
+viewPostMonth ( month, posts ) =
     let
         heading : Html msg
         heading =
@@ -94,32 +96,31 @@ viewGistMonth ( month, gists ) =
 
         gistsList : List (Html msg)
         gistsList =
-            List.map viewGist gists
+            List.map viewPost posts
     in
     Html.div [ class "flex flex-col gap-1" ]
         (heading :: gistsList)
 
 
-viewGist : Post.GlobMatchFrontmatter -> Html msg
-viewGist gist =
+viewPost : PostGist -> Html msg
+viewPost post =
     let
         postDayOfMonth : Html msg
         postDayOfMonth =
             Html.div [ class "text-layout-70 min-w-5 tabular-nums" ]
-                [ Html.text
-                    (gist.frontmatter.dayOfMonth |> String.fromInt |> String.padLeft 2 '0')
+                [ Html.text (post.date |> Date.monthNumber |> Int.padLeft 2)
                 ]
 
         postLink : Html msg
         postLink =
             Html.b []
-                [ Html.a [ href (Post.globMatchFrontmatterToUrl gist) ]
-                    [ Html.text gist.frontmatter.title ]
+                [ Html.a [ href (Post.gistToUrl post) ]
+                    [ Html.text post.title ]
                 ]
 
         postCategoryEls : List (Html msg)
         postCategoryEls =
-            gist.frontmatter.categories
+            post.categories
                 |> List.map
                     (\category ->
                         Html.a [ href (Category.toUrl category) ]
