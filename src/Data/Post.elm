@@ -1,8 +1,5 @@
 module Data.Post exposing
-    ( Frontmatter
-    , GlobMatch
-    , GlobMatchFrontmatter
-    , Post
+    ( Post
     , PostGist
     , gistToUrl
     , gistsList
@@ -21,6 +18,7 @@ import Date exposing (Date)
 import FatalError exposing (FatalError)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Decode
+import Result.Extra
 import Time
 import Time.Extra
 import TimeZone
@@ -59,162 +57,21 @@ type alias Frontmatter =
 type alias GlobMatch =
     { path : String
     , yearString : String
-    , year : Int
     , monthString : String
-    , month : Time.Month
-    , post : String
+    , slug : String
     , isHidden : Bool
     }
-
-
-type alias GlobMatchRaw =
-    { path : String
-    , yearString : String
-    , monthString : String
-    , post : String
-    , isHidden : Bool
-    }
-
-
-type alias GlobMatchFrontmatter =
-    { path : String
-    , yearString : String
-    , year : Int
-    , monthString : String
-    , month : Time.Month
-    , post : String
-    , isHidden : Bool
-    , frontmatter : Frontmatter
-    }
-
-
-listDataSource : BackendTask FatalError (List GlobMatch)
-listDataSource =
-    Glob.succeed GlobMatchRaw
-        |> Glob.match (Glob.literal "data/posts/")
-        -- Path
-        |> Glob.captureFilePath
-        -- Year
-        |> Glob.capture Glob.digits
-        |> Glob.match (Glob.literal "/")
-        -- Month
-        |> Glob.capture Glob.digits
-        |> Glob.match (Glob.literal "-")
-        -- Post
-        |> Glob.capture Glob.wildcard
-        -- Hidden post flag
-        |> Glob.capture
-            (Glob.oneOf
-                ( ( "-HIDDEN", True )
-                , [ ( "", False ) ]
-                )
-            )
-        |> Glob.match (Glob.literal ".md")
-        |> Glob.toBackendTask
-        |> BackendTask.map (List.filter (.isHidden >> not))
-        |> BackendTask.allowFatal
-        |> BackendTask.andThen
-            (List.map
-                (globMatchRawToGlobMatch
-                    >> Maybe.map BackendTask.succeed
-                    >> Maybe.withDefault (BackendTask.fail (FatalError.fromString "Wrong date in post."))
-                )
-                >> BackendTask.combine
-            )
-
-
-listWithFrontmatterDataSource : BackendTask FatalError (List GlobMatchFrontmatter)
-listWithFrontmatterDataSource =
-    let
-        processPost : GlobMatch -> BackendTask FatalError GlobMatchFrontmatter
-        processPost match =
-            BackendTask.File.onlyFrontmatter frontmatterDecoder match.path
-                |> BackendTask.allowFatal
-                |> BackendTask.map
-                    (\frontmatter ->
-                        { path = match.path
-                        , yearString = match.yearString
-                        , year = match.year
-                        , monthString = match.monthString
-                        , month = match.month
-                        , post = match.post
-                        , isHidden = match.isHidden
-                        , frontmatter = frontmatter
-                        }
-                    )
-    in
-    listDataSource
-        |> BackendTask.andThen (List.map processPost >> BackendTask.combine)
 
 
 gistsList : BackendTask FatalError (List PostGist)
 gistsList =
-    let
-        toGist : GlobMatchFrontmatter -> PostGist
-        toGist post =
-            let
-                date =
-                    Date.fromCalendarDate post.year post.month post.frontmatter.dayOfMonth
-
-                dateTime =
-                    case post.frontmatter.dateTime of
-                        Just dt ->
-                            dt
-
-                        Nothing ->
-                            Time.Extra.partsToPosix
-                                (TimeZone.america__santiago ())
-                                { year = post.year
-                                , month = post.month
-                                , day = post.frontmatter.dayOfMonth
-                                , hour = 12
-                                , minute = 0
-                                , second = 0
-                                , millisecond = 0
-                                }
-            in
-            { id = post.frontmatter.id
-            , title = post.frontmatter.title
-            , slug = post.post
-            , language = post.frontmatter.language
-            , categories = post.frontmatter.categories
-            , tags = post.frontmatter.tags
-            , date = date
-            , dateTime = dateTime
-            , isHidden = post.isHidden
-            }
-    in
-    listWithFrontmatterDataSource
-        |> BackendTask.map (List.map toGist)
-
-
-globMatchRawToGlobMatch : GlobMatchRaw -> Maybe GlobMatch
-globMatchRawToGlobMatch raw =
-    let
-        yearMaybe : Maybe Int
-        yearMaybe =
-            String.toInt raw.yearString
-
-        monthMaybe : Maybe Time.Month
-        monthMaybe =
-            raw.monthString
-                |> String.toInt
-                |> Maybe.map Date.intToMonth
-    in
-    case ( yearMaybe, monthMaybe ) of
-        ( Just year, Just month ) ->
-            Just
-                { path = raw.path
-                , yearString = raw.yearString
-                , year = year
-                , monthString = raw.monthString
-                , month = month
-                , post = raw.post
-                , isHidden = raw.isHidden
-                }
-
-        _ ->
-            Nothing
+    listDataSource
+        |> BackendTask.andThen
+            (List.map globMatchWithFrontmatterToGist
+                >> Result.Extra.combine
+                >> Result.mapError FatalError.fromString
+                >> BackendTask.fromResult
+            )
 
 
 singleDataSource :
@@ -241,6 +98,97 @@ gistToUrl gist =
 
 
 -- INTERNAL
+
+
+listDataSource : BackendTask FatalError (List ( GlobMatch, Frontmatter ))
+listDataSource =
+    Glob.succeed GlobMatch
+        |> Glob.match (Glob.literal "data/posts/")
+        -- Path
+        |> Glob.captureFilePath
+        -- Year
+        |> Glob.capture Glob.digits
+        |> Glob.match (Glob.literal "/")
+        -- Month
+        |> Glob.capture Glob.digits
+        |> Glob.match (Glob.literal "-")
+        -- Slug
+        |> Glob.capture Glob.wildcard
+        -- Hidden post flag
+        |> Glob.capture
+            (Glob.oneOf
+                ( ( "-HIDDEN", True )
+                , [ ( "", False ) ]
+                )
+            )
+        |> Glob.match (Glob.literal ".md")
+        |> Glob.toBackendTask
+        |> BackendTask.map (List.filter (.isHidden >> not))
+        |> BackendTask.allowFatal
+        |> BackendTask.andThen (List.map addFrontmatterToGlobMatch >> BackendTask.combine)
+
+
+addFrontmatterToGlobMatch : GlobMatch -> BackendTask FatalError ( GlobMatch, Frontmatter )
+addFrontmatterToGlobMatch match =
+    BackendTask.File.onlyFrontmatter frontmatterDecoder match.path
+        |> BackendTask.allowFatal
+        |> BackendTask.map
+            (\frontmatter -> ( match, frontmatter ))
+
+
+globMatchWithFrontmatterToGist : ( GlobMatch, Frontmatter ) -> Result String PostGist
+globMatchWithFrontmatterToGist ( post, frontmatter ) =
+    let
+        yearMaybe =
+            post.yearString
+                |> String.toInt
+
+        monthMaybe =
+            post.monthString
+                |> String.toInt
+                |> Maybe.map Date.intToMonth
+    in
+    case ( yearMaybe, monthMaybe ) of
+        ( Just year, Just month ) ->
+            let
+                date =
+                    Date.fromCalendarDate year month frontmatter.dayOfMonth
+
+                dateTime =
+                    case frontmatter.dateTime of
+                        Just dt ->
+                            dt
+
+                        Nothing ->
+                            Time.Extra.partsToPosix
+                                (TimeZone.america__santiago ())
+                                { year = year
+                                , month = month
+                                , day = frontmatter.dayOfMonth
+                                , hour = 12
+                                , minute = 0
+                                , second = 0
+                                , millisecond = 0
+                                }
+            in
+            Result.Ok
+                { id = frontmatter.id
+                , title = frontmatter.title
+                , slug = post.slug
+                , language = frontmatter.language
+                , categories = frontmatter.categories
+                , tags = frontmatter.tags
+                , date = date
+                , dateTime = dateTime
+                , isHidden = post.isHidden
+                }
+
+        _ ->
+            Result.Err "Dates are incorrect."
+
+
+
+-- DECODERS
 
 
 postDecoder : String -> Decoder Post

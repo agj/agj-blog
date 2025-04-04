@@ -9,7 +9,6 @@ import Date
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
 import Time
-import Time.Extra
 
 
 sortByTime : List PostGist -> List PostGist
@@ -50,25 +49,6 @@ view posts =
 
 
 -- INTERNAL
-
-
-getTime : Post.GlobMatchFrontmatter -> Time.Posix
-getTime gist =
-    case gist.frontmatter.dateTime of
-        Just date ->
-            date
-
-        Nothing ->
-            Time.Extra.partsToPosix
-                Time.utc
-                { year = gist.year
-                , month = gist.month
-                , day = gist.frontmatter.dayOfMonth
-                , hour = 0
-                , minute = 0
-                , second = 0
-                , millisecond = 0
-                }
 
 
 viewPostYear : ( Int, List ( Int, List PostGist ) ) -> Html msg

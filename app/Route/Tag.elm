@@ -4,7 +4,7 @@ import AppUrl exposing (AppUrl, QueryParameters)
 import BackendTask exposing (BackendTask)
 import Custom.Html
 import Custom.List as List
-import Data.Post as Post exposing (PostGist)
+import Data.Post exposing (PostGist)
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
 import Dict exposing (Dict)
