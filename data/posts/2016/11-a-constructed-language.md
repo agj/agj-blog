@@ -58,25 +58,25 @@ Using these, let's try writing some sentences.
 Going step by step, let's translate this into English. Starting with the first sentence:
 
 > 1. ❤️ 🏷 📝 👉 .  
->    ↳❤️ means *interest. *🏷 takes _interest_ and turns it into a property. Therefore...
+>    ↳ ❤️ means _interest._ 🏷 takes _interest_ and turns it into a property. Therefore…
 > 2. (Interesting) 📝 👉 .  
->    ↳📝 means _language._ 👉 makes _language_ the target of _interesting._ Therefore...
+>    ↳ 📝 means _language._ 👉 makes _language_ the target of _interesting._ Therefore…
 > 3. (Interesting language → Language is interesting) .
 
 And the second sentence:
 
-> 1. ✊ 🏃 📝 👉 ⚽️ 🏃 ⏰ .
->    ↳✊ means _use_ (noun). 🏃 turns _use_ into a verb. Therefore...
-> 2. (Use [verb]) 📝 👉 ⚽️ 🏃 ⏰ .
->    ↳📝 means _language._ 👉 makes _language_ the target of _use._ Therefore...
-> 3. (Use language) ⚽️ 🏃 ⏰ .
->    ↳⚽️ means _play_ (noun). 🏃 turns _play_ into a verb. Therefore...
-> 4. (Use language) (play [verb]) ⏰ .
->    ↳ ⏰ means that _use language_ and _play_ occur simultaneously. Therefore...
+> 1. ✊ 🏃 📝 👉 ⚽️ 🏃 ⏰ .  
+>    ↳ ✊ means _use_ (noun). 🏃 turns _use_ into a verb. Therefore…
+> 2. (Use [verb]) 📝 👉 ⚽️ 🏃 ⏰ .  
+>    ↳ 📝 means _language._ 👉 makes _language_ the target of _use._ Therefore…
+> 3. (Use language) ⚽️ 🏃 ⏰ .  
+>    ↳ ⚽️ means _play_ (noun). 🏃 turns _play_ into a verb. Therefore…
+> 4. (Use language) (play [verb]) ⏰ .  
+>    ↳ ⏰ means that _use language_ and _play_ occur simultaneously. Therefore…
 > 5. (Use language while playing → Play with language) .
 
 Creating this language means that I have a framework devoid of ambiguities, as the rules are very simple to follow and perform (of course _not_ necessarily quickly graspable,) but with full freedom to explore linguistic expressivity, by means of the creation of predicates. Predicates are the elementary part of the grammar of this language, and them being a 'soft' element means that the language is mouldable to fit any pattern. Smart use of predicates means that we can even create different syntaxes, via the swapping around of elements.
 
-Astute readers might realize that, despite what I described earlier, what I've laid out is in fact not enough to build a reflecting, meta-capable language, because there's no way to "quote" words in order to manipulate them literally as language entities, without them being interpreted instead for what they mean. This is something I will later think on how to best express, when I start playing with combinatory logic in the context of my language. To be specific, I've been heavily influenced particularly by the [Joy programming language,](http://www.kevinalbrecht.com/code/joy-mirror/joy.html) and [combinatory theory as applied to it (Brent Kerby).](http://tunes.org/~iepos/joy.html)
+Astute readers might realize that, despite what I described earlier, what I've laid out is in fact not enough to build a reflecting, meta-capable language, because there's no way to “quote” words in order to manipulate them literally as language entities, without them being interpreted instead for what they mean. This is something I will later think on how to best express, when I start playing with combinatory logic in the context of my language. To be specific, I've been heavily influenced particularly by the [Joy programming language,](http://www.kevinalbrecht.com/code/joy-mirror/joy.html) and [combinatory theory as applied to it (Brent Kerby).](http://tunes.org/~iepos/joy.html)
 
 I still have a lot of research to do, as I'm by no stretch of the imagination at all knowledgeable in linguistics, so I intend to continue deepening my understanding by investigating predicate theory as it applies to linguistics, and linguistics in general. The language doesn't even have a name, because my focus is more on the way I use it. I'll be sharing that stuff in the future.
