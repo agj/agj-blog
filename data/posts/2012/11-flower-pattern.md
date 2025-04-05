@@ -19,7 +19,9 @@ Here's an HTML5 drawing toy I've been working on for a few weeks. It's been desi
 
 [**Play _Flower pattern_**](//www.agj.cl/files/games/flowerpattern/) (web, touch devices)
 
-For your phone or tablet, and for your convenience, I also set up a shorter URL: _http://agj.cl/ip/fp_ . Caveat: based on one report, it doesn't seem to work properly on older versions of iOS.<!-- more -->
+For your phone or tablet, and for your convenience, I also set up a shorter URL: `http://agj.cl/ip/fp` . Caveat: based on one report, it doesn't seem to work properly on older versions of iOS.
+
+<!-- more -->
 
 This was my first foray into several HTML5 APIs: the canvas element, touch events, and the application cache. I also came up with a way to imitate actionscript 3's brand of class-based inheritance in javascript, and used that to port my code over. It was painful (you're free to peek at the code if curious).
 
