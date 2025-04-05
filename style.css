@@ -14,6 +14,6 @@
   }
 
   a {
-    @apply text-inherit underline decoration-primary-20 underline-offset-4 decoration-2 hover:text-primary-50;
+    @apply text-inherit underline decoration-primary-20 decoration-2 underline-offset-4 hover:text-primary-50;
   }
 }
