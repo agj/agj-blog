@@ -96,15 +96,24 @@ wordpressToPosixParser =
         )
         |= Parser.int
         |. Parser.symbol "-"
-        |= Parser.int
+        |= twoDigitsParser
         |. Parser.symbol "-"
-        |= Parser.int
+        |= twoDigitsParser
         |. Parser.symbol " "
-        |= Parser.int
+        |= twoDigitsParser
         |. Parser.symbol ":"
-        |= Parser.int
+        |= twoDigitsParser
         |. Parser.symbol ":"
-        |= Parser.int
+        |= twoDigitsParser
+
+
+twoDigitsParser : Parser Int
+twoDigitsParser =
+    Parser.succeed ()
+        |. Parser.chompIf Char.isDigit
+        |. Parser.chompIf Char.isDigit
+        |> Parser.getChompedString
+        |> Parser.map (String.toInt >> Maybe.withDefault 0)
 
 
 intToMonthDict : Dict Int { t : Time.Month, long : String, short : String }
