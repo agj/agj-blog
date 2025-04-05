@@ -141,7 +141,7 @@ title =
 head : App Data ActionData RouteParams -> List Head.Tag
 head app =
     Site.pageMeta title
-        ++ [ Head.rssLink "/rss.xml" ]
+        ++ [ Head.rssLink rssUrl ]
 
 
 view :
@@ -179,6 +179,11 @@ view app shared model =
             content
             |> View.PageBody.withTitle
                 [ Html.text "agj's blog" ]
-            |> View.PageBody.withRssFeed (View.PageBody.RssFeedUrl "/rss.xml")
+            |> View.PageBody.withRssFeed (View.PageBody.RssFeedUrl rssUrl)
             |> View.PageBody.view
     }
+
+
+rssUrl : String
+rssUrl =
+    "/rss.xml"

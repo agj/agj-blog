@@ -160,10 +160,12 @@ view app shared model =
             }
             content
             |> View.PageBody.withTitleAndSubtitle titleEls subtitle
-            |> View.PageBody.withRssFeed
-                ("/category/{categorySlug}/rss.xml"
-                    |> String.replace "{categorySlug}" (Category.getSlug category)
-                    |> View.PageBody.RssFeedUrl
-                )
+            |> View.PageBody.withRssFeed (View.PageBody.RssFeedUrl (rssUrl category))
             |> View.PageBody.view
     }
+
+
+rssUrl : Category -> String
+rssUrl category =
+    "/category/{categorySlug}/rss.xml"
+        |> String.replace "{categorySlug}" (Category.getSlug category)

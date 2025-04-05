@@ -247,16 +247,12 @@ view app shared model =
 
         withRssFeedLinkMaybe : PageBody Msg -> PageBody Msg
         withRssFeedLinkMaybe pageBody =
-            case model.queryTags of
-                [ tag ] ->
+            case rssUrl model.queryTags of
+                Just url ->
                     pageBody
-                        |> View.PageBody.withRssFeed
-                            ("/tag/{tagSlug}/rss.xml"
-                                |> String.replace "{tagSlug}" (Tag.getSlug tag)
-                                |> View.PageBody.RssFeedUrl
-                            )
+                        |> View.PageBody.withRssFeed (View.PageBody.RssFeedUrl url)
 
-                _ ->
+                Nothing ->
                     pageBody
                         |> View.PageBody.withRssFeed
                             (View.PageBody.NoRssFeedWithExplanation
@@ -274,3 +270,15 @@ view app shared model =
             |> withRssFeedLinkMaybe
             |> View.PageBody.view
     }
+
+
+rssUrl : List Tag -> Maybe String
+rssUrl tags =
+    case tags of
+        [ tag ] ->
+            "/tag/{tagSlug}/rss.xml"
+                |> String.replace "{tagSlug}" (Tag.getSlug tag)
+                |> Just
+
+        _ ->
+            Nothing
