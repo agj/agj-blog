@@ -20,7 +20,7 @@ const config: ElmPagesInit = {
     const configRaw = localStorage.getItem("config");
     const config = configRaw ? JSON.parse(configRaw) : null;
     const theme = {
-      set: config.theme,
+      set: config?.theme ?? null,
       default: window.matchMedia?.("(prefers-color-scheme: dark)").matches
         ? "dark"
         : window.matchMedia?.("(prefers-color-scheme: light)").matches
