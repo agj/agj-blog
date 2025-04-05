@@ -1,7 +1,6 @@
 module Doc exposing (..)
 
 import View.AudioPlayer
-import View.AudioPlayer.Track exposing (Track)
 import View.LanguageBreak
 import View.VideoEmbed
 
@@ -40,10 +39,6 @@ type alias Styles =
 
 type alias ListItem msg =
     ( Block msg, List (Block msg) )
-
-
-type Metadata
-    = AudioPlayerTrack Track
 
 
 plainText : String -> Inline

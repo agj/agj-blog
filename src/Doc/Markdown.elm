@@ -12,7 +12,7 @@ import Markdown.Parser
 import Markdown.Renderer
 import Result.Extra as Result
 import View.AudioPlayer
-import View.AudioPlayer.Track
+import View.AudioPlayer.Track exposing (Track)
 import View.LanguageBreak
 import View.VideoEmbed
 
@@ -32,7 +32,11 @@ type Intermediate msg
     | IntermediateHeading Int (List Doc.Inline)
     | IntermediateInline Doc.Inline
     | IntermediateInlineList (List Doc.Inline)
-    | IntermediateCustom Doc.Metadata
+    | IntermediateCustomChild CustomChildData
+
+
+type CustomChildData
+    = AudioPlayerTrack Track
 
 
 parse : Config msg -> String -> List (Doc.Block msg)
@@ -133,7 +137,7 @@ intermediatesToBlocks intermediates =
                         , Doc.Paragraph inlines :: acc
                         )
 
-                    IntermediateCustom _ ->
+                    IntermediateCustomChild _ ->
                         ( sectionLevel
                         , acc
                         )
@@ -164,7 +168,7 @@ renderInlineWithStyle styler intermediates =
                     IntermediateHeading _ _ ->
                         Nothing
 
-                    IntermediateCustom _ ->
+                    IntermediateCustomChild _ ->
                         Nothing
             )
         |> List.concat
@@ -290,16 +294,16 @@ renderImage { alt, src, title } =
 -- CUSTOM
 
 
-{-| Render all custom elements.
+{-| Renders all custom elements. Depending on the supplied configuration, some
+of them may not be included, and if used in the Markdown content, will result in
+parsing errors.
 -}
 renderCustom : Maybe (AudioPlayerConfig msg) -> Markdown.Html.Renderer (List (Intermediate msg) -> Intermediate msg)
 renderCustom audioPlayerConfig =
     Markdown.Html.oneOf (customRenderers audioPlayerConfig)
 
 
-{-| List of all custom element renderers. Depending on the supplied
-configuration, some of them may not be included, and if used in the Markdown
-content, will result in parsing errors.
+{-| List of all custom element renderers.
 -}
 customRenderers : Maybe (AudioPlayerConfig msg) -> List (Markdown.Html.Renderer (List (Intermediate msg) -> Intermediate msg))
 customRenderers audioPlayerConfig =
@@ -309,10 +313,10 @@ customRenderers audioPlayerConfig =
             case audioPlayerConfig of
                 Just { onAudioPlayerStateUpdated } ->
                     [ View.AudioPlayer.Track.renderer
-                        |> renderCustomAsIntermediateCustom Doc.AudioPlayerTrack
+                        |> renderCustomAsIntermediateCustom AudioPlayerTrack
                     , View.AudioPlayer.renderer
                         |> renderCustomWithCustomChildren
-                            (\(Doc.AudioPlayerTrack track) -> Just track)
+                            (\(AudioPlayerTrack track) -> Just track)
                             (\audioPlayer tracks ->
                                 audioPlayer
                                     |> View.AudioPlayer.withConfig
@@ -320,6 +324,7 @@ customRenderers audioPlayerConfig =
                                         , tracks = tracks
                                         }
                                     |> Doc.AudioPlayer
+                                    |> IntermediateBlock
                             )
                     ]
 
@@ -356,35 +361,36 @@ renderFailableCustom valueToIntermediate customRenderer =
 
 
 {-| Renders a custom element which cannot fail (doesn't emit a `Result` value),
-directly as an `IntermediateCustom` value. Requires a way to convert its output
-value into a `Doc.Metadata`.
+directly as an `IntermediateCustom` value. This kind of value is used for child
+custom elements, so that a parent custom element can later use the produced
+data. Requires a way to convert its output value into a `CustomChildData`.
 -}
 renderCustomAsIntermediateCustom :
-    (value -> Doc.Metadata)
+    (value -> CustomChildData)
     -> Markdown.Html.Renderer value
     -> Markdown.Html.Renderer (List (Intermediate msg) -> Intermediate msg)
-renderCustomAsIntermediateCustom toMetadata customRenderer =
+renderCustomAsIntermediateCustom toCustomChildData customRenderer =
     customRenderer
         |> Markdown.Html.map
-            (\value _ -> IntermediateCustom (toMetadata value))
+            (\value _ -> IntermediateCustomChild (toCustomChildData value))
 
 
-{-| Renders a custom element that expects `IntermediateCustom` children. You
-will need to supply a way to interpret child renderer-produced `Doc.Metadata`,
-and a way to convert a value produced by the custom renderer plus its children
-into a `Doc.Block`.
+{-| Renders a custom element that expects `IntermediateCustomChild`
+children. You will need to supply a way to interpret child renderer-produced
+`CustomChildData`, and a way to convert a value produced by the custom renderer
+plus its children into an `Intermediate` value.
 -}
 renderCustomWithCustomChildren :
-    (Doc.Metadata -> Maybe child)
-    -> (value -> List child -> Doc.Block msg)
+    (CustomChildData -> Maybe child)
+    -> (value -> List child -> Intermediate msg)
     -> Markdown.Html.Renderer value
     -> Markdown.Html.Renderer (List (Intermediate msg) -> Intermediate msg)
-renderCustomWithCustomChildren metadataToChild toBlock customRenderer =
+renderCustomWithCustomChildren customChildDataToChild valueAndChildrenToIntermediate customRenderer =
     let
         intermediateToChild intermediate =
             case intermediate of
-                IntermediateCustom metadata ->
-                    metadataToChild metadata
+                IntermediateCustomChild customChildData ->
+                    customChildDataToChild customChildData
 
                 _ ->
                     Nothing
@@ -394,8 +400,7 @@ renderCustomWithCustomChildren metadataToChild toBlock customRenderer =
             (\value childIntermediates ->
                 childIntermediates
                     |> List.filterMap intermediateToChild
-                    |> toBlock value
-                    |> IntermediateBlock
+                    |> valueAndChildrenToIntermediate value
             )
 
 
@@ -433,7 +438,7 @@ unwrapInlines intermediates =
                     IntermediateHeading _ _ ->
                         Nothing
 
-                    IntermediateCustom _ ->
+                    IntermediateCustomChild _ ->
                         Nothing
             )
         |> List.concat
@@ -458,7 +463,7 @@ unwrapBlocks =
                 IntermediateInlineList _ ->
                     Nothing
 
-                IntermediateCustom _ ->
+                IntermediateCustomChild _ ->
                     Nothing
         )
 
