@@ -23,8 +23,7 @@ type alias Config msg =
 
 view : Config msg -> List (Doc.Block msg) -> Html msg
 view config blocks =
-    Html.div [ class "flex flex-col gap-4" ]
-        (viewInternal config 1 blocks)
+    wrapBlocks (viewInternal config 1 blocks)
 
 
 noConfig : Config msg
@@ -157,8 +156,7 @@ viewList config sectionDepth maybeStartNumber firstItem restItems =
 viewBlockQuote : Config msg -> Int -> List (Doc.Block msg) -> Html msg
 viewBlockQuote config sectionDepth blocks =
     Html.div [ class "border-layout-20 flex flex-col border-l-[1rem] border-solid pl-6" ]
-        [ Html.div [ class "flex flex-col gap-4" ]
-            (viewInternal config sectionDepth blocks)
+        [ wrapBlocks (viewInternal config sectionDepth blocks)
         ]
 
 
@@ -168,12 +166,11 @@ viewSection config sectionDepth heading content =
         newSectionDepth =
             sectionDepth + 1
     in
-    Html.div [ class "flex w-full flex-col gap-4" ]
+    wrapBlocks
         [ heading
             |> List.map (viewInline config.onClick)
             |> View.Heading.view newSectionDepth
-        , Html.div [ class "flex w-full flex-col gap-4" ]
-            (viewInternal config newSectionDepth content)
+        , wrapBlocks (viewInternal config newSectionDepth content)
         ]
 
 
@@ -219,3 +216,9 @@ paragraph : List (Html msg) -> Html msg
 paragraph inlines =
     Html.p [ class "w-full text-base" ]
         inlines
+
+
+wrapBlocks : List (Html msg) -> Html msg
+wrapBlocks blocks =
+    Html.div [ class "flex flex-col gap-4" ]
+        blocks
