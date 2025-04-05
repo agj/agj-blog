@@ -61,17 +61,7 @@ viewInternal config sectionDepth blocks =
                 :: viewInternal config sectionDepth nextBlocks
 
         (Doc.Section { heading, content }) :: nextBlocks ->
-            let
-                newSectionDepth =
-                    sectionDepth + 1
-            in
-            Html.div [ class "flex w-full flex-col gap-4" ]
-                [ heading
-                    |> List.map (viewInline config.onClick)
-                    |> View.Heading.view newSectionDepth
-                , Html.div [ class "flex w-full flex-col gap-4" ]
-                    (viewInternal config newSectionDepth content)
-                ]
+            viewSection config sectionDepth heading content
                 :: viewInternal config sectionDepth nextBlocks
 
         Doc.Separation :: nextBlocks ->
@@ -79,21 +69,7 @@ viewInternal config sectionDepth blocks =
                 :: viewInternal config sectionDepth nextBlocks
 
         (Doc.Image { url, description, caption }) :: nextBlocks ->
-            (View.Figure.figure
-                (Html.img
-                    [ Html.Attributes.src url
-                    , Html.Attributes.alt description
-                    ]
-                    []
-                )
-                |> (if caption /= "" then
-                        View.Figure.setCaption caption
-
-                    else
-                        identity
-                   )
-                |> View.Figure.view
-            )
+            viewImage url description caption
                 :: viewInternal config sectionDepth nextBlocks
 
         (Doc.Video videoEmbed) :: nextBlocks ->
@@ -111,16 +87,8 @@ viewInternal config sectionDepth blocks =
                 :: viewInternal config sectionDepth nextBlocks
 
         (Doc.AudioPlayer audioPlayer) :: nextBlocks ->
-            case config.audioPlayerState of
-                Just aps ->
-                    View.AudioPlayer.view aps audioPlayer
-                        :: viewInternal config sectionDepth nextBlocks
-
-                Nothing ->
-                    ([ Html.text "[AudioPlayer state not provided]" ]
-                        |> paragraph
-                    )
-                        :: viewInternal config sectionDepth nextBlocks
+            viewAudioPlayer config audioPlayer
+                :: viewInternal config sectionDepth nextBlocks
 
         [] ->
             []
@@ -195,10 +163,57 @@ viewBlockQuote config sectionDepth blocks =
         ]
 
 
+viewSection : Config msg -> Int -> List Doc.Inline -> List (Doc.Block msg) -> Html msg
+viewSection config sectionDepth heading content =
+    let
+        newSectionDepth =
+            sectionDepth + 1
+    in
+    Html.div [ class "flex w-full flex-col gap-4" ]
+        [ heading
+            |> List.map (viewInline config.onClick)
+            |> View.Heading.view newSectionDepth
+        , Html.div [ class "flex w-full flex-col gap-4" ]
+            (viewInternal config newSectionDepth content)
+        ]
+
+
 viewSeparation : Html msg
 viewSeparation =
     Html.hr [ class "bg-layout-20 my-6 h-1 w-full border-0" ]
         []
+
+
+viewImage : String -> String -> String -> Html msg
+viewImage url description caption =
+    View.Figure.figure
+        (Html.img
+            [ Html.Attributes.src url
+            , Html.Attributes.alt description
+            ]
+            []
+        )
+        |> (if caption /= "" then
+                View.Figure.setCaption caption
+
+            else
+                identity
+           )
+        |> View.Figure.view
+
+
+viewAudioPlayer :
+    Config msg
+    -> View.AudioPlayer.AudioPlayerWithConfig msg
+    -> Html msg
+viewAudioPlayer config audioPlayer =
+    case config.audioPlayerState of
+        Just aps ->
+            View.AudioPlayer.view aps audioPlayer
+
+        Nothing ->
+            [ Html.text "[AudioPlayer state not provided]" ]
+                |> paragraph
 
 
 paragraph : List (Html msg) -> Html msg
