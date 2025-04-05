@@ -42,14 +42,6 @@ type alias ListItem msg =
     ( Block msg, List (Block msg) )
 
 
-type Intermediate msg
-    = IntermediateBlock (Block msg)
-    | IntermediateHeading Int (List Inline)
-    | IntermediateInline Inline
-    | IntermediateInlineList (List Inline)
-    | IntermediateCustom Metadata
-
-
 type Metadata
     = AudioPlayerTrack Track
 
