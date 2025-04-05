@@ -113,6 +113,7 @@ title app =
 head : App Data ActionData RouteParams -> List Head.Tag
 head app =
     Site.pageMeta (title app)
+        ++ [ Head.rssLink (rssUrl app.data) ]
 
 
 view :
