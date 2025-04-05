@@ -43,7 +43,7 @@ review-unsuppress: install
 
 # Format files.
 format:
-    prettier --write data/**/*.md
+    prettier --write '**/*.{js,ts,md,css,scss}'
 
 clean:
     rm -rf dist .elm-pages gen functions elm-stuff node_modules
