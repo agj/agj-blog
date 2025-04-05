@@ -2,6 +2,10 @@
 export default {
   content: ["./src/**/*.elm", "./app/**/*.elm"],
   theme: {
+    fontFamily: {
+      base: 'Georgia, Cambria, "Times New Roman", Times, serif',
+      mono: 'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+    },
     colors: {
       layout: {
         "90": "var(--color-layout-90)",
@@ -27,6 +31,11 @@ export default {
       },
       transparent: "transparent",
       inherit: "inherit",
+    },
+    extend: {
+      fontSize: {
+        "size-mono": "0.85em",
+      },
     },
   },
   plugins: [],

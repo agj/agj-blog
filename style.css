@@ -10,7 +10,7 @@
   }
 
   body {
-    @apply bg-layout-10;
+    @apply bg-layout-10 font-base;
   }
 
   a {
