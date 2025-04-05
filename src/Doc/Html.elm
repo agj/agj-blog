@@ -116,8 +116,7 @@ viewInline onClickMaybe inline =
                 (List.map viewStyledText inlines)
 
         Doc.LineBreak ->
-            Html.span [ class "whitespace-pre-wrap" ]
-                [ Html.text "\n" ]
+            Html.br [] []
 
 
 viewStyledText : Doc.StyledText -> Html msg
