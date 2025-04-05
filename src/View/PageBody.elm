@@ -121,8 +121,10 @@ view (PageBody config) =
         rssFeedLink =
             case config.rssFeed of
                 RssFeedUrl url ->
-                    Html.a [ href url ]
-                        [ Html.text "RSS feed" ]
+                    Html.a [ href url, class "flex flex-row items-center gap-1" ]
+                        [ Icon.rss Icon.Medium
+                        , Html.text "RSS feed"
+                        ]
 
                 NoRssFeedWithExplanation explanation ->
                     let

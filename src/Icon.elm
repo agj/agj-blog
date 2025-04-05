@@ -8,6 +8,7 @@ module Icon exposing
     , pause
     , play
     , plus
+    , rss
     , stop
     , sun
     )
@@ -72,6 +73,12 @@ plus size =
 info : Icon msg
 info size =
     Heroicons.Micro.informationCircle
+        |> style size
+
+
+rss : Icon msg
+rss size =
+    Heroicons.Solid.rss
         |> style size
 
 
