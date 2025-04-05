@@ -158,7 +158,13 @@ renderInlineWithStyle styler intermediates =
                     IntermediateInlineList inlines ->
                         Just (inlines |> List.map styler)
 
-                    _ ->
+                    IntermediateBlock _ ->
+                        Nothing
+
+                    IntermediateHeading _ _ ->
+                        Nothing
+
+                    IntermediateCustom _ ->
                         Nothing
             )
         |> List.concat
@@ -187,10 +193,11 @@ renderParagraph : List (Intermediate msg) -> Intermediate msg
 renderParagraph intermediates =
     case intermediates of
         (IntermediateBlock block) :: _ ->
-            -- Images get put into paragraphs.
+            -- Images get wrapped in a paragraph.
             IntermediateBlock block
 
         _ ->
+            -- For other cases, we just want the inlines.
             intermediates
                 |> unwrapInlines
                 |> Doc.Paragraph
@@ -283,27 +290,29 @@ renderImage { alt, src, title } =
 -- CUSTOM
 
 
+{-| Render all custom elements.
+-}
 renderCustom : Maybe (AudioPlayerConfig msg) -> Markdown.Html.Renderer (List (Intermediate msg) -> Intermediate msg)
 renderCustom audioPlayerConfig =
     Markdown.Html.oneOf (customRenderers audioPlayerConfig)
 
 
+{-| List of all custom element renderers. Depending on the supplied
+configuration, some of them may not be included, and if used in the Markdown
+content, will result in parsing errors.
+-}
 customRenderers : Maybe (AudioPlayerConfig msg) -> List (Markdown.Html.Renderer (List (Intermediate msg) -> Intermediate msg))
 customRenderers audioPlayerConfig =
     let
+        audioPlayerRenderers : List (Markdown.Html.Renderer (List (Intermediate msg) -> Intermediate msg))
         audioPlayerRenderers =
             case audioPlayerConfig of
                 Just { onAudioPlayerStateUpdated } ->
                     [ View.AudioPlayer.Track.renderer
-                        |> renderAsIntermediateCustom Doc.AudioPlayerTrack
+                        |> renderCustomAsIntermediateCustom Doc.AudioPlayerTrack
                     , View.AudioPlayer.renderer
                         |> renderCustomWithCustomChildren
-                            IntermediateBlock
-                            (\metadata ->
-                                case metadata of
-                                    Doc.AudioPlayerTrack track ->
-                                        Just track
-                            )
+                            (\(Doc.AudioPlayerTrack track) -> Just track)
                             (\audioPlayer tracks ->
                                 audioPlayer
                                     |> View.AudioPlayer.withConfig
@@ -317,60 +326,63 @@ customRenderers audioPlayerConfig =
                 Nothing ->
                     []
 
+        otherCustomRenderers : List (Markdown.Html.Renderer (List (Intermediate msg) -> Intermediate msg))
         otherCustomRenderers =
             [ View.VideoEmbed.renderer
-                |> renderFailableCustom IntermediateBlock Doc.Video
+                |> renderFailableCustom (Doc.Video >> IntermediateBlock)
             , View.LanguageBreak.renderer
-                |> renderFailableCustom IntermediateBlock Doc.LanguageBreak
+                |> renderFailableCustom (Doc.LanguageBreak >> IntermediateBlock)
             ]
     in
     audioPlayerRenderers ++ otherCustomRenderers
 
 
+{-| Render a custom element that emits a `Result` type, which indicates that it
+can fail depending on the supplied attributes. Requires a way to convert its raw
+values into `Intermediate` values.
+-}
 renderFailableCustom :
-    (Doc.Block msg -> Intermediate msg)
-    -> (a -> Doc.Block msg)
-    -> Markdown.Html.Renderer (Result String a)
-    -> Markdown.Html.Renderer (List b -> Intermediate msg)
-renderFailableCustom toIntermediate okToDoc customRenderer =
+    (value -> Intermediate msg)
+    -> Markdown.Html.Renderer (Result String value)
+    -> Markdown.Html.Renderer (List (Intermediate msg) -> Intermediate msg)
+renderFailableCustom valueToIntermediate customRenderer =
     customRenderer
         |> Markdown.Html.map
             (Result.mapBoth
-                (\err _ ->
-                    renderErrorMessage err
-                        |> IntermediateBlock
-                )
-                (\okResult _ ->
-                    okToDoc okResult
-                        |> toIntermediate
-                )
+                (\err _ -> IntermediateBlock (renderErrorMessage err))
+                (\okResult _ -> valueToIntermediate okResult)
             )
         |> Markdown.Html.map Result.merge
 
 
-renderAsIntermediateCustom :
-    (a -> Doc.Metadata)
-    -> Markdown.Html.Renderer a
-    -> Markdown.Html.Renderer (List b -> Intermediate msg)
-renderAsIntermediateCustom toMetadata customRenderer =
+{-| Renders a custom element which cannot fail (doesn't emit a `Result` value),
+directly as an `IntermediateCustom` value. Requires a way to convert its output
+value into a `Doc.Metadata`.
+-}
+renderCustomAsIntermediateCustom :
+    (value -> Doc.Metadata)
+    -> Markdown.Html.Renderer value
+    -> Markdown.Html.Renderer (List (Intermediate msg) -> Intermediate msg)
+renderCustomAsIntermediateCustom toMetadata customRenderer =
     customRenderer
         |> Markdown.Html.map
-            (\value _ ->
-                toMetadata value
-                    |> IntermediateCustom
-            )
+            (\value _ -> IntermediateCustom (toMetadata value))
 
 
+{-| Renders a custom element that expects `IntermediateCustom` children. You
+will need to supply a way to interpret child renderer-produced `Doc.Metadata`,
+and a way to convert a value produced by the custom renderer plus its children
+into a `Doc.Block`.
+-}
 renderCustomWithCustomChildren :
-    (Doc.Block msg -> Intermediate msg)
-    -> (Doc.Metadata -> Maybe child)
+    (Doc.Metadata -> Maybe child)
     -> (value -> List child -> Doc.Block msg)
     -> Markdown.Html.Renderer value
     -> Markdown.Html.Renderer (List (Intermediate msg) -> Intermediate msg)
-renderCustomWithCustomChildren toIntermediate metadataToChild toBlock customRenderer =
+renderCustomWithCustomChildren metadataToChild toBlock customRenderer =
     let
-        tagToChild tag =
-            case tag of
+        intermediateToChild intermediate =
+            case intermediate of
                 IntermediateCustom metadata ->
                     metadataToChild metadata
 
@@ -379,29 +391,30 @@ renderCustomWithCustomChildren toIntermediate metadataToChild toBlock customRend
     in
     customRenderer
         |> Markdown.Html.map
-            (\value childrenTags ->
-                let
-                    children =
-                        childrenTags
-                            |> List.filterMap tagToChild
-                in
-                toBlock value children
-                    |> toIntermediate
+            (\value childIntermediates ->
+                childIntermediates
+                    |> List.filterMap intermediateToChild
+                    |> toBlock value
+                    |> IntermediateBlock
             )
 
 
+{-| Converts an error string into a `Doc.Paragraph`.
+-}
 renderErrorMessage : String -> Doc.Block msg
 renderErrorMessage error =
-    [ Doc.plainText "Parsing error: "
-    , Doc.plainText error
-    ]
-        |> Doc.Paragraph
+    Doc.Paragraph
+        [ Doc.plainText "Parsing error: "
+        , Doc.plainText error
+        ]
 
 
 
 -- OTHER
 
 
+{-| Gets all `Doc.Inline`s in a list of `Intermediate`s, and drops any others.
+-}
 unwrapInlines : List (Intermediate msg) -> List Doc.Inline
 unwrapInlines intermediates =
     intermediates
@@ -426,6 +439,8 @@ unwrapInlines intermediates =
         |> List.concat
 
 
+{-| Gets all `Doc.Block`s in a list of `Intermediate`s, dropping any others.
+-}
 unwrapBlocks : List (Intermediate msg) -> List (Doc.Block msg)
 unwrapBlocks =
     List.filterMap
@@ -434,28 +449,40 @@ unwrapBlocks =
                 IntermediateBlock block ->
                     Just block
 
-                _ ->
+                IntermediateHeading _ _ ->
+                    Nothing
+
+                IntermediateInline _ ->
+                    Nothing
+
+                IntermediateInlineList _ ->
+                    Nothing
+
+                IntermediateCustom _ ->
                     Nothing
         )
 
 
+{-| Converts a list of `Intermediate`s so that it leaves no direct inlines,
+wrapping them in blocks.
+-}
 ensureBlocks : List (Intermediate msg) -> List (Intermediate msg)
-ensureBlocks tags =
+ensureBlocks intermediates =
     let
         process :
             Intermediate msg
             -> ( List (Intermediate msg), List (Intermediate msg) )
             -> ( List (Intermediate msg), List (Intermediate msg) )
-        process tag ( inlines, blocks ) =
-            case tag of
+        process intermediate ( inlines, blocks ) =
+            case intermediate of
                 IntermediateInline _ ->
-                    ( tag :: inlines, blocks )
+                    ( intermediate :: inlines, blocks )
 
                 IntermediateInlineList _ ->
-                    ( tag :: inlines, blocks )
+                    ( intermediate :: inlines, blocks )
 
                 _ ->
-                    ( [], tag :: wrapUpInlines ( inlines, blocks ) )
+                    ( [], intermediate :: wrapUpInlines ( inlines, blocks ) )
 
         wrapUpInlines :
             ( List (Intermediate msg), List (Intermediate msg) )
@@ -468,6 +495,6 @@ ensureBlocks tags =
                 _ :: _ ->
                     renderParagraph inlines :: blocks
     in
-    tags
+    intermediates
         |> List.foldr process ( [], [] )
         |> wrapUpInlines
