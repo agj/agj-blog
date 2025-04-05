@@ -45,6 +45,9 @@ review-unsuppress: install
 format:
     prettier --write data/**/*.md
 
+clean:
+    rm -rf dist .elm-pages gen functions elm-stuff node_modules
+
 [private]
 install:
     pnpm install
