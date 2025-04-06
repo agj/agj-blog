@@ -153,13 +153,12 @@ view app shared model =
     let
         content : Html Msg
         content =
-            Html.div [ class "grid gap-5 md:grid-cols-4" ]
-                [ -- Posts.
-                  Html.div [ class "col-span-3" ]
-                    [ Data.PostList.view app.sharedData.posts ]
-
-                -- Categories and tags.
-                , Html.div [ class "flex flex-col gap-8" ]
+            Html.div [ class "grid gap-x-5 gap-y-8 md:grid-cols-4" ]
+                [ -- Categories and tags.
+                  Html.div
+                    [ class "grid grid-cols-[1fr_2fr] gap-x-5 gap-y-8"
+                    , class "md:order-last md:flex md:flex-col md:gap-5"
+                    ]
                     [ Html.div [ class "flex flex-col gap-4" ]
                         [ Html.h2 [ class "text-layout-70 text-2xl" ]
                             [ Html.text "Categories" ]
@@ -170,7 +169,7 @@ view app shared model =
                             [ Html.a [ href "/tag" ]
                                 [ Html.text "Tags" ]
                             ]
-                        , Html.ul [ class "text-sm" ]
+                        , Html.ul [ class "flex flex-row flex-wrap gap-x-2 text-sm md:block" ]
                             ((Tag.listViewShort 20 app.sharedData.posts Tag.all
                                 |> List.map (\el -> Html.li [] [ el ])
                              )
@@ -185,6 +184,11 @@ view app shared model =
                             )
                         ]
                     ]
+
+                -- Posts.
+                , Html.div
+                    [ class "md:col-span-3" ]
+                    [ Data.PostList.view app.sharedData.posts ]
                 ]
     in
     { title = title

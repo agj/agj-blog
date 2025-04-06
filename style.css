@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    font-size: 20px;
+    @apply text-[16px] sm:text-[20px];
   }
 
   body {
