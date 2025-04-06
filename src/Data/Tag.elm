@@ -13,6 +13,7 @@ module Data.Tag exposing
     , toUrl
     )
 
+import Custom.Html
 import Custom.Html.Attributes
 import Custom.Int as Int
 import Html exposing (Attribute, Html)
@@ -83,45 +84,44 @@ toLink :
     -> Html msg
 toLink { onClick, count, tagsToAddTo } tag =
     let
-        singleLink : Html msg
-        singleLink =
-            Html.span []
-                [ linkWithOnClick onClick
-                    (toUrl tag [])
-                    [ Html.text (getName tag) ]
-                , case count of
-                    Just c ->
-                        Html.span [ class "text-layout-50" ]
-                            [ Html.text
-                                (" ({count})"
-                                    |> String.replace "{count}" (String.fromInt c)
-                                )
-                            ]
-
-                    Nothing ->
-                        Html.text ""
-                ]
+        url =
+            toUrl tag []
     in
-    Html.span [ class "whitespace-nowrap" ] <|
-        case tagsToAddTo of
-            _ :: _ ->
-                let
-                    addButton =
-                        Html.a
-                            [ attribute "aria" "button"
-                            , class "text-layout-50 mx-0.5 inline-flex size-4 items-center justify-center rounded align-middle"
-                            , class "hover:text-layout-20 hover:bg-layout-50"
-                            , href (toUrl tag tagsToAddTo)
-                            , maybeOnClick onClick (toUrl tag tagsToAddTo)
-                            ]
-                            [ Icon.plus Icon.Small ]
-                in
-                [ singleLink
-                , addButton
-                ]
+    Html.div [ class "flex w-max max-w-full shrink flex-row items-center gap-1 whitespace-nowrap" ] <|
+        [ Html.a
+            [ href url
+            , maybeOnClick onClick url
+            , class "shrink truncate"
+            ]
+            [ Html.text (getName tag) ]
 
-            [] ->
-                [ singleLink ]
+        -- Count.
+        , case count of
+            Just c ->
+                Html.div [ class "text-layout-50" ]
+                    [ Html.text
+                        ("({count})"
+                            |> String.replace "{count}" (String.fromInt c)
+                        )
+                    ]
+
+            Nothing ->
+                Custom.Html.none
+
+        -- Add button.
+        , if List.length tagsToAddTo > 0 then
+            Html.a
+                [ attribute "aria" "button"
+                , class "text-layout-50 flex size-4 items-center justify-center rounded align-middle"
+                , class "hover:text-layout-20 hover:bg-layout-50"
+                , href (toUrl tag tagsToAddTo)
+                , maybeOnClick onClick (toUrl tag tagsToAddTo)
+                ]
+                [ Icon.plus Icon.Small ]
+
+          else
+            Custom.Html.none
+        ]
 
 
 listView :
@@ -721,14 +721,6 @@ all =
 
 
 -- INTERNAL
-
-
-linkWithOnClick : Maybe (String -> msg) -> String -> List (Html msg) -> Html msg
-linkWithOnClick maybeMsg url =
-    Html.a
-        [ href url
-        , maybeOnClick maybeMsg url
-        ]
 
 
 maybeOnClick : Maybe (String -> msg) -> String -> Attribute msg

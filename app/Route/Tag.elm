@@ -233,7 +233,7 @@ view app shared model =
                     , posts = app.sharedData.posts
                     }
                     subTags
-                    |> List.map (\el -> Html.li [] [ el ])
+                    |> List.map (\el -> Html.li [ class "max-w-full" ] [ el ])
                 )
 
         content : Html Msg
