@@ -156,14 +156,18 @@ view app shared model =
             Html.div [ class "grid gap-x-5 gap-y-8 md:grid-cols-4" ]
                 [ -- Categories and tags.
                   Html.div
-                    [ class "grid grid-cols-[1fr_2fr] gap-x-5 gap-y-8"
+                    [ class "grid gap-x-5 gap-y-8"
+                    , class "sm:grid-cols-[1fr_2fr]"
                     , class "md:order-last md:flex md:flex-col md:gap-5"
                     ]
-                    [ Html.div [ class "flex flex-col gap-4" ]
+                    [ -- Categories.
+                      Html.div [ class "flex flex-col gap-4" ]
                         [ Html.h2 [ class "text-layout-70 text-2xl" ]
                             [ Html.text "Categories" ]
                         , Category.viewList
                         ]
+
+                    -- Tags.
                     , Html.div [ class "flex flex-col gap-4" ]
                         [ Html.h2 [ class "text-layout-70 text-2xl" ]
                             [ Html.a [ href "/tag" ]
