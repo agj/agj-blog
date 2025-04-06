@@ -2,7 +2,6 @@ module Route.Tag exposing (ActionData, Data, Model, Msg, route)
 
 import AppUrl exposing (AppUrl, QueryParameters)
 import BackendTask exposing (BackendTask)
-import Custom.Html
 import Custom.List as List
 import Data.Post exposing (PostGist)
 import Data.PostList
@@ -177,10 +176,6 @@ view app shared model =
                             |> List.all (List.memberOf post.tags)
                     )
 
-        postViews : Html msg
-        postViews =
-            Data.PostList.view posts
-
         subTags : List Tag
         subTags =
             posts
@@ -225,25 +220,33 @@ view app shared model =
             Html.p []
                 View.Snippets.backToIndex
 
-        postColumn : Html Msg
-        postColumn =
-            if List.length model.queryTags > 0 then
-                postViews
-
-            else
-                Custom.Html.none
+        showPosts : Bool
+        showPosts =
+            List.length model.queryTags > 0
 
         tagsColumn : Html Msg
         tagsColumn =
-            Html.p [ class "text-sm" ]
-                (Tag.listView (Just OnClick) model.queryTags app.sharedData.posts subTags)
+            Html.ul [ class "flex flex-row flex-wrap content-start gap-x-2 text-sm" ]
+                (Tag.listView
+                    { onClick = Just OnClick
+                    , selectedTags = model.queryTags
+                    , posts = app.sharedData.posts
+                    }
+                    subTags
+                    |> List.map (\el -> Html.li [] [ el ])
+                )
 
         content : Html Msg
         content =
-            Html.div [ class "grid grid-cols-2 gap-4" ]
-                [ postColumn
-                , tagsColumn
-                ]
+            if showPosts then
+                Html.div [ class "grid grid-cols-2 gap-4" ]
+                    [ Data.PostList.view posts
+                    , tagsColumn
+                    ]
+
+            else
+                Html.div []
+                    [ tagsColumn ]
 
         withRssFeedLinkMaybe : PageBody Msg -> PageBody Msg
         withRssFeedLinkMaybe pageBody =

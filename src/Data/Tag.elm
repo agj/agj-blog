@@ -125,21 +125,34 @@ toLink { onClick, count, tagsToAddTo } tag =
 
 
 listView :
-    Maybe (String -> msg)
-    -> List Tag
-    -> List { a | tags : List Tag }
+    { onClick : Maybe (String -> msg)
+    , selectedTags : List Tag
+    , posts : List { a | tags : List Tag }
+    }
     -> List Tag
     -> List (Html msg)
-listView onClick selectedTags posts relatedTags =
+listView { onClick, selectedTags, posts } relatedTags =
     relatedTags
-        |> List.map (toLink { onClick = onClick, count = Nothing, tagsToAddTo = selectedTags })
-        |> List.intersperse (Html.text ", ")
+        |> List.map (addUseCountToTag posts)
+        |> sortByCount
+        |> List.map (\{ tag, count } -> toLink { onClick = onClick, count = Just count, tagsToAddTo = selectedTags } tag)
 
 
 listViewShort : Int -> List { a | tags : List Tag } -> List Tag -> List (Html msg)
 listViewShort maxToTake allPosts tags =
     tags
         |> List.map (addUseCountToTag allPosts)
+        |> sortByCount
+        |> List.take maxToTake
+        |> List.map
+            (\{ tag, count } ->
+                toLink { onClick = Nothing, count = Just count, tagsToAddTo = [] } tag
+            )
+
+
+sortByCount : List { tag : Tag, count : Int } -> List { tag : Tag, count : Int }
+sortByCount tags =
+    tags
         |> List.sortBy
             (\{ tag, count } ->
                 "{count}/{tagName}"
@@ -147,11 +160,6 @@ listViewShort maxToTake allPosts tags =
                     |> String.replace "{tagName}" (getName tag)
             )
         |> List.reverse
-        |> List.take maxToTake
-        |> List.map
-            (\{ tag, count } ->
-                toLink { onClick = Nothing, count = Just count, tagsToAddTo = [] } tag
-            )
 
 
 addUseCountToTag :
