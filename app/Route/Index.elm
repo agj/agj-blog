@@ -11,7 +11,7 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, href)
 import List.Extra as List
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -151,24 +151,41 @@ view :
     -> View (PagesMsg Msg)
 view app shared model =
     let
-        cols : List (Html Msg)
-        cols =
-            [ Data.PostList.view app.sharedData.posts
-            , Html.div [ class "flex flex-col" ]
-                [ Html.h2 [ class "text-2xl" ]
-                    [ Html.text "Categories" ]
-                , Category.viewList
-                , Html.h2 [ class "mt-4 text-2xl" ]
-                    [ Html.text "Tags" ]
-                , Html.p [ class "text-sm" ]
-                    (Tag.listView Nothing [] app.sharedData.posts Tag.all)
-                ]
-            ]
-
         content : Html Msg
         content =
-            Html.div [ class "grid grid-cols-2 gap-5" ]
-                cols
+            Html.div [ class "grid gap-5 md:grid-cols-4" ]
+                [ -- Posts.
+                  Html.div [ class "col-span-3" ]
+                    [ Data.PostList.view app.sharedData.posts ]
+
+                -- Categories and tags.
+                , Html.div [ class "flex flex-col gap-8" ]
+                    [ Html.div [ class "flex flex-col gap-4" ]
+                        [ Html.h2 [ class "text-layout-70 text-2xl" ]
+                            [ Html.text "Categories" ]
+                        , Category.viewList
+                        ]
+                    , Html.div [ class "flex flex-col gap-4" ]
+                        [ Html.h2 [ class "text-layout-70 text-2xl" ]
+                            [ Html.a [ href "/tag" ]
+                                [ Html.text "Tags" ]
+                            ]
+                        , Html.ul [ class "text-sm" ]
+                            ((Tag.listViewShort 20 app.sharedData.posts Tag.all
+                                |> List.map (\el -> Html.li [] [ el ])
+                             )
+                                ++ [ Html.li []
+                                        [ Html.a
+                                            [ href "/tag"
+                                            , class "text-layout-50"
+                                            ]
+                                            [ Html.text "all other tags…" ]
+                                        ]
+                                   ]
+                            )
+                        ]
+                    ]
+                ]
     in
     { title = title
     , body =

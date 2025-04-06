@@ -187,7 +187,7 @@ view app shared model =
         tagEls : List (Html Msg)
         tagEls =
             app.data.frontmatter.tags
-                |> List.map (Tag.toLink Nothing [])
+                |> List.map (Tag.toLink { onClick = Nothing, count = Nothing, tagsToAddTo = [] })
                 |> List.intersperse (Html.text ", ")
 
         tagsTextEls : List (Html Msg)

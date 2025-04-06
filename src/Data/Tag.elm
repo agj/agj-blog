@@ -7,12 +7,14 @@ module Data.Tag exposing
     , getName
     , getSlug
     , listView
+    , listViewShort
     , slugsToUrl
     , toLink
     , toUrl
     )
 
 import Custom.Html.Attributes
+import Custom.Int as Int
 import Html exposing (Attribute, Html)
 import Html.Attributes exposing (attribute, class, href)
 import Html.Events
@@ -72,14 +74,33 @@ slugsToUrl firstSlug moreSlugs =
         |> String.replace "{slugs}" slugs
 
 
-toLink : Maybe (String -> msg) -> List Tag -> Tag -> Html msg
-toLink onClick tagsToAddTo tag =
+toLink :
+    { onClick : Maybe (String -> msg)
+    , count : Maybe Int
+    , tagsToAddTo : List Tag
+    }
+    -> Tag
+    -> Html msg
+toLink { onClick, count, tagsToAddTo } tag =
     let
         singleLink : Html msg
         singleLink =
-            linkWithOnClick onClick
-                (toUrl tag [])
-                [ Html.text (getName tag) ]
+            Html.span []
+                [ linkWithOnClick onClick
+                    (toUrl tag [])
+                    [ Html.text (getName tag) ]
+                , case count of
+                    Just c ->
+                        Html.span [ class "text-layout-50" ]
+                            [ Html.text
+                                (" ({count})"
+                                    |> String.replace "{count}" (String.fromInt c)
+                                )
+                            ]
+
+                    Nothing ->
+                        Html.text ""
+                ]
     in
     Html.span [ class "whitespace-nowrap" ] <|
         case tagsToAddTo of
@@ -110,21 +131,40 @@ listView :
     -> List Tag
     -> List (Html msg)
 listView onClick selectedTags posts relatedTags =
-    let
-        tagsCount =
-            relatedTags
-                |> List.map
-                    (\tag ->
-                        ( tag
-                        , posts
-                            |> List.filter (.tags >> List.member tag)
-                            |> List.length
-                        )
-                    )
-    in
-    tagsCount
-        |> List.map (\( tag, count ) -> toLink onClick selectedTags tag)
+    relatedTags
+        |> List.map (toLink { onClick = onClick, count = Nothing, tagsToAddTo = selectedTags })
         |> List.intersperse (Html.text ", ")
+
+
+listViewShort : Int -> List { a | tags : List Tag } -> List Tag -> List (Html msg)
+listViewShort maxToTake allPosts tags =
+    tags
+        |> List.map (addUseCountToTag allPosts)
+        |> List.sortBy
+            (\{ tag, count } ->
+                "{count}/{tagName}"
+                    |> String.replace "{count}" (Int.padLeft 4 count)
+                    |> String.replace "{tagName}" (getName tag)
+            )
+        |> List.reverse
+        |> List.take maxToTake
+        |> List.map
+            (\{ tag, count } ->
+                toLink { onClick = Nothing, count = Just count, tagsToAddTo = [] } tag
+            )
+
+
+addUseCountToTag :
+    List { a | tags : List Tag }
+    -> Tag
+    -> { tag : Tag, count : Int }
+addUseCountToTag allPosts tag =
+    { tag = tag
+    , count =
+        allPosts
+            |> List.filter (.tags >> List.member tag)
+            |> List.length
+    }
 
 
 decoder : Decoder Tag
