@@ -160,12 +160,12 @@ view (PageBody config) =
                 Just title_ ->
                     Html.div [ class "p-2 pb-0 " ]
                         [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
-                            [ Html.div [ class ("text-sm items-center flex w-full flex-row gap-4 justify-end mt-2 " ++ pageMaxWidth) ]
+                            [ Html.div [ class "mt-2 flex w-full flex-row items-center justify-end gap-4 px-4 text-sm", class pageMaxWidth ]
                                 [ aboutLink
                                 , rssFeedLink
                                 , changeThemeButtonView config
                                 ]
-                            , Html.div [ class ("w-full flex-grow px-4 pb-2 " ++ pageMaxWidth) ]
+                            , Html.div [ class "w-full flex-grow px-4 pb-2", class pageMaxWidth ]
                                 [ title_ ]
                             ]
                         ]
@@ -173,7 +173,7 @@ view (PageBody config) =
         content : Html msg
         content =
             Html.div [ class "flex w-full flex-col items-center" ]
-                [ Html.main_ [ class ("w-full px-4 pb-32 pt-6 " ++ pageMaxWidth) ]
+                [ Html.main_ [ class "w-full px-4 pb-32 pt-6", class pageMaxWidth ]
                     [ config.content ]
                 ]
     in
