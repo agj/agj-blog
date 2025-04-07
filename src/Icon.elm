@@ -1,6 +1,8 @@
 module Icon exposing
     ( Icon
     , Size(..)
+    , foldLeft
+    , foldRight
     , info
     , minus
     , moon
@@ -79,6 +81,18 @@ info size =
 rss : Icon msg
 rss size =
     Heroicons.Solid.rss
+        |> style size
+
+
+foldLeft : Icon msg
+foldLeft size =
+    Heroicons.Solid.chevronDoubleLeft
+        |> style size
+
+
+foldRight : Icon msg
+foldRight size =
+    Heroicons.Solid.chevronDoubleRight
         |> style size
 
 

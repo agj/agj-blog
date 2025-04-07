@@ -177,7 +177,7 @@ view app shared model =
                                 [ Html.text "Tags" ]
                             ]
                         , Html.ul
-                            [ class "flex flex-row flex-wrap gap-x-2 text-sm"
+                            [ class "flex flex-row flex-wrap gap-x-2 text-sm leading-relaxed"
                             , class "md:block"
                             ]
                             (List.concat

@@ -12,7 +12,8 @@ import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
-import Html.Events
+import Html.Events exposing (onClick)
+import Icon
 import List.Extra as List
 import PagesMsg exposing (PagesMsg)
 import Ports
@@ -50,7 +51,9 @@ init app shared =
                 |> Maybe.map .query
                 |> Maybe.withDefault Dict.empty
     in
-    ( { queryTags = getTagsFromQueryParams query }
+    ( { queryTags = getTagsFromQueryParams query
+      , showAllRelatedTags = False
+      }
     , Effect.none
     )
 
@@ -78,12 +81,14 @@ data =
 
 type alias Model =
     { queryTags : List Tag
+    , showAllRelatedTags : Bool
     }
 
 
 type Msg
     = OnClick String
     | QueryParamsChanged QueryParameters
+    | ShowAllRelatedTagsStatusChanged Bool
     | SharedMsg Shared.Msg
     | NoOp
 
@@ -115,6 +120,12 @@ update app shared msg model =
 
         QueryParamsChanged queryParams ->
             ( { model | queryTags = getTagsFromQueryParams queryParams }
+            , Effect.none
+            , Nothing
+            )
+
+        ShowAllRelatedTagsStatusChanged newStatus ->
+            ( { model | showAllRelatedTags = newStatus }
             , Effect.none
             , Nothing
             )
@@ -227,16 +238,41 @@ view app shared model =
         tagsColumn : Html Msg
         tagsColumn =
             Html.ul
-                [ class "flex min-w-0 max-w-full flex-row flex-wrap content-start gap-x-2 text-sm"
+                [ class "flex min-w-0 max-w-full flex-row flex-wrap content-start gap-x-2 text-sm leading-relaxed"
                 , class "md:order-last md:flex-col"
                 ]
-                (Tag.listView
-                    { onClick = Just OnClick
-                    , selectedTags = model.queryTags
-                    , posts = app.sharedData.posts
-                    }
-                    subTags
-                    |> List.map (\el -> Html.li [ class "max-w-full" ] [ el ])
+                (List.concat
+                    [ Tag.listView
+                        { onClick = Just OnClick
+                        , selectedTags = model.queryTags
+                        , posts = app.sharedData.posts
+                        }
+                        subTags
+                        |> List.map (\el -> Html.li [ class "max-w-full" ] [ el ])
+                        |> List.take
+                            (if model.showAllRelatedTags then
+                                9999
+
+                             else
+                                15
+                            )
+                    , [ Html.button
+                            [ onClick (ShowAllRelatedTagsStatusChanged (not model.showAllRelatedTags))
+                            , class "bg-layout-20 text-layout-70 flex flex-row items-center gap-1 rounded p-1 text-xs"
+                            , class "md:hidden"
+                            ]
+                            (if model.showAllRelatedTags then
+                                [ Icon.foldLeft Icon.Small
+                                , Html.text "Hide"
+                                ]
+
+                             else
+                                [ Icon.foldRight Icon.Small
+                                , Html.text "More"
+                                ]
+                            )
+                      ]
+                    ]
                 )
 
         content : Html Msg
