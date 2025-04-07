@@ -226,7 +226,10 @@ view app shared model =
 
         tagsColumn : Html Msg
         tagsColumn =
-            Html.ul [ class "flex flex-row flex-wrap content-start gap-x-2 text-sm" ]
+            Html.ul
+                [ class "flex min-w-0 max-w-full flex-row flex-wrap content-start gap-x-2 text-sm"
+                , class "md:order-last md:flex-col"
+                ]
                 (Tag.listView
                     { onClick = Just OnClick
                     , selectedTags = model.queryTags
@@ -239,9 +242,12 @@ view app shared model =
         content : Html Msg
         content =
             if showPosts then
-                Html.div [ class "grid grid-cols-2 gap-4" ]
-                    [ Data.PostList.view posts
-                    , tagsColumn
+                Html.div
+                    [ class "grid gap-4"
+                    , class "md:grid-cols-[2fr_1fr]"
+                    ]
+                    [ tagsColumn
+                    , Data.PostList.view posts
                     ]
 
             else
