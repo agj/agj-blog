@@ -153,7 +153,10 @@ view app shared model =
     let
         content : Html Msg
         content =
-            Html.div [ class "grid gap-x-5 gap-y-8 md:grid-cols-4" ]
+            Html.div
+                [ class "grid gap-x-5 gap-y-8"
+                , class "md:grid-cols-4"
+                ]
                 [ -- Categories and tags.
                   Html.div
                     [ class "grid gap-x-5 gap-y-8"
@@ -173,18 +176,22 @@ view app shared model =
                             [ Html.a [ href "/tag" ]
                                 [ Html.text "Tags" ]
                             ]
-                        , Html.ul [ class "flex flex-row flex-wrap gap-x-2 text-sm md:block" ]
-                            ((Tag.listViewShort 20 app.sharedData.posts Tag.all
-                                |> List.map (\el -> Html.li [] [ el ])
-                             )
-                                ++ [ Html.li []
+                        , Html.ul
+                            [ class "flex flex-row flex-wrap gap-x-2 text-sm"
+                            , class "md:block"
+                            ]
+                            (List.concat
+                                [ Tag.listViewShort 20 app.sharedData.posts Tag.all
+                                    |> List.map (\el -> Html.li [] [ el ])
+                                , [ Html.li []
                                         [ Html.a
                                             [ href "/tag"
                                             , class "text-layout-50"
                                             ]
                                             [ Html.text "all other tags…" ]
                                         ]
-                                   ]
+                                  ]
+                                ]
                             )
                         ]
                     ]
