@@ -2,6 +2,7 @@ module Route.Tag exposing (ActionData, Data, Model, Msg, route)
 
 import AppUrl exposing (AppUrl, QueryParameters)
 import BackendTask exposing (BackendTask)
+import Custom.Bool exposing (ifElse)
 import Custom.List as List
 import Data.Post exposing (PostGist)
 import Data.PostList
@@ -12,6 +13,7 @@ import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
+import Html.Attributes.Extra exposing (attributeIf)
 import Html.Events exposing (onClick)
 import Icon
 import List.Extra as List
@@ -235,6 +237,15 @@ view app shared model =
         showPosts =
             List.length model.queryTags > 0
 
+        relatedTagEls : List (Html Msg)
+        relatedTagEls =
+            Tag.listView
+                { onClick = Just OnClick
+                , selectedTags = model.queryTags
+                , posts = app.sharedData.posts
+                }
+                subTags
+
         tagsColumn : Html Msg
         tagsColumn =
             Html.ul
@@ -242,19 +253,19 @@ view app shared model =
                 , class "md:order-last md:flex-col"
                 ]
                 (List.concat
-                    [ Tag.listView
-                        { onClick = Just OnClick
-                        , selectedTags = model.queryTags
-                        , posts = app.sharedData.posts
-                        }
-                        subTags
+                    [ relatedTagEls
+                        |> List.take (ifElse model.showAllRelatedTags 9999 15)
                         |> List.map (\el -> Html.li [ class "max-w-full" ] [ el ])
-                        |> List.take
-                            (if model.showAllRelatedTags then
-                                9999
-
-                             else
-                                15
+                    , relatedTagEls
+                        |> List.drop (ifElse model.showAllRelatedTags 9999 15)
+                        |> List.map
+                            (\el ->
+                                Html.li
+                                    [ class "max-w-full"
+                                    , attributeIf (not model.showAllRelatedTags)
+                                        (class "hidden md:block")
+                                    ]
+                                    [ el ]
                             )
                     , [ Html.button
                             [ onClick (ShowAllRelatedTagsStatusChanged (not model.showAllRelatedTags))

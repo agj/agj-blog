@@ -31,6 +31,7 @@
             "elm/url": "1.0.0",
             "elm/virtual-dom": "1.0.3",
             "elm-community/dict-extra": "2.4.0",
+            "elm-community/html-extra": "3.4.0",
             "elm-community/json-extra": "4.3.0",
             "elm-community/typed-svg": "7.0.0",
             "elmcraft/core-extra": "2.1.0",
