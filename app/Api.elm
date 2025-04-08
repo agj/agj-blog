@@ -6,7 +6,6 @@ import Data.Category as Category
 import Data.Post as Post exposing (PostGist)
 import Data.PostList as PostList
 import Data.Tag as Tag
-import Date
 import FatalError exposing (FatalError)
 import Html exposing (Html)
 import LanguageTag exposing (emptySubtags)
