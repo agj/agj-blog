@@ -120,7 +120,8 @@ view (TrackWithConfig track config) =
                     }
 
         buttonStyles =
-            [ class ("w-full px-3 pt-2 " ++ fontColor)
+            [ class "w-full px-2 pt-2"
+            , class fontColor
             , classList [ ( "pb-2", not isSelected ) ]
             ]
 
@@ -172,8 +173,13 @@ view (TrackWithConfig track config) =
             else
                 [ buttonEl ]
     in
-    Html.div [ class ("flex w-full flex-col " ++ backgroundColor) ]
-        columnEls
+    Html.div [ class "px-1" ]
+        [ Html.div
+            [ class "flex w-full flex-col overflow-clip rounded"
+            , class backgroundColor
+            ]
+            columnEls
+        ]
 
 
 stoppedPlayState : PlayState
