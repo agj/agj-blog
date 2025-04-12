@@ -273,12 +273,16 @@ viewTitleTag { queryTags } tag =
                 [] ->
                     Tag.baseUrl
     in
-    Html.a
-        [ href url
-        , Html.Events.onClick (OnClick url)
-        , class "hover:line-through"
+    Html.span [ class "relative" ]
+        [ Html.a
+            [ href url
+            , Html.Events.onClick (OnClick url)
+            , class "hover:line-through"
+            ]
+            [ Html.text (Tag.getName tag) ]
+        , Html.div [ class "text-layout-50 absolute top-2 inline-block" ]
+            [ Icon.xMark Icon.Medium ]
         ]
-        [ Html.text (Tag.getName tag) ]
 
 
 viewTagsColumn :

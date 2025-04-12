@@ -13,6 +13,7 @@ module Icon exposing
     , rss
     , stop
     , sun
+    , xMark
     )
 
 import Heroicons.Micro
@@ -69,6 +70,12 @@ minus size =
 plus : Icon msg
 plus size =
     Heroicons.Solid.plus
+        |> style size
+
+
+xMark : Icon msg
+xMark size =
+    Heroicons.Solid.xMark
         |> style size
 
 
