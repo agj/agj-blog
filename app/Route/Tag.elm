@@ -2,7 +2,6 @@ module Route.Tag exposing (ActionData, Data, Model, Msg, route)
 
 import AppUrl exposing (AppUrl, QueryParameters)
 import BackendTask exposing (BackendTask)
-import Custom.Bool exposing (ifElse)
 import Custom.List as List
 import Data.Post exposing (PostGist)
 import Data.PostList
@@ -15,6 +14,7 @@ import Html exposing (Html)
 import Html.Attributes exposing (class, href)
 import Html.Attributes.Extra exposing (attributeIf)
 import Html.Events exposing (onClick)
+import Html.Extra exposing (viewIf)
 import Icon
 import List.Extra as List
 import PagesMsg exposing (PagesMsg)
@@ -180,53 +180,10 @@ view :
     -> View (PagesMsg Msg)
 view app shared model =
     let
-        posts : List PostGist
-        posts =
+        postsShown : List PostGist
+        postsShown =
             app.sharedData.posts
-                |> List.filter
-                    (\post ->
-                        model.queryTags
-                            |> List.all (List.memberOf post.tags)
-                    )
-
-        subTags : List Tag
-        subTags =
-            posts
-                |> List.andThen .tags
-                |> List.unique
-                |> List.filter (List.memberOf model.queryTags >> not)
-
-        tagToEl : Tag -> Html Msg
-        tagToEl tag =
-            let
-                url =
-                    case List.remove tag model.queryTags of
-                        otherTag1 :: otherTagsRest ->
-                            Tag.toUrl otherTag1 otherTagsRest
-
-                        [] ->
-                            Tag.baseUrl
-            in
-            Html.a
-                [ href url
-                , Html.Events.onClick (OnClick url)
-                , class "hover:line-through"
-                ]
-                [ Html.text (Tag.getName tag) ]
-
-        titleChildren : List (Html Msg)
-        titleChildren =
-            if List.length model.queryTags > 0 then
-                [ Html.text "Tags: "
-                , (model.queryTags
-                    |> List.map tagToEl
-                    |> List.intersperse (Html.text ", ")
-                  )
-                    |> Html.i []
-                ]
-
-            else
-                [ Html.text "Tags" ]
+                |> List.filter (showPost model.queryTags)
 
         subtitle : Html Msg
         subtitle =
@@ -237,55 +194,6 @@ view app shared model =
         showPosts =
             List.length model.queryTags > 0
 
-        relatedTagEls : List (Html Msg)
-        relatedTagEls =
-            Tag.listView
-                { onClick = Just OnClick
-                , selectedTags = model.queryTags
-                , posts = app.sharedData.posts
-                }
-                subTags
-
-        tagsColumn : Html Msg
-        tagsColumn =
-            Html.ul
-                [ class "flex min-w-0 max-w-full flex-row flex-wrap content-start gap-x-2 text-sm leading-relaxed"
-                , class "md:order-last md:flex-col"
-                ]
-                (List.concat
-                    [ relatedTagEls
-                        |> List.take (ifElse model.showAllRelatedTags 9999 15)
-                        |> List.map (\el -> Html.li [ class "max-w-full" ] [ el ])
-                    , relatedTagEls
-                        |> List.drop (ifElse model.showAllRelatedTags 9999 15)
-                        |> List.map
-                            (\el ->
-                                Html.li
-                                    [ class "max-w-full"
-                                    , attributeIf (not model.showAllRelatedTags)
-                                        (class "hidden md:block")
-                                    ]
-                                    [ el ]
-                            )
-                    , [ Html.button
-                            [ onClick (ShowAllRelatedTagsStatusChanged (not model.showAllRelatedTags))
-                            , class "bg-layout-20 text-layout-70 flex flex-row items-center gap-1 rounded p-1 text-xs"
-                            , class "md:hidden"
-                            ]
-                            (if model.showAllRelatedTags then
-                                [ Icon.foldLeft Icon.Small
-                                , Html.text "Hide"
-                                ]
-
-                             else
-                                [ Icon.foldRight Icon.Small
-                                , Html.text "More"
-                                ]
-                            )
-                      ]
-                    ]
-                )
-
         content : Html Msg
         content =
             if showPosts then
@@ -293,13 +201,24 @@ view app shared model =
                     [ class "grid gap-4"
                     , class "md:grid-cols-[2fr_1fr]"
                     ]
-                    [ tagsColumn
-                    , Data.PostList.view posts
+                    [ viewTagsColumn
+                        { tags = model.queryTags
+                        , allPosts = app.sharedData.posts
+                        , showAllTags = model.showAllRelatedTags
+                        , showingPosts = True
+                        }
+                    , Data.PostList.view postsShown
                     ]
 
             else
                 Html.div []
-                    [ tagsColumn ]
+                    [ viewTagsColumn
+                        { tags = model.queryTags
+                        , allPosts = app.sharedData.posts
+                        , showAllTags = model.showAllRelatedTags
+                        , showingPosts = False
+                        }
+                    ]
 
         withRssFeedLinkMaybe : PageBody Msg -> PageBody Msg
         withRssFeedLinkMaybe pageBody =
@@ -322,10 +241,106 @@ view app shared model =
             , onRequestedChangeTheme = SharedMsg Shared.SelectedChangeTheme
             }
             content
-            |> View.PageBody.withTitleAndSubtitle titleChildren subtitle
+            |> View.PageBody.withTitleAndSubtitle (viewTitle model) subtitle
             |> withRssFeedLinkMaybe
             |> View.PageBody.view
     }
+
+
+viewTitle : { a | queryTags : List Tag } -> List (Html Msg)
+viewTitle model =
+    if List.length model.queryTags > 0 then
+        [ Html.text "Tags: "
+        , Html.i []
+            (model.queryTags
+                |> List.map (viewTitleTag model)
+                |> List.intersperse (Html.text ", ")
+            )
+        ]
+
+    else
+        [ Html.text "Tags" ]
+
+
+viewTitleTag : { a | queryTags : List Tag } -> Tag -> Html Msg
+viewTitleTag { queryTags } tag =
+    let
+        url =
+            case List.remove tag queryTags of
+                otherTag1 :: otherTagsRest ->
+                    Tag.toUrl otherTag1 otherTagsRest
+
+                [] ->
+                    Tag.baseUrl
+    in
+    Html.a
+        [ href url
+        , Html.Events.onClick (OnClick url)
+        , class "hover:line-through"
+        ]
+        [ Html.text (Tag.getName tag) ]
+
+
+viewTagsColumn :
+    { tags : List Tag
+    , showAllTags : Bool
+    , allPosts : List PostGist
+    , showingPosts : Bool
+    }
+    -> Html Msg
+viewTagsColumn { tags, showAllTags, allPosts, showingPosts } =
+    let
+        subTags : List Tag
+        subTags =
+            allPosts
+                |> List.andThen .tags
+                |> List.unique
+                |> List.filter (List.memberOf tags >> not)
+
+        relatedTagEls : List (Html Msg)
+        relatedTagEls =
+            Tag.listView
+                { onClick = Just OnClick
+                , selectedTags = tags
+                , posts = allPosts
+                }
+                subTags
+    in
+    Html.ul
+        [ class "flex min-w-0 max-w-full flex-row flex-wrap content-start gap-x-2 text-sm leading-relaxed"
+        , attributeIf showingPosts (class "md:order-last md:flex-col")
+        ]
+        (List.concat
+            [ relatedTagEls
+                |> List.indexedMap
+                    (\index el ->
+                        Html.li
+                            [ class "max-w-full"
+                            , attributeIf (index >= 15 && not showAllTags && showingPosts)
+                                (class "hidden md:block")
+                            ]
+                            [ el ]
+                    )
+            , [ viewIf showingPosts
+                    (Html.button
+                        [ onClick (ShowAllRelatedTagsStatusChanged (not showAllTags))
+                        , class "bg-layout-20 text-layout-70 flex flex-row items-center gap-1 rounded p-1 text-xs"
+                        , attributeIf showingPosts (class "md:hidden")
+                        ]
+                        (if showAllTags then
+                            [ Icon.foldLeft Icon.Small
+                            , Html.text "Hide"
+                            ]
+
+                         else
+                            [ Icon.foldRight Icon.Small
+                            , Html.text "More"
+                            ]
+                        )
+                    )
+              ]
+            ]
+        )
 
 
 rssUrl : List Tag -> Maybe String
@@ -338,3 +353,9 @@ rssUrl tags =
 
         _ ->
             Nothing
+
+
+showPost : List Tag -> PostGist -> Bool
+showPost queryTags post =
+    queryTags
+        |> List.all (List.memberOf post.tags)
