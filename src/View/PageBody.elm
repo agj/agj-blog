@@ -142,7 +142,8 @@ view (PageBody config) =
                         , Html.div
                             [ roleTooltip
                             , id tooltipId
-                            , class "bg-layout-80 text-layout-30 pointer-events-none invisible absolute top-8 w-max max-w-60 rounded p-3 text-xs leading-normal opacity-0 transition-all delay-100"
+                            , class "bg-layout-80 text-layout-30 w-max max-w-60 rounded p-3 text-xs leading-normal"
+                            , class "pointer-events-none invisible absolute top-8 z-10 opacity-0 transition-all delay-100"
                             , class "group-hover:visible group-hover:opacity-100"
                             ]
                             [ Html.text explanation ]
