@@ -17,7 +17,7 @@ module Icon exposing
     )
 
 import Heroicons.Micro
-import Heroicons.Solid
+import Heroicons.Mini
 import Html exposing (Attribute, Html)
 import Html.Attributes
 
@@ -32,75 +32,63 @@ type Size
 
 
 play : Icon msg
-play size =
-    Heroicons.Solid.play
-        |> style size
+play =
+    icon icons.play
 
 
 pause : Icon msg
-pause size =
-    Heroicons.Solid.pause
-        |> style size
+pause =
+    icon icons.pause
 
 
 stop : Icon msg
-stop size =
-    Heroicons.Solid.stop
-        |> style size
+stop =
+    icon icons.stop
 
 
 moon : Icon msg
-moon size =
-    Heroicons.Solid.moon
-        |> style size
+moon =
+    icon icons.moon
 
 
 sun : Icon msg
-sun size =
-    Heroicons.Solid.sun
-        |> style size
+sun =
+    icon icons.sun
 
 
 minus : Icon msg
-minus size =
-    Heroicons.Solid.minus
-        |> style size
+minus =
+    icon icons.minus
 
 
 plus : Icon msg
-plus size =
-    Heroicons.Solid.plus
-        |> style size
+plus =
+    icon icons.plus
 
 
 xMark : Icon msg
-xMark size =
-    Heroicons.Solid.xMark
-        |> style size
+xMark =
+    icon icons.xMark
 
 
 info : Icon msg
-info size =
-    Heroicons.Micro.informationCircle
-        |> style size
+info =
+    icon icons.info
 
 
 rss : Icon msg
-rss size =
-    Heroicons.Solid.rss
-        |> style size
+rss =
+    icon icons.rss
 
 
 foldLeft : Icon msg
-foldLeft size =
-    Heroicons.Solid.chevronDoubleLeft
-        |> style size
+foldLeft =
+    icon icons.foldLeft
 
 
 foldRight : Icon msg
-foldRight size =
-    Heroicons.Solid.chevronDoubleRight
-        |> style size
+foldRight =
+    icon icons.foldRight
 
 
 none : Icon msg
@@ -116,9 +104,23 @@ none size =
 -- INTERNAL
 
 
-style : Size -> (List (Attribute msg) -> Html msg) -> Html msg
-style size icon =
-    icon [ Html.Attributes.style "width" (sizeToRems size) ]
+icon :
+    { md : List (Attribute msg) -> Html msg
+    , sm : List (Attribute msg) -> Html msg
+    }
+    -> Size
+    -> Html msg
+icon { md, sm } size =
+    let
+        svg =
+            case size of
+                Medium ->
+                    md
+
+                Small ->
+                    sm
+    in
+    svg [ Html.Attributes.style "width" (sizeToRems size) ]
 
 
 sizeToRems : Size -> String
@@ -129,3 +131,19 @@ sizeToRems size =
 
         Small ->
             "0.75rem"
+
+
+icons =
+    { play = { md = Heroicons.Mini.play, sm = Heroicons.Micro.play }
+    , pause = { md = Heroicons.Mini.pause, sm = Heroicons.Micro.pause }
+    , stop = { md = Heroicons.Mini.stop, sm = Heroicons.Micro.stop }
+    , moon = { md = Heroicons.Mini.moon, sm = Heroicons.Micro.moon }
+    , sun = { md = Heroicons.Mini.sun, sm = Heroicons.Micro.sun }
+    , minus = { md = Heroicons.Mini.minus, sm = Heroicons.Micro.minus }
+    , plus = { md = Heroicons.Mini.plus, sm = Heroicons.Micro.plus }
+    , xMark = { md = Heroicons.Mini.xMark, sm = Heroicons.Micro.xMark }
+    , info = { md = Heroicons.Mini.informationCircle, sm = Heroicons.Micro.informationCircle }
+    , rss = { md = Heroicons.Mini.rss, sm = Heroicons.Micro.rss }
+    , foldLeft = { md = Heroicons.Mini.chevronDoubleLeft, sm = Heroicons.Micro.chevronDoubleLeft }
+    , foldRight = { md = Heroicons.Mini.chevronDoubleRight, sm = Heroicons.Micro.chevronDoubleRight }
+    }
