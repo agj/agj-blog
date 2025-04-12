@@ -75,19 +75,64 @@ slugsToUrl firstSlug moreSlugs =
         |> String.replace "{slugs}" slugs
 
 
-toLink :
+toLink : Tag -> Html msg
+toLink tag =
+    Html.span []
+        [ Html.a [ href (toUrl tag []) ]
+            [ Html.text (getName tag) ]
+        ]
+
+
+listView :
+    { onClick : Maybe (String -> msg)
+    , selectedTags : List Tag
+    , posts : List { a | tags : List Tag }
+    }
+    -> List Tag
+    -> List (Html msg)
+listView { onClick, selectedTags, posts } relatedTags =
+    relatedTags
+        |> List.map (addUseCountToTag posts)
+        |> sortByCount
+        |> List.map (\{ tag, count } -> viewItem { onClick = onClick, count = Just count, tagsToAddTo = selectedTags } tag)
+
+
+listViewShort : Int -> List { a | tags : List Tag } -> List Tag -> List (Html msg)
+listViewShort maxToTake allPosts tags =
+    tags
+        |> List.map (addUseCountToTag allPosts)
+        |> sortByCount
+        |> List.take maxToTake
+        |> List.map
+            (\{ tag, count } ->
+                viewItem { onClick = Nothing, count = Just count, tagsToAddTo = [] } tag
+            )
+
+
+decoder : Decoder Tag
+decoder =
+    Decode.string
+        |> Decode.map fromSlug
+        |> Decode.andThen Decode.fromResult
+
+
+
+-- INTERNAL
+
+
+viewItem :
     { onClick : Maybe (String -> msg)
     , count : Maybe Int
     , tagsToAddTo : List Tag
     }
     -> Tag
     -> Html msg
-toLink { onClick, count, tagsToAddTo } tag =
+viewItem { onClick, count, tagsToAddTo } tag =
     let
         url =
             toUrl tag []
     in
-    Html.div [ class "flex w-max max-w-full shrink flex-row items-center gap-1 whitespace-nowrap" ] <|
+    Html.div [ class "flex w-max max-w-full shrink flex-row items-center gap-1 whitespace-nowrap" ]
         [ Html.a
             [ href url
             , maybeOnClick onClick url
@@ -122,43 +167,6 @@ toLink { onClick, count, tagsToAddTo } tag =
           else
             Custom.Html.none
         ]
-
-
-listView :
-    { onClick : Maybe (String -> msg)
-    , selectedTags : List Tag
-    , posts : List { a | tags : List Tag }
-    }
-    -> List Tag
-    -> List (Html msg)
-listView { onClick, selectedTags, posts } relatedTags =
-    relatedTags
-        |> List.map (addUseCountToTag posts)
-        |> sortByCount
-        |> List.map (\{ tag, count } -> toLink { onClick = onClick, count = Just count, tagsToAddTo = selectedTags } tag)
-
-
-listViewShort : Int -> List { a | tags : List Tag } -> List Tag -> List (Html msg)
-listViewShort maxToTake allPosts tags =
-    tags
-        |> List.map (addUseCountToTag allPosts)
-        |> sortByCount
-        |> List.take maxToTake
-        |> List.map
-            (\{ tag, count } ->
-                toLink { onClick = Nothing, count = Just count, tagsToAddTo = [] } tag
-            )
-
-
-decoder : Decoder Tag
-decoder =
-    Decode.string
-        |> Decode.map fromSlug
-        |> Decode.andThen Decode.fromResult
-
-
-
--- INTERNAL
 
 
 sortByCount : List { tag : Tag, count : Int } -> List { tag : Tag, count : Int }
