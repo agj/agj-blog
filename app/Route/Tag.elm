@@ -277,10 +277,13 @@ viewTitleTag { queryTags } tag =
         [ Html.a
             [ href url
             , Html.Events.onClick (OnClick url)
-            , class "hover:line-through"
+            , class "peer hover:line-through"
             ]
             [ Html.text (Tag.getName tag) ]
-        , Html.div [ class "text-layout-50 absolute top-2 inline-block" ]
+        , Html.div
+            [ class "text-layout-50 pointer-events-none absolute top-2 inline-block"
+            , class "peer-hover:text-primary-50"
+            ]
             [ Icon.xMark Icon.Medium ]
         ]
 
