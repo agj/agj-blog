@@ -15,6 +15,7 @@
     { "count": 1, "filePath": "app/Route/Year_/Month_/Post_.elm" },
     { "count": 1, "filePath": "app/Shared.elm" },
     { "count": 1, "filePath": "app/Site.elm" },
-    { "count": 1, "filePath": "app/View.elm" }
+    { "count": 1, "filePath": "app/View.elm" },
+    { "count": 1, "filePath": "src/Custom/Bool.elm" }
   ]
 }
