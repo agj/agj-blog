@@ -198,7 +198,7 @@ view app shared model =
         content =
             if showPosts then
                 Html.div
-                    [ class "grid gap-4"
+                    [ class "grid gap-x-5 gap-y-8"
                     , class "md:grid-cols-[2fr_1fr]"
                     ]
                     [ viewTagsColumn
@@ -329,12 +329,12 @@ viewTagsColumn { tags, showAllTags, allPosts, showingPosts } =
                         ]
                         (if showAllTags then
                             [ Icon.foldLeft Icon.Small
-                            , Html.text "Hide"
+                            , Html.text "Hide tags"
                             ]
 
                          else
                             [ Icon.foldRight Icon.Small
-                            , Html.text "More"
+                            , Html.text "More tags"
                             ]
                         )
                     )
