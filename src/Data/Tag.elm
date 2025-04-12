@@ -150,6 +150,17 @@ listViewShort maxToTake allPosts tags =
             )
 
 
+decoder : Decoder Tag
+decoder =
+    Decode.string
+        |> Decode.map fromSlug
+        |> Decode.andThen Decode.fromResult
+
+
+
+-- INTERNAL
+
+
 sortByCount : List { tag : Tag, count : Int } -> List { tag : Tag, count : Int }
 sortByCount tags =
     tags
@@ -175,11 +186,14 @@ addUseCountToTag allPosts tag =
     }
 
 
-decoder : Decoder Tag
-decoder =
-    Decode.string
-        |> Decode.map fromSlug
-        |> Decode.andThen Decode.fromResult
+maybeOnClick : Maybe (String -> msg) -> String -> Attribute msg
+maybeOnClick maybeMsg url =
+    case maybeMsg of
+        Just msg ->
+            Html.Events.onClick (msg url)
+
+        Nothing ->
+            Custom.Html.Attributes.none
 
 
 
@@ -717,17 +731,3 @@ all =
         , slug = "nihongo"
         }
     ]
-
-
-
--- INTERNAL
-
-
-maybeOnClick : Maybe (String -> msg) -> String -> Attribute msg
-maybeOnClick maybeMsg url =
-    case maybeMsg of
-        Just msg ->
-            Html.Events.onClick (msg url)
-
-        Nothing ->
-            Custom.Html.Attributes.none
