@@ -10,7 +10,7 @@ tags:
   - espanol
   - japonol
   - language
-language: eng
+language: spa
 ---
 
 ![image](/files/2020/10-japonol-haponyoru/japoñol-profile.png)

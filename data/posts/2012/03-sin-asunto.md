@@ -12,7 +12,7 @@ tags:
   - release
   - text-game
   - video-game
-language: eng
+language: spa
 ---
 
 ![image](/files/2012/03-sin-asunto/sinasuntoscreenshot.png "(Sin asunto) screenshot")

@@ -17,7 +17,7 @@ tags:
   - university
   - video
   - nihongo
-language: eng
+language: jpn
 ---
 
 ![image](/files/2017/04-kotoba-kara-kangaete-miru-to/tsumiki.jpg)

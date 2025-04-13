@@ -11,7 +11,7 @@ tags:
   - graphic-design
   - illustration
   - video
-language: eng
+language: spa
 ---
 
 ![image](/files/2020/10-dignity/dignidad.jpg)

@@ -10,7 +10,7 @@ tags:
   - japonol
   - language
   - nihongo
-language: eng
+language: jpn
 ---
 
 ![image](/files/2020/10-japonol-haponyoru/japoñol-profile.png)

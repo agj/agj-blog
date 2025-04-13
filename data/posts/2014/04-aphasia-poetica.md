@@ -11,7 +11,7 @@ tags:
   - javascript
   - release
   - web
-language: eng
+language: spa
 ---
 
 ![image](/files/2014/04-aphasia-poetica/aphasiapoetica.png "Aphasia Poetica screenshot")
