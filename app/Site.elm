@@ -47,7 +47,7 @@ name =
 
 description : String
 description =
-    "Writing about coding weird things, strange thoughts and more random nonsense."
+    "I write about stuff I've made, code, thoughts, and other nonsense."
 
 
 canonicalUrl : String
