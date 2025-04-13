@@ -26,7 +26,7 @@ import TimeZone
 
 type alias Post =
     { markdown : String
-    , frontmatter : Frontmatter
+    , gist : PostGist
     }
 
 
@@ -79,12 +79,12 @@ singleDataSource :
     -> String
     -> String
     -> BackendTask { fatal : FatalError, recoverable : FileReadError Decode.Error } Post
-singleDataSource year month post =
-    BackendTask.File.bodyWithFrontmatter postDecoder
+singleDataSource year month slug =
+    BackendTask.File.bodyWithFrontmatter (postDecoder { year = year, month = month, slug = slug })
         ("data/posts/{year}/{month}-{post}.md"
             |> String.replace "{year}" year
             |> String.replace "{month}" month
-            |> String.replace "{post}" post
+            |> String.replace "{post}" slug
         )
 
 
@@ -191,9 +191,31 @@ globMatchWithFrontmatterToGist ( post, frontmatter ) =
 -- DECODERS
 
 
-postDecoder : String -> Decoder Post
-postDecoder markdown =
+postDecoder :
+    { year : String, month : String, slug : String }
+    -> String
+    -> Decoder Post
+postDecoder { year, month, slug } markdown =
     frontmatterDecoder
+        |> Decode.andThen
+            (\frontmatter ->
+                case
+                    globMatchWithFrontmatterToGist
+                        ( { path = ""
+                          , yearString = year
+                          , monthString = month
+                          , slug = slug
+                          , isHidden = False
+                          }
+                        , frontmatter
+                        )
+                of
+                    Result.Ok gist ->
+                        Decode.succeed gist
+
+                    Result.Err err ->
+                        Decode.fail err
+            )
         |> Decode.map (Post markdown)
 
 

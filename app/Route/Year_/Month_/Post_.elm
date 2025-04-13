@@ -134,21 +134,17 @@ subscriptions routeParams path shared model =
 
 title : App Data ActionData RouteParams -> String
 title static =
-    Site.windowTitle static.data.frontmatter.title
+    Site.windowTitle static.data.gist.title
 
 
 head : App Data ActionData RouteParams -> List Head.Tag
 head app =
     Site.postMeta
         { title = title app
-        , publishedDate =
-            Date.fromCalendarDate
-                (String.toInt app.routeParams.year |> Maybe.withDefault 1990)
-                (String.toInt app.routeParams.month |> Maybe.withDefault 1 |> Date.numberToMonth)
-                app.data.frontmatter.dayOfMonth
-        , tags = app.data.frontmatter.tags
+        , publishedDate = app.data.gist.dateTime
+        , tags = app.data.gist.tags
         , mainCategory =
-            app.data.frontmatter.categories
+            app.data.gist.categories
                 |> List.head
         }
 
@@ -162,20 +158,17 @@ view app shared model =
     let
         date : String
         date =
-            Data.Date.formatShortDate
-                app.routeParams.year
-                (String.toInt app.routeParams.month |> Maybe.withDefault 0)
-                app.data.frontmatter.dayOfMonth
+            Data.Date.formatShortDate app.data.gist.date
 
         categoryEls : List (Html Msg)
         categoryEls =
-            app.data.frontmatter.categories
+            app.data.gist.categories
                 |> List.map Category.toLink
                 |> List.intersperse (Html.text ", ")
 
         categoriesTextEls : List (Html Msg)
         categoriesTextEls =
-            if List.length app.data.frontmatter.categories > 0 then
+            if List.length app.data.gist.categories > 0 then
                 [ Html.text "Categories: "
                 , Html.i [] categoryEls
                 , Html.text ". "
@@ -186,13 +179,13 @@ view app shared model =
 
         tagEls : List (Html Msg)
         tagEls =
-            app.data.frontmatter.tags
+            app.data.gist.tags
                 |> List.map Tag.toLink
                 |> List.intersperse (Html.text ", ")
 
         tagsTextEls : List (Html Msg)
         tagsTextEls =
-            if List.length app.data.frontmatter.tags > 0 then
+            if List.length app.data.gist.tags > 0 then
                 [ Html.text "Tags: "
                 , Html.i [] tagEls
                 , Html.text "."
@@ -234,7 +227,7 @@ view app shared model =
             }
             contentEl
             |> View.PageBody.withTitleAndSubtitle
-                [ Html.text app.data.frontmatter.title ]
+                [ Html.text app.data.gist.title ]
                 postInfo
             |> View.PageBody.view
     }

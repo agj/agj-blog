@@ -11,13 +11,13 @@ module Site exposing
 import BackendTask exposing (BackendTask)
 import Data.Category as Category exposing (Category)
 import Data.Tag as Tag exposing (Tag)
-import Date exposing (Date)
 import DateOrDateTime
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Pages.Url
 import SiteConfig exposing (SiteConfig)
+import Time
 
 
 config : SiteConfig
@@ -69,7 +69,7 @@ pageMeta title =
 
 postMeta :
     { title : String
-    , publishedDate : Date
+    , publishedDate : Time.Posix
     , mainCategory : Maybe Category
     , tags : List Tag
     }
@@ -77,8 +77,7 @@ postMeta :
 postMeta info =
     metaBase info.title
         |> Seo.article
-            -- { publishedTime = Just (Date.formatIso8601Date info.year info.month info.date)
-            { publishedTime = Just (DateOrDateTime.Date info.publishedDate)
+            { publishedTime = Just (DateOrDateTime.DateTime info.publishedDate)
             , modifiedTime = Nothing
             , section =
                 info.mainCategory

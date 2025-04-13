@@ -5,18 +5,19 @@ module Data.Date exposing
     , wordpressToPosix
     )
 
+import Date exposing (Date)
 import Dict exposing (Dict)
 import Parser exposing ((|.), (|=), Parser)
 import Time
 import Time.Extra
 
 
-formatShortDate : String -> Int -> Int -> String
-formatShortDate year month date =
-    "{year}, {month} {date}"
-        |> String.replace "{year}" year
-        |> String.replace "{month}" (intToMonthShortName month)
-        |> String.replace "{date}" (String.fromInt date)
+formatShortDate : Date -> String
+formatShortDate date =
+    "{year}, {month} {day}"
+        |> String.replace "{year}" (Date.year date |> String.fromInt)
+        |> String.replace "{month}" (Date.monthNumber date |> intToMonthShortName)
+        |> String.replace "{day}" (Date.day date |> String.fromInt)
 
 
 intToMonthFullName : Int -> String
