@@ -20,10 +20,12 @@
             pkgs.elmPackages.elm
             pkgs.just
             pkgs.leiningen
+            pkgs.mprocs
             pkgs.nodePackages.prettier
             pkgs.nodejs-slim_18
+            pkgs.nushell
             pkgs.pnpm
-            pkgs.mprocs
+            pkgs.rsync
           ];
         };
       }

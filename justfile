@@ -17,6 +17,10 @@ dev: install
 build: install
     pnpm run build
 
+# Deploy built files.
+deploy:
+    nu ./tasks/deploy.nu
+
 # Run `dev` and `review-watch` in parallel.
 dev-review: install
     mprocs
