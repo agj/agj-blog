@@ -49,6 +49,7 @@ review-unsuppress: install
 format:
     prettier --write '**/*.{js,ts,md,css,scss}'
 
+# Removes generated and downloaded data.
 clean:
     rm -rf dist .elm-pages gen functions elm-stuff node_modules
 
