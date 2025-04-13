@@ -52,6 +52,19 @@ format:
 clean:
     rm -rf dist .elm-pages gen functions elm-stuff node_modules
 
+# Writes a snapshot of settings as a Git stash.
+save-settings:
+    #!/usr/bin/env nu
+    let gitStageChanges = git diff --cached
+    if $gitStageChanges != "" {
+        print "🛑 Git stage is dirty! Make sure it's clean before running this task."
+        exit 1
+    }
+
+    [".helix/*", ".env"] | each { git add -f $in }
+    git stash -m 'settings'
+    git stash apply
+
 [private]
 install:
     pnpm install
