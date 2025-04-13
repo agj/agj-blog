@@ -62,8 +62,9 @@ save-settings:
     }
 
     [".helix/*", ".env"] | each { git add -f $in }
-    git stash -m 'settings'
+    git stash -m '⚙️ settings'
     git stash apply
+    git reset
 
 [private]
 install:
