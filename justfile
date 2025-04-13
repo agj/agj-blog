@@ -74,8 +74,9 @@ save-settings:
         exit 1
     }
 
+    let today = date now | format date "%Y-%m-%d"
     [".helix/*", ".env"] | each { git add -f $in }
-    git stash -m '⚙️ settings'
+    git stash -m $"⚙️ settings ($today)"
     git stash apply
     git reset
 
