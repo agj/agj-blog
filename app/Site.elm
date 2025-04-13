@@ -18,6 +18,7 @@ import Head.Seo as Seo
 import Pages.Url
 import SiteConfig exposing (SiteConfig)
 import Time
+import UrlPath
 
 
 config : SiteConfig
@@ -63,19 +64,23 @@ windowTitle pageTitle =
 
 pageMeta : String -> List Head.Tag
 pageMeta title =
-    metaBase title
+    metaBase { title = title, description = Nothing }
         |> Seo.website
 
 
 postMeta :
     { title : String
+    , description : String
     , publishedDate : Time.Posix
     , mainCategory : Maybe Category
     , tags : List Tag
     }
     -> List Head.Tag
 postMeta info =
-    metaBase info.title
+    metaBase
+        { title = info.title
+        , description = Just info.description
+        }
         |> Seo.article
             { publishedTime = Just (DateOrDateTime.DateTime info.publishedDate)
             , modifiedTime = Nothing
@@ -89,18 +94,18 @@ postMeta info =
             }
 
 
-metaBase : String -> Seo.Common
-metaBase title =
+metaBase : { title : String, description : Maybe String } -> Seo.Common
+metaBase info =
     Seo.summary
         { canonicalUrlOverride = Nothing
         , siteName = name
         , image =
-            { url = Pages.Url.external "TODO"
+            { url = Pages.Url.fromPath (UrlPath.fromString "/avatar.svg")
             , alt = name
             , dimensions = Nothing
             , mimeType = Nothing
             }
-        , description = description
+        , description = info.description |> Maybe.withDefault description
         , locale = Nothing
-        , title = title
+        , title = info.title
         }

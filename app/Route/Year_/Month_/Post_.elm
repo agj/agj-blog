@@ -9,6 +9,7 @@ import Data.Tag as Tag
 import Date
 import Doc.Html
 import Doc.Markdown
+import Doc.PlainText
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
@@ -132,15 +133,30 @@ subscriptions routeParams path shared model =
 -- VIEW
 
 
-title : App Data ActionData RouteParams -> String
-title static =
-    Site.windowTitle static.data.gist.title
+title : String -> String
+title postTitle =
+    Site.windowTitle postTitle
 
 
 head : App Data ActionData RouteParams -> List Head.Tag
 head app =
+    let
+        contentSummary =
+            app.data.markdown
+                |> Doc.Markdown.parse { audioPlayer = Nothing }
+                |> Doc.PlainText.view
+                |> String.lines
+                |> List.filter ((/=) "")
+                |> String.join " | "
+                |> String.words
+                |> List.take 30
+                |> String.join " "
+                |> String.left 200
+                |> (\s -> s ++ "…")
+    in
     Site.postMeta
-        { title = title app
+        { title = title app.data.gist.title
+        , description = contentSummary
         , publishedDate = app.data.gist.dateTime
         , tags = app.data.gist.tags
         , mainCategory =
@@ -219,7 +235,7 @@ view app shared model =
             ]
                 |> Html.div [ class "flex flex-col" ]
     in
-    { title = title app
+    { title = title app.data.gist.title
     , body =
         View.PageBody.fromContent
             { theme = shared.theme
