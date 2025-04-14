@@ -1,4 +1,4 @@
-module Doc.Markdown exposing
+module Doc.FromMarkdown exposing
     ( AudioPlayerConfig
     , Config
     , parse

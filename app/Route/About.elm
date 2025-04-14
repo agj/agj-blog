@@ -2,8 +2,8 @@ module Route.About exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File
-import Doc.Html
-import Doc.Markdown
+import Doc.FromMarkdown
+import Doc.ToHtml
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
@@ -132,8 +132,8 @@ view app shared model =
         content : Html Msg
         content =
             app.data.markdown
-                |> Doc.Markdown.parse { audioPlayer = Nothing }
-                |> Doc.Html.view Doc.Html.noConfig
+                |> Doc.FromMarkdown.parse { audioPlayer = Nothing }
+                |> Doc.ToHtml.view Doc.ToHtml.noConfig
     in
     { title = title app
     , body =

@@ -1,4 +1,4 @@
-module Doc.Html exposing (Config, noConfig, view)
+module Doc.ToHtml exposing (Config, noConfig, view)
 
 import Custom.Html.Attributes
 import Doc

@@ -7,9 +7,9 @@ import Data.Date
 import Data.Post as Post exposing (Post)
 import Data.Tag as Tag
 import Date
-import Doc.Html
-import Doc.Markdown
+import Doc.FromMarkdown
 import Doc.PlainText
+import Doc.ToHtml
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
@@ -143,7 +143,7 @@ head app =
     let
         contentSummary =
             app.data.markdown
-                |> Doc.Markdown.parse { audioPlayer = Nothing }
+                |> Doc.FromMarkdown.parse { audioPlayer = Nothing }
                 |> Doc.PlainText.view
                 |> String.lines
                 |> List.filter ((/=) "")
@@ -228,9 +228,9 @@ view app shared model =
         contentEl : Html Msg
         contentEl =
             [ app.data.markdown
-                |> Doc.Markdown.parse
+                |> Doc.FromMarkdown.parse
                     { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
-                |> Doc.Html.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
+                |> Doc.ToHtml.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
             , View.CodeBlock.styles
             ]
                 |> Html.div [ class "flex flex-col" ]
