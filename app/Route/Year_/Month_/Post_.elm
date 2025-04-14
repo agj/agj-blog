@@ -8,8 +8,8 @@ import Data.Post as Post exposing (Post)
 import Data.Tag as Tag
 import Date
 import Doc.FromMarkdown
-import Doc.PlainText
 import Doc.ToHtml
+import Doc.ToPlainText
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
@@ -144,7 +144,7 @@ head app =
         contentSummary =
             app.data.markdown
                 |> Doc.FromMarkdown.parse { audioPlayer = Nothing }
-                |> Doc.PlainText.view
+                |> Doc.ToPlainText.view
                 |> String.lines
                 |> List.filter ((/=) "")
                 |> String.join " | "

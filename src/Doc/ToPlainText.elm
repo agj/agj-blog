@@ -1,4 +1,4 @@
-module Doc.PlainText exposing (view)
+module Doc.ToPlainText exposing (view)
 
 import Doc
 
