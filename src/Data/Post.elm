@@ -13,6 +13,7 @@ import Custom.Int as Int
 import Data.Category as Category exposing (Category)
 import Data.Date as Date
 import Data.Language as Language exposing (Language)
+import Data.MastodonPost exposing (MastodonPost)
 import Data.Tag as Tag exposing (Tag)
 import Date exposing (Date)
 import FatalError exposing (FatalError)
@@ -39,6 +40,7 @@ type alias PostGist =
     , tags : List Tag
     , date : Date
     , dateTime : Time.Posix
+    , mastodonPostId : Maybe String
     , isHidden : Bool
     }
 
@@ -51,6 +53,7 @@ type alias Frontmatter =
     , tags : List Tag
     , dayOfMonth : Int
     , dateTime : Maybe Time.Posix
+    , mastodonPostId : Maybe String
     }
 
 
@@ -180,6 +183,7 @@ globMatchWithFrontmatterToGist ( post, frontmatter ) =
                 , tags = frontmatter.tags
                 , date = date
                 , dateTime = dateTime
+                , mastodonPostId = frontmatter.mastodonPostId
                 , isHidden = post.isHidden
                 }
 
@@ -233,3 +237,4 @@ frontmatterDecoder =
                 |> Decode.map Date.wordpressToPosix
             )
             Nothing
+        |> Decode.optional "link-mastodon" (Decode.maybe Decode.string) Nothing

@@ -7,6 +7,7 @@ module Effect exposing (Effect(..), batch, fromCmd, map, none, perform)
 -}
 
 import Browser.Navigation
+import Data.MastodonPost exposing (MastodonPost)
 import Flags exposing (Flags)
 import Form
 import Http
@@ -20,6 +21,7 @@ import Url exposing (Url)
 type Effect msg
     = SaveConfig Flags
     | SetTheme Theme
+    | GetMastodonPost (Result Http.Error MastodonPost -> msg) String
     | None
     | Cmd (Cmd msg)
     | Batch (List (Effect msg))
@@ -52,6 +54,9 @@ map fn effect =
 
         SetTheme theme ->
             SetTheme theme
+
+        GetMastodonPost toMsg postId ->
+            GetMastodonPost (toMsg >> fn) postId
 
         None ->
             None
@@ -91,6 +96,14 @@ perform ({ fromPageMsg, key } as helpers) effect =
 
         SetTheme theme ->
             Ports.setTheme theme
+
+        GetMastodonPost toMsg postId ->
+            Http.get
+                { url =
+                    "https://mstdn.social/api/v1/statuses/{postId}"
+                        |> String.replace "{postId}" postId
+                , expect = Http.expectJson (toMsg >> fromPageMsg) Data.MastodonPost.decoder
+                }
 
         None ->
             Cmd.none

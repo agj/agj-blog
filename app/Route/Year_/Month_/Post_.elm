@@ -4,6 +4,7 @@ import BackendTask exposing (BackendTask)
 import Custom.Int as Int
 import Data.Category as Category
 import Data.Date
+import Data.MastodonPost as MastodonPost exposing (MastodonPost)
 import Data.Post as Post exposing (Post)
 import Data.Tag as Tag
 import Date
@@ -14,7 +15,10 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
-import Html.Attributes exposing (class, href)
+import Html.Attributes exposing (class, href, target)
+import Html.Extra
+import Http
+import Maybe.Extra exposing (isJust)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
@@ -43,8 +47,15 @@ route =
 
 init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
 init app shared =
-    ( { audioPlayerState = View.AudioPlayer.initialState }
-    , Effect.none
+    ( { audioPlayerState = View.AudioPlayer.initialState
+      , mastodonPostRequest = MastodonPostRequesting
+      }
+    , case app.data.gist.mastodonPostId of
+        Just id ->
+            Effect.GetMastodonPost GotMastodonPost id
+
+        Nothing ->
+            Effect.none
     )
 
 
@@ -99,11 +110,20 @@ data routeParams =
 
 
 type alias Model =
-    { audioPlayerState : View.AudioPlayer.State }
+    { audioPlayerState : View.AudioPlayer.State
+    , mastodonPostRequest : MastodonPostRequest
+    }
+
+
+type MastodonPostRequest
+    = MastodonPostNotRequested
+    | MastodonPostRequesting
+    | MastodonPostObtained MastodonPost
 
 
 type Msg
     = AudioPlayerStateUpdated View.AudioPlayer.State
+    | GotMastodonPost (Result Http.Error MastodonPost)
     | SharedMsg Shared.Msg
 
 
@@ -111,7 +131,16 @@ update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Mo
 update app shared msg model =
     case msg of
         AudioPlayerStateUpdated state ->
-            ( { audioPlayerState = state }
+            ( { model | audioPlayerState = state }
+            , Effect.none
+            , Nothing
+            )
+
+        GotMastodonPost (Result.Err _) ->
+            ( model, Effect.none, Nothing )
+
+        GotMastodonPost (Result.Ok mastodonPost) ->
+            ( { model | mastodonPostRequest = MastodonPostObtained mastodonPost }
             , Effect.none
             , Nothing
             )
@@ -227,12 +256,22 @@ view app shared model =
 
         contentEl : Html Msg
         contentEl =
-            [ app.data.markdown
-                |> Doc.FromMarkdown.parse
-                    { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
-                |> Doc.ToHtml.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
-            , View.CodeBlock.styles
+            [ [ app.data.markdown
+                    |> Doc.FromMarkdown.parse
+                        { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
+                    |> Doc.ToHtml.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
+              ]
+            , case app.data.gist.mastodonPostId of
+                Just mastodonPostId ->
+                    [ Html.hr [ class "bg-layout-20 mb-8 mt-20 h-4 border-0" ] []
+                    , viewReplies model.mastodonPostRequest mastodonPostId
+                    ]
+
+                Nothing ->
+                    [ Html.Extra.nothing ]
+            , [ View.CodeBlock.styles ]
             ]
+                |> List.concat
                 |> Html.div [ class "flex flex-col" ]
     in
     { title = title app.data.gist.title
@@ -247,3 +286,42 @@ view app shared model =
                 postInfo
             |> View.PageBody.view
     }
+
+
+viewReplies : MastodonPostRequest -> String -> Html Msg
+viewReplies mastodonPostRequest mastodonPostId =
+    let
+        replies =
+            case mastodonPostRequest of
+                MastodonPostObtained mastodonPost ->
+                    mastodonPost.replies
+
+                _ ->
+                    0
+
+        message =
+            case replies of
+                0 ->
+                    [ Html.p []
+                        [ Html.a
+                            [ href (MastodonPost.idToUrl mastodonPostId)
+                            , target "_blank"
+                            ]
+                            [ Html.text "Comment over at Mastodon" ]
+                        ]
+                    ]
+
+                _ ->
+                    [ Html.p []
+                        [ Html.a
+                            [ href (MastodonPost.idToUrl mastodonPostId)
+                            , target "_blank"
+                            ]
+                            [ Html.b [] [ Html.text (String.fromInt replies) ]
+                            , Html.text
+                                " replies over at Mastodon."
+                            ]
+                        ]
+                    ]
+    in
+    Html.section [] message
