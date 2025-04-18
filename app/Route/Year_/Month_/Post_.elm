@@ -294,7 +294,7 @@ viewReplies mastodonPostRequest mastodonPostId =
         replies =
             case mastodonPostRequest of
                 MastodonPostObtained mastodonPost ->
-                    mastodonPost.replies
+                    mastodonPost.repliesCount
 
                 _ ->
                     0

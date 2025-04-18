@@ -10,22 +10,22 @@ import Json.Decode as Decode exposing (Decoder)
 
 
 type alias MastodonStatus =
-    { replies : Int
+    { repliesCount : Int
     }
 
 
 idToUrl : String -> String
-idToUrl mastodonPostId =
-    "https://mstdn.social/@agj/{id}"
-        |> String.replace "{id}" mastodonPostId
+idToUrl statusId =
+    "https://mstdn.social/@agj/{statusId}"
+        |> String.replace "{statusId}" statusId
 
 
 getCmd : (Result Http.Error MastodonStatus -> msg) -> String -> Cmd msg
-getCmd toMsg postId =
+getCmd toMsg statusId =
     Http.get
         { url =
-            "https://mstdn.social/api/v1/statuses/{postId}"
-                |> String.replace "{postId}" postId
+            "https://mstdn.social/api/v1/statuses/{statusId}"
+                |> String.replace "{statusId}" statusId
         , expect = Http.expectJson toMsg decoder
         }
 
