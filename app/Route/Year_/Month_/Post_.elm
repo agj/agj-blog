@@ -5,7 +5,7 @@ import Custom.Int as Int
 import Data.Category as Category
 import Data.Date
 import Data.Mastodon.Status exposing (MastodonStatus)
-import Data.Post as Post exposing (Post)
+import Data.Post as Post exposing (Post, PostGist)
 import Data.Tag as Tag
 import Date
 import Doc.FromMarkdown
@@ -23,6 +23,7 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
+import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.AudioPlayer
@@ -48,11 +49,11 @@ route =
 init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
 init app shared =
     ( { audioPlayerState = View.AudioPlayer.initialState
-      , mastodonPostRequest = MastodonPostRequesting
+      , mastodonStatusRequest = MastodonStatusRequesting
       }
-    , case app.data.gist.mastodonPostId of
+    , case app.data.gist.mastodonStatusId of
         Just id ->
-            Effect.GetMastodonPost GotMastodonPost id
+            Effect.GetMastodonStatus GotMastodonStatus id
 
         Nothing ->
             Effect.none
@@ -111,19 +112,19 @@ data routeParams =
 
 type alias Model =
     { audioPlayerState : View.AudioPlayer.State
-    , mastodonPostRequest : MastodonPostRequest
+    , mastodonStatusRequest : MastodonStatusRequest
     }
 
 
-type MastodonPostRequest
-    = MastodonPostNotRequested
-    | MastodonPostRequesting
-    | MastodonPostObtained MastodonStatus
+type MastodonStatusRequest
+    = MastodonStatusNotRequested
+    | MastodonStatusRequesting
+    | MastodonStatusObtained MastodonStatus
 
 
 type Msg
     = AudioPlayerStateUpdated View.AudioPlayer.State
-    | GotMastodonPost (Result Http.Error MastodonStatus)
+    | GotMastodonStatus (Result Http.Error MastodonStatus)
     | SharedMsg Shared.Msg
 
 
@@ -136,11 +137,11 @@ update app shared msg model =
             , Nothing
             )
 
-        GotMastodonPost (Result.Err _) ->
+        GotMastodonStatus (Result.Err _) ->
             ( model, Effect.none, Nothing )
 
-        GotMastodonPost (Result.Ok mastodonPost) ->
-            ( { model | mastodonPostRequest = MastodonPostObtained mastodonPost }
+        GotMastodonStatus (Result.Ok mastodonStatus) ->
+            ( { model | mastodonStatusRequest = MastodonStatusObtained mastodonStatus }
             , Effect.none
             , Nothing
             )
@@ -261,14 +262,9 @@ view app shared model =
                         { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
                     |> Doc.ToHtml.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
               ]
-            , case app.data.gist.mastodonPostId of
-                Just mastodonPostId ->
-                    [ Html.hr [ class "bg-layout-20 mb-8 mt-20 h-4 border-0" ] []
-                    , viewReplies model.mastodonPostRequest mastodonPostId
-                    ]
-
-                Nothing ->
-                    [ Html.Extra.nothing ]
+            , [ Html.hr [ class "bg-layout-20 mb-8 mt-20 h-4 border-0" ] []
+              , viewInteractions app.data.gist model.mastodonStatusRequest app.data.gist.mastodonStatusId
+              ]
             , [ View.CodeBlock.styles ]
             ]
                 |> List.concat
@@ -288,40 +284,71 @@ view app shared model =
     }
 
 
-viewReplies : MastodonPostRequest -> String -> Html Msg
-viewReplies mastodonPostRequest mastodonPostId =
+viewInteractions : PostGist -> MastodonStatusRequest -> Maybe String -> Html Msg
+viewInteractions postGist mastodonStatusRequest maybeMastodonStatusId =
     let
-        replies =
-            case mastodonPostRequest of
-                MastodonPostObtained mastodonPost ->
-                    mastodonPost.repliesCount
+        shareOnMastodonText : String
+        shareOnMastodonText =
+            "“{postTitle}” by @agj@mstdn.social\n{postUrl}"
+                |> String.replace "{postTitle}" postGist.title
+                |> String.replace "{postUrl}" (Site.canonicalUrl ++ Post.gistToUrl postGist)
+
+        shareOnMastodonUrl : String
+        shareOnMastodonUrl =
+            "https://tootpick.org/#text={text}"
+                |> String.replace "{text}" (Url.percentEncode shareOnMastodonText)
+
+        mastodonRepliesCount : Int
+        mastodonRepliesCount =
+            case mastodonStatusRequest of
+                MastodonStatusObtained { repliesCount } ->
+                    repliesCount
 
                 _ ->
                     0
 
-        message =
-            case replies of
-                0 ->
-                    [ Html.p []
-                        [ Html.a
-                            [ href (Data.Mastodon.Status.idToUrl mastodonPostId)
-                            , target "_blank"
-                            ]
-                            [ Html.text "Comment over at Mastodon" ]
-                        ]
-                    ]
-
-                _ ->
-                    [ Html.p []
-                        [ Html.a
-                            [ href (Data.Mastodon.Status.idToUrl mastodonPostId)
-                            , target "_blank"
-                            ]
-                            [ Html.b [] [ Html.text (String.fromInt replies) ]
-                            , Html.text
-                                " replies over at Mastodon."
-                            ]
-                        ]
-                    ]
+        wrap : List (Html Msg) -> Html Msg
+        wrap content =
+            Html.section [ class "text-layout-50" ]
+                [ Html.p [] (List.intersperse (Html.text " | ") content) ]
     in
-    Html.section [] message
+    case ( maybeMastodonStatusId, mastodonRepliesCount ) of
+        ( Just mastodonStatusId, 0 ) ->
+            wrap
+                [ viewLink
+                    { text = "Comment over at Mastodon."
+                    , url = Data.Mastodon.Status.idToUrl mastodonStatusId
+                    }
+                , viewLink
+                    { text = "Share on Mastodon."
+                    , url = shareOnMastodonUrl
+                    }
+                ]
+
+        ( Just mastodonStatusId, _ ) ->
+            wrap
+                [ viewLink
+                    { text =
+                        "See {repliesCount} replies over at Mastodon."
+                            |> String.replace "{repliesCount}" (String.fromInt mastodonRepliesCount)
+                    , url = Data.Mastodon.Status.idToUrl mastodonStatusId
+                    }
+                , viewLink
+                    { text = "Share on Mastodon."
+                    , url = shareOnMastodonUrl
+                    }
+                ]
+
+        ( Nothing, _ ) ->
+            wrap
+                [ viewLink
+                    { text = "Share on Mastodon."
+                    , url = shareOnMastodonUrl
+                    }
+                ]
+
+
+viewLink : { text : String, url : String } -> Html Msg
+viewLink { text, url } =
+    Html.a [ href url, target "_blank" ]
+        [ Html.text text ]

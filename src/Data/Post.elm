@@ -39,7 +39,7 @@ type alias PostGist =
     , tags : List Tag
     , date : Date
     , dateTime : Time.Posix
-    , mastodonPostId : Maybe String
+    , mastodonStatusId : Maybe String
     , isHidden : Bool
     }
 
@@ -52,7 +52,7 @@ type alias Frontmatter =
     , tags : List Tag
     , dayOfMonth : Int
     , dateTime : Maybe Time.Posix
-    , mastodonPostId : Maybe String
+    , mastodonStatusId : Maybe String
     }
 
 
@@ -182,7 +182,7 @@ globMatchWithFrontmatterToGist ( post, frontmatter ) =
                 , tags = frontmatter.tags
                 , date = date
                 , dateTime = dateTime
-                , mastodonPostId = frontmatter.mastodonPostId
+                , mastodonStatusId = frontmatter.mastodonStatusId
                 , isHidden = post.isHidden
                 }
 

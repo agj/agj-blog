@@ -21,7 +21,7 @@ import Url exposing (Url)
 type Effect msg
     = SaveConfig Flags
     | SetTheme Theme
-    | GetMastodonPost (Result Http.Error MastodonStatus -> msg) String
+    | GetMastodonStatus (Result Http.Error MastodonStatus -> msg) String
     | None
     | Cmd (Cmd msg)
     | Batch (List (Effect msg))
@@ -55,8 +55,8 @@ map fn effect =
         SetTheme theme ->
             SetTheme theme
 
-        GetMastodonPost toMsg postId ->
-            GetMastodonPost (toMsg >> fn) postId
+        GetMastodonStatus toMsg statusId ->
+            GetMastodonStatus (toMsg >> fn) statusId
 
         None ->
             None
@@ -97,8 +97,8 @@ perform ({ fromPageMsg, key } as helpers) effect =
         SetTheme theme ->
             Ports.setTheme theme
 
-        GetMastodonPost toMsg postId ->
-            Data.Mastodon.Status.getCmd (toMsg >> fromPageMsg) postId
+        GetMastodonStatus toMsg statusId ->
+            Data.Mastodon.Status.getCmd (toMsg >> fromPageMsg) statusId
 
         None ->
             Cmd.none
