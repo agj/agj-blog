@@ -281,10 +281,21 @@ viewInteractions postGist mastodonStatuses =
             "https://tootpick.org/#text={text}"
                 |> String.replace "{text}" (Url.percentEncode shareOnMastodonText)
 
+        tagOnMastodonText : String
+        tagOnMastodonText =
+            "@agj@mstdn.social Regarding “{postTitle}”…\n\n{postUrl}"
+                |> String.replace "{postTitle}" postGist.title
+                |> String.replace "{postUrl}" (Site.canonicalUrl ++ Post.gistToUrl postGist)
+
+        tagOnMastodonUrl : String
+        tagOnMastodonUrl =
+            "https://tootpick.org/#text={text}"
+                |> String.replace "{text}" (Url.percentEncode tagOnMastodonText)
+
         wrap : List (Html Msg) -> Html Msg
         wrap content =
             Html.section [ class "text-layout-50" ]
-                [ Html.p [] (List.intersperse (Html.text " | ") content) ]
+                [ Html.p [] content ]
     in
     case postGist.mastodonStatusId of
         Just mastodonStatusId ->
@@ -305,36 +316,66 @@ viewInteractions postGist mastodonStatuses =
             case mastodonRepliesCount of
                 0 ->
                     wrap
-                        [ viewLink
-                            { text = "Comment over at Mastodon."
+                        [ Html.text "On Mastodon you can "
+                        , viewLink
+                            { text = "directly comment on this post"
                             , url = Data.Mastodon.Status.idToUrl mastodonStatusId
                             }
+                        , Html.text ", "
                         , viewLink
-                            { text = "Share on Mastodon."
+                            { text = "tag me to share your thoughts with me"
+                            , url = tagOnMastodonUrl
+                            }
+                        , Html.text ", or "
+                        , viewLink
+                            { text = "just share this post with others"
                             , url = shareOnMastodonUrl
                             }
+                        , Html.text "."
                         ]
 
                 _ ->
                     wrap
-                        [ viewLink
+                        [ Html.text "On Mastodon you can "
+                        , viewLink
                             { text =
-                                "See {repliesCount} replies over at Mastodon."
+                                "see {repliesCount} comment{s} on this post"
                                     |> String.replace "{repliesCount}" (String.fromInt mastodonRepliesCount)
+                                    |> String.replace "{s}"
+                                        (if mastodonRepliesCount /= 1 then
+                                            "s"
+
+                                         else
+                                            ""
+                                        )
                             , url = Data.Mastodon.Status.idToUrl mastodonStatusId
                             }
+                        , Html.text ", "
                         , viewLink
-                            { text = "Share on Mastodon."
+                            { text = "tag me to share your thoughts with me"
+                            , url = tagOnMastodonUrl
+                            }
+                        , Html.text ", or "
+                        , viewLink
+                            { text = "just share this post with others"
                             , url = shareOnMastodonUrl
                             }
+                        , Html.text "."
                         ]
 
         Nothing ->
             wrap
-                [ viewLink
-                    { text = "Share on Mastodon."
+                [ Html.text "On Mastodon you can "
+                , viewLink
+                    { text = "tag me to share your thoughts with me"
+                    , url = tagOnMastodonUrl
+                    }
+                , Html.text ", or "
+                , viewLink
+                    { text = "just share this post with others"
                     , url = shareOnMastodonUrl
                     }
+                , Html.text "."
                 ]
 
 
