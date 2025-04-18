@@ -1,5 +1,5 @@
-module Data.MastodonPost exposing
-    ( MastodonPost
+module Data.Mastodon.Status exposing
+    ( MastodonStatus
     , decoder
     , getCmd
     , idToUrl
@@ -9,7 +9,7 @@ import Http
 import Json.Decode as Decode exposing (Decoder)
 
 
-type alias MastodonPost =
+type alias MastodonStatus =
     { replies : Int
     }
 
@@ -20,7 +20,7 @@ idToUrl mastodonPostId =
         |> String.replace "{id}" mastodonPostId
 
 
-getCmd : (Result Http.Error MastodonPost -> msg) -> String -> Cmd msg
+getCmd : (Result Http.Error MastodonStatus -> msg) -> String -> Cmd msg
 getCmd toMsg postId =
     Http.get
         { url =
@@ -30,7 +30,7 @@ getCmd toMsg postId =
         }
 
 
-decoder : Decoder MastodonPost
+decoder : Decoder MastodonStatus
 decoder =
-    Decode.map MastodonPost
+    Decode.map MastodonStatus
         (Decode.field "replies_count" Decode.int)

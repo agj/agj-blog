@@ -4,7 +4,7 @@ import BackendTask exposing (BackendTask)
 import Custom.Int as Int
 import Data.Category as Category
 import Data.Date
-import Data.MastodonPost as MastodonPost exposing (MastodonPost)
+import Data.Mastodon.Status exposing (MastodonStatus)
 import Data.Post as Post exposing (Post)
 import Data.Tag as Tag
 import Date
@@ -118,12 +118,12 @@ type alias Model =
 type MastodonPostRequest
     = MastodonPostNotRequested
     | MastodonPostRequesting
-    | MastodonPostObtained MastodonPost
+    | MastodonPostObtained MastodonStatus
 
 
 type Msg
     = AudioPlayerStateUpdated View.AudioPlayer.State
-    | GotMastodonPost (Result Http.Error MastodonPost)
+    | GotMastodonPost (Result Http.Error MastodonStatus)
     | SharedMsg Shared.Msg
 
 
@@ -304,7 +304,7 @@ viewReplies mastodonPostRequest mastodonPostId =
                 0 ->
                     [ Html.p []
                         [ Html.a
-                            [ href (MastodonPost.idToUrl mastodonPostId)
+                            [ href (Data.Mastodon.Status.idToUrl mastodonPostId)
                             , target "_blank"
                             ]
                             [ Html.text "Comment over at Mastodon" ]
@@ -314,7 +314,7 @@ viewReplies mastodonPostRequest mastodonPostId =
                 _ ->
                     [ Html.p []
                         [ Html.a
-                            [ href (MastodonPost.idToUrl mastodonPostId)
+                            [ href (Data.Mastodon.Status.idToUrl mastodonPostId)
                             , target "_blank"
                             ]
                             [ Html.b [] [ Html.text (String.fromInt replies) ]

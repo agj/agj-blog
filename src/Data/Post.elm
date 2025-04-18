@@ -13,7 +13,6 @@ import Custom.Int as Int
 import Data.Category as Category exposing (Category)
 import Data.Date as Date
 import Data.Language as Language exposing (Language)
-import Data.MastodonPost exposing (MastodonPost)
 import Data.Tag as Tag exposing (Tag)
 import Date exposing (Date)
 import FatalError exposing (FatalError)
