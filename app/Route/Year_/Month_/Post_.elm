@@ -299,7 +299,13 @@ viewInteractions postGist mastodonStatuses =
                     ]
                 , Html.p []
                     (List.concat
-                        [ [ Html.text "On Mastodon, you can " ]
+                        [ [ Html.text "On "
+                          , viewLink
+                                { text = "Mastodon"
+                                , url = "https://joinmastodon.org/"
+                                }
+                          , Html.text ", you can "
+                          ]
                         , content
                         , [ Html.text ". "
                           , Html.span [ class "inline-block align-middle" ]
