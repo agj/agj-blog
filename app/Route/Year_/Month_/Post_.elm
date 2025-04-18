@@ -276,12 +276,14 @@ viewInteractions postGist mastodonStatuses =
             , postUrl = Site.canonicalUrl ++ Post.gistToUrl postGist
             }
 
+        tagMeToShareYourThoughtsWithMe : Html Msg
         tagMeToShareYourThoughtsWithMe =
             viewMastodonShareLink shareData
                 { text = "tag me to share your thoughts with me"
                 , comment = "@agj@mstdn.social Regarding “{postTitle}”…\n\n{postUrl}"
                 }
 
+        justShareThisPostWithOthers : Html Msg
         justShareThisPostWithOthers =
             viewMastodonShareLink shareData
                 { text = "just share this post with others"
@@ -296,6 +298,7 @@ viewInteractions postGist mastodonStatuses =
     case postGist.mastodonStatusId of
         Just mastodonStatusId ->
             let
+                mastodonStatusRequest : Maybe Shared.MastodonStatusRequest
                 mastodonStatusRequest =
                     mastodonStatuses
                         |> Dict.get mastodonStatusId
@@ -308,38 +311,34 @@ viewInteractions postGist mastodonStatuses =
 
                         _ ->
                             0
-            in
-            case mastodonRepliesCount of
-                0 ->
-                    wrap
-                        [ Html.text "On Mastodon you can "
-                        , viewLink
-                            { text = "directly comment on this post"
-                            , url = Data.Mastodon.Status.idToUrl mastodonStatusId
-                            }
-                        , Html.text ", "
-                        , tagMeToShareYourThoughtsWithMe
-                        , Html.text ", or "
-                        , justShareThisPostWithOthers
-                        , Html.text "."
-                        ]
 
-                _ ->
-                    wrap
-                        [ Html.text "On Mastodon you can "
-                        , viewLink
-                            { text =
-                                "see {repliesCount} comment{s} on this post"
-                                    |> String.replace "{repliesCount}" (String.fromInt mastodonRepliesCount)
-                                    |> String.replace "{s}" (ifElse (mastodonRepliesCount /= 1) "s" "")
-                            , url = Data.Mastodon.Status.idToUrl mastodonStatusId
-                            }
-                        , Html.text ", "
-                        , tagMeToShareYourThoughtsWithMe
-                        , Html.text ", or "
-                        , justShareThisPostWithOthers
-                        , Html.text "."
-                        ]
+                commentOnThisPost : Html Msg
+                commentOnThisPost =
+                    case mastodonRepliesCount of
+                        0 ->
+                            viewLink
+                                { text = "directly comment on this post"
+                                , url = Data.Mastodon.Status.idToUrl mastodonStatusId
+                                }
+
+                        _ ->
+                            viewLink
+                                { text =
+                                    "see {repliesCount} comment{s} on this post"
+                                        |> String.replace "{repliesCount}" (String.fromInt mastodonRepliesCount)
+                                        |> String.replace "{s}" (ifElse (mastodonRepliesCount /= 1) "s" "")
+                                , url = Data.Mastodon.Status.idToUrl mastodonStatusId
+                                }
+            in
+            wrap
+                [ Html.text "On Mastodon you can "
+                , commentOnThisPost
+                , Html.text ", "
+                , tagMeToShareYourThoughtsWithMe
+                , Html.text ", or "
+                , justShareThisPostWithOthers
+                , Html.text "."
+                ]
 
         Nothing ->
             wrap
