@@ -1,6 +1,5 @@
 module Data.Mastodon.Status exposing
     ( MastodonStatus
-    , decoder
     , getCmd
     , idToUrl
     )

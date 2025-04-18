@@ -16,9 +16,7 @@ import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
 import Html.Attributes exposing (class, href, target)
-import Html.Extra
 import Http
-import Maybe.Extra exposing (isJust)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
