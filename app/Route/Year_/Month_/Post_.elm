@@ -3,6 +3,7 @@ module Route.Year_.Month_.Post_ exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Custom.Bool exposing (ifElse)
 import Custom.Int as Int
+import Custom.Markdown as Markdown
 import Data.Category as Category
 import Data.Date
 import Data.Mastodon.Status
@@ -12,7 +13,6 @@ import Date
 import Dict exposing (Dict)
 import Doc.FromMarkdown
 import Doc.ToHtml
-import Doc.ToPlainText
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
@@ -101,7 +101,7 @@ type alias ActionData =
 
 data : RouteParams -> BackendTask FatalError Data
 data routeParams =
-    Post.singleDataSource
+    Post.single
         routeParams.year
         routeParams.month
         routeParams.post
@@ -155,23 +155,9 @@ title postTitle =
 
 head : App Data ActionData RouteParams -> List Head.Tag
 head app =
-    let
-        contentSummary =
-            app.data.markdown
-                |> Doc.FromMarkdown.parse { audioPlayer = Nothing }
-                |> Doc.ToPlainText.view
-                |> String.lines
-                |> List.filter ((/=) "")
-                |> String.join " | "
-                |> String.words
-                |> List.take 30
-                |> String.join " "
-                |> String.left 200
-                |> (\s -> s ++ "…")
-    in
     Site.postMeta
         { title = title app.data.gist.title
-        , description = contentSummary
+        , description = Markdown.getSummary app.data.markdown
         , publishedDate = app.data.gist.dateTime
         , tags = app.data.gist.tags
         , mainCategory =

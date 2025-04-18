@@ -3,7 +3,8 @@ module Data.Post exposing
     , PostGist
     , gistToUrl
     , gistsList
-    , singleDataSource
+    , list
+    , single
     )
 
 import BackendTask exposing (BackendTask)
@@ -67,7 +68,8 @@ type alias GlobMatch =
 
 gistsList : BackendTask FatalError (List PostGist)
 gistsList =
-    listDataSource
+    globMatchList
+        |> BackendTask.andThen (List.map addFrontmatterToGlobMatch >> BackendTask.combine)
         |> BackendTask.andThen
             (List.map globMatchWithFrontmatterToGist
                 >> Result.Extra.combine
@@ -76,12 +78,18 @@ gistsList =
             )
 
 
-singleDataSource :
+list : BackendTask FatalError (List Post)
+list =
+    globMatchList
+        |> BackendTask.andThen (List.map globMatchToPost >> BackendTask.combine)
+
+
+single :
     String
     -> String
     -> String
     -> BackendTask { fatal : FatalError, recoverable : FileReadError Decode.Error } Post
-singleDataSource year month slug =
+single year month slug =
     BackendTask.File.bodyWithFrontmatter (postDecoder { year = year, month = month, slug = slug })
         ("data/posts/{year}/{month}-{post}.md"
             |> String.replace "{year}" year
@@ -102,8 +110,8 @@ gistToUrl gist =
 -- INTERNAL
 
 
-listDataSource : BackendTask FatalError (List ( GlobMatch, Frontmatter ))
-listDataSource =
+globMatchList : BackendTask FatalError (List GlobMatch)
+globMatchList =
     Glob.succeed GlobMatch
         |> Glob.match (Glob.literal "data/posts/")
         -- Path
@@ -127,7 +135,23 @@ listDataSource =
         |> Glob.toBackendTask
         |> BackendTask.map (List.filter (.isHidden >> not))
         |> BackendTask.allowFatal
-        |> BackendTask.andThen (List.map addFrontmatterToGlobMatch >> BackendTask.combine)
+
+
+globMatchToPost : GlobMatch -> BackendTask FatalError Post
+globMatchToPost { yearString, monthString, slug } =
+    BackendTask.File.bodyWithFrontmatter
+        (postDecoder
+            { year = yearString
+            , month = monthString
+            , slug = slug
+            }
+        )
+        ("data/posts/{year}/{month}-{post}.md"
+            |> String.replace "{year}" yearString
+            |> String.replace "{month}" monthString
+            |> String.replace "{post}" slug
+        )
+        |> BackendTask.allowFatal
 
 
 addFrontmatterToGlobMatch : GlobMatch -> BackendTask FatalError ( GlobMatch, Frontmatter )
@@ -139,14 +163,14 @@ addFrontmatterToGlobMatch match =
 
 
 globMatchWithFrontmatterToGist : ( GlobMatch, Frontmatter ) -> Result String PostGist
-globMatchWithFrontmatterToGist ( post, frontmatter ) =
+globMatchWithFrontmatterToGist ( globMatch, frontmatter ) =
     let
         yearMaybe =
-            post.yearString
+            globMatch.yearString
                 |> String.toInt
 
         monthMaybe =
-            post.monthString
+            globMatch.monthString
                 |> String.toInt
                 |> Maybe.map Date.intToMonth
     in
@@ -176,14 +200,14 @@ globMatchWithFrontmatterToGist ( post, frontmatter ) =
             Result.Ok
                 { id = frontmatter.id
                 , title = frontmatter.title
-                , slug = post.slug
+                , slug = globMatch.slug
                 , language = frontmatter.language
                 , categories = frontmatter.categories
                 , tags = frontmatter.tags
                 , date = date
                 , dateTime = dateTime
                 , mastodonStatusId = frontmatter.mastodonStatusId
-                , isHidden = post.isHidden
+                , isHidden = globMatch.isHidden
                 }
 
         _ ->

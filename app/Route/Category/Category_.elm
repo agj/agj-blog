@@ -151,7 +151,7 @@ view app shared model =
                 )
 
         content =
-            Data.PostList.view posts
+            Data.PostList.viewGists posts
     in
     { title = title app
     , body =

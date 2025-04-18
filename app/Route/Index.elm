@@ -199,7 +199,7 @@ view app shared model =
                 -- Posts.
                 , Html.div
                     [ class "md:col-span-3" ]
-                    [ Data.PostList.view app.sharedData.posts ]
+                    [ Data.PostList.viewGists app.sharedData.posts ]
                 ]
     in
     { title = title

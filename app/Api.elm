@@ -2,8 +2,9 @@ module Api exposing (routes)
 
 import ApiRoute exposing (ApiRoute)
 import BackendTask exposing (BackendTask)
+import Custom.Markdown
 import Data.Category as Category
-import Data.Post as Post exposing (PostGist)
+import Data.Post as Post exposing (Post)
 import Data.PostList as PostList
 import Data.Tag as Tag
 import FatalError exposing (FatalError)
@@ -26,7 +27,7 @@ routes getStaticRoutes htmlToString =
 
     -- Global RSS feed.
     , ApiRoute.succeed
-        (Post.gistsList
+        (Post.list
             |> BackendTask.map
                 (rss
                     { title = Site.name
@@ -41,14 +42,14 @@ routes getStaticRoutes htmlToString =
     -- Categories RSS feeds.
     , ApiRoute.succeed
         (\categorySlug ->
-            Post.gistsList
+            Post.list
                 |> BackendTask.map
                     (\posts ->
                         posts
                             |> List.filter
                                 (\post ->
-                                    List.member categorySlug (List.map Category.getSlug post.categories)
-                                        && not post.isHidden
+                                    List.member categorySlug (List.map Category.getSlug post.gist.categories)
+                                        && not post.gist.isHidden
                                 )
                             |> rss
                                 { title = Site.name
@@ -76,14 +77,14 @@ routes getStaticRoutes htmlToString =
     -- Tag RSS feeds.
     , ApiRoute.succeed
         (\tagSlug ->
-            Post.gistsList
+            Post.list
                 |> BackendTask.map
                     (\posts ->
                         posts
                             |> List.filter
                                 (\post ->
-                                    List.member tagSlug (List.map Tag.getSlug post.tags)
-                                        && not post.isHidden
+                                    List.member tagSlug (List.map Tag.getSlug post.gist.tags)
+                                        && not post.gist.isHidden
                                 )
                             |> rss
                                 { title = Site.name
@@ -145,7 +146,7 @@ rss :
     , url : String
     , description : String
     }
-    -> List PostGist
+    -> List Post
     -> String
 rss config posts =
     let
@@ -155,14 +156,14 @@ rss config posts =
                 |> PostList.sortByTime
                 |> List.map postToItem
 
-        postToItem : PostGist -> Rss.Item
+        postToItem : Post -> Rss.Item
         postToItem post =
-            { title = post.title
-            , description = ""
-            , url = Post.gistToUrl post
-            , categories = List.map Category.getSlug post.categories
+            { title = post.gist.title
+            , description = Custom.Markdown.getSummary post.markdown
+            , url = Post.gistToUrl post.gist
+            , categories = List.map Category.getSlug post.gist.categories
             , author = "agj"
-            , pubDate = Rss.DateTime post.dateTime
+            , pubDate = Rss.DateTime post.gist.dateTime
             , content = Nothing
             , contentEncoded = Nothing
             , enclosure = Nothing

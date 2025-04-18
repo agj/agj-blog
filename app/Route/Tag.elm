@@ -207,7 +207,7 @@ view app shared model =
                         , showAllTags = model.showAllRelatedTags
                         , showingPosts = True
                         }
-                    , Data.PostList.view postsShown
+                    , Data.PostList.viewGists postsShown
                     ]
 
             else
