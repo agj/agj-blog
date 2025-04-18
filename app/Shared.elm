@@ -1,11 +1,20 @@
-module Shared exposing (Data, Model, Msg(..), template)
+module Shared exposing
+    ( Data
+    , MastodonStatusRequest(..)
+    , Model
+    , Msg(..)
+    , template
+    )
 
 import BackendTask exposing (BackendTask)
+import Data.Mastodon.Status exposing (MastodonStatus)
 import Data.Post as Post exposing (PostGist)
+import Dict exposing (Dict)
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Flags
 import Html exposing (Html)
+import Http
 import Json.Decode
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
@@ -51,7 +60,9 @@ init flagsRaw maybePagePath =
                 Pages.Flags.PreRenderFlags ->
                     Flags.default
     in
-    ( { theme = flags.theme }
+    ( { theme = flags.theme
+      , mastodonStatuses = Dict.empty
+      }
     , Effect.SetTheme flags.theme
     )
 
@@ -63,6 +74,11 @@ init flagsRaw maybePagePath =
 type alias Data =
     { posts : List PostGist
     }
+
+
+type MastodonStatusRequest
+    = MastodonStatusRequesting
+    | MastodonStatusObtained MastodonStatus
 
 
 data : BackendTask FatalError Data
@@ -77,10 +93,12 @@ data =
 
 type Msg
     = SelectedChangeTheme
+    | GotMastodonStatus String (Result Http.Error MastodonStatus)
 
 
 type alias Model =
     { theme : Theme
+    , mastodonStatuses : Dict String MastodonStatusRequest
     }
 
 
@@ -97,6 +115,24 @@ update msg model =
                 [ Effect.SaveConfig { theme = newTheme }
                 , Effect.SetTheme newTheme
                 ]
+            )
+
+        GotMastodonStatus statusId (Result.Err _) ->
+            ( { model
+                | mastodonStatuses =
+                    model.mastodonStatuses
+                        |> Dict.remove statusId
+              }
+            , Effect.none
+            )
+
+        GotMastodonStatus statusId (Result.Ok mastodonStatus) ->
+            ( { model
+                | mastodonStatuses =
+                    model.mastodonStatuses
+                        |> Dict.insert statusId (MastodonStatusObtained mastodonStatus)
+              }
+            , Effect.none
             )
 
 
