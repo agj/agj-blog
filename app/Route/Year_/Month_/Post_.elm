@@ -18,6 +18,7 @@ import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
 import Html.Attributes exposing (class, href, target)
+import Icon
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
@@ -292,8 +293,21 @@ viewInteractions postGist mastodonStatuses =
 
         wrap : List (Html Msg) -> Html Msg
         wrap content =
-            Html.section [ class "text-layout-50" ]
-                [ Html.p [] content ]
+            Html.section [ class "text-layout-50 flex flex-row gap-4" ]
+                [ Html.div [ class "flex items-center justify-center" ]
+                    [ Icon.mastodonLogo Icon.Medium
+                    ]
+                , Html.p []
+                    (List.concat
+                        [ [ Html.text "On Mastodon, you can " ]
+                        , content
+                        , [ Html.text ". "
+                          , Html.span [ class "inline-block align-middle" ]
+                                [ Icon.heart Icon.Small ]
+                          ]
+                        ]
+                    )
+                ]
     in
     case postGist.mastodonStatusId of
         Just mastodonStatusId ->
@@ -331,22 +345,18 @@ viewInteractions postGist mastodonStatuses =
                                 }
             in
             wrap
-                [ Html.text "On Mastodon you can "
-                , commentOnThisPost
+                [ commentOnThisPost
                 , Html.text ", "
                 , tagMeToShareYourThoughtsWithMe
                 , Html.text ", or "
                 , justShareThisPostWithOthers
-                , Html.text "."
                 ]
 
         Nothing ->
             wrap
-                [ Html.text "On Mastodon you can "
-                , tagMeToShareYourThoughtsWithMe
+                [ tagMeToShareYourThoughtsWithMe
                 , Html.text ", or "
                 , justShareThisPostWithOthers
-                , Html.text "."
                 ]
 
 

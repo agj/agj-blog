@@ -3,7 +3,9 @@ module Icon exposing
     , Size(..)
     , foldLeft
     , foldRight
+    , heart
     , info
+    , mastodonLogo
     , minus
     , moon
     , none
@@ -90,6 +92,16 @@ foldRight =
     icon icons.foldRight
 
 
+heart : Icon msg
+heart =
+    icon icons.heart
+
+
+mastodonLogo : Icon msg
+mastodonLogo =
+    icon icons.mastodonLogo
+
+
 none : Icon msg
 none size =
     Html.div
@@ -154,4 +166,6 @@ icons =
     , rss = { icon = Phosphor.rss, md = Phosphor.Bold, sm = Phosphor.Bold }
     , foldLeft = { icon = Phosphor.caretLeft, md = Phosphor.Bold, sm = Phosphor.Bold }
     , foldRight = { icon = Phosphor.caretRight, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , heart = { icon = Phosphor.heart, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , mastodonLogo = { icon = Phosphor.mastodonLogo, md = Phosphor.Fill, sm = Phosphor.Fill }
     }
