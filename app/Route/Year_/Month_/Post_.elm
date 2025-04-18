@@ -1,6 +1,7 @@
 module Route.Year_.Month_.Post_ exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import Custom.Bool exposing (ifElse)
 import Custom.Int as Int
 import Data.Category as Category
 import Data.Date
@@ -270,27 +271,22 @@ view app shared model =
 viewInteractions : PostGist -> Dict String Shared.MastodonStatusRequest -> Html Msg
 viewInteractions postGist mastodonStatuses =
     let
-        shareOnMastodonText : String
-        shareOnMastodonText =
-            "“{postTitle}” by @agj@mstdn.social\n{postUrl}"
-                |> String.replace "{postTitle}" postGist.title
-                |> String.replace "{postUrl}" (Site.canonicalUrl ++ Post.gistToUrl postGist)
+        shareData =
+            { postTitle = postGist.title
+            , postUrl = Site.canonicalUrl ++ Post.gistToUrl postGist
+            }
 
-        shareOnMastodonUrl : String
-        shareOnMastodonUrl =
-            "https://tootpick.org/#text={text}"
-                |> String.replace "{text}" (Url.percentEncode shareOnMastodonText)
+        tagMeToShareYourThoughtsWithMe =
+            viewMastodonShareLink shareData
+                { text = "tag me to share your thoughts with me"
+                , comment = "@agj@mstdn.social Regarding “{postTitle}”…\n\n{postUrl}"
+                }
 
-        tagOnMastodonText : String
-        tagOnMastodonText =
-            "@agj@mstdn.social Regarding “{postTitle}”…\n\n{postUrl}"
-                |> String.replace "{postTitle}" postGist.title
-                |> String.replace "{postUrl}" (Site.canonicalUrl ++ Post.gistToUrl postGist)
-
-        tagOnMastodonUrl : String
-        tagOnMastodonUrl =
-            "https://tootpick.org/#text={text}"
-                |> String.replace "{text}" (Url.percentEncode tagOnMastodonText)
+        justShareThisPostWithOthers =
+            viewMastodonShareLink shareData
+                { text = "just share this post with others"
+                , comment = "“{postTitle}” by @agj@mstdn.social\n{postUrl}"
+                }
 
         wrap : List (Html Msg) -> Html Msg
         wrap content =
@@ -322,15 +318,9 @@ viewInteractions postGist mastodonStatuses =
                             , url = Data.Mastodon.Status.idToUrl mastodonStatusId
                             }
                         , Html.text ", "
-                        , viewLink
-                            { text = "tag me to share your thoughts with me"
-                            , url = tagOnMastodonUrl
-                            }
+                        , tagMeToShareYourThoughtsWithMe
                         , Html.text ", or "
-                        , viewLink
-                            { text = "just share this post with others"
-                            , url = shareOnMastodonUrl
-                            }
+                        , justShareThisPostWithOthers
                         , Html.text "."
                         ]
 
@@ -341,42 +331,46 @@ viewInteractions postGist mastodonStatuses =
                             { text =
                                 "see {repliesCount} comment{s} on this post"
                                     |> String.replace "{repliesCount}" (String.fromInt mastodonRepliesCount)
-                                    |> String.replace "{s}"
-                                        (if mastodonRepliesCount /= 1 then
-                                            "s"
-
-                                         else
-                                            ""
-                                        )
+                                    |> String.replace "{s}" (ifElse (mastodonRepliesCount /= 1) "s" "")
                             , url = Data.Mastodon.Status.idToUrl mastodonStatusId
                             }
                         , Html.text ", "
-                        , viewLink
-                            { text = "tag me to share your thoughts with me"
-                            , url = tagOnMastodonUrl
-                            }
+                        , tagMeToShareYourThoughtsWithMe
                         , Html.text ", or "
-                        , viewLink
-                            { text = "just share this post with others"
-                            , url = shareOnMastodonUrl
-                            }
+                        , justShareThisPostWithOthers
                         , Html.text "."
                         ]
 
         Nothing ->
             wrap
                 [ Html.text "On Mastodon you can "
-                , viewLink
-                    { text = "tag me to share your thoughts with me"
-                    , url = tagOnMastodonUrl
-                    }
+                , tagMeToShareYourThoughtsWithMe
                 , Html.text ", or "
-                , viewLink
-                    { text = "just share this post with others"
-                    , url = shareOnMastodonUrl
-                    }
+                , justShareThisPostWithOthers
                 , Html.text "."
                 ]
+
+
+viewMastodonShareLink :
+    { a | postTitle : String, postUrl : String }
+    -> { text : String, comment : String }
+    -> Html Msg
+viewMastodonShareLink { postTitle, postUrl } { text, comment } =
+    let
+        commentWithReplacements =
+            replacePlaceholders comment
+
+        replacePlaceholders string =
+            string
+                |> String.replace "{postTitle}" postTitle
+                |> String.replace "{postUrl}" (Url.percentEncode postUrl)
+    in
+    viewLink
+        { text = replacePlaceholders text
+        , url =
+            "https://tootpick.org/#text={comment}"
+                |> String.replace "{comment}" (Url.percentEncode commentWithReplacements)
+        }
 
 
 viewLink : { text : String, url : String } -> Html Msg
