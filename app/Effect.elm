@@ -7,6 +7,7 @@ module Effect exposing (Effect(..), batch, fromCmd, map, none, perform)
 -}
 
 import Browser.Navigation
+import Data.Mastodon.Status exposing (MastodonStatus)
 import Flags exposing (Flags)
 import Form
 import Http
@@ -20,6 +21,7 @@ import Url exposing (Url)
 type Effect msg
     = SaveConfig Flags
     | SetTheme Theme
+    | GetMastodonStatus (Result Http.Error MastodonStatus -> msg) String
     | None
     | Cmd (Cmd msg)
     | Batch (List (Effect msg))
@@ -52,6 +54,9 @@ map fn effect =
 
         SetTheme theme ->
             SetTheme theme
+
+        GetMastodonStatus toMsg statusId ->
+            GetMastodonStatus (toMsg >> fn) statusId
 
         None ->
             None
@@ -91,6 +96,9 @@ perform ({ fromPageMsg, key } as helpers) effect =
 
         SetTheme theme ->
             Ports.setTheme theme
+
+        GetMastodonStatus toMsg statusId ->
+            Data.Mastodon.Status.getCmd (toMsg >> fromPageMsg) statusId
 
         None ->
             Cmd.none

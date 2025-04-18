@@ -1,12 +1,15 @@
 module Route.Year_.Month_.Post_ exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import Custom.Bool exposing (ifElse)
 import Custom.Int as Int
 import Data.Category as Category
 import Data.Date
-import Data.Post as Post exposing (Post)
+import Data.Mastodon.Status
+import Data.Post as Post exposing (Post, PostGist)
 import Data.Tag as Tag
 import Date
+import Dict exposing (Dict)
 import Doc.FromMarkdown
 import Doc.ToHtml
 import Doc.ToPlainText
@@ -14,11 +17,12 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
-import Html.Attributes exposing (class, href)
+import Html.Attributes exposing (class, href, target)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
+import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.AudioPlayer
@@ -44,7 +48,16 @@ route =
 init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
 init app shared =
     ( { audioPlayerState = View.AudioPlayer.initialState }
-    , Effect.none
+    , case app.data.gist.mastodonStatusId of
+        Just statusId ->
+            if Dict.get statusId shared.mastodonStatuses == Nothing then
+                Effect.GetMastodonStatus (Shared.GotMastodonStatus statusId >> SharedMsg) statusId
+
+            else
+                Effect.none
+
+        Nothing ->
+            Effect.none
     )
 
 
@@ -99,7 +112,8 @@ data routeParams =
 
 
 type alias Model =
-    { audioPlayerState : View.AudioPlayer.State }
+    { audioPlayerState : View.AudioPlayer.State
+    }
 
 
 type Msg
@@ -111,7 +125,7 @@ update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Mo
 update app shared msg model =
     case msg of
         AudioPlayerStateUpdated state ->
-            ( { audioPlayerState = state }
+            ( { model | audioPlayerState = state }
             , Effect.none
             , Nothing
             )
@@ -227,12 +241,17 @@ view app shared model =
 
         contentEl : Html Msg
         contentEl =
-            [ app.data.markdown
-                |> Doc.FromMarkdown.parse
-                    { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
-                |> Doc.ToHtml.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
-            , View.CodeBlock.styles
+            [ [ app.data.markdown
+                    |> Doc.FromMarkdown.parse
+                        { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
+                    |> Doc.ToHtml.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
+              ]
+            , [ Html.hr [ class "bg-layout-20 mb-8 mt-20 h-4 border-0" ] []
+              , viewInteractions app.data.gist shared.mastodonStatuses
+              ]
+            , [ View.CodeBlock.styles ]
             ]
+                |> List.concat
                 |> Html.div [ class "flex flex-col" ]
     in
     { title = title app.data.gist.title
@@ -247,3 +266,113 @@ view app shared model =
                 postInfo
             |> View.PageBody.view
     }
+
+
+viewInteractions : PostGist -> Dict String Shared.MastodonStatusRequest -> Html Msg
+viewInteractions postGist mastodonStatuses =
+    let
+        shareData =
+            { postTitle = postGist.title
+            , postUrl = Site.canonicalUrl ++ Post.gistToUrl postGist
+            }
+
+        tagMeToShareYourThoughtsWithMe : Html Msg
+        tagMeToShareYourThoughtsWithMe =
+            viewMastodonShareLink shareData
+                { text = "tag me to share your thoughts with me"
+                , comment = "@agj@mstdn.social Regarding “{postTitle}”…\n\n{postUrl}"
+                }
+
+        justShareThisPostWithOthers : Html Msg
+        justShareThisPostWithOthers =
+            viewMastodonShareLink shareData
+                { text = "just share this post with others"
+                , comment = "“{postTitle}” by @agj@mstdn.social\n{postUrl}"
+                }
+
+        wrap : List (Html Msg) -> Html Msg
+        wrap content =
+            Html.section [ class "text-layout-50" ]
+                [ Html.p [] content ]
+    in
+    case postGist.mastodonStatusId of
+        Just mastodonStatusId ->
+            let
+                mastodonStatusRequest : Maybe Shared.MastodonStatusRequest
+                mastodonStatusRequest =
+                    mastodonStatuses
+                        |> Dict.get mastodonStatusId
+
+                mastodonRepliesCount : Int
+                mastodonRepliesCount =
+                    case mastodonStatusRequest of
+                        Just (Shared.MastodonStatusObtained { repliesCount }) ->
+                            repliesCount
+
+                        _ ->
+                            0
+
+                commentOnThisPost : Html Msg
+                commentOnThisPost =
+                    case mastodonRepliesCount of
+                        0 ->
+                            viewLink
+                                { text = "directly comment on this post"
+                                , url = Data.Mastodon.Status.idToUrl mastodonStatusId
+                                }
+
+                        _ ->
+                            viewLink
+                                { text =
+                                    "see {repliesCount} comment{s} on this post"
+                                        |> String.replace "{repliesCount}" (String.fromInt mastodonRepliesCount)
+                                        |> String.replace "{s}" (ifElse (mastodonRepliesCount /= 1) "s" "")
+                                , url = Data.Mastodon.Status.idToUrl mastodonStatusId
+                                }
+            in
+            wrap
+                [ Html.text "On Mastodon you can "
+                , commentOnThisPost
+                , Html.text ", "
+                , tagMeToShareYourThoughtsWithMe
+                , Html.text ", or "
+                , justShareThisPostWithOthers
+                , Html.text "."
+                ]
+
+        Nothing ->
+            wrap
+                [ Html.text "On Mastodon you can "
+                , tagMeToShareYourThoughtsWithMe
+                , Html.text ", or "
+                , justShareThisPostWithOthers
+                , Html.text "."
+                ]
+
+
+viewMastodonShareLink :
+    { a | postTitle : String, postUrl : String }
+    -> { text : String, comment : String }
+    -> Html Msg
+viewMastodonShareLink { postTitle, postUrl } { text, comment } =
+    let
+        commentWithReplacements =
+            replacePlaceholders comment
+
+        replacePlaceholders string =
+            string
+                |> String.replace "{postTitle}" postTitle
+                |> String.replace "{postUrl}" (Url.percentEncode postUrl)
+    in
+    viewLink
+        { text = replacePlaceholders text
+        , url =
+            "https://tootpick.org/#text={comment}"
+                |> String.replace "{comment}" (Url.percentEncode commentWithReplacements)
+        }
+
+
+viewLink : { text : String, url : String } -> Html Msg
+viewLink { text, url } =
+    Html.a [ href url, target "_blank" ]
+        [ Html.text text ]

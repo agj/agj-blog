@@ -39,6 +39,7 @@ type alias PostGist =
     , tags : List Tag
     , date : Date
     , dateTime : Time.Posix
+    , mastodonStatusId : Maybe String
     , isHidden : Bool
     }
 
@@ -51,6 +52,7 @@ type alias Frontmatter =
     , tags : List Tag
     , dayOfMonth : Int
     , dateTime : Maybe Time.Posix
+    , mastodonStatusId : Maybe String
     }
 
 
@@ -180,6 +182,7 @@ globMatchWithFrontmatterToGist ( post, frontmatter ) =
                 , tags = frontmatter.tags
                 , date = date
                 , dateTime = dateTime
+                , mastodonStatusId = frontmatter.mastodonStatusId
                 , isHidden = post.isHidden
                 }
 
@@ -233,3 +236,4 @@ frontmatterDecoder =
                 |> Decode.map Date.wordpressToPosix
             )
             Nothing
+        |> Decode.optional "link-mastodon" (Decode.maybe Decode.string) Nothing
