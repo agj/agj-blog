@@ -144,7 +144,7 @@ view (TrackWithConfig track config) =
                     ++ events
                     ++ [ Html.Events.onClick (config.onPlayStateChanged newPlayStateOnPress) ]
                 )
-                [ Html.div [ class "flex flex-row gap-1" ]
+                [ Html.div [ class "flex flex-row items-center gap-1" ]
                     [ icon Icon.Medium
                     , Html.text track.title
                     , audioPlayerEl

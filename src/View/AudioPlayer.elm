@@ -151,7 +151,7 @@ titleView state config firstTrack title =
         [ class "bg-layout-60 text-layout-10 w-full px-3 py-2"
         , Html.Events.onClick (config.onStateUpdated (State { state | playState = newPlayStateOnPress }))
         ]
-        [ Html.div [ class "flex flex-row gap-1" ]
+        [ Html.div [ class "flex flex-row items-center gap-1" ]
             [ icon Icon.Medium
             , Html.text title
             ]

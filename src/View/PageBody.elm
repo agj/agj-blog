@@ -197,7 +197,7 @@ changeThemeButtonView config =
             Theme.change config.theme
     in
     Html.button
-        [ class "flex size-6 justify-center rounded align-middle text-inherit"
+        [ class "flex size-6 items-center justify-center rounded text-inherit"
         , class "hover:bg-layout-50 hover:text-layout-20"
         , Html.Events.onClick config.onRequestedChangeTheme
         ]

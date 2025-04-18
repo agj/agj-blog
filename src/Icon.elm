@@ -16,10 +16,9 @@ module Icon exposing
     , xMark
     )
 
-import Heroicons.Micro
-import Heroicons.Mini
-import Html exposing (Attribute, Html)
+import Html exposing (Html)
 import Html.Attributes
+import Phosphor
 
 
 type alias Icon msg =
@@ -105,45 +104,54 @@ none size =
 
 
 icon :
-    { md : List (Attribute msg) -> Html msg
-    , sm : List (Attribute msg) -> Html msg
+    { icon : Phosphor.Icon
+    , md : Phosphor.IconWeight
+    , sm : Phosphor.IconWeight
     }
     -> Size
     -> Html msg
-icon { md, sm } size =
+icon definition size =
     let
-        svg =
+        weight =
             case size of
                 Medium ->
-                    md
+                    definition.md
 
                 Small ->
-                    sm
+                    definition.sm
     in
-    svg [ Html.Attributes.style "width" (sizeToRems size) ]
+    definition.icon weight
+        |> Phosphor.withSize (sizeToRemsNoUnit size)
+        |> Phosphor.withSizeUnit "rem"
+        |> Phosphor.toHtml []
 
 
 sizeToRems : Size -> String
 sizeToRems size =
+    String.fromFloat (sizeToRemsNoUnit size) ++ "rem"
+
+
+sizeToRemsNoUnit : Size -> Float
+sizeToRemsNoUnit size =
     case size of
         Medium ->
-            "1rem"
+            1
 
         Small ->
-            "0.75rem"
+            0.75
 
 
 icons =
-    { play = { md = Heroicons.Mini.play, sm = Heroicons.Micro.play }
-    , pause = { md = Heroicons.Mini.pause, sm = Heroicons.Micro.pause }
-    , stop = { md = Heroicons.Mini.stop, sm = Heroicons.Micro.stop }
-    , moon = { md = Heroicons.Mini.moon, sm = Heroicons.Micro.moon }
-    , sun = { md = Heroicons.Mini.sun, sm = Heroicons.Micro.sun }
-    , minus = { md = Heroicons.Mini.minus, sm = Heroicons.Micro.minus }
-    , plus = { md = Heroicons.Mini.plus, sm = Heroicons.Micro.plus }
-    , xMark = { md = Heroicons.Mini.xMark, sm = Heroicons.Micro.xMark }
-    , info = { md = Heroicons.Mini.informationCircle, sm = Heroicons.Micro.informationCircle }
-    , rss = { md = Heroicons.Mini.rss, sm = Heroicons.Micro.rss }
-    , foldLeft = { md = Heroicons.Mini.chevronDoubleLeft, sm = Heroicons.Micro.chevronDoubleLeft }
-    , foldRight = { md = Heroicons.Mini.chevronDoubleRight, sm = Heroicons.Micro.chevronDoubleRight }
+    { play = { icon = Phosphor.play, md = Phosphor.Fill, sm = Phosphor.Fill }
+    , pause = { icon = Phosphor.pause, md = Phosphor.Fill, sm = Phosphor.Fill }
+    , stop = { icon = Phosphor.stop, md = Phosphor.Fill, sm = Phosphor.Fill }
+    , moon = { icon = Phosphor.moon, md = Phosphor.Fill, sm = Phosphor.Fill }
+    , sun = { icon = Phosphor.sun, md = Phosphor.Fill, sm = Phosphor.Fill }
+    , minus = { icon = Phosphor.minus, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , plus = { icon = Phosphor.plus, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , xMark = { icon = Phosphor.x, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , info = { icon = Phosphor.info, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , rss = { icon = Phosphor.rss, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , foldLeft = { icon = Phosphor.caretLeft, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , foldRight = { icon = Phosphor.caretRight, md = Phosphor.Bold, sm = Phosphor.Bold }
     }
