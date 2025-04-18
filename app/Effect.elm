@@ -7,7 +7,7 @@ module Effect exposing (Effect(..), batch, fromCmd, map, none, perform)
 -}
 
 import Browser.Navigation
-import Data.MastodonPost exposing (MastodonPost)
+import Data.MastodonPost as MastodonPost exposing (MastodonPost)
 import Flags exposing (Flags)
 import Form
 import Http
@@ -98,12 +98,7 @@ perform ({ fromPageMsg, key } as helpers) effect =
             Ports.setTheme theme
 
         GetMastodonPost toMsg postId ->
-            Http.get
-                { url =
-                    "https://mstdn.social/api/v1/statuses/{postId}"
-                        |> String.replace "{postId}" postId
-                , expect = Http.expectJson (toMsg >> fromPageMsg) Data.MastodonPost.decoder
-                }
+            MastodonPost.getCmd (toMsg >> fromPageMsg) postId
 
         None ->
             Cmd.none
