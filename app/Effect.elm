@@ -1,4 +1,7 @@
-module Effect exposing (Effect(..), batch, fromCmd, map, none, perform)
+module Effect exposing
+    ( Effect(..), batch, fromCmd, map, none, perform
+    , immediate
+    )
 
 {-|
 
@@ -13,6 +16,7 @@ import Form
 import Http
 import Pages.Fetcher
 import Ports
+import Task
 import Theme exposing (Theme)
 import Url exposing (Url)
 
@@ -43,6 +47,16 @@ batch =
 fromCmd : Cmd msg -> Effect msg
 fromCmd =
     Cmd
+
+
+{-| Trigger a message immediately. Useful to make stuff happen in the `Shared`
+module!
+-}
+immediate : msg -> Effect msg
+immediate msg =
+    Task.succeed ()
+        |> Task.perform (\() -> msg)
+        |> Cmd
 
 
 {-| -}

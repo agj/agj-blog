@@ -52,7 +52,7 @@ init app shared =
     , case app.data.gist.mastodonStatusId of
         Just statusId ->
             if Dict.get statusId shared.mastodonStatuses == Nothing then
-                Effect.GetMastodonStatus (Shared.GotMastodonStatus statusId >> SharedMsg) statusId
+                Effect.immediate (SharedMsg (Shared.RequestedMastodonStatus statusId))
 
             else
                 Effect.none

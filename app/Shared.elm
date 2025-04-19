@@ -93,6 +93,7 @@ data =
 
 type Msg
     = SelectedChangeTheme
+    | RequestedMastodonStatus String
     | GotMastodonStatus String (Result Http.Error MastodonStatus)
 
 
@@ -116,6 +117,20 @@ update msg model =
                 , Effect.SetTheme newTheme
                 ]
             )
+
+        RequestedMastodonStatus statusId ->
+            case Dict.get statusId model.mastodonStatuses of
+                Just (MastodonStatusObtained _) ->
+                    ( model, Effect.none )
+
+                _ ->
+                    ( { model
+                        | mastodonStatuses =
+                            model.mastodonStatuses
+                                |> Dict.insert statusId MastodonStatusRequesting
+                      }
+                    , Effect.GetMastodonStatus (GotMastodonStatus statusId) statusId
+                    )
 
         GotMastodonStatus statusId (Result.Err _) ->
             ( { model
