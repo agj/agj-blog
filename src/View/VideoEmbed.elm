@@ -6,8 +6,9 @@ module View.VideoEmbed exposing
     )
 
 import Html exposing (Html)
-import Html.Attributes
+import Html.Attributes exposing (class)
 import Markdown.Html
+import String
 import View.Figure
 
 
@@ -34,7 +35,7 @@ renderer =
 
 
 view : VideoEmbed -> Html msg
-view videoEmbed =
+view ({ width, height } as videoEmbed) =
     let
         src =
             case videoEmbed.service of
@@ -64,8 +65,11 @@ view videoEmbed =
                 [ Html.Attributes.src src
                 , Html.Attributes.attribute "frameborder" "0"
                 , Html.Attributes.attribute "allowfullscreen" "allowfullscreen"
-                , Html.Attributes.style "width" ((videoEmbed.width |> String.fromInt) ++ "px")
-                , Html.Attributes.style "height" ((videoEmbed.height |> String.fromInt) ++ "px")
+                , class "max-w-full"
+                , Html.Attributes.style "width"
+                    (String.fromInt width ++ "px")
+                , Html.Attributes.style "aspect-ratio"
+                    (String.fromFloat (toFloat width / toFloat height))
                 ]
                 []
     in
