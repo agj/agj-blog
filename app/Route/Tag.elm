@@ -277,7 +277,7 @@ viewTitleTag { queryTags } tag =
         [ Html.a
             [ href url
             , Html.Events.onClick (OnClick url)
-            , class "peer hover:line-through"
+            , class "hover:decoration-layout-90 peer hover:line-through"
             ]
             [ Html.text (Tag.getName tag) ]
         , Html.div
