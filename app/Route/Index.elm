@@ -135,7 +135,7 @@ subscriptions routeParams path shared model =
 
 title : String
 title =
-    Site.windowTitle "Home"
+    Site.name
 
 
 head : App Data ActionData RouteParams -> List Head.Tag
@@ -210,7 +210,7 @@ view app shared model =
             }
             content
             |> View.PageBody.withTitle
-                [ Html.text "agj's blog" ]
+                [ Html.text title ]
             |> View.PageBody.withRssFeed (View.PageBody.RssFeedUrl rssUrl)
             |> View.PageBody.view
     }
