@@ -13,6 +13,7 @@ import Custom.Html
 import Html exposing (Html)
 import Html.Attributes exposing (class, classList)
 import Html.Events
+import Html.Extra
 import Icon
 import Json.Decode as Decode exposing (Decoder)
 import Markdown.Html
@@ -34,8 +35,6 @@ type TrackWithConfig msg
 
 type alias Config msg =
     { playState : PlayState
-    , hovered : Bool
-    , onHoverChanged : Bool -> msg
     , onPlayStateChanged : PlayState -> msg
     }
 
@@ -78,52 +77,28 @@ view (TrackWithConfig track config) =
                 StateStopped ->
                     ( False, False, initialPlayhead )
 
-        hoverEvents =
-            [ Html.Events.onMouseLeave (config.onHoverChanged False)
-            , Html.Events.onMouseEnter (config.onHoverChanged True)
-            ]
-
-        { icon, fontColor, backgroundColor, newPlayStateOnPress, events } =
+        { icon, newPlayStateOnPress, classes, iconClasses } =
             case config.playState of
                 StatePlaying ph ->
-                    { fontColor = "text-white"
-                    , backgroundColor = "bg-primary-30"
-                    , icon = Icon.pause
+                    { icon = Icon.pause
                     , newPlayStateOnPress = StatePaused ph
-                    , events = []
+                    , classes = "text-white bg-primary-20"
+                    , iconClasses = ""
                     }
 
                 StatePaused ph ->
-                    { fontColor = "text-white"
-                    , backgroundColor = "bg-primary-30"
-                    , icon = Icon.play
+                    { icon = Icon.play
                     , newPlayStateOnPress = StatePlaying ph
-                    , events = []
+                    , classes = "text-white bg-primary-20"
+                    , iconClasses = ""
                     }
 
                 StateStopped ->
-                    { fontColor = "text-layout-90"
-                    , backgroundColor =
-                        if config.hovered then
-                            "bg-layout-20"
-
-                        else
-                            "bg-transparent"
-                    , icon =
-                        if config.hovered then
-                            Icon.play
-
-                        else
-                            Icon.none
+                    { icon = Icon.play
                     , newPlayStateOnPress = StatePlaying initialPlayhead
-                    , events = hoverEvents
+                    , classes = "text-layout-90 bg-transparent group-hover:text-primary-60"
+                    , iconClasses = "invisible group-hover:visible"
                     }
-
-        buttonStyles =
-            [ class "w-full px-2 pt-2"
-            , class fontColor
-            , classList [ ( "pb-2", not isSelected ) ]
-            ]
 
         audioPlayerEl =
             if isSelected then
@@ -140,12 +115,14 @@ view (TrackWithConfig track config) =
 
         buttonEl =
             Html.button
-                (buttonStyles
-                    ++ events
-                    ++ [ Html.Events.onClick (config.onPlayStateChanged newPlayStateOnPress) ]
-                )
+                [ class "w-full px-2 pt-2"
+                , classList [ ( "pb-2", not isSelected ) ]
+                , class classes
+                , Html.Events.onClick (config.onPlayStateChanged newPlayStateOnPress)
+                ]
                 [ Html.div [ class "flex flex-row items-center gap-1" ]
-                    [ icon Icon.Medium
+                    [ Html.div [ class iconClasses ]
+                        [ icon Icon.Medium ]
                     , Html.text track.title
                     , audioPlayerEl
                     ]
@@ -162,23 +139,20 @@ view (TrackWithConfig track config) =
 
                 StateStopped ->
                     StateStopped
-
-        columnEls =
-            if isSelected then
-                [ buttonEl
-                , seekBarView playhead
-                    |> Html.map (seekPosToNewState >> config.onPlayStateChanged)
-                ]
-
-            else
-                [ buttonEl ]
     in
-    Html.div [ class "px-1" ]
+    Html.div [ class "group px-1" ]
         [ Html.div
             [ class "flex w-full flex-col overflow-clip rounded"
-            , class backgroundColor
+            , class classes
             ]
-            columnEls
+            [ buttonEl
+            , if isSelected then
+                seekBarView playhead
+                    |> Html.map (seekPosToNewState >> config.onPlayStateChanged)
+
+              else
+                Html.Extra.nothing
+            ]
         ]
 
 

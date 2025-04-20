@@ -38,9 +38,7 @@ type State
 
 
 type alias StateInternal =
-    { playState : PlayState
-    , hovered : Maybe Track
-    }
+    { playState : PlayState }
 
 
 type PlayState
@@ -50,10 +48,7 @@ type PlayState
 
 initialState : State
 initialState =
-    State
-        { playState = NoTrackSelected
-        , hovered = Nothing
-        }
+    State { playState = NoTrackSelected }
 
 
 renderer : Markdown.Html.Renderer AudioPlayer
@@ -70,21 +65,6 @@ withConfig config audioPlayer =
 view : State -> AudioPlayerWithConfig msg -> Html msg
 view (State state) (AudioPlayerWithConfig audioPlayer config) =
     let
-        onHoverChanged : Track -> Bool -> msg
-        onHoverChanged track hovered =
-            let
-                newHovered =
-                    if hovered then
-                        Just track
-
-                    else if state.hovered == Just track then
-                        Nothing
-
-                    else
-                        state.hovered
-            in
-            config.onStateUpdated (State { state | hovered = newHovered })
-
         trackPlayState : Track -> Track.PlayState
         trackPlayState track =
             case state.playState of
@@ -101,8 +81,6 @@ view (State state) (AudioPlayerWithConfig audioPlayer config) =
         trackConfig : Track -> Track.Config msg
         trackConfig track =
             { playState = trackPlayState track
-            , hovered = state.hovered == Just track
-            , onHoverChanged = onHoverChanged track
             , onPlayStateChanged =
                 \newPlayState ->
                     config.onStateUpdated
