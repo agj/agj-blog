@@ -1,12 +1,10 @@
 module View.CodeBlock exposing
     ( CodeBlock
     , fromBody
-    , styles
     , view
     )
 
 import Html exposing (Html)
-import Html.Attributes
 import SyntaxHighlight
 
 
@@ -72,47 +70,3 @@ view (CodeBlock { body, language }) =
             (Html.div []
                 [ Html.text "[COULDN'T PARSE CODE BLOCK]" ]
             )
-
-
-styles : Html msg
-styles =
-    let
-        generalStyles =
-            Html.node "style"
-                []
-                [ Html.text css ]
-
-        themeStyles =
-            SyntaxHighlight.useTheme SyntaxHighlight.gitHub
-    in
-    Html.div [ Html.Attributes.hidden True ]
-        [ generalStyles
-        , themeStyles
-        ]
-
-
-
--- INTERNAL
-
-
-css : String
-css =
-    """
-    pre.elmsh {
-        padding: 10px;
-        margin: 0;
-        text-align: left;
-        overflow: auto;
-    }
-    code.elmsh {
-        padding: 0;
-    }
-    .elmsh-line:before {
-        content: attr(data-elmsh-lc);
-        display: inline-block;
-        text-align: right;
-        width: 40px;
-        padding: 0 20px 0 0;
-        opacity: 0.3;
-    }
-    """
