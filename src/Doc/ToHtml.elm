@@ -8,7 +8,6 @@ import Html.Events
 import View.AudioPlayer
 import View.CodeBlock
 import View.Figure
-import View.Inline
 import View.LanguageBreak
 import View.List
 import View.VideoEmbed
@@ -99,7 +98,7 @@ viewInline onClickMaybe inline =
             viewStyledText styledText
 
         Doc.InlineCode text ->
-            View.Inline.code text
+            Html.pre [] [ Html.text text ]
 
         Doc.Link { target, inlines } ->
             Html.a

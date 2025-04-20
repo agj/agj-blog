@@ -35,6 +35,10 @@
     @apply line-through;
   }
 
+  .prose pre:not(.elmsh) {
+    @apply inline whitespace-pre-wrap rounded bg-layout-20 box-decoration-clone px-1 py-1 font-mono text-size-mono;
+  }
+
   .prose p {
     @apply w-full text-base;
   }
