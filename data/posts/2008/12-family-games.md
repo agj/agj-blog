@@ -6,7 +6,6 @@ date: "2008-12-25 22:25:57"
 categories:
   - my-games
 tags:
-  - family
   - video-game
 language: eng
 ---

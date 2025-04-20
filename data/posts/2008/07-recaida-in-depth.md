@@ -7,7 +7,6 @@ categories:
   - videos
 tags:
   - animation
-  - story
   - university
 language: eng
 ---

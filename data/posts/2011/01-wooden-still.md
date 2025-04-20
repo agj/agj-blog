@@ -7,10 +7,8 @@ categories:
   - videos
 tags:
   - animation
-  - photomotion
   - release
   - sound-design
-  - timelapse
   - video
 language: eng
 ---

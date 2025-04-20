@@ -8,7 +8,6 @@ categories:
 tags:
   - album
   - game-boy
-  - game-boy-camera
   - lofi
   - release
   - the-color-and-the-leaves

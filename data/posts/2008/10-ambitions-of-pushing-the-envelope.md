@@ -12,7 +12,6 @@ tags:
   - final-years-project
   - flash
   - graphic-design
-  - industry
   - university
   - video-game
 language: eng

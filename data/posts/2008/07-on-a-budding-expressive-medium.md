@@ -7,7 +7,6 @@ categories:
   - interactive
   - musings
 tags:
-  - industry
   - video-game
 language: eng
 ---

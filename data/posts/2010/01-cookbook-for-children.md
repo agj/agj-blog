@@ -8,7 +8,6 @@ categories:
 tags:
   - book
   - espanol
-  - family
   - graphic-design
   - illustration
   - jugosa-cocina-para-ninos

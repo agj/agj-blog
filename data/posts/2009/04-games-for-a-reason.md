@@ -6,8 +6,6 @@ date: "2009-04-08 07:05:53"
 categories:
   - musings
 tags:
-  - igf
-  - industry
   - video-game
   - web
 language: eng

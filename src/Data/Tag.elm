@@ -327,10 +327,6 @@ all =
         , slug = "exhibition"
         }
     , Tag
-        { name = "family"
-        , slug = "family"
-        }
-    , Tag
         { name = "final year's project"
         , slug = "final-years-project"
         }
@@ -363,10 +359,6 @@ all =
         , slug = "game-boy"
         }
     , Tag
-        { name = "Game Boy Camera"
-        , slug = "game-boy-camera"
-        }
-    , Tag
         { name = "game engine"
         , slug = "game-engine"
         }
@@ -391,16 +383,8 @@ all =
         , slug = "heart"
         }
     , Tag
-        { name = "IGF"
-        , slug = "igf"
-        }
-    , Tag
         { name = "illustration"
         , slug = "illustration"
-        }
-    , Tag
-        { name = "industry"
-        , slug = "industry"
         }
     , Tag
         { name = "Interactive"
@@ -475,10 +459,6 @@ all =
         , slug = "metaclase-de-kanji"
         }
     , Tag
-        { name = "micro-story"
-        , slug = "micro-story"
-        }
-    , Tag
         { name = "motion graphics"
         , slug = "motion-graphics"
         }
@@ -509,10 +489,6 @@ all =
     , Tag
         { name = "perception"
         , slug = "perception"
-        }
-    , Tag
-        { name = "photomotion"
-        , slug = "photomotion"
         }
     , Tag
         { name = "PHP"
@@ -579,14 +555,6 @@ all =
         , slug = "spwords"
         }
     , Tag
-        { name = "story"
-        , slug = "story"
-        }
-    , Tag
-        { name = "storyboard"
-        , slug = "storyboard"
-        }
-    , Tag
         { name = "Super Friendship Club"
         , slug = "super-friendship-club"
         }
@@ -623,10 +591,6 @@ all =
         , slug = "tigsource"
         }
     , Tag
-        { name = "timelapse"
-        , slug = "timelapse"
-        }
-    , Tag
         { name = "tracker"
         , slug = "tracker"
         }
@@ -657,10 +621,6 @@ all =
     , Tag
         { name = "Viewpoints"
         , slug = "viewpoints"
-        }
-    , Tag
-        { name = "Vine"
-        , slug = "vine"
         }
     , Tag
         { name = "virtual reality"

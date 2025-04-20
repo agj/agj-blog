@@ -11,7 +11,6 @@ tags:
   - entretenimientos-diana
   - espanol
   - short-film
-  - storyboard
   - university
 language: eng
 ---

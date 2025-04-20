@@ -9,7 +9,6 @@ categories:
 tags:
   - japan
   - video
-  - vine
 language: eng
 ---
 
