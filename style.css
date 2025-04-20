@@ -16,4 +16,30 @@
   a {
     @apply text-inherit underline decoration-primary-20 decoration-2 underline-offset-4 hover:text-primary-50;
   }
+
+  /* Post content. */
+
+  .prose b {
+    @apply font-bold;
+  }
+
+  .prose i {
+    @apply italic;
+  }
+
+  .prose s {
+    @apply line-through;
+  }
+
+  .prose p {
+    @apply w-full text-base;
+  }
+
+  .prose blockquote {
+    @apply flex flex-col border-l-[1rem] border-solid border-layout-20 pl-6;
+  }
+
+  .prose hr {
+    @apply my-6 h-1 w-full border-0 bg-layout-20;
+  }
 }

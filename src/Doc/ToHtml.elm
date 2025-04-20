@@ -120,14 +120,28 @@ viewInline onClickMaybe inline =
 
 viewStyledText : Doc.StyledText -> Html msg
 viewStyledText { text, styles } =
-    Html.span
-        [ classList
-            [ ( "font-bold", styles.bold )
-            , ( "italic", styles.italic )
-            , ( "line-through", styles.strikethrough )
-            ]
-        ]
-        [ Html.text text ]
+    let
+        b : Html msg -> Html msg
+        b =
+            wrapIf styles.bold Html.b
+
+        i : Html msg -> Html msg
+        i =
+            wrapIf styles.italic Html.i
+
+        s : Html msg -> Html msg
+        s =
+            wrapIf styles.strikethrough Html.s
+
+        wrapIf : Bool -> (List (Html.Attribute msg) -> List (Html msg) -> Html msg) -> Html msg -> Html msg
+        wrapIf condition tag content =
+            if condition then
+                tag [] [ content ]
+
+            else
+                content
+    in
+    s (i (b (Html.text text)))
 
 
 viewList : Config msg -> Int -> Maybe Int -> Doc.ListItem msg -> List (Doc.ListItem msg) -> Html msg
@@ -155,7 +169,7 @@ viewList config sectionDepth maybeStartNumber firstItem restItems =
 
 viewBlockQuote : Config msg -> Int -> List (Doc.Block msg) -> Html msg
 viewBlockQuote config sectionDepth blocks =
-    Html.div [ class "border-layout-20 flex flex-col border-l-[1rem] border-solid pl-6" ]
+    Html.blockquote []
         [ wrapBlocks (viewInternal config sectionDepth blocks)
         ]
 
@@ -176,8 +190,7 @@ viewSection config sectionDepth heading content =
 
 viewSeparation : Html msg
 viewSeparation =
-    Html.hr [ class "bg-layout-20 my-6 h-1 w-full border-0" ]
-        []
+    Html.hr [] []
 
 
 viewImage : String -> String -> String -> Html msg
@@ -214,11 +227,10 @@ viewAudioPlayer config audioPlayer =
 
 paragraph : List (Html msg) -> Html msg
 paragraph inlines =
-    Html.p [ class "w-full text-base" ]
-        inlines
+    Html.p [] inlines
 
 
 wrapBlocks : List (Html msg) -> Html msg
 wrapBlocks blocks =
-    Html.div [ class "flex flex-col gap-4" ]
+    Html.div [ class "prose flex flex-col gap-4" ]
         blocks
