@@ -33,6 +33,9 @@ view (CodeBlock { body, language }) =
                 Just "js" ->
                     SyntaxHighlight.javascript
 
+                Just "ts" ->
+                    SyntaxHighlight.javascript
+
                 Just "json" ->
                     SyntaxHighlight.json
 
@@ -53,6 +56,12 @@ view (CodeBlock { body, language }) =
 
                 Just "nix" ->
                     SyntaxHighlight.nix
+
+                Just "kotlin" ->
+                    SyntaxHighlight.kotlin
+
+                Just "go" ->
+                    SyntaxHighlight.go
 
                 _ ->
                     SyntaxHighlight.noLang
