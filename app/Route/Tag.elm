@@ -203,6 +203,7 @@ view app shared model =
                     ]
                     [ viewTagsColumn
                         { tags = model.queryTags
+                        , postsShown = postsShown
                         , allPosts = app.sharedData.posts
                         , showAllTags = model.showAllRelatedTags
                         , showingPosts = True
@@ -214,6 +215,7 @@ view app shared model =
                 Html.div []
                     [ viewTagsColumn
                         { tags = model.queryTags
+                        , postsShown = postsShown
                         , allPosts = app.sharedData.posts
                         , showAllTags = model.showAllRelatedTags
                         , showingPosts = False
@@ -291,15 +293,16 @@ viewTitleTag { queryTags } tag =
 viewTagsColumn :
     { tags : List Tag
     , showAllTags : Bool
+    , postsShown : List PostGist
     , allPosts : List PostGist
     , showingPosts : Bool
     }
     -> Html Msg
-viewTagsColumn { tags, showAllTags, allPosts, showingPosts } =
+viewTagsColumn { tags, showAllTags, postsShown, allPosts, showingPosts } =
     let
         subTags : List Tag
         subTags =
-            allPosts
+            postsShown
                 |> List.andThen .tags
                 |> List.unique
                 |> List.filter (List.memberOf tags >> not)
