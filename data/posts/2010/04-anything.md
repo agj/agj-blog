@@ -7,7 +7,6 @@ categories:
   - my-games
 tags:
   - anything
-  - inform-7
   - interactive-fiction
   - kotm
   - release

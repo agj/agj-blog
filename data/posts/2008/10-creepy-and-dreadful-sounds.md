@@ -7,9 +7,6 @@ categories:
   - musings
   - sound
 tags:
-  - composition
-  - halloween
-  - nitrotracker
   - sound
   - tracker
 language: eng

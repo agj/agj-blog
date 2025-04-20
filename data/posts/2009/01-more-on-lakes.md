@@ -7,7 +7,6 @@ categories:
   - my-games
 tags:
   - competition
-  - magazine
   - the-lake
   - video-game
 language: eng

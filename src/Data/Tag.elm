@@ -215,10 +215,6 @@ all =
         , slug = "sin-asunto"
         }
     , Tag
-        { name = "Adobe AIR"
-        , slug = "adobe-air"
-        }
-    , Tag
         { name = "album"
         , slug = "album"
         }
@@ -267,10 +263,6 @@ all =
         , slug = "cave-trip"
         }
     , Tag
-        { name = "CCPLM"
-        , slug = "ccplm"
-        }
-    , Tag
         { name = "Chile"
         , slug = "chile"
         }
@@ -297,10 +289,6 @@ all =
     , Tag
         { name = "competition"
         , slug = "competition"
-        }
-    , Tag
-        { name = "composition"
-        , slug = "composition"
         }
     , Tag
         { name = "conlang"
@@ -359,14 +347,6 @@ all =
         , slug = "flower-pattern"
         }
     , Tag
-        { name = "for children"
-        , slug = "for-children"
-        }
-    , Tag
-        { name = "forum"
-        , slug = "forum"
-        }
-    , Tag
         { name = "Frogs Drink Faces"
         , slug = "frogs-drink-faces"
         }
@@ -407,10 +387,6 @@ all =
         , slug = "gregws"
         }
     , Tag
-        { name = "Halloween"
-        , slug = "halloween"
-        }
-    , Tag
         { name = "Heart"
         , slug = "heart"
         }
@@ -425,10 +401,6 @@ all =
     , Tag
         { name = "industry"
         , slug = "industry"
-        }
-    , Tag
-        { name = "Inform 7"
-        , slug = "inform-7"
         }
     , Tag
         { name = "Interactive"
@@ -499,10 +471,6 @@ all =
         , slug = "ludum-dare"
         }
     , Tag
-        { name = "magazine"
-        , slug = "magazine"
-        }
-    , Tag
         { name = "Metaclase de Kanji"
         , slug = "metaclase-de-kanji"
         }
@@ -529,10 +497,6 @@ all =
     , Tag
         { name = "Nendo project"
         , slug = "nendo-project"
-        }
-    , Tag
-        { name = "NitroTracker"
-        , slug = "nitrotracker"
         }
     , Tag
         { name = "openFrameworks"

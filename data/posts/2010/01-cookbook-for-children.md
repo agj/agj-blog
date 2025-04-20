@@ -9,7 +9,6 @@ tags:
   - book
   - espanol
   - family
-  - for-children
   - graphic-design
   - illustration
   - jugosa-cocina-para-ninos

@@ -6,8 +6,6 @@ date: "2011-11-18 02:28:43"
 categories:
   - interactive
 tags:
-  - adobe-air
-  - ccplm
   - chile
   - espanol
   - flash
