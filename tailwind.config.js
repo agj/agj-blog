@@ -3,6 +3,7 @@ export default {
   content: ["./src/**/*.elm", "./app/**/*.elm"],
   safelist: [
     "elmsh",
+    "elmsh-line",
     "elmsh-hl",
     "elmsh-add",
     "elmsh-del",
