@@ -27,7 +27,6 @@ import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.AudioPlayer
-import View.CodeBlock
 import View.PageBody
 
 
@@ -236,7 +235,6 @@ view app shared model =
             , [ Html.hr [ class "bg-layout-20 mb-8 mt-20 h-4 border-0" ] []
               , viewInteractions app.data.gist shared.mastodonStatuses
               ]
-            , [ View.CodeBlock.styles ]
             ]
                 |> List.concat
                 |> Html.div [ class "flex flex-col" ]

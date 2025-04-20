@@ -1,6 +1,21 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.elm", "./app/**/*.elm"],
+  safelist: [
+    "elmsh",
+    "elmsh-hl",
+    "elmsh-add",
+    "elmsh-del",
+    "elmsh-comm",
+    "elmsh1",
+    "elmsh2",
+    "elmsh3",
+    "elmsh4",
+    "elmsh5",
+    "elmsh6",
+    "elmsh7",
+  ],
+
   theme: {
     fontFamily: {
       base: 'Georgia, Cambria, "Times New Roman", Times, serif',
