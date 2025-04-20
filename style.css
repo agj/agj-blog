@@ -19,6 +19,10 @@
 
   /* Post content. */
 
+  .prose {
+    @apply flex flex-col gap-4;
+  }
+
   .prose b {
     @apply font-bold;
   }
@@ -35,33 +39,37 @@
     @apply w-full text-base;
   }
 
+  .prose section {
+    @apply mt-6 flex flex-col gap-4;
+  }
+
   .prose h1 {
     @apply text-4xl font-bold;
   }
 
-  .prose h2 {
+  .prose section section h1 {
     @apply text-2xl font-bold;
   }
 
-  .prose h3 {
+  .prose section section section h1 {
     @apply text-xl font-bold;
   }
 
-  .prose h4 {
+  .prose section section section section h1 {
     @apply text-lg font-bold;
   }
 
-  .prose h5 {
+  .prose section section section section section h1 {
     @apply text-lg font-bold;
   }
-  .prose h5::before {
+  .prose section section section section section h1::before {
     content: "▹ ";
   }
 
-  .prose h6 {
+  .prose section section section section section section h1 {
     @apply text-lg font-bold;
   }
-  .prose h6::before {
+  .prose section section section section section section h1::before {
     content: "▹▹ ";
   }
 
