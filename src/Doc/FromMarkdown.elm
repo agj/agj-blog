@@ -45,7 +45,7 @@ parse config markdown =
         |> Markdown.Parser.parse
         |> Result.mapError (List.map Markdown.Parser.deadEndToString >> String.join "\n")
         |> Result.andThen (Markdown.Renderer.render (renderer config))
-        |> Result.map intermediatesToBlocks
+        |> Result.map (intermediatesToBlocks 0 [])
         |> Result.mapError (\error -> [ Doc.Paragraph [ Doc.plainText error ] ])
         |> Result.merge
 
@@ -90,60 +90,63 @@ placeholderDoc =
         |> IntermediateInline
 
 
-intermediatesToBlocks : List (Intermediate msg) -> List (Doc.Block msg)
-intermediatesToBlocks intermediates =
-    let
-        getForSection : List (Doc.Block msg) -> { forSection : List (Doc.Block msg), afterSection : List (Doc.Block msg) }
-        getForSection blocks =
-            blocks
-                |> List.splitWhen Doc.isSection
-                |> Maybe.map (\( before, after ) -> { forSection = before, afterSection = after })
-                |> Maybe.withDefault { forSection = blocks, afterSection = [] }
-    in
-    intermediates
-        |> List.foldr
-            (\intermediate ( sectionLevel, acc ) ->
-                case intermediate of
-                    IntermediateBlock block ->
-                        ( sectionLevel
-                        , block :: acc
-                        )
+intermediatesToBlocks : Int -> List (Doc.Block msg) -> List (Intermediate msg) -> List (Doc.Block msg)
+intermediatesToBlocks currentSectionLevel acc intermediates =
+    case intermediates of
+        [] ->
+            acc
 
-                    IntermediateHeading incomingLevel inlines ->
-                        if incomingLevel >= sectionLevel then
-                            -- Parallel section
-                            let
-                                { forSection, afterSection } =
-                                    getForSection acc
-                            in
-                            ( incomingLevel
-                            , Doc.Section { heading = inlines, content = forSection }
-                                :: afterSection
+        intermediate :: nextIntermediates ->
+            case intermediate of
+                IntermediateBlock block ->
+                    intermediatesToBlocks currentSectionLevel (acc ++ [ block ]) nextIntermediates
+
+                IntermediateInline inline ->
+                    intermediatesToBlocks
+                        currentSectionLevel
+                        (acc ++ [ Doc.Paragraph [ inline ] ])
+                        nextIntermediates
+
+                IntermediateInlineList inlines ->
+                    intermediatesToBlocks
+                        currentSectionLevel
+                        (acc ++ [ Doc.Paragraph inlines ])
+                        nextIntermediates
+
+                IntermediateHeading incomingLevel inlines ->
+                    if incomingLevel > currentSectionLevel then
+                        let
+                            ( nextIntermediatesInSection, nextIntermediatesAfterSection ) =
+                                nextIntermediates
+                                    |> List.splitWhen
+                                        (\itmdt ->
+                                            case itmdt of
+                                                IntermediateHeading level _ ->
+                                                    level <= incomingLevel
+
+                                                _ ->
+                                                    False
+                                        )
+                                    |> Maybe.withDefault ( nextIntermediates, [] )
+                        in
+                        intermediatesToBlocks
+                            currentSectionLevel
+                            (acc
+                                ++ [ Doc.Section
+                                        { heading = inlines
+                                        , content = intermediatesToBlocks incomingLevel [] nextIntermediatesInSection
+                                        }
+                                   ]
                             )
+                            nextIntermediatesAfterSection
 
-                        else
-                            -- Wrapping section
-                            ( incomingLevel
-                            , [ Doc.Section { heading = inlines, content = acc } ]
-                            )
+                    else
+                        -- This is an error.
+                        []
 
-                    IntermediateInline inline ->
-                        ( sectionLevel
-                        , Doc.Paragraph [ inline ] :: acc
-                        )
-
-                    IntermediateInlineList inlines ->
-                        ( sectionLevel
-                        , Doc.Paragraph inlines :: acc
-                        )
-
-                    IntermediateCustomChild _ ->
-                        ( sectionLevel
-                        , acc
-                        )
-            )
-            ( 0, [] )
-        |> Tuple.second
+                IntermediateCustomChild _ ->
+                    -- We're supposed to have taken care of these already. Ignore.
+                    intermediatesToBlocks currentSectionLevel acc nextIntermediates
 
 
 
