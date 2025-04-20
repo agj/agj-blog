@@ -118,13 +118,3 @@ emptyStyles =
     , italic = False
     , strikethrough = False
     }
-
-
-isSection : Block msg -> Bool
-isSection block =
-    case block of
-        Section _ ->
-            True
-
-        _ ->
-            False

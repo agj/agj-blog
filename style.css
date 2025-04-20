@@ -35,6 +35,36 @@
     @apply w-full text-base;
   }
 
+  .prose h1 {
+    @apply text-4xl font-bold;
+  }
+
+  .prose h2 {
+    @apply text-2xl font-bold;
+  }
+
+  .prose h3 {
+    @apply text-xl font-bold;
+  }
+
+  .prose h4 {
+    @apply text-lg font-bold;
+  }
+
+  .prose h5 {
+    @apply text-lg font-bold;
+  }
+  .prose h5::before {
+    content: "▹ ";
+  }
+
+  .prose h6 {
+    @apply text-lg font-bold;
+  }
+  .prose h6::before {
+    content: "▹▹ ";
+  }
+
   .prose blockquote {
     @apply flex flex-col border-l-[1rem] border-solid border-layout-20 pl-6;
   }

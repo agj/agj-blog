@@ -1,14 +1,14 @@
 module Doc.ToHtml exposing (Config, noConfig, view)
 
 import Custom.Html.Attributes
+import Dict exposing (Dict)
 import Doc
 import Html exposing (Html)
-import Html.Attributes exposing (class, classList, href)
+import Html.Attributes exposing (class, href)
 import Html.Events
 import View.AudioPlayer
 import View.CodeBlock
 import View.Figure
-import View.Heading
 import View.Inline
 import View.LanguageBreak
 import View.List
@@ -179,12 +179,29 @@ viewSection config sectionDepth heading content =
     let
         newSectionDepth =
             sectionDepth + 1
+
+        hWrapper =
+            headings
+                |> Dict.get sectionDepth
+                |> Maybe.withDefault (Html.h6 [])
     in
     wrapBlocks
         [ heading
             |> List.map (viewInline config.onClick)
-            |> View.Heading.view newSectionDepth
+            |> hWrapper
         , wrapBlocks (viewInternal config newSectionDepth content)
+        ]
+
+
+headings : Dict Int (List (Html msg) -> Html msg)
+headings =
+    Dict.fromList
+        [ ( 1, Html.h1 [] )
+        , ( 2, Html.h2 [] )
+        , ( 3, Html.h3 [] )
+        , ( 4, Html.h4 [] )
+        , ( 5, Html.h5 [] )
+        , ( 6, Html.h6 [] )
         ]
 
 
