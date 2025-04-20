@@ -130,7 +130,8 @@
     background: #ffecec;
   }
   .elmsh-comm {
-    color: #969896;
+    /* Comment. */
+    @apply text-primary-60;
   }
   .elmsh1 {
     /* Period. */
