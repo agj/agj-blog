@@ -75,7 +75,7 @@ save-settings:
     }
 
     let today = date now | format date "%Y-%m-%d"
-    [".helix/*", ".env"] | each { git add -f $in }
+    [".helix/*", ".env", "importer/resources/wordpress-data.xml"] | each { git add -f $in }
     git stash -m $"⚙️ settings ($today)"
     git stash apply
     git reset
