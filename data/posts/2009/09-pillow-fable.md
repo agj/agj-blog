@@ -14,6 +14,8 @@ tags:
   - santiago
   - sound-design
   - video
+  - tracker
+  - dream
 language: eng
 ---
 

@@ -29,7 +29,7 @@ Below, the cover of the book. Here's [two pages](//piclog.agj.cl/index.php?showi
 
 It was a pleasure to do this sort of project, because I like working on educational stuff. It's difficult for me to give my best when my work's ultimate purpose is to make some fat rich guy get richer. I will hopefully do more of this kind of thing in the future.
 
-<language-break />
+<language-break language="spa" />
 
 Ya tengo en mis manos el resultado físico de medio año de trabajo, el recién impreso libro llamado _Jugosa cocina para niños_, que, además de incluir bastantes recetas que ellos pueden preparar por sí mismos (con la ayuda de un adulto), incluye todo tipo de datos relativos a los ingredientes y la gastronomía, y el cual, dice la autora, está orientado a que los niños reconozcan el valor de la comida que comen, que piensen en la nutrición, y que ejerciten su creatividad. Fue un proyecto entretenido, en el que participé como director de arte y diagramador.
 

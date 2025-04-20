@@ -11,6 +11,7 @@ tags:
   - release
   - video-game
   - visual-novel
+  - text-game
 language: eng
 ---
 
