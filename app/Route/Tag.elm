@@ -185,14 +185,14 @@ view app shared model =
             app.sharedData.posts
                 |> List.filter (showPost model.queryTags)
 
+        showPosts : Bool
+        showPosts =
+            List.length model.queryTags > 0
+
         subtitle : Html Msg
         subtitle =
             Html.p []
                 View.Snippets.backToIndex
-
-        showPosts : Bool
-        showPosts =
-            List.length model.queryTags > 0
 
         content : Html Msg
         content =
@@ -201,26 +201,23 @@ view app shared model =
                     [ class "grid gap-x-5 gap-y-8"
                     , class "md:grid-cols-[2fr_1fr]"
                     ]
-                    [ viewTagsColumn
-                        { tags = model.queryTags
-                        , postsShown = postsShown
-                        , allPosts = app.sharedData.posts
-                        , showAllTags = model.showAllRelatedTags
-                        , showingPosts = True
-                        }
+                    [ tagsColumn
                     , Data.PostList.viewGists postsShown
                     ]
 
             else
                 Html.div []
-                    [ viewTagsColumn
-                        { tags = model.queryTags
-                        , postsShown = postsShown
-                        , allPosts = app.sharedData.posts
-                        , showAllTags = model.showAllRelatedTags
-                        , showingPosts = False
-                        }
-                    ]
+                    [ tagsColumn ]
+
+        tagsColumn : Html Msg
+        tagsColumn =
+            viewTagsColumn
+                { tags = model.queryTags
+                , postsShown = postsShown
+                , allPosts = app.sharedData.posts
+                , showAllTags = model.showAllRelatedTags
+                , showingPosts = showPosts
+                }
 
         withRssFeedLinkMaybe : PageBody Msg -> PageBody Msg
         withRssFeedLinkMaybe pageBody =
