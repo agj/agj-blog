@@ -54,75 +54,57 @@ routes getStaticRoutes htmlToString =
         |> ApiRoute.literal "atom.xml"
         |> ApiRoute.single
 
-    -- Categories RSS feeds.
-    , ApiRoute.succeed
+    -- Category RSS feeds.
+    , categoryFeeds "rss.xml"
         (\categorySlug ->
-            Post.list
-                |> BackendTask.map
-                    (\posts ->
-                        posts
-                            |> List.filter
-                                (\post ->
-                                    List.member categorySlug (List.map Category.getSlug post.gist.categories)
-                                        && not post.gist.isHidden
-                                )
-                            |> rss
-                                { title = Site.name
-                                , description = Site.description
-                                , url =
-                                    "{root}/category/{categorySlug}"
-                                        |> String.replace "{root}" Site.canonicalUrl
-                                        |> String.replace "{categorySlug}" categorySlug
-                                }
-                    )
+            rss
+                { title = Site.name
+                , description = Site.description
+                , url =
+                    "{root}/category/{categorySlug}"
+                        |> String.replace "{root}" Site.canonicalUrl
+                        |> String.replace "{categorySlug}" categorySlug
+                }
         )
-        |> ApiRoute.literal "category"
-        |> ApiRoute.slash
-        -- Category slug.
-        |> ApiRoute.capture
-        |> ApiRoute.slash
-        |> ApiRoute.literal "rss.xml"
-        |> ApiRoute.preRender
-            (\route ->
-                Category.all
-                    |> List.map (\category -> route (Category.getSlug category))
-                    |> BackendTask.succeed
-            )
+
+    -- Category Atom feeds.
+    , categoryFeeds "atom.xml"
+        (\categorySlug ->
+            AtomFeed.generate
+                { title = Site.name
+                , description = Site.description
+                , url =
+                    "{root}/category/{categorySlug}"
+                        |> String.replace "{root}" Site.canonicalUrl
+                        |> String.replace "{categorySlug}" categorySlug
+                }
+        )
 
     -- Tag RSS feeds.
-    , ApiRoute.succeed
+    , tagFeeds "rss.xml"
         (\tagSlug ->
-            Post.list
-                |> BackendTask.map
-                    (\posts ->
-                        posts
-                            |> List.filter
-                                (\post ->
-                                    List.member tagSlug (List.map Tag.getSlug post.gist.tags)
-                                        && not post.gist.isHidden
-                                )
-                            |> rss
-                                { title = Site.name
-                                , description = Site.description
-                                , url =
-                                    "{root}/tag?t={tagSlug}"
-                                        |> String.replace "{root}" Site.canonicalUrl
-                                        |> String.replace "{tagSlug}" tagSlug
-                                }
-                    )
+            rss
+                { title = Site.name
+                , description = Site.description
+                , url =
+                    "{root}/tag?t={tagSlug}"
+                        |> String.replace "{root}" Site.canonicalUrl
+                        |> String.replace "{tagSlug}" tagSlug
+                }
         )
-        |> ApiRoute.literal "tag"
-        |> ApiRoute.slash
-        -- Tag slug.
-        |> ApiRoute.capture
-        |> ApiRoute.slash
-        |> ApiRoute.literal "rss.xml"
-        |> ApiRoute.preRender
-            (\route ->
-                Tag.all
-                    |> List.map (\tag -> route (Tag.getSlug tag))
-                    |> BackendTask.succeed
-            )
+
+    -- Tag Atom feeds.
+    , tagFeeds "atom.xml"
+        (\tagSlug ->
+            AtomFeed.generate
+                { title = Site.name
+                , description = Site.description
+                , url =
+                    "{root}/tag?t={tagSlug}"
+                        |> String.replace "{root}" Site.canonicalUrl
+                        |> String.replace "{tagSlug}" tagSlug
+                }
+        )
     ]
 
 
@@ -154,6 +136,66 @@ manifest =
             )
         |> BackendTask.succeed
         |> Manifest.generator Site.canonicalUrl
+
+
+categoryFeeds : String -> (String -> List Post -> String) -> ApiRoute ApiRoute.Response
+categoryFeeds filename postsToFeed =
+    ApiRoute.succeed
+        (\categorySlug ->
+            Post.list
+                |> BackendTask.map
+                    (\posts ->
+                        posts
+                            |> List.filter
+                                (\post ->
+                                    List.member categorySlug (List.map Category.getSlug post.gist.categories)
+                                        && not post.gist.isHidden
+                                )
+                            |> postsToFeed categorySlug
+                    )
+        )
+        |> ApiRoute.literal "category"
+        |> ApiRoute.slash
+        -- Category slug.
+        |> ApiRoute.capture
+        |> ApiRoute.slash
+        |> ApiRoute.literal filename
+        |> ApiRoute.preRender
+            (\route ->
+                Category.all
+                    |> List.map (\category -> route (Category.getSlug category))
+                    |> BackendTask.succeed
+            )
+
+
+tagFeeds : String -> (String -> List Post -> String) -> ApiRoute ApiRoute.Response
+tagFeeds filename postsToFeed =
+    ApiRoute.succeed
+        (\tagSlug ->
+            Post.list
+                |> BackendTask.map
+                    (\posts ->
+                        posts
+                            |> List.filter
+                                (\post ->
+                                    List.member tagSlug (List.map Tag.getSlug post.gist.tags)
+                                        && not post.gist.isHidden
+                                )
+                            |> postsToFeed tagSlug
+                    )
+        )
+        |> ApiRoute.literal "tag"
+        |> ApiRoute.slash
+        -- Tag slug.
+        |> ApiRoute.capture
+        |> ApiRoute.slash
+        |> ApiRoute.literal filename
+        |> ApiRoute.preRender
+            (\route ->
+                Tag.all
+                    |> List.map (\tag -> route (Tag.getSlug tag))
+                    |> BackendTask.succeed
+            )
 
 
 rss :
