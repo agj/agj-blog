@@ -58,7 +58,7 @@ routes getStaticRoutes htmlToString =
     , categoryFeeds "rss.xml"
         (\category ->
             rss
-                { title = Consts.siteName
+                { title = categoryFeedName category
                 , description = Consts.siteDescription
                 , url = Category.toCanonicalUrl category
                 }
@@ -68,7 +68,7 @@ routes getStaticRoutes htmlToString =
     , categoryFeeds "atom.xml"
         (\category ->
             AtomFeed.generate
-                { title = Consts.siteName
+                { title = categoryFeedName category
                 , description = Consts.siteDescription
                 , url = Category.toCanonicalUrl category
                 }
@@ -78,7 +78,7 @@ routes getStaticRoutes htmlToString =
     , tagFeeds "rss.xml"
         (\tag ->
             rss
-                { title = Consts.siteName
+                { title = tagFeedName tag
                 , description = Consts.siteDescription
                 , url = Tag.toCanonicalUrl tag []
                 }
@@ -88,7 +88,7 @@ routes getStaticRoutes htmlToString =
     , tagFeeds "atom.xml"
         (\tag ->
             AtomFeed.generate
-                { title = Consts.siteName
+                { title = tagFeedName tag
                 , description = Consts.siteDescription
                 , url = Tag.toCanonicalUrl tag []
                 }
@@ -233,3 +233,17 @@ rss config posts =
         , items = items
         , siteUrl = Consts.siteCanonicalUrl
         }
+
+
+tagFeedName : Tag -> String
+tagFeedName tag =
+    "{siteName} / Tag: {tagName}"
+        |> String.replace "{siteName}" Consts.siteName
+        |> String.replace "{tagName}" (Tag.getName tag)
+
+
+categoryFeedName : Category -> String
+categoryFeedName category =
+    "{siteName} / Category: {categoryName}"
+        |> String.replace "{siteName}" Consts.siteName
+        |> String.replace "{categoryName}" (Category.getName category)
