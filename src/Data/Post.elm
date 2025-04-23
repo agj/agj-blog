@@ -1,6 +1,7 @@
 module Data.Post exposing
     ( Post
     , PostGist
+    , gistToCanonicalUrl
     , gistToUrl
     , gistsList
     , list
@@ -10,6 +11,7 @@ module Data.Post exposing
 import BackendTask exposing (BackendTask)
 import BackendTask.File exposing (FileReadError)
 import BackendTask.Glob as Glob
+import Consts
 import Custom.Int as Int
 import Data.Category as Category exposing (Category)
 import Data.Date as Date
@@ -104,6 +106,13 @@ gistToUrl gist =
         |> String.replace "{year}" (gist.date |> Date.year |> Int.padLeft 4)
         |> String.replace "{month}" (gist.date |> Date.monthNumber |> Int.padLeft 2)
         |> String.replace "{post}" gist.slug
+
+
+gistToCanonicalUrl : PostGist -> String
+gistToCanonicalUrl gist =
+    "{root}{path}"
+        |> String.replace "{root}" Consts.siteCanonicalUrl
+        |> String.replace "{path}" (gistToUrl gist)
 
 
 

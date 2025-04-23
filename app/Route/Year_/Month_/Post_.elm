@@ -258,7 +258,7 @@ viewInteractions postGist mastodonStatuses =
     let
         shareData =
             { postTitle = postGist.title
-            , postUrl = Site.canonicalUrl ++ Post.gistToUrl postGist
+            , postUrl = Post.gistToCanonicalUrl postGist
             }
 
         tagMeToShareYourThoughtsWithMe : Html Msg

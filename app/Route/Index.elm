@@ -2,6 +2,7 @@ module Route.Index exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
 import Browser.Navigation
+import Consts
 import Data.Category as Category
 import Data.Post as Post exposing (PostGist)
 import Data.PostList
@@ -135,7 +136,7 @@ subscriptions routeParams path shared model =
 
 title : String
 title =
-    Site.name
+    Consts.siteName
 
 
 head : App Data ActionData RouteParams -> List Head.Tag

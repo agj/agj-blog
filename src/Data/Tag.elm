@@ -9,10 +9,12 @@ module Data.Tag exposing
     , listView
     , listViewShort
     , slugsToUrl
+    , toCanonicalUrl
     , toLink
     , toUrl
     )
 
+import Consts
 import Custom.Html
 import Custom.Html.Attributes
 import Custom.Int as Int
@@ -59,6 +61,13 @@ toUrl firstTag moreTags =
     slugsToUrl
         (getSlug firstTag)
         (List.map getSlug moreTags)
+
+
+toCanonicalUrl : Tag -> List Tag -> String
+toCanonicalUrl firstTag moreTags =
+    "{root}{path}"
+        |> String.replace "{root}" Consts.siteCanonicalUrl
+        |> String.replace "{path}" (toUrl firstTag moreTags)
 
 
 slugsToUrl : String -> List String -> String

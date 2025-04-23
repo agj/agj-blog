@@ -4,7 +4,6 @@ import Custom.Markdown
 import Data.Category as Category exposing (Category)
 import Data.Post as Post exposing (Post)
 import Rfc3339
-import Site
 import Time
 
 
@@ -48,7 +47,7 @@ generate config posts =
                     (\post ->
                         generateEntry
                             { title = post.gist.title
-                            , url = Site.canonicalUrl ++ Post.gistToUrl post.gist
+                            , url = Post.gistToCanonicalUrl post.gist
                             , summary = Custom.Markdown.getSummary post.markdown
                             , updated = post.gist.dateTime
                             , categories = post.gist.categories

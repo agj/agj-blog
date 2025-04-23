@@ -8,12 +8,14 @@ module Data.Category exposing
     , getName
     , getSlug
     , singleDataSource
+    , toCanonicalUrl
     , toLink
     , toUrl
     , viewList
     )
 
 import BackendTask exposing (BackendTask)
+import Consts
 import Custom.Html
 import Html exposing (Html)
 import Html.Attributes exposing (href)
@@ -72,6 +74,13 @@ toUrl : Category -> String
 toUrl category =
     "/category/{slug}"
         |> String.replace "{slug}" (getSlug category)
+
+
+toCanonicalUrl : Category -> String
+toCanonicalUrl category =
+    "{root}{path}"
+        |> String.replace "{root}" Consts.siteCanonicalUrl
+        |> String.replace "{path}" (toUrl category)
 
 
 viewList : Html msg

@@ -2,6 +2,7 @@ module Api exposing (routes)
 
 import ApiRoute exposing (ApiRoute)
 import BackendTask exposing (BackendTask)
+import Consts
 import Custom.Markdown
 import Data.AtomFeed as AtomFeed
 import Data.Category as Category exposing (Category)
@@ -16,7 +17,6 @@ import Pages
 import Pages.Manifest as Manifest
 import Route exposing (Route)
 import Rss
-import Site
 
 
 routes :
@@ -31,9 +31,9 @@ routes getStaticRoutes htmlToString =
         (Post.list
             |> BackendTask.map
                 (rss
-                    { title = Site.name
-                    , description = Site.description
-                    , url = Site.canonicalUrl
+                    { title = Consts.siteName
+                    , description = Consts.siteDescription
+                    , url = Consts.siteCanonicalUrl
                     }
                 )
         )
@@ -45,9 +45,9 @@ routes getStaticRoutes htmlToString =
         (Post.list
             |> BackendTask.map
                 (AtomFeed.generate
-                    { title = Site.name
-                    , description = Site.description
-                    , url = Site.canonicalUrl
+                    { title = Consts.siteName
+                    , description = Consts.siteDescription
+                    , url = Consts.siteCanonicalUrl
                     }
                 )
         )
@@ -58,12 +58,9 @@ routes getStaticRoutes htmlToString =
     , categoryFeeds "rss.xml"
         (\category ->
             rss
-                { title = Site.name
-                , description = Site.description
-                , url =
-                    "{root}/category/{categorySlug}"
-                        |> String.replace "{root}" Site.canonicalUrl
-                        |> String.replace "{categorySlug}" (Category.getSlug category)
+                { title = Consts.siteName
+                , description = Consts.siteDescription
+                , url = Category.toCanonicalUrl category
                 }
         )
 
@@ -71,12 +68,9 @@ routes getStaticRoutes htmlToString =
     , categoryFeeds "atom.xml"
         (\category ->
             AtomFeed.generate
-                { title = Site.name
-                , description = Site.description
-                , url =
-                    "{root}/category/{categorySlug}"
-                        |> String.replace "{root}" Site.canonicalUrl
-                        |> String.replace "{categorySlug}" (Category.getSlug category)
+                { title = Consts.siteName
+                , description = Consts.siteDescription
+                , url = Category.toCanonicalUrl category
                 }
         )
 
@@ -84,12 +78,9 @@ routes getStaticRoutes htmlToString =
     , tagFeeds "rss.xml"
         (\tag ->
             rss
-                { title = Site.name
-                , description = Site.description
-                , url =
-                    "{root}/tag?t={tagSlug}"
-                        |> String.replace "{root}" Site.canonicalUrl
-                        |> String.replace "{tagSlug}" (Tag.getSlug tag)
+                { title = Consts.siteName
+                , description = Consts.siteDescription
+                , url = Tag.toCanonicalUrl tag []
                 }
         )
 
@@ -97,12 +88,9 @@ routes getStaticRoutes htmlToString =
     , tagFeeds "atom.xml"
         (\tag ->
             AtomFeed.generate
-                { title = Site.name
-                , description = Site.description
-                , url =
-                    "{root}/tag?t={tagSlug}"
-                        |> String.replace "{root}" Site.canonicalUrl
-                        |> String.replace "{tagSlug}" (Tag.getSlug tag)
+                { title = Consts.siteName
+                , description = Consts.siteDescription
+                , url = Tag.toCanonicalUrl tag []
                 }
         )
     ]
@@ -125,8 +113,8 @@ See: <https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest
 manifest : ApiRoute ApiRoute.Response
 manifest =
     Manifest.init
-        { name = Site.name
-        , description = Site.description
+        { name = Consts.siteName
+        , description = Consts.siteDescription
         , startUrl = Route.Index |> Route.toPath
         , icons = []
         }
@@ -135,7 +123,7 @@ manifest =
                 |> LanguageTag.build emptySubtags
             )
         |> BackendTask.succeed
-        |> Manifest.generator Site.canonicalUrl
+        |> Manifest.generator Consts.siteCanonicalUrl
 
 
 categoryFeeds : String -> (Category -> List Post -> String) -> ApiRoute ApiRoute.Response
@@ -243,5 +231,5 @@ rss config posts =
         , lastBuildTime = Pages.builtAt
         , generator = Nothing
         , items = items
-        , siteUrl = Site.canonicalUrl
+        , siteUrl = Consts.siteCanonicalUrl
         }

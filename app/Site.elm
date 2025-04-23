@@ -1,14 +1,12 @@
 module Site exposing
-    ( canonicalUrl
-    , config
-    , description
-    , name
+    ( config
     , pageMeta
     , postMeta
     , windowTitle
     )
 
 import BackendTask exposing (BackendTask)
+import Consts
 import Data.Category as Category exposing (Category)
 import Data.Tag as Tag exposing (Tag)
 import DateOrDateTime
@@ -40,26 +38,11 @@ head =
 -- CUSTOMIZED
 
 
-name : String
-name =
-    "agj's blog"
-
-
-description : String
-description =
-    "I write about stuff I've made, code, thoughts, and other nonsense."
-
-
-canonicalUrl : String
-canonicalUrl =
-    "https://blog.agj.cl"
-
-
 windowTitle : String -> String
 windowTitle pageTitle =
     "{pageTitle} [{siteName}]"
         |> String.replace "{pageTitle}" pageTitle
-        |> String.replace "{siteName}" name
+        |> String.replace "{siteName}" Consts.siteName
 
 
 pageMeta : String -> List Head.Tag
@@ -98,14 +81,14 @@ metaBase : { title : String, description : Maybe String } -> Seo.Common
 metaBase info =
     Seo.summary
         { canonicalUrlOverride = Nothing
-        , siteName = name
+        , siteName = Consts.siteName
         , image =
             { url = Pages.Url.fromPath (UrlPath.fromString "/avatar.svg")
-            , alt = name
+            , alt = Consts.siteName
             , dimensions = Nothing
             , mimeType = Nothing
             }
-        , description = info.description |> Maybe.withDefault description
+        , description = info.description |> Maybe.withDefault Consts.siteDescription
         , locale = Nothing
         , title = info.title
         }
