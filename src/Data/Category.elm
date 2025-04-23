@@ -3,6 +3,7 @@ module Data.Category exposing
     , NestedCategory(..)
     , all
     , decoder
+    , fromSlug
     , getDescription
     , getName
     , getSlug

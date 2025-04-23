@@ -4,10 +4,10 @@ import ApiRoute exposing (ApiRoute)
 import BackendTask exposing (BackendTask)
 import Custom.Markdown
 import Data.AtomFeed as AtomFeed
-import Data.Category as Category
+import Data.Category as Category exposing (Category)
 import Data.Post as Post exposing (Post)
 import Data.PostList as PostList
-import Data.Tag as Tag
+import Data.Tag as Tag exposing (Tag)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
 import LanguageTag exposing (emptySubtags)
@@ -56,53 +56,53 @@ routes getStaticRoutes htmlToString =
 
     -- Category RSS feeds.
     , categoryFeeds "rss.xml"
-        (\categorySlug ->
+        (\category ->
             rss
                 { title = Site.name
                 , description = Site.description
                 , url =
                     "{root}/category/{categorySlug}"
                         |> String.replace "{root}" Site.canonicalUrl
-                        |> String.replace "{categorySlug}" categorySlug
+                        |> String.replace "{categorySlug}" (Category.getSlug category)
                 }
         )
 
     -- Category Atom feeds.
     , categoryFeeds "atom.xml"
-        (\categorySlug ->
+        (\category ->
             AtomFeed.generate
                 { title = Site.name
                 , description = Site.description
                 , url =
                     "{root}/category/{categorySlug}"
                         |> String.replace "{root}" Site.canonicalUrl
-                        |> String.replace "{categorySlug}" categorySlug
+                        |> String.replace "{categorySlug}" (Category.getSlug category)
                 }
         )
 
     -- Tag RSS feeds.
     , tagFeeds "rss.xml"
-        (\tagSlug ->
+        (\tag ->
             rss
                 { title = Site.name
                 , description = Site.description
                 , url =
                     "{root}/tag?t={tagSlug}"
                         |> String.replace "{root}" Site.canonicalUrl
-                        |> String.replace "{tagSlug}" tagSlug
+                        |> String.replace "{tagSlug}" (Tag.getSlug tag)
                 }
         )
 
     -- Tag Atom feeds.
     , tagFeeds "atom.xml"
-        (\tagSlug ->
+        (\tag ->
             AtomFeed.generate
                 { title = Site.name
                 , description = Site.description
                 , url =
                     "{root}/tag?t={tagSlug}"
                         |> String.replace "{root}" Site.canonicalUrl
-                        |> String.replace "{tagSlug}" tagSlug
+                        |> String.replace "{tagSlug}" (Tag.getSlug tag)
                 }
         )
     ]
@@ -138,21 +138,26 @@ manifest =
         |> Manifest.generator Site.canonicalUrl
 
 
-categoryFeeds : String -> (String -> List Post -> String) -> ApiRoute ApiRoute.Response
+categoryFeeds : String -> (Category -> List Post -> String) -> ApiRoute ApiRoute.Response
 categoryFeeds filename postsToFeed =
     ApiRoute.succeed
         (\categorySlug ->
-            Post.list
-                |> BackendTask.map
-                    (\posts ->
-                        posts
-                            |> List.filter
-                                (\post ->
-                                    List.member categorySlug (List.map Category.getSlug post.gist.categories)
-                                        && not post.gist.isHidden
-                                )
-                            |> postsToFeed categorySlug
-                    )
+            case Category.fromSlug categorySlug of
+                Result.Ok category ->
+                    Post.list
+                        |> BackendTask.map
+                            (\posts ->
+                                posts
+                                    |> List.filter
+                                        (\post ->
+                                            List.member categorySlug (List.map Category.getSlug post.gist.categories)
+                                                && not post.gist.isHidden
+                                        )
+                                    |> postsToFeed category
+                            )
+
+                Result.Err err ->
+                    BackendTask.fail (FatalError.fromString err)
         )
         |> ApiRoute.literal "category"
         |> ApiRoute.slash
@@ -168,21 +173,26 @@ categoryFeeds filename postsToFeed =
             )
 
 
-tagFeeds : String -> (String -> List Post -> String) -> ApiRoute ApiRoute.Response
+tagFeeds : String -> (Tag -> List Post -> String) -> ApiRoute ApiRoute.Response
 tagFeeds filename postsToFeed =
     ApiRoute.succeed
         (\tagSlug ->
-            Post.list
-                |> BackendTask.map
-                    (\posts ->
-                        posts
-                            |> List.filter
-                                (\post ->
-                                    List.member tagSlug (List.map Tag.getSlug post.gist.tags)
-                                        && not post.gist.isHidden
-                                )
-                            |> postsToFeed tagSlug
-                    )
+            case Tag.fromSlug tagSlug of
+                Result.Ok tag ->
+                    Post.list
+                        |> BackendTask.map
+                            (\posts ->
+                                posts
+                                    |> List.filter
+                                        (\post ->
+                                            List.member tagSlug (List.map Tag.getSlug post.gist.tags)
+                                                && not post.gist.isHidden
+                                        )
+                                    |> postsToFeed tag
+                            )
+
+                Result.Err err ->
+                    BackendTask.fail (FatalError.fromString err)
         )
         |> ApiRoute.literal "tag"
         |> ApiRoute.slash
