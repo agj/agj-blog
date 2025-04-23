@@ -1,13 +1,16 @@
 module Data.AtomFeed exposing (..)
 
 import Custom.Markdown
+import Data.Category as Category exposing (Category)
 import Data.Post as Post exposing (Post)
-import DateOrDateTime exposing (toIso8601)
-import Html.Attributes exposing (datetime)
 import Rfc3339
+import Site
 import Time
 
 
+{-| Atom XML feed generated according to
+[this specification](https://validator.w3.org/feed/docs/atom.html).
+-}
 generate :
     { title : String
     , url : String
@@ -18,19 +21,18 @@ generate :
 generate config posts =
     """<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title><![CDATA[{title}]]></title>
-  <link href="{url}"/>
+  <id>{url}</id>
   <updated>{updated}</updated>
+  <link href="{url}" />
+  <title><![CDATA[{title}]]></title>
   <author>
     <name>agj</name>
   </author>
-  <id>TODO</id>
-
 {entries}
 </feed>
     """
-        |> String.replace "{title}" ""
-        |> String.replace "{url}" ""
+        |> String.replace "{title}" config.title
+        |> String.replace "{url}" config.url
         |> String.replace "{updated}"
             (posts
                 |> List.sortBy (\post -> Time.posixToMillis post.gist.dateTime)
@@ -46,9 +48,10 @@ generate config posts =
                     (\post ->
                         generateEntry
                             { title = post.gist.title
-                            , url = Post.gistToUrl post.gist
+                            , url = Site.canonicalUrl ++ Post.gistToUrl post.gist
                             , summary = Custom.Markdown.getSummary post.markdown
                             , updated = post.gist.dateTime
+                            , categories = post.gist.categories
                             }
                     )
                 |> String.join ""
@@ -64,22 +67,35 @@ generateEntry :
     , url : String
     , summary : String
     , updated : Time.Posix
+    , categories : List Category
     }
     -> String
 generateEntry c =
     """
   <entry>
-    <title><![CDATA[{title}]]></title>
-    <link href="{url}"/>
     <id>{url}</id>
     <updated>{updated}</updated>
+    <link href="{url}" />
+    <title><![CDATA[{title}]]></title>
     <summary><![CDATA[{summary}]]></summary>
+    {categories}
   </entry>
     """
         |> String.replace "{title}" c.title
         |> String.replace "{url}" c.url
         |> String.replace "{updated}" (posixToRfc3339 c.updated)
         |> String.replace "{summary}" c.summary
+        |> String.replace "{categories}"
+            (List.map generateCategory c.categories
+                |> String.join " "
+            )
+
+
+generateCategory : Category -> String
+generateCategory category =
+    """<category term="{slug}" label="{name}" />"""
+        |> String.replace "{slug}" (Category.getSlug category)
+        |> String.replace "{name}" (Category.getName category)
 
 
 posixToRfc3339 : Time.Posix -> String
