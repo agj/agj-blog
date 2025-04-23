@@ -4,7 +4,7 @@ import Custom.Markdown
 import Data.Post as Post exposing (Post)
 import DateOrDateTime exposing (toIso8601)
 import Html.Attributes exposing (datetime)
-import Iso8601
+import Rfc3339
 import Time
 
 
@@ -38,7 +38,7 @@ generate config posts =
                 |> List.head
                 |> Maybe.map (\post -> post.gist.dateTime)
                 |> Maybe.withDefault (Time.millisToPosix 0)
-                |> Iso8601.fromTime
+                |> posixToRfc3339
             )
         |> String.replace "{entries}"
             (posts
@@ -78,5 +78,14 @@ generateEntry c =
     """
         |> String.replace "{title}" c.title
         |> String.replace "{url}" c.url
-        |> String.replace "{updated}" (Iso8601.fromTime c.updated)
+        |> String.replace "{updated}" (posixToRfc3339 c.updated)
         |> String.replace "{summary}" c.summary
+
+
+posixToRfc3339 : Time.Posix -> String
+posixToRfc3339 dateTime =
+    Rfc3339.DateTimeOffset
+        { instant = dateTime
+        , offset = { hour = 0, minute = 0 }
+        }
+        |> Rfc3339.toString
