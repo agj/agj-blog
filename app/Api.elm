@@ -3,6 +3,7 @@ module Api exposing (routes)
 import ApiRoute exposing (ApiRoute)
 import BackendTask exposing (BackendTask)
 import Custom.Markdown
+import Data.AtomFeed as AtomFeed
 import Data.Category as Category
 import Data.Post as Post exposing (Post)
 import Data.PostList as PostList
@@ -37,6 +38,20 @@ routes getStaticRoutes htmlToString =
                 )
         )
         |> ApiRoute.literal "rss.xml"
+        |> ApiRoute.single
+
+    -- Global Atom feed.
+    , ApiRoute.succeed
+        (Post.list
+            |> BackendTask.map
+                (AtomFeed.generate
+                    { title = Site.name
+                    , description = Site.description
+                    , url = Site.canonicalUrl
+                    }
+                )
+        )
+        |> ApiRoute.literal "atom.xml"
         |> ApiRoute.single
 
     -- Categories RSS feeds.
