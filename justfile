@@ -50,7 +50,7 @@ review-suppress: install
 # Resurface suppressed review errors.
 [group('maintenance')]
 review-unsuppress: install
-    pnpm exec elm-review ./src ./app --compiler {{lamdera}} --unsuppress
+    pnpm exec elm-review ./src ./app --compiler {{lamdera}} --unsuppress --fix
 
 # Format files.
 [group('maintenance')]
