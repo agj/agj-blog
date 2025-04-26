@@ -113,7 +113,7 @@ title app =
 head : App Data ActionData RouteParams -> List Head.Tag
 head app =
     Site.pageMeta (title app)
-        ++ [ Head.rssLink (rssUrl app.data) ]
+        ++ [ Head.rssLink (feedUrls app.data).rssUrl ]
 
 
 view :
@@ -129,6 +129,9 @@ view app shared model =
         posts =
             app.sharedData.posts
                 |> List.filter (.categories >> List.member category)
+
+        { rssUrl, atomUrl } =
+            feedUrls category
 
         titleEls : List (Html Msg)
         titleEls =
@@ -162,12 +165,24 @@ view app shared model =
             content
             |> View.PageBody.withTitleAndSubtitle titleEls subtitle
             |> View.PageBody.withRssFeed
-                (View.PageBody.FeedUrls { rssFeedUrl = rssUrl category })
+                (View.PageBody.FeedUrls
+                    { rssFeedUrl = rssUrl
+                    , atomFeedUrl = atomUrl
+                    }
+                )
             |> View.PageBody.view
     }
 
 
-rssUrl : Category -> String
-rssUrl category =
-    "/category/{categorySlug}/rss.xml"
+feedUrls : Category -> { rssUrl : String, atomUrl : String }
+feedUrls category =
+    { rssUrl = feedUrl "rss" category
+    , atomUrl = feedUrl "atom" category
+    }
+
+
+feedUrl : String -> Category -> String
+feedUrl feedName category =
+    "/category/{categorySlug}/{feedName}.xml"
+        |> String.replace "{feedName}" feedName
         |> String.replace "{categorySlug}" (Category.getSlug category)

@@ -37,7 +37,7 @@ type PageTitle msg
 
 
 type Feeds msg
-    = FeedUrls { rssFeedUrl : String }
+    = FeedUrls { rssFeedUrl : String, atomFeedUrl : String }
     | NoFeedsWithExplanation String
     | NoFeeds
 
@@ -153,7 +153,7 @@ view (PageBody config) =
 viewFeedLinks : Feeds msg -> Html msg
 viewFeedLinks feed =
     case feed of
-        FeedUrls { rssFeedUrl } ->
+        FeedUrls { rssFeedUrl, atomFeedUrl } ->
             Html.div []
                 [ Html.button
                     [ class "flex flex-row items-center gap-1"
@@ -162,13 +162,21 @@ viewFeedLinks feed =
                     [ Icon.rss Icon.Medium
                     , Html.text "Feeds"
                     ]
-                , Html.node "div"
+                , Html.div
                     [ Html.Attributes.id "feeds-list"
                     , attribute "popover" "auto"
                     , class "border-layout-30 inset-auto mt-2 rounded border-2 px-4 py-3"
                     ]
-                    [ Html.a [ href rssFeedUrl ]
-                        [ Html.text "RSS feed" ]
+                    [ Html.ul [ class "flex flex-col gap-2" ]
+                        [ Html.li []
+                            [ Html.a [ href atomFeedUrl ]
+                                [ Html.text "Atom feed" ]
+                            ]
+                        , Html.li []
+                            [ Html.a [ href rssFeedUrl ]
+                                [ Html.text "RSS feed" ]
+                            ]
+                        ]
                     ]
                 ]
 

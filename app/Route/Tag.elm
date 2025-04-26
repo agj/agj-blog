@@ -221,10 +221,15 @@ view app shared model =
 
         withRssFeedLinkMaybe : PageBody Msg -> PageBody Msg
         withRssFeedLinkMaybe pageBody =
-            case rssUrl model.queryTags of
-                Just url ->
+            case feedUrls model.queryTags of
+                Just { rssUrl, atomUrl } ->
                     pageBody
-                        |> View.PageBody.withRssFeed (View.PageBody.FeedUrls { rssFeedUrl = url })
+                        |> View.PageBody.withRssFeed
+                            (View.PageBody.FeedUrls
+                                { rssFeedUrl = rssUrl
+                                , atomFeedUrl = atomUrl
+                                }
+                            )
 
                 Nothing ->
                     pageBody
@@ -350,16 +355,24 @@ viewTagsColumn { tags, showAllTags, postsShown, allPosts, showingPosts } =
         )
 
 
-rssUrl : List Tag -> Maybe String
-rssUrl tags =
+feedUrls : List Tag -> Maybe { rssUrl : String, atomUrl : String }
+feedUrls tags =
     case tags of
         [ tag ] ->
-            "/tag/{tagSlug}/rss.xml"
-                |> String.replace "{tagSlug}" (Tag.getSlug tag)
-                |> Just
+            Just
+                { rssUrl = feedUrl "rss" tag
+                , atomUrl = feedUrl "atom" tag
+                }
 
         _ ->
             Nothing
+
+
+feedUrl : String -> Tag -> String
+feedUrl feedName tag =
+    "/tag/{tagSlug}/{feedName}.xml"
+        |> String.replace "{feedName}" feedName
+        |> String.replace "{tagSlug}" (Tag.getSlug tag)
 
 
 showPost : List Tag -> PostGist -> Bool
