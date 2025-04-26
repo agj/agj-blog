@@ -22,6 +22,23 @@
     @apply hover:bg-layout-50 hover:text-layout-20;
   }
 
+  /* Popover transitions. */
+
+  [popover] {
+    /* transform: translateY(0) scaleY(1); */
+    transition-timing-function: cubic-bezier(0.33, 1.56, 0.75, 1);
+    transition-property: transform;
+    transition-duration: 200ms;
+    transform-origin: top;
+  }
+
+  @starting-style {
+    [popover] {
+      opacity: 0;
+      transform: translateY(-0.5rem) scaleY(0.8);
+    }
+  }
+
   /*
     Post content.
   */
