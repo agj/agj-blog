@@ -1,6 +1,10 @@
 {
   "name": "elm-pages-app",
   "type": "module",
+  "scripts": {
+    "dev": "elm-pages dev --port 1234",
+    "build": "elm-pages build"
+  },
   "devDependencies": {
     "@csstools/postcss-sass": "^5.1.1",
     "autoprefixer": "^10.4.21",

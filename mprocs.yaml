@@ -1,6 +1,6 @@
 procs:
   dev:
-    shell: just qr && pnpm exec elm-pages dev --port 1234
+    shell: just qr && pnpm run dev
     autostart: true
   review:
     shell: pnpm exec elm-review ./src ./app --compiler "./node_modules/.bin/lamdera" --watch --fix
