@@ -166,7 +166,7 @@ viewItem { onClick, count, tagsToAddTo } tag =
         , if List.length tagsToAddTo > 0 then
             Html.a
                 [ attribute "aria" "button"
-                , class "button text-layout-50 size-4 align-middle"
+                , class "button text-layout-50 size-4"
                 , href (toUrl tag tagsToAddTo)
                 , maybeOnClick onClick (toUrl tag tagsToAddTo)
                 ]
