@@ -132,6 +132,7 @@ view (PageBody config) =
                         , Html.node "div"
                             [ Html.Attributes.id "feeds-list"
                             , attribute "popover" "auto"
+                            , class "border-layout-30 inset-auto mt-2 rounded border-2 px-4 py-3"
                             ]
                             [ Html.a [ href url ]
                                 [ Html.text "RSS feed" ]
