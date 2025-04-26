@@ -11,6 +11,7 @@ import Data.Mastodon.Status exposing (MastodonStatus)
 import Data.Post as Post exposing (PostGist)
 import Dict exposing (Dict)
 import Effect exposing (Effect)
+import Elm exposing (portOutgoing)
 import FatalError exposing (FatalError)
 import Flags
 import Html exposing (Html)
@@ -18,6 +19,7 @@ import Http
 import Json.Decode
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
+import Ports
 import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
 import Theme exposing (Theme)
@@ -93,6 +95,7 @@ data =
 
 type Msg
     = SelectedChangeTheme
+    | RequestedOpenFeedsList
     | RequestedMastodonStatus String
     | GotMastodonStatus String (Result Http.Error MastodonStatus)
 
@@ -116,6 +119,11 @@ update msg model =
                 [ Effect.SaveConfig { theme = newTheme }
                 , Effect.SetTheme newTheme
                 ]
+            )
+
+        RequestedOpenFeedsList ->
+            ( model
+            , Effect.Cmd Ports.openFeedsList
             )
 
         RequestedMastodonStatus statusId ->

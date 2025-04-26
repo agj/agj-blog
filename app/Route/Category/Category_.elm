@@ -161,7 +161,12 @@ view app shared model =
             }
             content
             |> View.PageBody.withTitleAndSubtitle titleEls subtitle
-            |> View.PageBody.withRssFeed (View.PageBody.RssFeedUrl (rssUrl category))
+            |> View.PageBody.withRssFeed
+                (View.PageBody.RssFeedUrl
+                    { url = rssUrl category
+                    , onRequestedOpenFeedsList = SharedMsg Shared.RequestedOpenFeedsList
+                    }
+                )
             |> View.PageBody.view
     }
 

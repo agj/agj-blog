@@ -24,9 +24,9 @@ type PageBody msg
         { content : Html msg
         , title : PageTitle msg
         , theme : Theme
-        , onRequestedChangeTheme : msg
-        , rssFeed : RssFeed
+        , rssFeed : RssFeed msg
         , showAboutLink : Bool
+        , onRequestedChangeTheme : msg
         }
 
 
@@ -36,8 +36,11 @@ type PageTitle msg
     | PageTitleAndSubtitle (List (Html msg)) (Html msg)
 
 
-type RssFeed
-    = RssFeedUrl String
+type RssFeed msg
+    = RssFeedUrl
+        { url : String
+        , onRequestedOpenFeedsList : msg
+        }
     | NoRssFeedWithExplanation String
     | NoRssFeed
 
@@ -69,7 +72,7 @@ withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
     PageBody { config | title = PageTitleAndSubtitle titleInlines subtitleBlock }
 
 
-withRssFeed : RssFeed -> PageBody msg -> PageBody msg
+withRssFeed : RssFeed msg -> PageBody msg -> PageBody msg
 withRssFeed rssFeed (PageBody config) =
     PageBody { config | rssFeed = rssFeed }
 
@@ -120,10 +123,20 @@ view (PageBody config) =
         rssFeedLink : Html msg
         rssFeedLink =
             case config.rssFeed of
-                RssFeedUrl url ->
-                    Html.a [ href url, class "flex flex-row items-center gap-1" ]
-                        [ Icon.rss Icon.Medium
-                        , Html.text "RSS feed"
+                RssFeedUrl { url, onRequestedOpenFeedsList } ->
+                    Html.div []
+                        [ Html.button
+                            [ class "flex flex-row items-center gap-1"
+                            , Html.Events.onClick onRequestedOpenFeedsList
+                            ]
+                            [ Icon.rss Icon.Medium
+                            , Html.text "Feeds"
+                            ]
+                        , Html.node "dialog"
+                            [ Html.Attributes.id "feeds-list" ]
+                            [ Html.a [ href url ]
+                                [ Html.text "RSS feed" ]
+                            ]
                         ]
 
                 NoRssFeedWithExplanation explanation ->
