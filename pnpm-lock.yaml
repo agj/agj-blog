@@ -24,8 +24,8 @@ importers:
         specifier: ^0.3.5
         version: 0.3.5
       elm-pages:
-        specifier: 3.0.22
-        version: 3.0.22(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(yaml@2.7.0)
+        specifier: 3.0.23
+        version: 3.0.23(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(yaml@2.7.0)
       elm-review:
         specifier: ^2.13.2
         version: 2.13.2
@@ -48,8 +48,8 @@ importers:
         specifier: '3'
         version: 3.4.17
       vite:
-        specifier: ^6.2.2
-        version: 6.2.2(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(terser@5.39.0)(yaml@2.7.0)
+        specifier: ^6.3.3
+        version: 6.3.3(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(terser@5.39.0)(yaml@2.7.0)
 
 packages:
 
@@ -974,8 +974,8 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  elm-pages@3.0.22:
-    resolution: {integrity: sha512-Q2h9YPmIZu/q+LK2dFk7eh5EdpAPRUXekeZwCnzETZsw83wmN9bHZ64ekn3P7jL5ZpjS5VQ3FipvDI1AoOEkuA==}
+  elm-pages@3.0.23:
+    resolution: {integrity: sha512-YocKfl57p0YJeLZCw9YmPsbdHfM+6sjq7HZ2Sz4E2aAoHoAcJABFFPXryXXAVPnLl6S2QQQ48FXsyLsRXqt3DQ==}
     hasBin: true
 
   elm-review-tailwindcss-postcss-plugin@1.1.0:
@@ -1081,6 +1081,14 @@ packages:
 
   fdir@6.4.3:
     resolution: {integrity: sha512-PMXmW2y1hDDfTSRc9gaXIuCCRpuoz3Kaz8cUelp3smouvfT632ozg2vrT6lJsHKKOF59YLbOGfAWGUcKEfRMQw==}
+    peerDependencies:
+      picomatch: ^3 || ^4
+    peerDependenciesMeta:
+      picomatch:
+        optional: true
+
+  fdir@6.4.4:
+    resolution: {integrity: sha512-1NZP+GK4GfuAv3PqKvxQRDMjdSRZjnkq7KfhlNrCNNlZ0ygQFpebfrnfnq/W7fpUnAv9aGWmY1zKx7FYL3gwhg==}
     peerDependencies:
       picomatch: ^3 || ^4
     peerDependenciesMeta:
@@ -2271,6 +2279,10 @@ packages:
     resolution: {integrity: sha512-qkf4trmKSIiMTs/E63cxH+ojC2unam7rJ0WrauAzpT3ECNTxGRMlaXxVbfxMUC/w0LaYk6jQ4y/nGR9uBO3tww==}
     engines: {node: '>=12.0.0'}
 
+  tinyglobby@0.2.13:
+    resolution: {integrity: sha512-mEwzpUgrLySlveBwEVDMKk5B57bhLPYovRfPAXD5gA/98Opn0rCDj3GtLwFvCvH5RK9uPCExUROW5NjDwvqkxw==}
+    engines: {node: '>=12.0.0'}
+
   tmp@0.0.33:
     resolution: {integrity: sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==}
     engines: {node: '>=0.6.0'}
@@ -2358,8 +2370,8 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  vite@6.2.2:
-    resolution: {integrity: sha512-yW7PeMM+LkDzc7CgJuRLMW2Jz0FxMOsVJ8Lv3gpgW9WLcb9cTW+121UEr1hvmfR7w3SegR5ItvYyzVz1vxNJgQ==}
+  vite@6.3.3:
+    resolution: {integrity: sha512-5nXH+QsELbFKhsEfWLkHrvgRpTdGJzqOZ+utSdmPTvwHmvU6ITTm3xx+mRusihkcI8GeC7lCDyn3kDtiki9scw==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
     peerDependencies:
@@ -3261,7 +3273,7 @@ snapshots:
       ts-union: 2.3.0
       typescript: 4.9.5
 
-  elm-pages@3.0.22(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(yaml@2.7.0):
+  elm-pages@3.0.23(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(yaml@2.7.0):
     dependencies:
       '@sindresorhus/merge-streams': 4.0.0
       busboy: 1.6.0
@@ -3285,7 +3297,7 @@ snapshots:
       micromatch: 4.0.8
       serve-static: 1.16.2
       terser: 5.39.0
-      vite: 6.2.2(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(terser@5.39.0)(yaml@2.7.0)
+      vite: 6.3.3(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(terser@5.39.0)(yaml@2.7.0)
       which: 5.0.0
     transitivePeerDependencies:
       - '@types/node'
@@ -3471,6 +3483,10 @@ snapshots:
       reusify: 1.0.4
 
   fdir@6.4.3(picomatch@4.0.2):
+    optionalDependencies:
+      picomatch: 4.0.2
+
+  fdir@6.4.4(picomatch@4.0.2):
     optionalDependencies:
       picomatch: 4.0.2
 
@@ -4633,6 +4649,11 @@ snapshots:
       fdir: 6.4.3(picomatch@4.0.2)
       picomatch: 4.0.2
 
+  tinyglobby@0.2.13:
+    dependencies:
+      fdir: 6.4.4(picomatch@4.0.2)
+      picomatch: 4.0.2
+
   tmp@0.0.33:
     dependencies:
       os-tmpdir: 1.0.2
@@ -4694,11 +4715,14 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite@6.2.2(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(terser@5.39.0)(yaml@2.7.0):
+  vite@6.3.3(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(terser@5.39.0)(yaml@2.7.0):
     dependencies:
       esbuild: 0.25.1
+      fdir: 6.4.4(picomatch@4.0.2)
+      picomatch: 4.0.2
       postcss: 8.5.3
       rollup: 4.36.0
+      tinyglobby: 0.2.13
     optionalDependencies:
       '@types/node': 22.10.3
       fsevents: 2.3.3
