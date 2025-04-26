@@ -25,6 +25,7 @@
             pkgs.nodejs-slim_18
             pkgs.nushell
             pkgs.pnpm
+            pkgs.qrtool
             pkgs.rsync
           ];
         };

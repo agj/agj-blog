@@ -1,4 +1,5 @@
 lamdera := "./node_modules/.bin/lamdera"
+server-port := "1234"
 
 [private]
 @default:
@@ -10,8 +11,8 @@ init:
     nix develop -c "$$SHELL"
 
 # Run development server.
-dev: install
-    pnpm run start
+dev: install qr
+    pnpm exec elm-pages dev --port {{server-port}}
 
 # Run `dev` and `review-watch` in parallel.
 dev-review: install
@@ -19,7 +20,7 @@ dev-review: install
 
 # Build for release.
 build: install
-    pnpm run build
+    pnpm exec elm-pages build
 
 # Deploy built files.
 deploy:
@@ -58,6 +59,15 @@ format:
     prettier --write '**/*.{js,ts,md,css,scss}'
 
 # Other
+
+# Display QR code to access the `dev` server.
+[group('other')]
+qr:
+    #!/usr/bin/env nu
+    let ip = sys net | where name == "en0" | get ip | get 0 | where protocol == "ipv4" | get address | get 0
+    let url = $"http://($ip):{{server-port}}"
+    qrtool encode -t ansi256 $url
+    print $url
 
 # Removes generated and downloaded data.
 [group('other')]
