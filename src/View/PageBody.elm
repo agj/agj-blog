@@ -117,54 +117,6 @@ view (PageBody config) =
             else
                 Custom.Html.none
 
-        rssFeedLink : Html msg
-        rssFeedLink =
-            case config.rssFeed of
-                RssFeedUrl { url } ->
-                    Html.div []
-                        [ Html.button
-                            [ class "flex flex-row items-center gap-1"
-                            , attribute "popovertarget" "feeds-list"
-                            ]
-                            [ Icon.rss Icon.Medium
-                            , Html.text "Feeds"
-                            ]
-                        , Html.node "div"
-                            [ Html.Attributes.id "feeds-list"
-                            , attribute "popover" "auto"
-                            , class "border-layout-30 inset-auto mt-2 rounded border-2 px-4 py-3"
-                            ]
-                            [ Html.a [ href url ]
-                                [ Html.text "RSS feed" ]
-                            ]
-                        ]
-
-                NoRssFeedWithExplanation explanation ->
-                    let
-                        tooltipId =
-                            "no-rss-feed-explanation"
-                    in
-                    Html.div [ class "group relative flex flex-col items-end" ]
-                        [ Html.div
-                            [ ariaDescribedBy [ tooltipId ]
-                            , class "flex cursor-help flex-row items-center gap-1"
-                            ]
-                            [ Html.text "No RSS feed"
-                            , Icon.info Icon.Small
-                            ]
-                        , Html.div
-                            [ roleTooltip
-                            , id tooltipId
-                            , class "bg-layout-80 text-layout-30 w-max max-w-60 rounded p-3 text-xs leading-normal"
-                            , class "pointer-events-none invisible absolute top-8 z-10 opacity-0 transition-all delay-100"
-                            , class "group-hover:visible group-hover:opacity-100"
-                            ]
-                            [ Html.text explanation ]
-                        ]
-
-                NoRssFeed ->
-                    Custom.Html.none
-
         header : Html msg
         header =
             case title of
@@ -176,7 +128,7 @@ view (PageBody config) =
                         [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
                             [ Html.div [ class "mt-2 flex w-full flex-row items-center justify-end gap-4 px-4 text-sm", class pageMaxWidth ]
                                 [ aboutLink
-                                , rssFeedLink
+                                , viewFeedLinks config.rssFeed
                                 , changeThemeButtonView config
                                 ]
                             , Html.div [ class "w-full flex-grow px-4 pb-2", class pageMaxWidth ]
@@ -196,6 +148,55 @@ view (PageBody config) =
         , content
         ]
         |> Html.map PagesMsg.fromMsg
+
+
+viewFeedLinks : RssFeed msg -> Html msg
+viewFeedLinks feed =
+    case feed of
+        RssFeedUrl { url } ->
+            Html.div []
+                [ Html.button
+                    [ class "flex flex-row items-center gap-1"
+                    , attribute "popovertarget" "feeds-list"
+                    ]
+                    [ Icon.rss Icon.Medium
+                    , Html.text "Feeds"
+                    ]
+                , Html.node "div"
+                    [ Html.Attributes.id "feeds-list"
+                    , attribute "popover" "auto"
+                    , class "border-layout-30 inset-auto mt-2 rounded border-2 px-4 py-3"
+                    ]
+                    [ Html.a [ href url ]
+                        [ Html.text "RSS feed" ]
+                    ]
+                ]
+
+        NoRssFeedWithExplanation explanation ->
+            let
+                tooltipId =
+                    "no-rss-feed-explanation"
+            in
+            Html.div [ class "group relative flex flex-col items-end" ]
+                [ Html.div
+                    [ ariaDescribedBy [ tooltipId ]
+                    , class "flex cursor-help flex-row items-center gap-1"
+                    ]
+                    [ Html.text "No RSS feed"
+                    , Icon.info Icon.Small
+                    ]
+                , Html.div
+                    [ roleTooltip
+                    , id tooltipId
+                    , class "bg-layout-80 text-layout-30 w-max max-w-60 rounded p-3 text-xs leading-normal"
+                    , class "pointer-events-none invisible absolute top-8 z-10 opacity-0 transition-all delay-100"
+                    , class "group-hover:visible group-hover:opacity-100"
+                    ]
+                    [ Html.text explanation ]
+                ]
+
+        NoRssFeed ->
+            Custom.Html.none
 
 
 changeThemeButtonView :
