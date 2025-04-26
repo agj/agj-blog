@@ -336,7 +336,7 @@ viewTagsColumn { tags, showAllTags, postsShown, allPosts, showingPosts } =
             , [ viewIf showingPosts
                     (Html.button
                         [ onClick (ShowAllRelatedTagsStatusChanged (not showAllTags))
-                        , class "bg-layout-20 text-layout-70 flex flex-row items-center gap-1 rounded p-1 text-xs"
+                        , class "button bg-layout-20 gap-1 px-1 py-0.5 text-xs"
                         , attributeIf showingPosts (class "md:hidden")
                         ]
                         (if showAllTags then

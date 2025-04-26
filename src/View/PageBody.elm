@@ -156,7 +156,7 @@ viewFeedLinks feed =
         FeedUrls { rssFeedUrl, atomFeedUrl } ->
             Html.div []
                 [ Html.button
-                    [ class "flex flex-row items-center gap-1"
+                    [ class "button gap-1 px-1 py-0.5"
                     , attribute "popovertarget" "feeds-list"
                     ]
                     [ Icon.rss Icon.Medium
@@ -219,8 +219,7 @@ changeThemeButtonView config =
             Theme.change config.theme
     in
     Html.button
-        [ class "flex size-6 items-center justify-center rounded text-inherit"
-        , class "hover:bg-layout-50 hover:text-layout-20"
+        [ class "button size-6"
         , Html.Events.onClick config.onRequestedChangeTheme
         ]
         [ (case ( nextTheme.set, nextTheme.default ) of

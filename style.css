@@ -17,6 +17,11 @@
     @apply text-inherit underline decoration-primary-20 decoration-2 underline-offset-4 hover:text-primary-50;
   }
 
+  .button {
+    @apply flex flex-row items-center justify-center rounded text-inherit;
+    @apply hover:bg-layout-50 hover:text-layout-20;
+  }
+
   /*
     Post content.
   */
