@@ -212,7 +212,7 @@ view app shared model =
             content
             |> View.PageBody.withTitle
                 [ Html.text title ]
-            |> View.PageBody.withRssFeed (View.PageBody.RssFeedUrl { url = rssUrl })
+            |> View.PageBody.withRssFeed (View.PageBody.FeedUrls { rssFeedUrl = rssUrl })
             |> View.PageBody.view
     }
 

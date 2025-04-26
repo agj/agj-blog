@@ -162,7 +162,7 @@ view app shared model =
             content
             |> View.PageBody.withTitleAndSubtitle titleEls subtitle
             |> View.PageBody.withRssFeed
-                (View.PageBody.RssFeedUrl { url = rssUrl category })
+                (View.PageBody.FeedUrls { rssFeedUrl = rssUrl category })
             |> View.PageBody.view
     }
 

@@ -1,6 +1,6 @@
 module View.PageBody exposing
-    ( PageBody
-    , RssFeed(..)
+    ( Feeds(..)
+    , PageBody
     , fromContent
     , view
     , withRssFeed
@@ -24,7 +24,7 @@ type PageBody msg
         { content : Html msg
         , title : PageTitle msg
         , theme : Theme
-        , rssFeed : RssFeed msg
+        , rssFeed : Feeds msg
         , showAboutLink : Bool
         , onRequestedChangeTheme : msg
         }
@@ -36,10 +36,10 @@ type PageTitle msg
     | PageTitleAndSubtitle (List (Html msg)) (Html msg)
 
 
-type RssFeed msg
-    = RssFeedUrl { url : String }
-    | NoRssFeedWithExplanation String
-    | NoRssFeed
+type Feeds msg
+    = FeedUrls { rssFeedUrl : String }
+    | NoFeedsWithExplanation String
+    | NoFeeds
 
 
 fromContent :
@@ -54,7 +54,7 @@ fromContent config content =
         , title = NoPageTitle
         , theme = config.theme
         , onRequestedChangeTheme = config.onRequestedChangeTheme
-        , rssFeed = NoRssFeed
+        , rssFeed = NoFeeds
         , showAboutLink = True
         }
 
@@ -69,7 +69,7 @@ withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
     PageBody { config | title = PageTitleAndSubtitle titleInlines subtitleBlock }
 
 
-withRssFeed : RssFeed msg -> PageBody msg -> PageBody msg
+withRssFeed : Feeds msg -> PageBody msg -> PageBody msg
 withRssFeed rssFeed (PageBody config) =
     PageBody { config | rssFeed = rssFeed }
 
@@ -150,10 +150,10 @@ view (PageBody config) =
         |> Html.map PagesMsg.fromMsg
 
 
-viewFeedLinks : RssFeed msg -> Html msg
+viewFeedLinks : Feeds msg -> Html msg
 viewFeedLinks feed =
     case feed of
-        RssFeedUrl { url } ->
+        FeedUrls { rssFeedUrl } ->
             Html.div []
                 [ Html.button
                     [ class "flex flex-row items-center gap-1"
@@ -167,12 +167,12 @@ viewFeedLinks feed =
                     , attribute "popover" "auto"
                     , class "border-layout-30 inset-auto mt-2 rounded border-2 px-4 py-3"
                     ]
-                    [ Html.a [ href url ]
+                    [ Html.a [ href rssFeedUrl ]
                         [ Html.text "RSS feed" ]
                     ]
                 ]
 
-        NoRssFeedWithExplanation explanation ->
+        NoFeedsWithExplanation explanation ->
             let
                 tooltipId =
                     "no-rss-feed-explanation"
@@ -195,7 +195,7 @@ viewFeedLinks feed =
                     [ Html.text explanation ]
                 ]
 
-        NoRssFeed ->
+        NoFeeds ->
             Custom.Html.none
 
 

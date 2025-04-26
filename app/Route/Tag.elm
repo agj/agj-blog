@@ -224,12 +224,12 @@ view app shared model =
             case rssUrl model.queryTags of
                 Just url ->
                     pageBody
-                        |> View.PageBody.withRssFeed (View.PageBody.RssFeedUrl { url = url })
+                        |> View.PageBody.withRssFeed (View.PageBody.FeedUrls { rssFeedUrl = url })
 
                 Nothing ->
                     pageBody
                         |> View.PageBody.withRssFeed
-                            (View.PageBody.NoRssFeedWithExplanation
+                            (View.PageBody.NoFeedsWithExplanation
                                 "RSS feeds are available for single tags only. You currently have multiple tags selected."
                             )
     in
