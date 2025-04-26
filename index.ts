@@ -43,12 +43,6 @@ const config: ElmPagesInit = {
           localStorage.setItem("config", JSON.stringify(value));
         } else if (msg === "setTheme") {
           setTheme(value);
-        } else if (msg === "openFeedsList") {
-          console.log(msg);
-          const feedsList = document.getElementById("feeds-list");
-          if (feedsList instanceof HTMLDialogElement) {
-            feedsList.showModal();
-          }
         }
       },
     );

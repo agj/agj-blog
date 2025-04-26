@@ -1,4 +1,4 @@
-port module Ports exposing (listenQueryParamsChanges, openFeedsList, saveConfig, setTheme)
+port module Ports exposing (listenQueryParamsChanges, saveConfig, setTheme)
 
 import AppUrl exposing (QueryParameters)
 import Flags exposing (Flags)
@@ -20,11 +20,6 @@ saveConfig flags =
 setTheme : Theme -> Cmd msg
 setTheme theme =
     sendOut "setTheme" (Theme.encode theme)
-
-
-openFeedsList : Cmd msg
-openFeedsList =
-    sendOut "openFeedsList" Json.Encode.null
 
 
 

@@ -12,7 +12,7 @@ module View.PageBody exposing
 import Custom.Html
 import Custom.Html.Attributes exposing (ariaDescribedBy, roleTooltip)
 import Html exposing (Html)
-import Html.Attributes exposing (class, href, id)
+import Html.Attributes exposing (attribute, class, href, id)
 import Html.Events
 import Icon
 import PagesMsg exposing (PagesMsg)
@@ -37,10 +37,7 @@ type PageTitle msg
 
 
 type RssFeed msg
-    = RssFeedUrl
-        { url : String
-        , onRequestedOpenFeedsList : msg
-        }
+    = RssFeedUrl { url : String }
     | NoRssFeedWithExplanation String
     | NoRssFeed
 
@@ -123,17 +120,19 @@ view (PageBody config) =
         rssFeedLink : Html msg
         rssFeedLink =
             case config.rssFeed of
-                RssFeedUrl { url, onRequestedOpenFeedsList } ->
+                RssFeedUrl { url } ->
                     Html.div []
                         [ Html.button
                             [ class "flex flex-row items-center gap-1"
-                            , Html.Events.onClick onRequestedOpenFeedsList
+                            , attribute "popovertarget" "feeds-list"
                             ]
                             [ Icon.rss Icon.Medium
                             , Html.text "Feeds"
                             ]
-                        , Html.node "dialog"
-                            [ Html.Attributes.id "feeds-list" ]
+                        , Html.node "div"
+                            [ Html.Attributes.id "feeds-list"
+                            , attribute "popover" "auto"
+                            ]
                             [ Html.a [ href url ]
                                 [ Html.text "RSS feed" ]
                             ]

@@ -224,12 +224,7 @@ view app shared model =
             case rssUrl model.queryTags of
                 Just url ->
                     pageBody
-                        |> View.PageBody.withRssFeed
-                            (View.PageBody.RssFeedUrl
-                                { url = url
-                                , onRequestedOpenFeedsList = SharedMsg Shared.RequestedOpenFeedsList
-                                }
-                            )
+                        |> View.PageBody.withRssFeed (View.PageBody.RssFeedUrl { url = url })
 
                 Nothing ->
                     pageBody

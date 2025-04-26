@@ -95,7 +95,6 @@ data =
 
 type Msg
     = SelectedChangeTheme
-    | RequestedOpenFeedsList
     | RequestedMastodonStatus String
     | GotMastodonStatus String (Result Http.Error MastodonStatus)
 
@@ -119,11 +118,6 @@ update msg model =
                 [ Effect.SaveConfig { theme = newTheme }
                 , Effect.SetTheme newTheme
                 ]
-            )
-
-        RequestedOpenFeedsList ->
-            ( model
-            , Effect.Cmd Ports.openFeedsList
             )
 
         RequestedMastodonStatus statusId ->
