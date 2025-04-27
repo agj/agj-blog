@@ -157,14 +157,14 @@ viewFeedLinks feed =
             Html.div []
                 [ Html.button
                     [ class "button gap-1 px-1 py-0.5"
-                    , attribute "popovertarget" "feeds-list"
+                    , Custom.Html.Attributes.popoverTarget "feeds-list"
                     ]
                     [ Icon.rss Icon.Medium
                     , Html.text "Feeds"
                     ]
                 , Html.div
                     [ Html.Attributes.id "feeds-list"
-                    , attribute "popover" "auto"
+                    , Custom.Html.Attributes.popoverAuto
                     , class "border-layout-30 inset-auto mt-2 rounded border-2 px-4 py-3"
                     ]
                     [ Html.ul [ class "flex flex-col gap-2" ]
