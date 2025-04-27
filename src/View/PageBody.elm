@@ -154,16 +154,20 @@ viewFeedLinks : Feeds msg -> Html msg
 viewFeedLinks feed =
     case feed of
         FeedUrls { rssFeedUrl, atomFeedUrl } ->
+            let
+                feedsListId =
+                    "feeds-list"
+            in
             Html.div []
                 [ Html.button
                     [ class "button gap-1 px-1 py-0.5"
-                    , Custom.Html.Attributes.popoverTarget "feeds-list"
+                    , Custom.Html.Attributes.popoverTarget feedsListId
                     ]
                     [ Icon.rss Icon.Medium
                     , Html.text "Feeds"
                     ]
                 , Html.div
-                    [ Html.Attributes.id "feeds-list"
+                    [ Html.Attributes.id feedsListId
                     , Custom.Html.Attributes.popoverAuto
                     , class "card inset-auto mt-2"
                     ]
