@@ -22,6 +22,10 @@
     @apply hover:bg-layout-50 hover:text-layout-20;
   }
 
+  .card {
+    @apply rounded border-2 border-layout-20 bg-layout-10 px-4 py-3;
+  }
+
   /* Popover transitions. */
 
   [popover] {

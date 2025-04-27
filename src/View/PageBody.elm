@@ -12,7 +12,7 @@ module View.PageBody exposing
 import Custom.Html
 import Custom.Html.Attributes exposing (ariaDescribedBy, roleTooltip)
 import Html exposing (Html)
-import Html.Attributes exposing (attribute, class, href, id)
+import Html.Attributes exposing (class, href, id)
 import Html.Events
 import Icon
 import PagesMsg exposing (PagesMsg)
@@ -165,7 +165,7 @@ viewFeedLinks feed =
                 , Html.div
                     [ Html.Attributes.id "feeds-list"
                     , Custom.Html.Attributes.popoverAuto
-                    , class "border-layout-30 inset-auto mt-2 rounded border-2 px-4 py-3"
+                    , class "card inset-auto mt-2"
                     ]
                     [ Html.ul [ class "flex flex-col gap-2" ]
                         [ Html.li []
@@ -188,15 +188,13 @@ viewFeedLinks feed =
             Html.div [ class "group relative flex flex-col items-end" ]
                 [ Html.div
                     [ ariaDescribedBy [ tooltipId ]
-                    , class "flex cursor-help flex-row items-center gap-1"
+                    , class "decoration-primary-20 flex cursor-help flex-row items-center gap-1 underline decoration-dotted decoration-2 underline-offset-4"
                     ]
-                    [ Html.text "No RSS feed"
-                    , Icon.info Icon.Small
-                    ]
+                    [ Html.text "No RSS feed" ]
                 , Html.div
                     [ roleTooltip
                     , id tooltipId
-                    , class "bg-layout-80 text-layout-30 w-max max-w-60 rounded p-3 text-xs leading-normal"
+                    , class "card text-layout-50 w-max max-w-60 text-xs leading-normal"
                     , class "pointer-events-none invisible absolute top-8 z-10 opacity-0 transition-all delay-100"
                     , class "group-hover:visible group-hover:opacity-100"
                     ]
