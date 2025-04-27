@@ -4,32 +4,40 @@ module Custom.Html.Attributes exposing
     , popoverAuto
     , popoverTarget
     , roleTooltip
+    , tabIndex
     )
 
 import Html exposing (Attribute)
-import Html.Attributes
+import Html.Attributes exposing (attribute)
 
 
 ariaDescribedBy : List String -> Attribute msg
 ariaDescribedBy elementIds =
-    Html.Attributes.attribute "aria-describedby" (String.join " " elementIds)
+    attribute "aria-describedby" (String.join " " elementIds)
 
 
 roleTooltip : Attribute msg
 roleTooltip =
-    Html.Attributes.attribute "role" "tooltip"
+    attribute "role" "tooltip"
 
 
 popoverAuto : Attribute msg
 popoverAuto =
-    Html.Attributes.attribute "popover" "auto"
+    attribute "popover" "auto"
 
 
 popoverTarget : String -> Attribute msg
 popoverTarget targetElementId =
-    Html.Attributes.attribute "popovertarget" targetElementId
+    attribute "popovertarget" targetElementId
 
 
 none : Attribute msg
 none =
     Html.Attributes.classList []
+
+
+{-| Use `0` to make any element able to receive keyboard focus.
+-}
+tabIndex : Int -> Attribute msg
+tabIndex index =
+    attribute "tabindex" (String.fromInt index)

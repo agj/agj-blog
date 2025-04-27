@@ -10,7 +10,7 @@ module View.PageBody exposing
     )
 
 import Custom.Html
-import Custom.Html.Attributes exposing (ariaDescribedBy, roleTooltip)
+import Custom.Html.Attributes exposing (ariaDescribedBy, roleTooltip, tabIndex)
 import Html exposing (Html)
 import Html.Attributes exposing (class, href, id)
 import Html.Events
@@ -185,7 +185,10 @@ viewFeedLinks feed =
                 tooltipId =
                     "no-rss-feed-explanation"
             in
-            Html.div [ class "group relative flex flex-col items-end" ]
+            Html.div
+                [ class "group relative flex flex-col items-end"
+                , tabIndex 0
+                ]
                 [ Html.div
                     [ ariaDescribedBy [ tooltipId ]
                     , class "decoration-primary-20 flex cursor-help flex-row items-center gap-1 underline decoration-dotted decoration-2 underline-offset-4"
@@ -196,7 +199,7 @@ viewFeedLinks feed =
                     , id tooltipId
                     , class "card text-layout-50 w-max max-w-60 text-xs leading-normal"
                     , class "pointer-events-none invisible absolute top-8 z-10 opacity-0 transition-all delay-100"
-                    , class "group-hover:visible group-hover:opacity-100"
+                    , class "group-hover:visible group-hover:opacity-100 group-focus:visible group-focus:opacity-100"
                     ]
                     [ Html.text explanation ]
                 ]
