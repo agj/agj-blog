@@ -4,6 +4,7 @@
   "learn more": "elm-review suppress --help",
   "suppressions": [
     { "count": 2, "filePath": "app/Effect.elm" },
+    { "count": 2, "filePath": "src/Icon.elm" },
     { "count": 1, "filePath": "app/Api.elm" },
     { "count": 1, "filePath": "app/ErrorPage.elm" },
     { "count": 1, "filePath": "app/Route/About.elm" },
@@ -17,7 +18,6 @@
     { "count": 1, "filePath": "app/Shared.elm" },
     { "count": 1, "filePath": "app/Site.elm" },
     { "count": 1, "filePath": "app/View.elm" },
-    { "count": 1, "filePath": "src/Data/PostList.elm" },
-    { "count": 1, "filePath": "src/Icon.elm" }
+    { "count": 1, "filePath": "src/Data/PostList.elm" }
   ]
 }
