@@ -197,7 +197,7 @@ viewFeedLinks feed =
                     [ ariaDescribedBy [ tooltipId ]
                     , class "decoration-primary-20 flex cursor-help flex-row items-center gap-1 underline decoration-dotted decoration-2 underline-offset-4"
                     ]
-                    [ Html.text "No RSS feed" ]
+                    [ Html.text "No feeds" ]
                 , Html.div
                     [ roleTooltip
                     , id tooltipId
