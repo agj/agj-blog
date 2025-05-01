@@ -1,6 +1,8 @@
 import { defineAudioPlayerCustomElement } from "./src-ts/custom-elements/audio-player.js";
+import { defineDropdownCustomElement } from "./src-ts/custom-elements/dropdown.js";
 
 defineAudioPlayerCustomElement();
+defineDropdownCustomElement();
 
 type ElmPagesInit = {
   load: (elmLoaded: Promise<unknown>) => Promise<void>;

@@ -166,10 +166,10 @@ viewFeedLinks feed =
                     [ Icon.rss Icon.Medium
                     , Html.text "Feeds"
                     ]
-                , Html.div
+                , Html.node "custom-dropdown"
                     [ Html.Attributes.id feedsListId
                     , Custom.Html.Attributes.popoverAuto
-                    , class "card inset-auto mt-2"
+                    , class "card"
                     ]
                     [ Html.ul [ class "flex flex-col gap-2" ]
                         [ Html.li []
