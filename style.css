@@ -26,18 +26,40 @@
     @apply rounded border-2 border-layout-20 bg-layout-10 px-4 py-3;
   }
 
-  /* Popover transitions. */
+  /*
+    Transitions and animations.
+  */
+
+  /* Popup. */
+
+  .popup {
+    visibility: hidden;
+    opacity: 0;
+    filter: blur(0.125rem) contrast(300%) brightness(100%);
+    transition-property:
+      visibility opacity,
+      filter;
+    transition-delay: 100ms;
+    transition-duration: 300ms;
+    transition-timing-function: ease-out, linear;
+    transition-behavior: allow-discrete;
+  }
+  .group:hover .popup,
+  .group:focus .popup {
+    visibility: visible;
+    opacity: 1;
+    filter: none;
+  }
+
+  /* Dropdown. */
 
   [popover] {
-    /* transform: translateY(0) scaleY(1); */
     transition-timing-function: cubic-bezier(0.33, 1.56, 0.75, 1);
     transition-property: transform;
     transition-duration: 200ms;
     transform-origin: top;
-  }
 
-  @starting-style {
-    [popover] {
+    @starting-style {
       opacity: 0;
       transform: translateY(-0.5rem) scaleY(0.8);
     }

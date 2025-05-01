@@ -202,8 +202,7 @@ viewFeedLinks feed =
                     [ roleTooltip
                     , id tooltipId
                     , class "card text-layout-50 w-max max-w-60 text-xs leading-normal"
-                    , class "pointer-events-none invisible absolute top-8 z-10 opacity-0 transition-all delay-100"
-                    , class "group-hover:visible group-hover:opacity-100 group-focus:visible group-focus:opacity-100"
+                    , class "popup pointer-events-none absolute top-8 z-10"
                     ]
                     [ Html.text explanation ]
                 ]
