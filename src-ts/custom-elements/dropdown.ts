@@ -36,11 +36,15 @@ export const defineDropdownCustomElement = () => {
         }
 
         const selfRect = this.getBoundingClientRect();
-        const parentWidth = parentRect.right - parentRect.left;
-        const xParentMiddle = parentRect.left + parentWidth / 2;
-        const selfWidth = selfRect.right - selfRect.left;
-        const top = parentRect.bottom;
-        const left = xParentMiddle - selfWidth / 2;
+        const xParentMiddle = parentRect.left + parentRect.width / 2;
+        const viewportRight = document.documentElement.clientWidth;
+        const viewportBottom = document.documentElement.clientHeight;
+        const maxTop = viewportBottom - selfRect.height;
+        const maxLeft = viewportRight - selfRect.width;
+        const centeredLeft = xParentMiddle - selfRect.width / 2;
+
+        const top = Math.max(0, Math.min(maxTop, parentRect.bottom));
+        const left = Math.max(0, Math.min(maxLeft, centeredLeft));
 
         this.style = `inset: unset; top: calc(0.5rem + ${top}px); left: ${left}px`;
       }
