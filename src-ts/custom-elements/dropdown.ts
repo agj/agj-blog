@@ -23,7 +23,9 @@ export const defineDropdownCustomElement = () => {
         const top = parentRect.bottom;
         const left = parentRect.left;
 
-        this.style = `inset: unset; top: calc(0.5rem + ${top}px); left: ${left}px`;
+        this.attributeStyleMap.set("inset", "unset");
+        this.attributeStyleMap.set("top", `calc(0.5rem + ${top}px)`);
+        this.attributeStyleMap.set("left", `${left}px`);
       }
     },
   );
