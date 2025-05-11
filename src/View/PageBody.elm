@@ -3,6 +3,7 @@ module View.PageBody exposing
     , PageBody
     , fromContent
     , view
+    , withFooter
     , withRssFeed
     , withTitle
     , withTitleAndSubtitle
@@ -14,6 +15,7 @@ import Custom.Html.Attributes exposing (ariaDescribedBy, roleTooltip, tabIndex)
 import Html exposing (Html)
 import Html.Attributes exposing (class, href, id)
 import Html.Events
+import Html.Extra
 import Icon
 import PagesMsg exposing (PagesMsg)
 import Theme exposing (Theme)
@@ -23,6 +25,7 @@ type PageBody msg
     = PageBody
         { content : Html msg
         , title : PageTitle msg
+        , footer : Maybe (Html msg)
         , theme : Theme
         , rssFeed : Feeds msg
         , showAboutLink : Bool
@@ -52,6 +55,7 @@ fromContent config content =
     PageBody
         { content = content
         , title = NoPageTitle
+        , footer = Nothing
         , theme = config.theme
         , onRequestedChangeTheme = config.onRequestedChangeTheme
         , rssFeed = NoFeeds
@@ -67,6 +71,11 @@ withTitle titleInlines (PageBody config) =
 withTitleAndSubtitle : List (Html msg) -> Html msg -> PageBody msg -> PageBody msg
 withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
     PageBody { config | title = PageTitleAndSubtitle titleInlines subtitleBlock }
+
+
+withFooter : Html msg -> PageBody msg -> PageBody msg
+withFooter footer (PageBody config) =
+    PageBody { config | footer = Just footer }
 
 
 withRssFeed : Feeds msg -> PageBody msg -> PageBody msg
@@ -124,28 +133,40 @@ view (PageBody config) =
                     Custom.Html.none
 
                 Just title_ ->
-                    Html.div [ class "p-2 pb-0 " ]
+                    Html.div [ class "w-full p-2 pb-0" ]
                         [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
                             [ Html.div [ class "mt-2 flex w-full flex-row items-center justify-end gap-4 px-4 text-sm", class pageMaxWidth ]
                                 [ aboutLink
                                 , viewFeedLinks config.rssFeed
                                 , changeThemeButtonView config
                                 ]
-                            , Html.div [ class "w-full flex-grow px-4 pb-2", class pageMaxWidth ]
+                            , Html.div [ class "mx-4 mb-2 w-full flex-grow", class pageMaxWidth ]
                                 [ title_ ]
                             ]
                         ]
 
         content : Html msg
         content =
-            Html.div [ class "flex w-full flex-col items-center" ]
-                [ Html.main_ [ class "w-full px-4 pb-32 pt-6", class pageMaxWidth ]
-                    [ config.content ]
-                ]
+            Html.main_ [ class "mx-4 mt-6 w-full", class pageMaxWidth ]
+                [ config.content ]
+
+        footer : Html msg
+        footer =
+            case config.footer of
+                Just footerEl ->
+                    Html.div [ class "mx-4 mt-20 w-full", class pageMaxWidth ]
+                        [ Html.hr [ class "bg-layout-20 mb-8 h-4 w-full border-0" ] []
+                        , Html.footer [ class "w-full" ]
+                            [ footerEl ]
+                        ]
+
+                Nothing ->
+                    Html.Extra.nothing
     in
-    Html.div [ class "text-layout-90 flex w-full flex-col" ]
+    Html.div [ class "text-layout-90 mb-32 flex w-full flex-col items-center" ]
         [ header
         , content
+        , footer
         ]
         |> Html.map PagesMsg.fromMsg
 

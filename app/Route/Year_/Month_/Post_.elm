@@ -227,16 +227,11 @@ view app shared model =
 
         contentEl : Html Msg
         contentEl =
-            [ [ app.data.markdown
-                    |> Doc.FromMarkdown.parse
-                        { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
-                    |> Doc.ToHtml.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
-              ]
-            , [ Html.hr [ class "bg-layout-20 mb-8 mt-20 h-4 border-0" ] []
-              , viewInteractions app.data.gist shared.mastodonStatuses
-              ]
+            [ app.data.markdown
+                |> Doc.FromMarkdown.parse
+                    { audioPlayer = Just { onAudioPlayerStateUpdated = AudioPlayerStateUpdated } }
+                |> Doc.ToHtml.view { audioPlayerState = Just model.audioPlayerState, onClick = Nothing }
             ]
-                |> List.concat
                 |> Html.div [ class "flex flex-col" ]
     in
     { title = title app.data.gist.title
@@ -249,6 +244,7 @@ view app shared model =
             |> View.PageBody.withTitleAndSubtitle
                 [ Html.text app.data.gist.title ]
                 postInfo
+            |> View.PageBody.withFooter (viewInteractions app.data.gist shared.mastodonStatuses)
             |> View.PageBody.view
     }
 
