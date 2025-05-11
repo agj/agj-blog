@@ -129,32 +129,32 @@ view (PageBody config) =
         header : Html msg
         header =
             case title of
-                Nothing ->
-                    Custom.Html.none
-
                 Just title_ ->
                     Html.div [ class "w-full p-2 pb-0" ]
                         [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
-                            [ Html.div [ class "mt-2 flex w-full flex-row items-center justify-end gap-4 px-4 text-sm", class pageMaxWidth ]
+                            [ Html.div [ class "flex w-full flex-row items-center justify-end gap-4 px-4 pt-2 text-sm", class pageMaxWidth ]
                                 [ aboutLink
                                 , viewFeedLinks config.rssFeed
                                 , changeThemeButtonView config
                                 ]
-                            , Html.div [ class "mx-4 mb-2 w-full flex-grow", class pageMaxWidth ]
+                            , Html.div [ class "w-full flex-grow px-4 pb-2", class pageMaxWidth ]
                                 [ title_ ]
                             ]
                         ]
 
+                Nothing ->
+                    Html.Extra.nothing
+
         content : Html msg
         content =
-            Html.main_ [ class "mx-4 mt-6 w-full", class pageMaxWidth ]
+            Html.main_ [ class "w-full px-4 pt-6", class pageMaxWidth ]
                 [ config.content ]
 
         footer : Html msg
         footer =
             case config.footer of
                 Just footerEl ->
-                    Html.div [ class "mx-4 mt-20 w-full", class pageMaxWidth ]
+                    Html.div [ class "w-full px-4 pt-20", class pageMaxWidth ]
                         [ Html.hr [ class "bg-layout-20 mb-8 h-4 w-full border-0" ] []
                         , Html.footer [ class "w-full" ]
                             [ footerEl ]
@@ -163,7 +163,7 @@ view (PageBody config) =
                 Nothing ->
                     Html.Extra.nothing
     in
-    Html.div [ class "text-layout-90 mb-32 flex w-full flex-col items-center" ]
+    Html.div [ class "text-layout-90 flex w-full flex-col items-center pb-32" ]
         [ header
         , content
         , footer
