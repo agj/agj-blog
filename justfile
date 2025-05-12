@@ -21,8 +21,8 @@ dev-review: install
 build: install
     pnpm run build
 
-# Deploy built files.
-deploy:
+# Build and deploy the blog.
+deploy: build
     nu ./tasks/deploy.nu
 
 # Maintenance
