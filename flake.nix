@@ -22,7 +22,7 @@
             pkgs.leiningen
             pkgs.mprocs
             pkgs.nodePackages.prettier
-            pkgs.nodejs-slim_18
+            pkgs.nodejs-slim_20
             pkgs.nushell
             pkgs.pnpm
             pkgs.qrtool
