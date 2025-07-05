@@ -16,8 +16,9 @@ const setTheme = (theme: Theme) => {
 
 const config: ElmPagesInit = {
   flags: () => {
+    const storedConfig = localStorage.getItem("config");
     const configDecodeResult = configDecoder.decoder(
-      JSON.parse(localStorage.getItem("config") ?? ""),
+      storedConfig ? JSON.parse(storedConfig) : {},
     );
     const config =
       configDecodeResult.tag === "Valid" ? configDecodeResult.value : null;
