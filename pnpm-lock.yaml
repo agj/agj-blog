@@ -10,43 +10,43 @@ importers:
     devDependencies:
       '@csstools/postcss-sass':
         specifier: ^5.1.1
-        version: 5.1.1(postcss@8.5.3)
+        version: 5.1.1(postcss@8.5.6)
       '@total-typescript/ts-reset':
         specifier: ^0.6.1
         version: 0.6.1
       autoprefixer:
         specifier: ^10.4.21
-        version: 10.4.21(postcss@8.5.3)
+        version: 10.4.21(postcss@8.5.6)
       elm-codegen:
         specifier: ^0.6.1
         version: 0.6.1
       elm-format:
-        specifier: ^0.8.7
-        version: 0.8.7
+        specifier: ^0.8.8
+        version: 0.8.8
       elm-optimize-level-2:
         specifier: ^0.3.5
         version: 0.3.5
       elm-pages:
-        specifier: 3.0.23
-        version: 3.0.23(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(yaml@2.7.0)
+        specifier: 3.0.24
+        version: 3.0.24(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(yaml@2.7.0)
       elm-review:
-        specifier: ^2.13.2
-        version: 2.13.2
+        specifier: ^2.13.3
+        version: 2.13.3
       elm-review-tailwindcss-postcss-plugin:
         specifier: ^1.1.0
-        version: 1.1.0(postcss@8.5.3)
+        version: 1.1.0(postcss@8.5.6)
       lamdera:
         specifier: ^0.19.1-1.3.2
         version: 0.19.1-1.3.2
       postcss:
-        specifier: ^8.5.3
-        version: 8.5.3
+        specifier: ^8.5.6
+        version: 8.5.6
       postcss-scss:
         specifier: ^4.0.9
-        version: 4.0.9(postcss@8.5.3)
+        version: 4.0.9(postcss@8.5.6)
       prettier-plugin-tailwindcss:
-        specifier: ^0.6.11
-        version: 0.6.11(prettier@3.5.3)
+        specifier: ^0.6.13
+        version: 0.6.13(prettier@3.5.3)
       tailwindcss:
         specifier: '3'
         version: 3.4.17
@@ -54,8 +54,8 @@ importers:
         specifier: ^23.0.0
         version: 23.0.0
       vite:
-        specifier: ^6.3.3
-        version: 6.3.3(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(terser@5.39.0)(yaml@2.7.0)
+        specifier: ^6.3.5
+        version: 6.3.5(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(terser@5.39.0)(yaml@2.7.0)
 
 packages:
 
@@ -63,28 +63,28 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@avh4/elm-format-darwin-arm64@0.8.7-2':
-    resolution: {integrity: sha512-F5JD44mJ3KX960J5GkXMfh1/dtkXuPcQpX2EToHQKjLTZUfnhZ++ytQQt0gAvrJ0bzoOvhNzjNjUHDA1ruTVbg==}
+  '@avh4/elm-format-darwin-arm64@0.8.8-1':
+    resolution: {integrity: sha512-VDu3CRajhB/Sax+CEU4PhIzErBZv8vVxbk9Sk8seUHa1ngfICa3Ejoq3PhnoOFKYF1v1sSxNOC2RnUzvd/9bUw==}
     cpu: [arm64]
     os: [darwin]
 
-  '@avh4/elm-format-darwin-x64@0.8.7-2':
-    resolution: {integrity: sha512-4pfF1cl0KyTion+7Mg4XKM3yi4Yc7vP76Kt/DotLVGJOSag4ISGic1og2mt8RZZ7XArybBmHNyYkiUbe/cEiCw==}
+  '@avh4/elm-format-darwin-x64@0.8.8-1':
+    resolution: {integrity: sha512-9NAzi3HUBSHEIx3Nje+a6wFcv6RDKv2PO0OUNcV/XlS4Sou3r89xsYAVAXS8mi4+CKTdscyfSSkgGd8qiCCxAw==}
     cpu: [x64]
     os: [darwin]
 
-  '@avh4/elm-format-linux-arm64@0.8.7-2':
-    resolution: {integrity: sha512-WkVmuce2zU6s9dupHhqPc886Vaqpea8dZlxv2fpZ4wSzPUbiiKHoHZzoVndMIMTUL0TZukP3Ps0n/lWO5R5+FA==}
+  '@avh4/elm-format-linux-arm64@0.8.8-1':
+    resolution: {integrity: sha512-VNuXYphgxtnk7Gw+VBgWBeA9k8wKSo9r/O2F7udgurokYLO8S+RGhLHgD9mb6Yecv/veWz4v9n/O0IggH/BOCQ==}
     cpu: [arm64]
     os: [linux]
 
-  '@avh4/elm-format-linux-x64@0.8.7-2':
-    resolution: {integrity: sha512-kmncfJrTBjVT94JtQvMf4M5Pn2Yl0sZt3wo7AzgFiDnB/CiZ+KjJyXuWM64NeGiv4MQqzPq65tsFXUH1CIJeiQ==}
+  '@avh4/elm-format-linux-x64@0.8.8-1':
+    resolution: {integrity: sha512-IvtmUTDw/V5mBeglLgtQMzWZPc0QvmqUmoJ+vipxYii3DJ/1KV2drtpvlLuFdBlFrehUivtrh4HhOTsdGXxyXQ==}
     cpu: [x64]
     os: [linux]
 
-  '@avh4/elm-format-win32-x64@0.8.7-2':
-    resolution: {integrity: sha512-sBdMBGq/8mD8Y5C+fIr5vlb3N50yB7S1MfgeAq2QEbvkr/sKrCZI540i43lZDH9gWsfA1w2W8wCe0penFYzsGw==}
+  '@avh4/elm-format-win32-x64@0.8.8-1':
+    resolution: {integrity: sha512-qGYZM2oJFSVQ80Tayk1v15ba7PWCU3B89EkA3Fy4YQasvtA+UrYYR5Bv7MRF4kn6Zp7oSDk4FhknURFsZWZ7kg==}
     cpu: [x64]
     os: [win32]
 
@@ -971,8 +971,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  elm-format@0.8.7:
-    resolution: {integrity: sha512-sVzFXfWnb+6rzXK+q3e3Ccgr6/uS5mFbFk1VSmigC+x2XZ28QycAa7lS8owl009ALPhRQk+pZ95Eq5ANjpEZsQ==}
+  elm-format@0.8.8:
+    resolution: {integrity: sha512-OJYUtVnepuy8UZdnL5OCjSxUY5+dIGP2NdWTB6icxVVOOH0b8MpJIijTPsGW+ztnv9yzSoTK0dhCuVDh+AGhNQ==}
     hasBin: true
 
   elm-hot@1.1.6:
@@ -983,8 +983,8 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  elm-pages@3.0.23:
-    resolution: {integrity: sha512-YocKfl57p0YJeLZCw9YmPsbdHfM+6sjq7HZ2Sz4E2aAoHoAcJABFFPXryXXAVPnLl6S2QQQ48FXsyLsRXqt3DQ==}
+  elm-pages@3.0.24:
+    resolution: {integrity: sha512-rVxsEGCkddv6hqEtwFe3L+tEs2nnItBdhuhhW3W5BLvfK8vgFl1dNAVnTX7xKn09c5ZF9Y8sKe4rs0Z9RoyVNQ==}
     hasBin: true
 
   elm-review-tailwindcss-postcss-plugin@1.1.0:
@@ -992,8 +992,8 @@ packages:
     peerDependencies:
       postcss: ^8.5.1
 
-  elm-review@2.13.2:
-    resolution: {integrity: sha512-kI34BQ/EN1NC4KUcdZWAGNbaxWmR80kqJQRjT1ZmC0AyZRiJqdylhANucyzhPKEz60VGAkqau5axpySWXbdPLg==}
+  elm-review@2.13.3:
+    resolution: {integrity: sha512-iEUihHeqTv0Xr5CVcUf1hDPxypXNtFPVunyEpn2LKAaa/FtEfTHKOVeBYfFNnt+bIDHbGA+hkWPv1qfzxEDH8Q==}
     engines: {node: 14 >=14.21 || 16 >=16.20 || 18 || 20 || >=22}
     hasBin: true
 
@@ -1087,14 +1087,6 @@ packages:
 
   fastq@1.18.0:
     resolution: {integrity: sha512-QKHXPW0hD8g4UET03SdOdunzSouc9N4AuHdsX8XNcTsuz+yYFILVNIX4l9yHABMhiEI9Db0JTTIpu0wB+Y1QQw==}
-
-  fdir@6.4.3:
-    resolution: {integrity: sha512-PMXmW2y1hDDfTSRc9gaXIuCCRpuoz3Kaz8cUelp3smouvfT632ozg2vrT6lJsHKKOF59YLbOGfAWGUcKEfRMQw==}
-    peerDependencies:
-      picomatch: ^3 || ^4
-    peerDependenciesMeta:
-      picomatch:
-        optional: true
 
   fdir@6.4.4:
     resolution: {integrity: sha512-1NZP+GK4GfuAv3PqKvxQRDMjdSRZjnkq7KfhlNrCNNlZ0ygQFpebfrnfnq/W7fpUnAv9aGWmY1zKx7FYL3gwhg==}
@@ -1657,8 +1649,8 @@ packages:
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
 
-  nanoid@3.3.8:
-    resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
+  nanoid@3.3.11:
+    resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
@@ -1868,12 +1860,12 @@ packages:
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
-  postcss@8.5.3:
-    resolution: {integrity: sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A==}
+  postcss@8.5.6:
+    resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
 
-  prettier-plugin-tailwindcss@0.6.11:
-    resolution: {integrity: sha512-YxaYSIvZPAqhrrEpRtonnrXdghZg1irNg4qrjboCXrpybLWVs55cW2N3juhspVJiO0JBvYJT8SYsJpc8OQSnsA==}
+  prettier-plugin-tailwindcss@0.6.13:
+    resolution: {integrity: sha512-uQ0asli1+ic8xrrSmIOaElDu0FacR4x69GynTh2oZjFY10JUt6EEumTQl5tB4fMeD6I1naKd+4rXQQ7esT2i1g==}
     engines: {node: '>=14.21.3'}
     peerDependencies:
       '@ianvs/prettier-plugin-sort-imports': '*'
@@ -2287,10 +2279,6 @@ packages:
   tiny-decoders@23.0.0:
     resolution: {integrity: sha512-gQB+za3EW9JN1ASDmrVl1a1I6Q/jzg4M75YLI9ToHCdCW4/9KvBTTNH4u3kFbg8e+/8Zn68VRF+ayuiPNqYAmg==}
 
-  tinyglobby@0.2.12:
-    resolution: {integrity: sha512-qkf4trmKSIiMTs/E63cxH+ojC2unam7rJ0WrauAzpT3ECNTxGRMlaXxVbfxMUC/w0LaYk6jQ4y/nGR9uBO3tww==}
-    engines: {node: '>=12.0.0'}
-
   tinyglobby@0.2.13:
     resolution: {integrity: sha512-mEwzpUgrLySlveBwEVDMKk5B57bhLPYovRfPAXD5gA/98Opn0rCDj3GtLwFvCvH5RK9uPCExUROW5NjDwvqkxw==}
     engines: {node: '>=12.0.0'}
@@ -2382,8 +2370,8 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  vite@6.3.3:
-    resolution: {integrity: sha512-5nXH+QsELbFKhsEfWLkHrvgRpTdGJzqOZ+utSdmPTvwHmvU6ITTm3xx+mRusihkcI8GeC7lCDyn3kDtiki9scw==}
+  vite@6.3.5:
+    resolution: {integrity: sha512-cZn6NDFE7wdTpINgs++ZJ4N49W2vRp8LCKrn3Ob1kYNtOo21vfDoaV5GzBfLU4MovSAB8uNRm4jgzVQZ+mBzPQ==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
     peerDependencies:
@@ -2490,25 +2478,25 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@avh4/elm-format-darwin-arm64@0.8.7-2':
+  '@avh4/elm-format-darwin-arm64@0.8.8-1':
     optional: true
 
-  '@avh4/elm-format-darwin-x64@0.8.7-2':
+  '@avh4/elm-format-darwin-x64@0.8.8-1':
     optional: true
 
-  '@avh4/elm-format-linux-arm64@0.8.7-2':
+  '@avh4/elm-format-linux-arm64@0.8.8-1':
     optional: true
 
-  '@avh4/elm-format-linux-x64@0.8.7-2':
+  '@avh4/elm-format-linux-x64@0.8.8-1':
     optional: true
 
-  '@avh4/elm-format-win32-x64@0.8.7-2':
+  '@avh4/elm-format-win32-x64@0.8.8-1':
     optional: true
 
-  '@csstools/postcss-sass@5.1.1(postcss@8.5.3)':
+  '@csstools/postcss-sass@5.1.1(postcss@8.5.6)':
     dependencies:
       '@csstools/sass-import-resolve': 1.0.0
-      postcss: 8.5.3
+      postcss: 8.5.6
       sass: 1.86.0
       source-map: 0.7.4
 
@@ -2924,14 +2912,14 @@ snapshots:
 
   array-flatten@1.1.1: {}
 
-  autoprefixer@10.4.21(postcss@8.5.3):
+  autoprefixer@10.4.21(postcss@8.5.6):
     dependencies:
       browserslist: 4.24.4
       caniuse-lite: 1.0.30001702
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.1.1
-      postcss: 8.5.3
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
   balanced-match@1.0.2: {}
@@ -3268,13 +3256,13 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  elm-format@0.8.7:
+  elm-format@0.8.8:
     optionalDependencies:
-      '@avh4/elm-format-darwin-arm64': 0.8.7-2
-      '@avh4/elm-format-darwin-x64': 0.8.7-2
-      '@avh4/elm-format-linux-arm64': 0.8.7-2
-      '@avh4/elm-format-linux-x64': 0.8.7-2
-      '@avh4/elm-format-win32-x64': 0.8.7-2
+      '@avh4/elm-format-darwin-arm64': 0.8.8-1
+      '@avh4/elm-format-darwin-x64': 0.8.8-1
+      '@avh4/elm-format-linux-arm64': 0.8.8-1
+      '@avh4/elm-format-linux-x64': 0.8.8-1
+      '@avh4/elm-format-win32-x64': 0.8.8-1
 
   elm-hot@1.1.6: {}
 
@@ -3287,7 +3275,7 @@ snapshots:
       ts-union: 2.3.0
       typescript: 4.9.5
 
-  elm-pages@3.0.23(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(yaml@2.7.0):
+  elm-pages@3.0.24(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(yaml@2.7.0):
     dependencies:
       '@sindresorhus/merge-streams': 4.0.0
       busboy: 1.6.0
@@ -3311,7 +3299,7 @@ snapshots:
       micromatch: 4.0.8
       serve-static: 1.16.2
       terser: 5.39.0
-      vite: 6.3.3(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(terser@5.39.0)(yaml@2.7.0)
+      vite: 6.3.5(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(terser@5.39.0)(yaml@2.7.0)
       which: 5.0.0
     transitivePeerDependencies:
       - '@types/node'
@@ -3328,15 +3316,15 @@ snapshots:
       - utf-8-validate
       - yaml
 
-  elm-review-tailwindcss-postcss-plugin@1.1.0(postcss@8.5.3):
+  elm-review-tailwindcss-postcss-plugin@1.1.0(postcss@8.5.6):
     dependencies:
       css-selector-parser: 3.0.5
-      postcss: 8.5.3
+      postcss: 8.5.6
       tailwindcss: 3.4.17
     transitivePeerDependencies:
       - ts-node
 
-  elm-review@2.13.2:
+  elm-review@2.13.3:
     dependencies:
       chalk: 4.1.2
       chokidar: 3.6.0
@@ -3353,7 +3341,7 @@ snapshots:
       prompts: 2.4.2
       strip-ansi: 6.0.1
       terminal-link: 2.1.1
-      tinyglobby: 0.2.12
+      tinyglobby: 0.2.13
       which: 2.0.2
       wrap-ansi: 7.0.0
     transitivePeerDependencies:
@@ -3495,10 +3483,6 @@ snapshots:
   fastq@1.18.0:
     dependencies:
       reusify: 1.0.4
-
-  fdir@6.4.3(picomatch@4.0.2):
-    optionalDependencies:
-      picomatch: 4.0.2
 
   fdir@6.4.4(picomatch@4.0.2):
     optionalDependencies:
@@ -4055,7 +4039,7 @@ snapshots:
       object-assign: 4.1.1
       thenify-all: 1.6.0
 
-  nanoid@3.3.8: {}
+  nanoid@3.3.11: {}
 
   negotiator@0.6.3: {}
 
@@ -4192,33 +4176,33 @@ snapshots:
 
   pirates@4.0.6: {}
 
-  postcss-import@15.1.0(postcss@8.5.3):
+  postcss-import@15.1.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.5.3
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.10
 
-  postcss-js@4.0.1(postcss@8.5.3):
+  postcss-js@4.0.1(postcss@8.5.6):
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.5.3
+      postcss: 8.5.6
 
-  postcss-load-config@4.0.2(postcss@8.5.3):
+  postcss-load-config@4.0.2(postcss@8.5.6):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.7.0
     optionalDependencies:
-      postcss: 8.5.3
+      postcss: 8.5.6
 
-  postcss-nested@6.2.0(postcss@8.5.3):
+  postcss-nested@6.2.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.5.3
+      postcss: 8.5.6
       postcss-selector-parser: 6.1.2
 
-  postcss-scss@4.0.9(postcss@8.5.3):
+  postcss-scss@4.0.9(postcss@8.5.6):
     dependencies:
-      postcss: 8.5.3
+      postcss: 8.5.6
 
   postcss-selector-parser@6.1.2:
     dependencies:
@@ -4227,13 +4211,13 @@ snapshots:
 
   postcss-value-parser@4.2.0: {}
 
-  postcss@8.5.3:
+  postcss@8.5.6:
     dependencies:
-      nanoid: 3.3.8
+      nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  prettier-plugin-tailwindcss@0.6.11(prettier@3.5.3):
+  prettier-plugin-tailwindcss@0.6.13(prettier@3.5.3):
     dependencies:
       prettier: 3.5.3
 
@@ -4609,11 +4593,11 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.1.1
-      postcss: 8.5.3
-      postcss-import: 15.1.0(postcss@8.5.3)
-      postcss-js: 4.0.1(postcss@8.5.3)
-      postcss-load-config: 4.0.2(postcss@8.5.3)
-      postcss-nested: 6.2.0(postcss@8.5.3)
+      postcss: 8.5.6
+      postcss-import: 15.1.0(postcss@8.5.6)
+      postcss-js: 4.0.1(postcss@8.5.6)
+      postcss-load-config: 4.0.2(postcss@8.5.6)
+      postcss-nested: 6.2.0(postcss@8.5.6)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
       sucrase: 3.35.0
@@ -4659,11 +4643,6 @@ snapshots:
       tslib: 2.8.1
 
   tiny-decoders@23.0.0: {}
-
-  tinyglobby@0.2.12:
-    dependencies:
-      fdir: 6.4.3(picomatch@4.0.2)
-      picomatch: 4.0.2
 
   tinyglobby@0.2.13:
     dependencies:
@@ -4731,12 +4710,12 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite@6.3.3(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(terser@5.39.0)(yaml@2.7.0):
+  vite@6.3.5(@types/node@22.10.3)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.86.0)(terser@5.39.0)(yaml@2.7.0):
     dependencies:
       esbuild: 0.25.1
       fdir: 6.4.4(picomatch@4.0.2)
       picomatch: 4.0.2
-      postcss: 8.5.3
+      postcss: 8.5.6
       rollup: 4.36.0
       tinyglobby: 0.2.13
     optionalDependencies:
