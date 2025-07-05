@@ -1,5 +1,4 @@
 {
-  "name": "elm-pages-app",
   "type": "module",
   "scripts": {
     "dev": "elm-pages dev --port 1234",
