@@ -1,4 +1,4 @@
-module Theme exposing (Theme, ThemeColor(..), change, decoder, default, encode)
+module Theme exposing (Theme, ThemeColor(..), change, decoder, default, encode, themeColorDecoder, updateDefault)
 
 import Json.Decode exposing (Decoder, Value)
 import Json.Encode
@@ -50,6 +50,11 @@ change theme =
                     Nothing
     in
     { theme | set = newSetTheme }
+
+
+updateDefault : ThemeColor -> Theme -> Theme
+updateDefault newDefault theme =
+    { theme | default = newDefault }
 
 
 decoder : Decoder Theme

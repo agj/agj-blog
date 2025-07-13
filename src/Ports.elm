@@ -1,10 +1,10 @@
-port module Ports exposing (listenQueryParamsChanges, saveConfig, setTheme)
+port module Ports exposing (listenDefaultThemeChange, listenQueryParamsChanges, saveConfig, setTheme)
 
 import AppUrl exposing (QueryParameters)
 import Flags exposing (Flags)
 import Json.Decode exposing (Decoder, Value)
 import Json.Encode
-import Theme exposing (Theme)
+import Theme exposing (Theme, ThemeColor)
 import Url
 
 
@@ -40,6 +40,20 @@ listenQueryParamsChanges onQueryParams onNoOp =
                     onNoOp
     in
     listenIn "urlChanged" Json.Decode.string listener onNoOp
+
+
+listenDefaultThemeChange : (ThemeColor -> msg) -> msg -> Sub msg
+listenDefaultThemeChange onThemeChange onNoOp =
+    let
+        listener maybeThemeColor =
+            case maybeThemeColor of
+                Just themeColor ->
+                    onThemeChange themeColor
+
+                Nothing ->
+                    onNoOp
+    in
+    listenIn "defaultThemeChanged" Theme.themeColorDecoder listener onNoOp
 
 
 

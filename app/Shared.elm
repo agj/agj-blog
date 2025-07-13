@@ -18,9 +18,10 @@ import Http
 import Json.Decode
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
+import Ports
 import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
-import Theme exposing (Theme)
+import Theme exposing (Theme, ThemeColor)
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -95,6 +96,8 @@ type Msg
     = SelectedChangeTheme
     | RequestedMastodonStatus String
     | GotMastodonStatus String (Result Http.Error MastodonStatus)
+    | DefaultThemeChanged ThemeColor
+    | NoOp
 
 
 type alias Model =
@@ -150,6 +153,14 @@ update msg model =
             , Effect.none
             )
 
+        DefaultThemeChanged themeColor ->
+            ( { model | theme = Theme.updateDefault themeColor model.theme }
+            , Effect.none
+            )
+
+        NoOp ->
+            ( model, Effect.none )
+
 
 
 -- SUBSCRIPTIONS
@@ -157,7 +168,7 @@ update msg model =
 
 subscriptions : UrlPath -> Model -> Sub Msg
 subscriptions _ _ =
-    Sub.none
+    Ports.listenDefaultThemeChange DefaultThemeChanged NoOp
 
 
 

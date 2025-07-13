@@ -14,6 +14,14 @@ const setTheme = (theme: Theme) => {
   }
 };
 
+const getDefaultTheme = (): Theme => {
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : window.matchMedia?.("(prefers-color-scheme: light)").matches
+      ? "light"
+      : null;
+};
+
 const config: ElmPagesInit = {
   flags: () => {
     const storedConfig = localStorage.getItem("config");
@@ -25,11 +33,7 @@ const config: ElmPagesInit = {
 
     const theme = {
       set: config?.theme ?? null,
-      default: window.matchMedia?.("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : window.matchMedia?.("(prefers-color-scheme: light)").matches
-          ? "light"
-          : null,
+      default: getDefaultTheme(),
     };
 
     setTheme(theme.set);
@@ -41,6 +45,8 @@ const config: ElmPagesInit = {
     const app = await elmLoaded;
     console.log("App loaded", app);
 
+    // Subscribe to Elm messages.
+
     app.ports.sendToJs.subscribe(({ msg, value }) => {
       if (msg === "saveConfig") {
         localStorage.setItem("config", JSON.stringify(value));
@@ -49,12 +55,23 @@ const config: ElmPagesInit = {
       }
     });
 
-    window.addEventListener("popstate", (event) => {
+    // Listen to changes and notify the Elm side.
+
+    window.addEventListener("popstate", () => {
       app.ports.receiveFromJs.send({
         msg: "urlChanged",
         value: location.href,
       });
     });
+
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", () => {
+        app.ports.receiveFromJs.send({
+          msg: "defaultThemeChanged",
+          value: getDefaultTheme(),
+        });
+      });
   },
 };
 
