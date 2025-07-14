@@ -1,6 +1,4 @@
-# Disallows AI bots.
-# See: https://github.com/ai-robots-txt/ai.robots.txt
-
+# Start ai.robots.txt
 User-agent: AI2Bot
 User-agent: Ai2Bot-Dolma
 User-agent: Amazonbot
@@ -50,3 +48,4 @@ User-agent: VelenPublicWebCrawler
 User-agent: Webzio-Extended
 User-agent: YouBot
 Disallow: /
+# End ai.robots.txt

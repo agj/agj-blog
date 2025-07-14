@@ -27,6 +27,11 @@ deploy: build
 
 # Maintenance
 
+# Update files that block AI crawlers.
+[group('maintenance')]
+update-ai-block:
+    nu ./tasks/update-ai-block.nu
+
 # Check for errors.
 [group('maintenance')]
 review: install
