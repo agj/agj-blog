@@ -2,30 +2,26 @@
 # project, to block AI crawlers.
 
 let aiRobotsTxtBaseUrl = "https://raw.githubusercontent.com/ai-robots-txt/ai.robots.txt/refs/heads/main"
+let startMarkerLine = "# Start ai.robots.txt"
+let endMarkerLine = "# End ai.robots.txt"
 
 def splitLines [] {
   split row "\n"
 }
 
-let localHtaccessLines = open ./public/.htaccess | splitLines
-let localRobotstxtLines = open ./public/robots.txt | splitLines
-let aiRobotsTxtHtaccessLines = http get $"($aiRobotsTxtBaseUrl)/.htaccess" | splitLines
-let aiRobotsTxtRobotstxtLines = http get $"($aiRobotsTxtBaseUrl)/robots.txt" | splitLines
+def updateFile [$filename] {
+  let localLines = open $"./public/($filename)" | splitLines
+  let updateLines = http get $"($aiRobotsTxtBaseUrl)/($filename)" | splitLines
 
-def insertLines [linesToInsert, sourceLines] {
-  let startLine = "# Start ai.robots.txt"
-  let endLine = "# End ai.robots.txt"
+  let firstSplit = $localLines | split list $startMarkerLine
+  let linesBeforeUpdate = $firstSplit | get 0
+  let secondSplit = $firstSplit | get 1 | split list $endMarkerLine
+  let linesAfterUpdate = $secondSplit | get 1
 
-  let firstSplit = $sourceLines | split list $startLine
-  let before = $firstSplit | get 0
-  let secondSplit = $firstSplit | get 1 | split list $endLine
-  let after = $secondSplit | get 1
+  let updatedLines = $linesBeforeUpdate ++ [$startMarkerLine] ++ $updateLines ++ [$endMarkerLine] ++ $linesAfterUpdate
 
-  $before ++ [$startLine] ++ $linesToInsert ++ [$endLine] ++ $after
+  $updatedLines | str join "\n" | save --force $"./public/($filename)"
 }
 
-let modifiedLocalHtaccess = insertLines $aiRobotsTxtHtaccessLines $localHtaccessLines | str join "\n"
-let modifiedLocalRobotstxt = insertLines $aiRobotsTxtRobotstxtLines $localRobotstxtLines | str join "\n"
-
-$modifiedLocalHtaccess | save --force ./public/.htaccess
-$modifiedLocalRobotstxt | save --force ./public/robots.txt
+updateFile ".htaccess"
+updateFile "robots.txt"
