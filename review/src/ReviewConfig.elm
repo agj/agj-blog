@@ -18,7 +18,7 @@ import NoUnused.Exports
 import NoUnused.Parameters
 import NoUnused.Patterns
 import NoUnused.Variables
-import Review.Rule exposing (Rule)
+import Review.Rule as Rule exposing (Rule)
 import TailwindCss.ClassOrder exposing (classOrder)
 import TailwindCss.ConsistentClassOrder
 import TailwindCss.NoUnknownClasses
@@ -31,6 +31,8 @@ config =
     , NoUnused.CustomTypeConstructorArgs.rule
     , NoUnused.CustomTypeConstructors.rule []
     , NoUnused.Exports.rule
+        |> Rule.ignoreErrorsForDirectories [ "app" ]
+        |> Rule.ignoreErrorsForFiles [ "src/Icon.elm" ]
     , NoUnused.Variables.rule
 
     -- , TailwindCss.NoCssConflict.rule (TailwindCss.NoCssConflict.defaultOptions { props = TailwindCss.ClassOrder.classProps })
