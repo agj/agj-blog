@@ -1,4 +1,4 @@
-module Data.PostList exposing (sortByTime, sortGistsByTime, viewGists)
+module Data.PostList exposing (sortByTime, viewGists)
 
 import Custom.Int as Int
 import Custom.List as List

@@ -6,27 +6,24 @@ import Html
 import View exposing (View)
 
 
-type Msg
-    = Increment
+type alias Msg =
+    ()
 
 
 type alias Model =
-    { count : Int
-    }
+    {}
 
 
 init : ErrorPage -> ( Model, Effect Msg )
 init errorPage =
-    ( { count = 0 }
+    ( {}
     , Effect.none
     )
 
 
 update : ErrorPage -> Msg -> Model -> ( Model, Effect Msg )
 update errorPage msg model =
-    case msg of
-        Increment ->
-            ( { model | count = model.count + 1 }, Effect.none )
+    ( model, Effect.none )
 
 
 head : ErrorPage -> List Head.Tag
