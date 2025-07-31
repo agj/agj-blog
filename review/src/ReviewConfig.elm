@@ -11,6 +11,7 @@ when inside the directory containing this file.
 
 -}
 
+import Dict
 import NoUnused.CustomTypeConstructorArgs
 import NoUnused.CustomTypeConstructors
 import NoUnused.Dependencies
@@ -19,8 +20,10 @@ import NoUnused.Parameters
 import NoUnused.Patterns
 import NoUnused.Variables
 import Review.Rule as Rule exposing (Rule)
+import Set exposing (Set)
 import TailwindCss.ClassOrder exposing (classOrder)
 import TailwindCss.ConsistentClassOrder
+import TailwindCss.NoCssConflict
 import TailwindCss.NoUnknownClasses
 
 
@@ -34,8 +37,38 @@ config =
         |> Rule.ignoreErrorsForDirectories [ "app" ]
         |> Rule.ignoreErrorsForFiles [ "src/Icon.elm" ]
     , NoUnused.Variables.rule
+    , TailwindCss.NoCssConflict.rule
+        (TailwindCss.NoCssConflict.defaultOptions
+            { props =
+                TailwindCss.ClassOrder.classProps
+                    -- Remove checking for collisions of certain properties.
+                    |> Dict.filter
+                        (\class properties ->
+                            let
+                                -- Custom classes have lowest priority, so their styles can be overriden.
+                                isCustomClass =
+                                    TailwindCss.ClassOrder.classOrder
+                                        |> Dict.get class
+                                        -- Custom classes have weight 0.
+                                        |> Maybe.map ((==) 0)
+                                        |> Maybe.withDefault False
 
-    -- , TailwindCss.NoCssConflict.rule (TailwindCss.NoCssConflict.defaultOptions { props = TailwindCss.ClassOrder.classProps })
+                                hasIgnoredProperties =
+                                    properties
+                                        |> Set.intersect
+                                            (Set.fromList
+                                                [ -- Classes such as `text-xl` set it, and it's common
+                                                  -- to want to set it to something else.
+                                                  "line-height"
+                                                ]
+                                            )
+                                        |> (Set.isEmpty >> not)
+                            in
+                            not isCustomClass && not hasIgnoredProperties
+                        )
+            }
+        )
+
     -- , NoUnused.Parameters.rule
     -- , NoUnused.Dependencies.rule
     -- , NoUnused.Patterns.rule
