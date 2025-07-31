@@ -21,7 +21,7 @@ import NoUnused.Patterns
 import NoUnused.Variables
 import Review.Rule as Rule exposing (Rule)
 import Set exposing (Set)
-import TailwindCss.ClassOrder exposing (classOrder)
+import TailwindCss.ClassOrder exposing (classOrder, classProps)
 import TailwindCss.ConsistentClassOrder
 import TailwindCss.NoCssConflict
 import TailwindCss.NoUnknownClasses
@@ -29,25 +29,30 @@ import TailwindCss.NoUnknownClasses
 
 config : List Rule
 config =
-    [ TailwindCss.ConsistentClassOrder.rule (TailwindCss.ConsistentClassOrder.defaultOptions { order = TailwindCss.ClassOrder.classOrder })
-    , TailwindCss.NoUnknownClasses.rule (TailwindCss.NoUnknownClasses.defaultOptions { order = classOrder })
-    , NoUnused.CustomTypeConstructorArgs.rule
+    [ NoUnused.CustomTypeConstructorArgs.rule
     , NoUnused.CustomTypeConstructors.rule []
     , NoUnused.Exports.rule
+        -- elm-pages needs a lot of exposed stuff.
         |> Rule.ignoreErrorsForDirectories [ "app" ]
+        -- Want to keep the "none" icon definition.
         |> Rule.ignoreErrorsForFiles [ "src/Icon.elm" ]
     , NoUnused.Variables.rule
+    , NoUnused.Parameters.rule
+    , NoUnused.Dependencies.rule
+    , NoUnused.Patterns.rule
+    , TailwindCss.ConsistentClassOrder.rule (TailwindCss.ConsistentClassOrder.defaultOptions { order = classOrder })
+    , TailwindCss.NoUnknownClasses.rule (TailwindCss.NoUnknownClasses.defaultOptions { order = classOrder })
     , TailwindCss.NoCssConflict.rule
         (TailwindCss.NoCssConflict.defaultOptions
             { props =
-                TailwindCss.ClassOrder.classProps
+                classProps
                     -- Remove checking for collisions of certain properties.
                     |> Dict.filter
                         (\class properties ->
                             let
                                 -- Custom classes have lowest priority, so their styles can be overriden.
                                 isCustomClass =
-                                    TailwindCss.ClassOrder.classOrder
+                                    classOrder
                                         |> Dict.get class
                                         -- Custom classes have weight 0.
                                         |> Maybe.map ((==) 0)
@@ -68,8 +73,4 @@ config =
                         )
             }
         )
-
-    -- , NoUnused.Parameters.rule
-    -- , NoUnused.Dependencies.rule
-    -- , NoUnused.Patterns.rule
     ]
