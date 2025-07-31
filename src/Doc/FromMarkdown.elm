@@ -230,7 +230,7 @@ renderUnorderedList items =
         docListItems =
             items
                 |> List.map
-                    (\(Markdown.Block.ListItem task item) ->
+                    (\(Markdown.Block.ListItem _ item) ->
                         item |> ensureBlocks |> unwrapBlocks
                     )
                 |> List.filterMap List.uncons
