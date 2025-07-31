@@ -37,7 +37,6 @@ config =
         -- Want to keep the "none" icon definition.
         |> Rule.ignoreErrorsForFiles [ "src/Icon.elm" ]
     , NoUnused.Variables.rule
-    , NoUnused.Parameters.rule
     , NoUnused.Patterns.rule
     , TailwindCss.ConsistentClassOrder.rule (TailwindCss.ConsistentClassOrder.defaultOptions { order = classOrder })
     , TailwindCss.NoUnknownClasses.rule (TailwindCss.NoUnknownClasses.defaultOptions { order = classOrder })
