@@ -232,26 +232,28 @@ postDecoder :
     -> String
     -> Decoder Post
 postDecoder { year, month, slug } markdown =
-    frontmatterDecoder
-        |> Decode.andThen
-            (\frontmatter ->
-                case
-                    globMatchWithFrontmatterToGist
-                        ( { path = ""
-                          , yearString = year
-                          , monthString = month
-                          , slug = slug
-                          , isHidden = False
-                          }
-                        , frontmatter
-                        )
-                of
-                    Result.Ok gist ->
-                        Decode.succeed gist
+    let
+        processFrontmatter : Frontmatter -> Decoder PostGist
+        processFrontmatter frontmatter =
+            case
+                globMatchWithFrontmatterToGist
+                    ( { path = ""
+                      , yearString = year
+                      , monthString = month
+                      , slug = slug
+                      , isHidden = False
+                      }
+                    , frontmatter
+                    )
+            of
+                Result.Ok gist ->
+                    Decode.succeed gist
 
-                    Result.Err err ->
-                        Decode.fail err
-            )
+                Result.Err err ->
+                    Decode.fail err
+    in
+    frontmatterDecoder
+        |> Decode.andThen processFrontmatter
         |> Decode.map (Post markdown)
 
 
