@@ -11,6 +11,7 @@ tags:
   - nix
   - web
 language: eng
+link-mastodon: "114979973656685360"
 ---
 
 Wow, it's been five years!
