@@ -358,7 +358,7 @@ viewMastodonShareLink { postTitle, postUrl } { text, comment } =
         replacePlaceholders string =
             string
                 |> String.replace "{postTitle}" postTitle
-                |> String.replace "{postUrl}" (Url.percentEncode postUrl)
+                |> String.replace "{postUrl}" postUrl
     in
     viewLink
         { text = replacePlaceholders text
