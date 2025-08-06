@@ -260,7 +260,7 @@ postDecoder { year, month, slug } markdown =
 frontmatterDecoder : Decoder Frontmatter
 frontmatterDecoder =
     Decode.succeed Frontmatter
-        |> Decode.required "id" (Decode.maybe Decode.int)
+        |> Decode.optional "id" (Decode.maybe Decode.int) Nothing
         |> Decode.required "title" Decode.string
         |> Decode.required "language" Language.decoder
         |> Decode.required "categories" (Decode.list Category.decoder)
