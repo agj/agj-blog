@@ -48,6 +48,7 @@ routes getStaticRoutes htmlToString =
                     { title = Consts.siteName
                     , description = Consts.siteDescription
                     , url = Consts.siteCanonicalUrl
+                    , atomFeedUrl = Consts.siteCanonicalUrl ++ "/" ++ "atom.xml"
                     }
                 )
         )
@@ -71,6 +72,7 @@ routes getStaticRoutes htmlToString =
                 { title = categoryFeedName category
                 , description = Consts.siteDescription
                 , url = Category.toCanonicalUrl category
+                , atomFeedUrl = Category.toCanonicalUrl category ++ "/" ++ "atom.xml"
                 }
         )
 
@@ -91,6 +93,7 @@ routes getStaticRoutes htmlToString =
                 { title = tagFeedName tag
                 , description = Consts.siteDescription
                 , url = Tag.toCanonicalUrl tag []
+                , atomFeedUrl = Tag.toCanonicalUrl tag [] ++ "/" ++ "atom.xml"
                 }
         )
     ]

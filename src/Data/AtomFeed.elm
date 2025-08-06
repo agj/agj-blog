@@ -14,6 +14,7 @@ generate :
     { title : String
     , url : String
     , description : String
+    , atomFeedUrl : String
     }
     -> List Post
     -> String
@@ -33,11 +34,12 @@ generate config posts =
   <author>
     <name>agj</name>
   </author>
+  <link rel="self" type="application/atom+xml" href="{atomFeedUrl}" />
 {entries}
 </feed>
     """
         |> String.replace "{title}" config.title
-        |> String.replace "{url}" config.url
+        |> String.replace "{url}" (ensureEndsInSlash config.url)
         |> String.replace "{updated}"
             (orderedPosts
                 |> List.head
@@ -45,6 +47,7 @@ generate config posts =
                 |> Maybe.withDefault (Time.millisToPosix 0)
                 |> posixToRfc3339
             )
+        |> String.replace "{atomFeedUrl}" config.atomFeedUrl
         |> String.replace "{entries}"
             (orderedPosts
                 |> List.map
@@ -78,6 +81,7 @@ generateEntry c =
   <entry>
     <id>{url}</id>
     <published>{published}</published>
+    <updated>{updated}</updated>
     <link href="{url}" />
     <title><![CDATA[{title}]]></title>
     <summary><![CDATA[{summary}]]></summary>
@@ -87,6 +91,7 @@ generateEntry c =
         |> String.replace "{title}" c.title
         |> String.replace "{url}" c.url
         |> String.replace "{published}" (posixToRfc3339 c.published)
+        |> String.replace "{updated}" (posixToRfc3339 c.published)
         |> String.replace "{summary}" c.summary
         |> String.replace "{categories}"
             (List.map generateCategory c.categories
@@ -108,3 +113,12 @@ posixToRfc3339 dateTime =
         , offset = { hour = 0, minute = 0 }
         }
         |> Rfc3339.toString
+
+
+ensureEndsInSlash : String -> String
+ensureEndsInSlash url =
+    if String.endsWith "/" url then
+        url
+
+    else
+        url ++ "/"
