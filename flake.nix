@@ -18,6 +18,7 @@
         devShell = pkgs.mkShell {
           buildInputs = [
             pkgs.elmPackages.elm
+            pkgs.elmPackages.elm-format
             pkgs.just
             pkgs.leiningen
             pkgs.mprocs
