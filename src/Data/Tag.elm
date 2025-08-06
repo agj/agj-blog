@@ -487,6 +487,10 @@ all =
         , slug = "nendo-project"
         }
     , Tag
+        { name = "Nix"
+        , slug = "nix"
+        }
+    , Tag
         { name = "openFrameworks"
         , slug = "openframeworks"
         }
