@@ -18,6 +18,12 @@ generate :
     -> List Post
     -> String
 generate config posts =
+    let
+        orderedPosts =
+            posts
+                |> List.sortBy (\post -> Time.posixToMillis post.gist.dateTime)
+                |> List.reverse
+    in
     """<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>{url}</id>
@@ -33,23 +39,21 @@ generate config posts =
         |> String.replace "{title}" config.title
         |> String.replace "{url}" config.url
         |> String.replace "{updated}"
-            (posts
-                |> List.sortBy (\post -> Time.posixToMillis post.gist.dateTime)
-                |> List.reverse
+            (orderedPosts
                 |> List.head
                 |> Maybe.map (\post -> post.gist.dateTime)
                 |> Maybe.withDefault (Time.millisToPosix 0)
                 |> posixToRfc3339
             )
         |> String.replace "{entries}"
-            (posts
+            (orderedPosts
                 |> List.map
                     (\post ->
                         generateEntry
                             { title = post.gist.title
                             , url = Post.gistToCanonicalUrl post.gist
                             , summary = Custom.Markdown.getSummary post.markdown
-                            , updated = post.gist.dateTime
+                            , published = post.gist.dateTime
                             , categories = post.gist.categories
                             }
                     )
@@ -65,7 +69,7 @@ generateEntry :
     { title : String
     , url : String
     , summary : String
-    , updated : Time.Posix
+    , published : Time.Posix
     , categories : List Category
     }
     -> String
@@ -73,7 +77,7 @@ generateEntry c =
     """
   <entry>
     <id>{url}</id>
-    <updated>{updated}</updated>
+    <published>{published}</published>
     <link href="{url}" />
     <title><![CDATA[{title}]]></title>
     <summary><![CDATA[{summary}]]></summary>
@@ -82,7 +86,7 @@ generateEntry c =
     """
         |> String.replace "{title}" c.title
         |> String.replace "{url}" c.url
-        |> String.replace "{updated}" (posixToRfc3339 c.updated)
+        |> String.replace "{published}" (posixToRfc3339 c.published)
         |> String.replace "{summary}" c.summary
         |> String.replace "{categories}"
             (List.map generateCategory c.categories
