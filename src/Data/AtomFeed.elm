@@ -3,6 +3,7 @@ module Data.AtomFeed exposing (..)
 import Custom.Markdown
 import Data.Category as Category exposing (Category)
 import Data.Post as Post exposing (Post)
+import Regex
 import Rfc3339
 import Time
 
@@ -39,7 +40,7 @@ generate config posts =
 </feed>
     """
         |> String.replace "{title}" config.title
-        |> String.replace "{url}" (ensureEndsInSlash config.url)
+        |> String.replace "{url}" (ensureUrlIsCanonical config.url)
         |> String.replace "{updated}"
             (orderedPosts
                 |> List.head
@@ -115,10 +116,18 @@ posixToRfc3339 dateTime =
         |> Rfc3339.toString
 
 
-ensureEndsInSlash : String -> String
-ensureEndsInSlash url =
-    if String.endsWith "/" url then
-        url
+{-| Adds a `/` to the end of a URL if it ends in the domain, and has no path.
+-}
+ensureUrlIsCanonical : String -> String
+ensureUrlIsCanonical url =
+    let
+        isUrlWithoutPath =
+            Regex.fromString "^[^:]+://[^/]+$"
+                |> Maybe.map (\re -> Regex.contains re url)
+                |> Maybe.withDefault False
+    in
+    if isUrlWithoutPath then
+        url ++ "/"
 
     else
-        url ++ "/"
+        url
