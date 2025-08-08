@@ -279,7 +279,7 @@ renderBlockQuote intermediates =
 
 renderCodeBlock : { body : String, language : Maybe String } -> Intermediate msg
 renderCodeBlock { body, language } =
-    Doc.CodeBlock { language = language, code = body }
+    Doc.CodeBlock { language = language, code = String.dropRight 1 body }
         |> IntermediateBlock
 
 
