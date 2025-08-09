@@ -166,7 +166,7 @@
   /* Customized colors. */
 
   .elmsh {
-    @apply rounded bg-layout-20 text-sm text-layout-90;
+    @apply rounded bg-layout-20 text-xs leading-normal text-layout-90;
   }
   .elmsh-hl {
     background: #fffbdd;
