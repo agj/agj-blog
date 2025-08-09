@@ -18,7 +18,13 @@ def updateFile [$filename] {
   let secondSplit = $firstSplit | get 1 | split list $endMarkerLine
   let linesAfterUpdate = $secondSplit | get 1
 
-  let updatedLines = $linesBeforeUpdate ++ [$startMarkerLine] ++ $updateLines ++ [$endMarkerLine] ++ $linesAfterUpdate
+  let updatedLines = (
+    $linesBeforeUpdate
+    ++ [$startMarkerLine]
+    ++ $updateLines
+    ++ [$endMarkerLine]
+    ++ $linesAfterUpdate
+  )
 
   $updatedLines | str join "\n" | save --force $"./public/($filename)"
 }
