@@ -1,7 +1,7 @@
 ---
 title: Cómo configuro mis proyectos de código con Nix, Nushell y Just
-day-of-month: 8
-date: "2025-08-06 00:34:00"
+day-of-month: 10
+date: "2025-08-10 00:34:00"
 categories:
   - interactive
 tags:
