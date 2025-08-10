@@ -12,7 +12,7 @@ tags:
 language: spa
 ---
 
-![image](/files/2020/10-japonol-haponyoru/japoñol-profile.png)
+![image](/files/2020/10-japonol-haponyoru/japonol-profile.png)
 
 [日本語](/2020/10/japonol-haponyoru/)
 
