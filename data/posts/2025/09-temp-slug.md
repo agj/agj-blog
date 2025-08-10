@@ -1,5 +1,5 @@
 ---
-title: Some title
+title: Cómo configuro mis proyectos de código con Nix, Nushell y Just
 day-of-month: 8
 date: "2025-08-06 00:34:00"
 categories:
@@ -12,7 +12,7 @@ tags:
 language: eng
 ---
 
-Desde hace un tiempo que en cualquier proyecto personal de código que empiezo, termino usando tres tecnologías: [Nix][nix], [Nushell][nushell] y [Just][just]. En este artículo quiero compartir la forma en que las uso para configurar las dependencias del proyecto, escribir scripts, y definir sus tareas de desarrollo.
+Desde hace un tiempo que en cualquier proyecto personal de código que empiezo, termino usando tres tecnologías: [Nix][nix], [Nushell][nushell] y [Just][just]. En este artículo quiero presentar estas tres herramientas, y compartir la forma en que las uso para configurar las dependencias del proyecto, escribir scripts, y definir sus tareas de desarrollo. Asumo que entiendes cómo usar tu terminal, que trabajas en un entorno tipo Unix, y que sabes programar.
 
 Vamos a partir viendo el manejo de dependencias usando Nix.
 
@@ -22,9 +22,9 @@ Vamos a partir viendo el manejo de dependencias usando Nix.
 
 # Nix para declarar dependencias
 
-[Nix](https://nixos.org/) es un ecosistema enorme, muy versátil, pero en este contexto lo que nos interesa es que podemos usar esta herramienta para declarar todas las utilidades necesarias para correr un proyecto, compilarlo, hacer linting, etc. Es compatible con casi cualquier entorno tipo Unix, o sea Linux, macOS y Windows bajo WSL.
+[Nix](https://nixos.org/) es un ecosistema enorme y muy versátil, pero en este contexto lo que nos interesa es que podemos usar esta herramienta para declarar todas las utilidades necesarias para correr un proyecto, compilarlo, hacer linting, etc., _y sin usar contenedores._ Es compatible con casi cualquier entorno tipo Unix, o sea Linux, macOS y Windows bajo WSL.
 
-En particular, lo que vamos a usar es algo llamado “flake”. Este es un archivo `flake.nix` que ponemos en la raíz de nuestro proyecto, y es donde declararaemos los paquetes que necesita.
+En particular, lo que vamos a usar es algo llamado “flake”. Este es un archivo de nombre `flake.nix` que ponemos en la raíz de nuestro proyecto, y es donde declararaemos los paquetes que necesita.
 
 Partamos con un ejemplo simple:
 
@@ -50,7 +50,7 @@ Partamos con un ejemplo simple:
 }
 ```
 
-Con esto, hemos definido un entorno que contiene algunas herramientas para un proyecto Elm, además de los binarios de Nushell y Just, a los que me voy a referir más abajo. Así como está, esto sólo va a funcionar en un Mac de los con Apple Silicon. Después vamos a desarrollar este ejemplo para entenderlo mejor y hacerlo más versátil, pero por ahora partamos por lo básico.
+Con esto, hemos definido un entorno que contiene algunas herramientas para un proyecto [Elm](https://elm-lang.org/), además de los binarios de Nushell y Just, a los que me voy a referir más abajo. Así como está, esto sólo va a funcionar en un Mac de los con procesador Apple Silicon. Después vamos a desarrollar este ejemplo para entenderlo mejor y hacerlo más versátil, pero por ahora partamos por lo básico.
 
 Teniendo este archivo, si corremos el comando `nix develop` vamos a entrar a un shell que contiene todas las herramientas declaradas en nuestro `flake.nix`. Para salir basta con correr el comando `exit`, y veremos que ya no tenemos disponibles las herramientas—son totalmente locales al proyecto.
 
@@ -67,6 +67,62 @@ elm not found
 ```
 
 La primera vez se generará un archivo `flake.lock`, el cual podemos integrar en Git (o tu VCS preferido) para mantener la versión exacta de estas dependencias. Luego se descargarán algunos binarios en caché o se compilarán las dependencias desde su código fuente. Pero eso ocurrirá sólo la primera vez, o cuando quieras cambiar las dependencias, ya que se almacenará todo en el “store” global de Nix.
+
+## Un poco más en profundidad
+
+Puedes saltarte esta sección si no te interesa. Aquí voy a explicar un poquito cómo hacer funcionar el ejemplo de arriba para ti, ya que no quise complejizar con ciertos detalles.
+
+Primero, hace falta especificar que esta funcionalidad llamada “flakes” es, al momento en que escribo esto, considerada experimental, y por lo tanto no está activada por defecto: hay que configurarla.
+
+Si no tienes Nix instalado aún, te recomiendo usar el [Determinate Nix Installer](https://zero-to-nix.com/concepts/nix-installer/). No es el oficial, pero es mejor en varios aspectos, entre ellos, viene con flakes activados por defecto, funciona mejor en macOS, y también incluye una forma fácil de desinstalar. Corre el script de abajo en tu terminal para instalarlo (o copia el script de la dirección vinculada arriba). **Cuidado:** Cuando te pregunte si instalar “Determinate Nix”, ponle que **no**. Ese es un fork, y lo que queremos es instalar Nix oficial.
+
+```sh
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+```
+
+Si por otro lado ya tienes instalado Nix y no te funcionan los flakes, necesitas añadir un poco de configuración. Abre o crea un archivo `~/.config/nix/nix.conf` y ponle esto:
+
+```
+experimental-features = flakes nix-command
+```
+
+Ya con todo configurado correctamente, te pongo una versión ajustada del archivo `flake.nix`:
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs = {
+    nixpkgs,
+    flake-utils,
+    ...
+  }:
+    flake-utils.lib.eachDefaultSystem (
+      system: let
+        pkgs = import nixpkgs {system = system;};
+      in {
+        devShell = pkgs.mkShell {
+          buildInputs = [
+            pkgs.elmPackages.elm
+            pkgs.elmPackages.elm-format
+            pkgs.elmPackages.elm-test
+            pkgs.just
+            pkgs.nushell
+          ];
+        };
+      }
+    );
+}
+```
+
+Lo que hicimos fue añadir una nueva entrada, de nombre `flake-utils`, y usar la función `eachDefaultSystem` que provee, la que nos ayuda a configurar un shell de desarrollo para múltiples entornos simultáneamente. Lo demás está igual.
+
+Para agregar otros paquetes, los encuentras en [la búsqueda de Nixpkgs](https://search.nixos.org/packages?channel=unstable). Una vez que encuentres el nombre de lo que quieres, lo puedes agregar en la lista en tu flake.
+
+Y esto es todo lo esencial que necesitas saber para empezar, aunque por supuesto, hay muchos detalles que podrás ir descubriendo por tu cuenta. Como dije al principio, Nix es un mundo muy grande por explorar. Y de hecho, si Nix te parece muy complejo, existen herramientas que funcionan con Nix por debajo, pero proveen una interfaz más intuitiva para este caso de uso; te recomiendo que le eches una mirada a [Devbox](https://www.jetify.com/devbox), [Flox](https://flox.dev/) y [Devenv](https://devenv.sh/).
 
 # Nushell para escribir scripts
 
@@ -97,7 +153,7 @@ Obviamente este ejemplo es puramente demostrativo, pero fíjate: estamos listand
 
 Es tan práctico que lo tengo como mi shell por defecto. Pero para el caso de este artículo, lo relevante es su utilidad para escribir scripts simples y legibles que transforman archivos, levantan servicios, recuperan datos de internet, y más. Los archivos llevan la extensión `.nu`.
 
-Veamos un pequeño ejemplo. Este es un script que actualiza nuestra lista de exclusiones de robots de IA, con datos que descargamos del [Github del proyecto ai.robots.txt](https://github.com/ai-robots-txt/ai.robots.txt/).
+Veamos un pequeño ejemplo. Este es un script que actualiza una lista de exclusiones para evitar visitas de robots de IA, con datos que descargamos del [Github del proyecto ai.robots.txt](https://github.com/ai-robots-txt/ai.robots.txt/).
 
 ```nu
 # Algunas constantes.
@@ -167,4 +223,65 @@ Error: nu::parser::input_type_mismatch
 
 # Just para definir tareas
 
-Just es una herramienta con un alcance muy moderado: permitir definir tareas de ejecución
+[Just][just] es una herramienta con un alcance muy moderado: permitir definir tareas repetibles para un proyecto. Lo típico es definir una tarea “build” para compilar el código, o una “dev” para ejecutarlo localmente, o una “test” para correr los tests. La manera en que funcionaría usando Just es con los comandos `just build`, `just dev` y `just test`, cuyas tareas uno mismo define en un archivo de nombre `justfile`.
+
+Seguro que hasta ahí no hay nada nuevo, es lo mismo que uno haría con Make o con `npm run`, por ejemplo. Y es verdad, Just no ofrece un paradigma novedoso. Lo único que ofrece es simpleza.
+
+El modelo de Just es Make. No sé tú, pero yo al menos he escrito muchos [makefile](https://dev.to/djsurgeon/como-hacer-un-buen-makefile-2pol) para definir tareas para un proyecto. El problema con eso es que Make tiene muchas asperezas para este objetivo. Por ejemplo, si defines una tarea `test` para correr tus tests, y resulta que tienes una carpeta `test` en el mismo directorio, no se va a correr la tarea. Esto es porque Make está hecho para compilar cosas, donde el nombre de la tarea es el nombre del archivo, y cuando el archivo o directorio ya existe, simplemente no se ejecuta la tarea.
+
+Entonces Just es como un Make pero hecho para correr tareas, con todas sus asperezas pulidas. La sintaxis de un “justfile” es igual a la de un makefile, pero un poquito mejor. Por ejemplo, puedes indentar usando espacios en vez de tabs, y puedes poner comentarios de documentación. Además puedes listar tareas usando `just --list`.
+
+Te pongo un ejemplo. Este archivo lleva el nombre `justfile`.
+
+```justfile
+port := "1237"
+
+[private]
+default:
+  just --list
+
+# Compila archivos.
+build: install
+  rm -rf dist
+  pnpm exec vite build
+
+# Levanta el servidor de desarrollo.
+develop: install qr
+  pnpm exec vite --port {{port}} --host
+
+[private]
+install:
+  pnpm install
+
+[private]
+qr:
+  #!/usr/bin/env nu
+  let ip = sys net | where name == "en0" | get 0.ip | where protocol == "ipv4" | get 0.address
+  let url = $"http://($ip):{{port}}"
+  qrtool encode -t ansi256 $url
+  print $url
+```
+
+En la línea 4 definí la primera tarea, a la que le puse nombre `default` porque es la que se ejecutará por defecto si uno escribe `just`. Puede ser cualquier tarea, pero a mí me gusta que la primera tarea sirva para ver la lista de tareas disponibles, por eso la hice “escondida” usando el modificador `[private]`. Mira cómo se ve:
+
+```sh
+$ just
+just --list
+Available recipes:
+    build   # Compila archivos.
+    develop # Levanta el servidor de desarrollo.
+```
+
+Bastante bonito, ¿no? Te puedes dar cuenta de que los comentarios escritos sobre cada tarea sirven como documentación de esa tarea, y que aparecen al usar el comando `--list`.
+
+Otras aspectos notables:
+
+- En la primera línea definí una constante que después uso escribiendo `{{port}}` en dos lugares.
+- Hay una tarea `install` que definí como prerrequisito de dos otras, o sea que cuando, por ejemplo, llame `just build`, se ejecutarán primero los comandos en `install`.
+- La tarea `qr` comienza con la línea `#!/usr/bin/env nu`, la cual sirve para definir con qué programa quieres que se ejecuten los comandos de esa tarea. En este caso, escribí un pequeño script de Nushell. Puedes usar Python si quisieras, o Clojure vía [Babashka](https://babashka.org/), o cualquier otro lenguaje aquí. Esta funcionalidad es súper útil.
+
+---
+
+Esa fue mi presentación sobre estas herramientas que uso para configurar mis proyectos. Hay una otra herramienta que no mencioné: [direnv](https://direnv.net/), la cual hace que sea mucho más placentero trabajar con entornos Nix. Tal vez otro día escribiré algo al respecto, no sé.
+
+Ojalá que te haya sido útil, y cuéntame si encontraste algo incorrecto o confuso.
