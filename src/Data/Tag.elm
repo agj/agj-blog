@@ -286,6 +286,7 @@ all =
     , Tag { name = "music video", slug = "music-video" }
     , Tag { name = "Nendo project", slug = "nendo-project" }
     , Tag { name = "Nix", slug = "nix" }
+    , Tag { name = "Nushell", slug = "nushell" }
     , Tag { name = "openFrameworks", slug = "openframeworks" }
     , Tag { name = "pen-and-paper game", slug = "pen-and-paper-game" }
     , Tag { name = "perception", slug = "perception" }
