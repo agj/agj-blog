@@ -147,14 +147,14 @@ view (PageBody config) =
 
         content : Html msg
         content =
-            Html.main_ [ class "w-full px-4 pt-6", class pageMaxWidth ]
+            Html.main_ [ class "w-full px-6 pt-10 sm:pt-16", class pageMaxWidth ]
                 [ config.content ]
 
         footer : Html msg
         footer =
             case config.footer of
                 Just footerEl ->
-                    Html.div [ class "w-full px-4 pt-20", class pageMaxWidth ]
+                    Html.div [ class "w-full px-6 pt-20", class pageMaxWidth ]
                         [ Html.hr [ class "bg-layout-20 mb-8 h-4 w-full border-0" ] []
                         , Html.footer [ class "w-full" ]
                             [ footerEl ]
