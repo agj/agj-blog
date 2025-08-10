@@ -218,460 +218,118 @@ maybeOnClick maybeMsg url =
 
 all : List Tag
 all =
-    [ Tag
-        { name = "(Sin asunto)"
-        , slug = "sin-asunto"
-        }
-    , Tag
-        { name = "album"
-        , slug = "album"
-        }
-    , Tag
-        { name = "animation"
-        , slug = "animation"
-        }
-    , Tag
-        { name = "anime"
-        , slug = "anime"
-        }
-    , Tag
-        { name = "Anything"
-        , slug = "anything"
-        }
-    , Tag
-        { name = "archive"
-        , slug = "archive"
-        }
-    , Tag
-        { name = "Asymmetric feedback"
-        , slug = "asymmetric-feedback"
-        }
-    , Tag
-        { name = "audio games"
-        , slug = "audio-games"
-        }
-    , Tag
-        { name = "blog"
-        , slug = "blog"
-        }
-    , Tag
-        { name = "book"
-        , slug = "book"
-        }
-    , Tag
-        { name = "Buranko"
-        , slug = "buranko"
-        }
-    , Tag
-        { name = "campodecolor"
-        , slug = "campodecolor"
-        }
-    , Tag
-        { name = "Cave Trip"
-        , slug = "cave-trip"
-        }
-    , Tag
-        { name = "Chile"
-        , slug = "chile"
-        }
-    , Tag
-        { name = "cinema"
-        , slug = "cinema"
-        }
-    , Tag
-        { name = "Climbrunner"
-        , slug = "climbrunner"
-        }
-    , Tag
-        { name = "collaboration"
-        , slug = "collaboration"
-        }
-    , Tag
-        { name = "Come to think of language"
-        , slug = "come-to-think-of-language"
-        }
-    , Tag
-        { name = "comic"
-        , slug = "comic"
-        }
-    , Tag
-        { name = "competition"
-        , slug = "competition"
-        }
-    , Tag
-        { name = "conlang"
-        , slug = "conlang"
-        }
-    , Tag
-        { name = "Construct"
-        , slug = "construct"
-        }
-    , Tag
-        { name = "dot-into"
-        , slug = "dot-into"
-        }
-    , Tag
-        { name = "dream"
-        , slug = "dream"
-        }
-    , Tag
-        { name = "Elm"
-        , slug = "elm"
-        }
-    , Tag
-        { name = "Entretenimientos Diana"
-        , slug = "entretenimientos-diana"
-        }
-    , Tag
-        { name = "español"
-        , slug = "espanol"
-        }
-    , Tag
-        { name = "event"
-        , slug = "event"
-        }
-    , Tag
-        { name = "exhibition"
-        , slug = "exhibition"
-        }
-    , Tag
-        { name = "final year's project"
-        , slug = "final-years-project"
-        }
-    , Tag
-        { name = "Flash"
-        , slug = "flash"
-        }
-    , Tag
-        { name = "Flixel"
-        , slug = "flixel"
-        }
-    , Tag
-        { name = "Flower pattern"
-        , slug = "flower-pattern"
-        }
-    , Tag
-        { name = "Frogs Drink Faces"
-        , slug = "frogs-drink-faces"
-        }
-    , Tag
-        { name = "front page design"
-        , slug = "front-page-design"
-        }
-    , Tag
-        { name = "function-promisifier"
-        , slug = "function-promisifier"
-        }
-    , Tag
-        { name = "Game Boy"
-        , slug = "game-boy"
-        }
-    , Tag
-        { name = "game engine"
-        , slug = "game-engine"
-        }
-    , Tag
-        { name = "games aggregate"
-        , slug = "games-aggregate"
-        }
-    , Tag
-        { name = "Gently"
-        , slug = "gently"
-        }
-    , Tag
-        { name = "graphic design"
-        , slug = "graphic-design"
-        }
-    , Tag
-        { name = "GregWS"
-        , slug = "gregws"
-        }
-    , Tag
-        { name = "Heart"
-        , slug = "heart"
-        }
-    , Tag
-        { name = "illustration"
-        , slug = "illustration"
-        }
-    , Tag
-        { name = "Interactive"
-        , slug = "interactive"
-        }
-    , Tag
-        { name = "interactive fiction"
-        , slug = "interactive-fiction"
-        }
-    , Tag
-        { name = "Intervalo lúcido del individuo inconsciente"
-        , slug = "intervalo-lucido-del-individuo-inconsciente"
-        }
-    , Tag
-        { name = "January"
-        , slug = "january"
-        }
-    , Tag
-        { name = "Japan"
-        , slug = "japan"
-        }
-    , Tag
-        { name = "japanese"
-        , slug = "japanese"
-        }
-    , Tag
-        { name = "Japoñol"
-        , slug = "japonol"
-        }
-    , Tag
-        { name = "javascript"
-        , slug = "javascript"
-        }
-    , Tag
-        { name = "Jugosa Cocina para Niños"
-        , slug = "jugosa-cocina-para-ninos"
-        }
-    , Tag
-        { name = "Knytt of the Month"
-        , slug = "knytt-of-the-month"
-        }
-    , Tag
-        { name = "Knytt Stories"
-        , slug = "knytt-stories"
-        }
-    , Tag
-        { name = "KOTM"
-        , slug = "kotm"
-        }
-    , Tag
-        { name = "language"
-        , slug = "language"
-        }
-    , Tag
-        { name = "library"
-        , slug = "library"
-        }
-    , Tag
-        { name = "literature"
-        , slug = "literature"
-        }
-    , Tag
-        { name = "lofi"
-        , slug = "lofi"
-        }
-    , Tag
-        { name = "Ludum Dare"
-        , slug = "ludum-dare"
-        }
-    , Tag
-        { name = "Metaclase de Kanji"
-        , slug = "metaclase-de-kanji"
-        }
-    , Tag
-        { name = "motion graphics"
-        , slug = "motion-graphics"
-        }
-    , Tag
-        { name = "Muévete"
-        , slug = "muevete"
-        }
-    , Tag
-        { name = "museography"
-        , slug = "museography"
-        }
-    , Tag
-        { name = "music video"
-        , slug = "music-video"
-        }
-    , Tag
-        { name = "Nendo project"
-        , slug = "nendo-project"
-        }
-    , Tag
-        { name = "Nix"
-        , slug = "nix"
-        }
-    , Tag
-        { name = "openFrameworks"
-        , slug = "openframeworks"
-        }
-    , Tag
-        { name = "pen-and-paper game"
-        , slug = "pen-and-paper-game"
-        }
-    , Tag
-        { name = "perception"
-        , slug = "perception"
-        }
-    , Tag
-        { name = "PHP"
-        , slug = "php"
-        }
-    , Tag
-        { name = "Pirate Kart"
-        , slug = "pirate-kart"
-        }
-    , Tag
-        { name = "pixel art"
-        , slug = "pixel-art"
-        }
-    , Tag
-        { name = "portfolio"
-        , slug = "portfolio"
-        }
-    , Tag
-        { name = "post-mortem"
-        , slug = "post-mortem"
-        }
-    , Tag
-        { name = "Prosopamnesia"
-        , slug = "prosopamnesia"
-        }
-    , Tag
-        { name = "Racket"
-        , slug = "racket"
-        }
-    , Tag
-        { name = "release"
-        , slug = "release"
-        }
-    , Tag
-        { name = "Runnerby"
-        , slug = "runnerby"
-        }
-    , Tag
-        { name = "Santiago"
-        , slug = "santiago"
-        }
-    , Tag
-        { name = "Santiago en 100 palabras"
-        , slug = "santiago-en-100-palabras"
-        }
-    , Tag
-        { name = "Sheets"
-        , slug = "sheets"
-        }
-    , Tag
-        { name = "short film"
-        , slug = "short-film"
-        }
-    , Tag
-        { name = "Sound"
-        , slug = "sound"
-        }
-    , Tag
-        { name = "sound design"
-        , slug = "sound-design"
-        }
-    , Tag
-        { name = "Spwords"
-        , slug = "spwords"
-        }
-    , Tag
-        { name = "Super Friendship Club"
-        , slug = "super-friendship-club"
-        }
-    , Tag
-        { name = "surrealism"
-        , slug = "surrealism"
-        }
-    , Tag
-        { name = "text game"
-        , slug = "text-game"
-        }
-    , Tag
-        { name = "The Ants Parade"
-        , slug = "the-ants-parade"
-        }
-    , Tag
-        { name = "The Color and the Leaves"
-        , slug = "the-color-and-the-leaves"
-        }
-    , Tag
-        { name = "The Games Collective"
-        , slug = "the-games-collective"
-        }
-    , Tag
-        { name = "The Lake"
-        , slug = "the-lake"
-        }
-    , Tag
-        { name = "The tea room"
-        , slug = "the-tea-room"
-        }
-    , Tag
-        { name = "TIGSource"
-        , slug = "tigsource"
-        }
-    , Tag
-        { name = "tracker"
-        , slug = "tracker"
-        }
-    , Tag
-        { name = "translation"
-        , slug = "translation"
-        }
-    , Tag
-        { name = "Tumblecopter"
-        , slug = "tumblecopter"
-        }
-    , Tag
-        { name = "Twine"
-        , slug = "twine"
-        }
-    , Tag
-        { name = "university"
-        , slug = "university"
-        }
-    , Tag
-        { name = "video"
-        , slug = "video"
-        }
-    , Tag
-        { name = "video game"
-        , slug = "video-game"
-        }
-    , Tag
-        { name = "Viewpoints"
-        , slug = "viewpoints"
-        }
-    , Tag
-        { name = "virtual reality"
-        , slug = "virtual-reality"
-        }
-    , Tag
-        { name = "visual novel"
-        , slug = "visual-novel"
-        }
-    , Tag
-        { name = "Walker"
-        , slug = "walker"
-        }
-    , Tag
-        { name = "web"
-        , slug = "web"
-        }
-    , Tag
-        { name = "Weekly concern"
-        , slug = "weekly-concern"
-        }
-    , Tag
-        { name = "While telling with the eyes"
-        , slug = "while-telling-with-the-eyes"
-        }
-    , Tag
-        { name = "Wirewalk"
-        , slug = "wirewalk"
-        }
-    , Tag
-        { name = "Within"
-        , slug = "within"
-        }
-    , Tag
-        { name = "writing"
-        , slug = "writing"
-        }
-    , Tag
-        { name = "日本語"
-        , slug = "nihongo"
-        }
+    [ Tag { name = "(Sin asunto)", slug = "sin-asunto" }
+    , Tag { name = "album", slug = "album" }
+    , Tag { name = "animation", slug = "animation" }
+    , Tag { name = "anime", slug = "anime" }
+    , Tag { name = "Anything", slug = "anything" }
+    , Tag { name = "archive", slug = "archive" }
+    , Tag { name = "Asymmetric feedback", slug = "asymmetric-feedback" }
+    , Tag { name = "audio games", slug = "audio-games" }
+    , Tag { name = "blog", slug = "blog" }
+    , Tag { name = "book", slug = "book" }
+    , Tag { name = "Buranko", slug = "buranko" }
+    , Tag { name = "campodecolor", slug = "campodecolor" }
+    , Tag { name = "Cave Trip", slug = "cave-trip" }
+    , Tag { name = "Chile", slug = "chile" }
+    , Tag { name = "cinema", slug = "cinema" }
+    , Tag { name = "Climbrunner", slug = "climbrunner" }
+    , Tag { name = "collaboration", slug = "collaboration" }
+    , Tag { name = "Come to think of language", slug = "come-to-think-of-language" }
+    , Tag { name = "comic", slug = "comic" }
+    , Tag { name = "competition", slug = "competition" }
+    , Tag { name = "conlang", slug = "conlang" }
+    , Tag { name = "Construct", slug = "construct" }
+    , Tag { name = "dot-into", slug = "dot-into" }
+    , Tag { name = "dream", slug = "dream" }
+    , Tag { name = "Elm", slug = "elm" }
+    , Tag { name = "Entretenimientos Diana", slug = "entretenimientos-diana" }
+    , Tag { name = "español", slug = "espanol" }
+    , Tag { name = "event", slug = "event" }
+    , Tag { name = "exhibition", slug = "exhibition" }
+    , Tag { name = "final year's project", slug = "final-years-project" }
+    , Tag { name = "Flash", slug = "flash" }
+    , Tag { name = "Flixel", slug = "flixel" }
+    , Tag { name = "Flower pattern", slug = "flower-pattern" }
+    , Tag { name = "Frogs Drink Faces", slug = "frogs-drink-faces" }
+    , Tag { name = "front page design", slug = "front-page-design" }
+    , Tag { name = "function-promisifier", slug = "function-promisifier" }
+    , Tag { name = "Game Boy", slug = "game-boy" }
+    , Tag { name = "game engine", slug = "game-engine" }
+    , Tag { name = "games aggregate", slug = "games-aggregate" }
+    , Tag { name = "Gently", slug = "gently" }
+    , Tag { name = "graphic design", slug = "graphic-design" }
+    , Tag { name = "GregWS", slug = "gregws" }
+    , Tag { name = "Heart", slug = "heart" }
+    , Tag { name = "illustration", slug = "illustration" }
+    , Tag { name = "Interactive", slug = "interactive" }
+    , Tag { name = "interactive fiction", slug = "interactive-fiction" }
+    , Tag { name = "Intervalo lúcido del individuo inconsciente", slug = "intervalo-lucido-del-individuo-inconsciente" }
+    , Tag { name = "January", slug = "january" }
+    , Tag { name = "Japan", slug = "japan" }
+    , Tag { name = "japanese", slug = "japanese" }
+    , Tag { name = "Japoñol", slug = "japonol" }
+    , Tag { name = "javascript", slug = "javascript" }
+    , Tag { name = "Jugosa Cocina para Niños", slug = "jugosa-cocina-para-ninos" }
+    , Tag { name = "Knytt of the Month", slug = "knytt-of-the-month" }
+    , Tag { name = "Knytt Stories", slug = "knytt-stories" }
+    , Tag { name = "KOTM", slug = "kotm" }
+    , Tag { name = "language", slug = "language" }
+    , Tag { name = "library", slug = "library" }
+    , Tag { name = "literature", slug = "literature" }
+    , Tag { name = "lofi", slug = "lofi" }
+    , Tag { name = "Ludum Dare", slug = "ludum-dare" }
+    , Tag { name = "Metaclase de Kanji", slug = "metaclase-de-kanji" }
+    , Tag { name = "motion graphics", slug = "motion-graphics" }
+    , Tag { name = "Muévete", slug = "muevete" }
+    , Tag { name = "museography", slug = "museography" }
+    , Tag { name = "music video", slug = "music-video" }
+    , Tag { name = "Nendo project", slug = "nendo-project" }
+    , Tag { name = "Nix", slug = "nix" }
+    , Tag { name = "openFrameworks", slug = "openframeworks" }
+    , Tag { name = "pen-and-paper game", slug = "pen-and-paper-game" }
+    , Tag { name = "perception", slug = "perception" }
+    , Tag { name = "PHP", slug = "php" }
+    , Tag { name = "Pirate Kart", slug = "pirate-kart" }
+    , Tag { name = "pixel art", slug = "pixel-art" }
+    , Tag { name = "portfolio", slug = "portfolio" }
+    , Tag { name = "post-mortem", slug = "post-mortem" }
+    , Tag { name = "Prosopamnesia", slug = "prosopamnesia" }
+    , Tag { name = "Racket", slug = "racket" }
+    , Tag { name = "release", slug = "release" }
+    , Tag { name = "Runnerby", slug = "runnerby" }
+    , Tag { name = "Santiago", slug = "santiago" }
+    , Tag { name = "Santiago en 100 palabras", slug = "santiago-en-100-palabras" }
+    , Tag { name = "Sheets", slug = "sheets" }
+    , Tag { name = "short film", slug = "short-film" }
+    , Tag { name = "Sound", slug = "sound" }
+    , Tag { name = "sound design", slug = "sound-design" }
+    , Tag { name = "Spwords", slug = "spwords" }
+    , Tag { name = "Super Friendship Club", slug = "super-friendship-club" }
+    , Tag { name = "surrealism", slug = "surrealism" }
+    , Tag { name = "text game", slug = "text-game" }
+    , Tag { name = "The Ants Parade", slug = "the-ants-parade" }
+    , Tag { name = "The Color and the Leaves", slug = "the-color-and-the-leaves" }
+    , Tag { name = "The Games Collective", slug = "the-games-collective" }
+    , Tag { name = "The Lake", slug = "the-lake" }
+    , Tag { name = "The tea room", slug = "the-tea-room" }
+    , Tag { name = "TIGSource", slug = "tigsource" }
+    , Tag { name = "tracker", slug = "tracker" }
+    , Tag { name = "translation", slug = "translation" }
+    , Tag { name = "Tumblecopter", slug = "tumblecopter" }
+    , Tag { name = "Twine", slug = "twine" }
+    , Tag { name = "university", slug = "university" }
+    , Tag { name = "video", slug = "video" }
+    , Tag { name = "video game", slug = "video-game" }
+    , Tag { name = "Viewpoints", slug = "viewpoints" }
+    , Tag { name = "virtual reality", slug = "virtual-reality" }
+    , Tag { name = "visual novel", slug = "visual-novel" }
+    , Tag { name = "Walker", slug = "walker" }
+    , Tag { name = "web", slug = "web" }
+    , Tag { name = "Weekly concern", slug = "weekly-concern" }
+    , Tag { name = "While telling with the eyes", slug = "while-telling-with-the-eyes" }
+    , Tag { name = "Wirewalk", slug = "wirewalk" }
+    , Tag { name = "Within", slug = "within" }
+    , Tag { name = "writing", slug = "writing" }
+    , Tag { name = "日本語", slug = "nihongo" }
     ]
