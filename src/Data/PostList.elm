@@ -95,7 +95,7 @@ viewPost post =
         postDayOfMonth : Html msg
         postDayOfMonth =
             Html.div [ class "text-layout-70 min-w-5 tabular-nums" ]
-                [ Html.text (post.date |> Date.monthNumber |> Int.padLeft 2)
+                [ Html.text (post.date |> Date.day |> Int.padLeft 2)
                 ]
 
         postLink : Html msg
