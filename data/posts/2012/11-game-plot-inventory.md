@@ -1,7 +1,6 @@
 ---
 id: 763
 title: Game plot inventory
-day-of-month: 29
 date: "2012-11-29 18:05:31"
 categories:
   - musings

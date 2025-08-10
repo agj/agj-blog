@@ -1,7 +1,6 @@
 ---
 id: 3
 title: My seed
-day-of-month: 30
 date: "2008-06-30 04:34:16"
 categories:
   - musings

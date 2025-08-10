@@ -1,7 +1,6 @@
 ---
 id: 948
 title: Reel
-day-of-month: 6
 date: "2015-02-06 16:50:13"
 categories:
   - interactive

@@ -1,7 +1,6 @@
 ---
 id: 503
 title: Intervalo lúcido del individuo inconsciente
-day-of-month: 13
 date: "2010-10-13 21:07:31"
 categories:
   - my-games

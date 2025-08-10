@@ -1,7 +1,6 @@
 ---
 id: 968
 title: Buranko
-day-of-month: 3
 date: "2015-11-03 15:45:33"
 categories:
   - interactive

@@ -1,7 +1,6 @@
 ---
 id: 175
 title: Heart & Hope
-day-of-month: 20
 date: "2009-04-20 21:19:28"
 categories:
   - my-games

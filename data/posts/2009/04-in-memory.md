@@ -1,7 +1,6 @@
 ---
 id: 168
 title: In memory
-day-of-month: 9
 date: "2009-04-09 23:55:30"
 categories:
   - interactive

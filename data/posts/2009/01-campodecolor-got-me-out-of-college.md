@@ -1,7 +1,6 @@
 ---
 id: 118
 title: Campodecolor got me out of college
-day-of-month: 21
 date: "2009-01-21 03:37:39"
 categories:
   - my-games

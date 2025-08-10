@@ -1,7 +1,6 @@
 ---
 id: 94
 title: New front page
-day-of-month: 7
 date: "2009-01-07 06:44:06"
 categories:
   - interactive

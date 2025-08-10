@@ -1,7 +1,6 @@
 ---
 id: 20
 title: Ambitions of pushing the envelope
-day-of-month: 13
 date: "2008-10-13 05:15:19"
 categories:
   - musings

@@ -1,7 +1,6 @@
 ---
 id: 380
 title: Walker
-day-of-month: 18
 date: "2009-10-18 06:44:39"
 categories:
   - my-games

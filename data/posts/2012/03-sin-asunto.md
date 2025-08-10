@@ -1,7 +1,6 @@
 ---
 id: 571
 title: (Sin asunto)
-day-of-month: 25
 date: "2012-03-26 01:21:57"
 categories:
   - my-games

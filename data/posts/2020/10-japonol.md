@@ -1,7 +1,6 @@
 ---
 id: 1168
 title: Japoñol
-day-of-month: 14
 date: "2020-10-14 17:20:43"
 categories:
   - language

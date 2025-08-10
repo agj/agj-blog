@@ -1,7 +1,6 @@
 ---
 id: 821
 title: The Japanese countryside
-day-of-month: 14
 date: "2013-10-15 02:56:00"
 categories:
   - musings

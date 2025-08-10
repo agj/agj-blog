@@ -1,7 +1,6 @@
 ---
 id: 776
 title: Spwords
-day-of-month: 2
 date: "2012-12-02 15:31:00"
 categories:
   - language

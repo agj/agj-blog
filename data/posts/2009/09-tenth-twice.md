@@ -1,7 +1,6 @@
 ---
 id: 371
 title: Tenth twice
-day-of-month: 14
 date: "2009-09-14 07:23:04"
 categories:
   - musings

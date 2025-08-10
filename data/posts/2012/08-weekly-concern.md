@@ -1,7 +1,6 @@
 ---
 id: 589
 title: Weekly concern
-day-of-month: 17
 date: "2012-08-17 04:59:44"
 categories:
   - interactive

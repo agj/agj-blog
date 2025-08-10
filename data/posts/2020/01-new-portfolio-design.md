@@ -1,7 +1,6 @@
 ---
 id: 1156
 title: New portfolio design
-day-of-month: 24
 date: "2020-01-24 19:03:37"
 categories:
   - interactive

@@ -1,7 +1,6 @@
 ---
 id: 492
 title: Runnerby
-day-of-month: 17
 date: "2010-09-17 04:03:52"
 categories:
   - my-games

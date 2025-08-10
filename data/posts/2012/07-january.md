@@ -1,7 +1,6 @@
 ---
 id: 583
 title: January
-day-of-month: 22
 date: "2012-07-22 04:13:31"
 categories:
   - my-games

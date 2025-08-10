@@ -1,7 +1,6 @@
 ---
 id: 548
 title: Muévete
-day-of-month: 17
 date: "2011-11-18 02:28:43"
 categories:
   - interactive

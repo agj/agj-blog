@@ -1,7 +1,6 @@
 ---
 id: 349
 title: Cities of Jem Cohen
-day-of-month: 24
 date: "2009-08-24 06:02:18"
 categories:
   - musings

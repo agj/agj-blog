@@ -1,7 +1,6 @@
 ---
 id: 858
 title: Fade EP
-day-of-month: 13
 date: "2014-03-13 23:01:56"
 categories:
   - sound

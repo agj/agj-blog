@@ -1,7 +1,6 @@
 ---
 id: 389
 title: Claridad
-day-of-month: 13
 date: "2009-11-14 01:28:54"
 categories:
   - videos

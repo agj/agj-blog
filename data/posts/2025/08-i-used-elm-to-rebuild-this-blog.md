@@ -1,6 +1,5 @@
 ---
 title: I used Elm to rebuild this blog
-day-of-month: 5
 date: "2025-08-06 00:34:00"
 categories:
   - interactive

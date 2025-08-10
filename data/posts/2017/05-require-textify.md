@@ -1,7 +1,6 @@
 ---
 id: 1100
 title: require-textify
-day-of-month: 11
 date: "2017-05-12 01:12:02"
 categories:
   - interactive

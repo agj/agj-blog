@@ -1,7 +1,6 @@
 ---
 id: 325
 title: Sheets
-day-of-month: 13
 date: "2009-08-13 21:04:25"
 categories:
   - my-games

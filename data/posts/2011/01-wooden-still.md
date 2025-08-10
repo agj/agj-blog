@@ -1,7 +1,6 @@
 ---
 id: 527
 title: Wooden still
-day-of-month: 28
 date: "2011-01-28 03:49:34"
 categories:
   - videos

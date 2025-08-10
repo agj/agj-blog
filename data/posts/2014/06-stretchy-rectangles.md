@@ -1,7 +1,6 @@
 ---
 id: 891
 title: Stretchy rectangles
-day-of-month: 17
 date: "2014-06-17 17:54:23"
 categories:
   - interactive

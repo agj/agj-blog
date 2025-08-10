@@ -1,7 +1,6 @@
 ---
 id: 436
 title: Gently
-day-of-month: 23
 date: "2010-02-23 08:02:01"
 categories:
   - my-games

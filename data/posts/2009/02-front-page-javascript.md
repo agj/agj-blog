@@ -1,7 +1,6 @@
 ---
 id: 140
 title: Front page, Javascript
-day-of-month: 21
 date: "2009-02-21 17:49:50"
 categories:
   - interactive

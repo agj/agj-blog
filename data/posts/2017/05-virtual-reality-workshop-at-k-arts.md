@@ -1,7 +1,6 @@
 ---
 id: 1074
 title: Virtual reality workshop at K-Arts
-day-of-month: 8
 date: "2017-05-08 05:01:30"
 categories:
   - interactive

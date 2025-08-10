@@ -1,7 +1,6 @@
 ---
 id: 143
 title: An audio game
-day-of-month: 23
 date: "2009-03-24 00:12:18"
 categories:
   - my-games

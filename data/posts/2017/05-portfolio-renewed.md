@@ -1,7 +1,6 @@
 ---
 id: 1107
 title: Portfolio renewed
-day-of-month: 15
 date: "2017-05-15 06:46:44"
 categories:
   - interactive

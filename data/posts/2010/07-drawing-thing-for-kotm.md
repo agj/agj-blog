@@ -1,7 +1,6 @@
 ---
 id: 480
 title: Drawing thing for KOTM
-day-of-month: 18
 date: "2010-07-18 21:23:21"
 categories:
   - my-games

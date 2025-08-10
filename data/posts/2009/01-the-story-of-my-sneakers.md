@@ -1,7 +1,6 @@
 ---
 id: 73
 title: "'The story of my sneakers'"
-day-of-month: 5
 date: "2009-01-05 22:41:28"
 categories:
   - videos

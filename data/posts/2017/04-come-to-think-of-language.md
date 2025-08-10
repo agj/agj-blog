@@ -1,7 +1,6 @@
 ---
 id: 1041
 title: Come to think of language
-day-of-month: 20
 date: "2017-04-20 16:21:11"
 categories:
   - language

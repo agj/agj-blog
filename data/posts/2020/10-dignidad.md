@@ -1,7 +1,6 @@
 ---
 id: 1179
 title: Dignidad
-day-of-month: 16
 date: "2020-10-17 00:50:00"
 categories:
   - musings

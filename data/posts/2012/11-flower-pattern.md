@@ -1,7 +1,6 @@
 ---
 id: 753
 title: Flower pattern
-day-of-month: 29
 date: "2012-11-29 21:15:12"
 categories:
   - my-games

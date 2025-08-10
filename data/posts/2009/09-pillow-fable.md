@@ -1,7 +1,6 @@
 ---
 id: 362
 title: Pillow fable
-day-of-month: 5
 date: "2009-09-06 00:18:06"
 categories:
   - videos

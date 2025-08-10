@@ -1,7 +1,6 @@
 ---
 id: 477
 title: kyntt
-day-of-month: 17
 date: "2010-07-17 11:49:27"
 categories:
   - my-games

@@ -1,7 +1,6 @@
 ---
 id: 455
 title: Anything
-day-of-month: 18
 date: "2010-04-18 04:21:41"
 categories:
   - my-games

@@ -1,7 +1,6 @@
 ---
 id: 1077
 title: A few of the things I found myself involved in while in Japan
-day-of-month: 4
 date: "2017-05-05 02:58:20"
 categories:
   - interactive

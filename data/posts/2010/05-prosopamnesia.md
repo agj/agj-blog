@@ -1,7 +1,6 @@
 ---
 id: 461
 title: Prosopamnesia
-day-of-month: 5
 date: "2010-05-06 02:53:19"
 categories:
   - my-games

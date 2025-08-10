@@ -1,7 +1,6 @@
 ---
 id: 142
 title: Games for a reason
-day-of-month: 8
 date: "2009-04-08 07:05:53"
 categories:
   - musings

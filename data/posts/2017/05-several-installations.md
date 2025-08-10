@@ -1,7 +1,6 @@
 ---
 id: 1064
 title: Several installations
-day-of-month: 3
 date: "2017-05-03 17:42:47"
 categories:
   - interactive

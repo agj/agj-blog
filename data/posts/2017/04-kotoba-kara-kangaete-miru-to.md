@@ -1,7 +1,6 @@
 ---
 id: 1058
 title: ことばから考えてみると
-day-of-month: 28
 date: "2017-04-29 00:32:08"
 categories:
   - language

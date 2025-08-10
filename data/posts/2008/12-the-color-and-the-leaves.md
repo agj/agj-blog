@@ -1,7 +1,6 @@
 ---
 id: 31
 title: The Color and the Leaves
-day-of-month: 16
 date: "2008-12-16 05:23:50"
 categories:
   - sound

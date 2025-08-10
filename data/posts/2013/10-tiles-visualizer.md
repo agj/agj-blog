@@ -1,7 +1,6 @@
 ---
 id: 830
 title: Tiles visualizer
-day-of-month: 26
 date: "2013-10-27 02:15:55"
 categories:
   - interactive

@@ -1,7 +1,6 @@
 ---
 id: 22
 title: Making a game about making
-day-of-month: 6
 date: "2008-11-06 19:50:17"
 categories:
   - my-games

@@ -1,7 +1,6 @@
 ---
 id: 8
 title: Round-robin webcomic project!
-day-of-month: 28
 date: "2008-07-28 04:09:41"
 categories:
   - projects

@@ -1,7 +1,6 @@
 ---
 id: 976
 title: Two npm packages
-day-of-month: 2
 date: "2015-12-02 16:21:30"
 categories:
   - interactive

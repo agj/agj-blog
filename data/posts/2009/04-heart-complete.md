@@ -1,7 +1,6 @@
 ---
 id: 203
 title: Heart, complete
-day-of-month: 28
 date: "2009-04-28 23:38:43"
 categories:
   - my-games

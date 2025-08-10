@@ -1,7 +1,6 @@
 ---
 id: 127
 title: More on lakes
-day-of-month: 22
 date: "2009-01-22 21:50:07"
 categories:
   - my-games

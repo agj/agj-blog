@@ -1,7 +1,6 @@
 ---
 id: 609
 title: This blog now looks different
-day-of-month: 23
 date: "2012-09-24 00:38:15"
 categories:
   - interactive

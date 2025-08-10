@@ -1,7 +1,6 @@
 ---
 id: 450
 title: Colorful new front page
-day-of-month: 9
 date: "2010-04-09 04:35:30"
 categories:
   - interactive

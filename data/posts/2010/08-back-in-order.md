@@ -1,7 +1,6 @@
 ---
 id: 484
 title: Back in order
-day-of-month: 14
 date: "2010-08-14 03:11:25"
 categories:
   - my-games

@@ -1,7 +1,6 @@
 ---
 id: 10
 title: Glory to the filmmaker!
-day-of-month: 6
 date: "2008-08-07 00:43:36"
 categories:
   - musings

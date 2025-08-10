@@ -1,7 +1,6 @@
 ---
 id: 727
 title: Spoems
-day-of-month: 19
 date: "2012-10-19 18:33:23"
 categories:
   - interactive

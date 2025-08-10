@@ -1,7 +1,6 @@
 ---
 id: 40
 title: New design
-day-of-month: 28
 date: "2008-12-29 00:31:20"
 categories:
   - interactive
