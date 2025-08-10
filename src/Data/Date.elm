@@ -1,5 +1,6 @@
 module Data.Date exposing
     ( formatShortDate
+    , fromPosixTzCl
     , intToMonth
     , intToMonthFullName
     , wordpressToPosix
@@ -10,6 +11,7 @@ import Dict exposing (Dict)
 import Parser exposing ((|.), (|=), Parser)
 import Time
 import Time.Extra
+import TimeZone
 
 
 formatShortDate : Date -> String
@@ -74,6 +76,11 @@ intToMonth int =
     Dict.get int intToMonthDict
         |> Maybe.map .t
         |> Maybe.withDefault Time.Jan
+
+
+fromPosixTzCl : Time.Posix -> Date
+fromPosixTzCl dateTime =
+    Date.fromPosix (TimeZone.america__santiago ()) dateTime
 
 
 

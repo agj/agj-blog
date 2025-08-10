@@ -5,7 +5,7 @@ import Custom.Bool exposing (ifElse)
 import Custom.Int as Int
 import Custom.Markdown as Markdown
 import Data.Category as Category
-import Data.Date
+import Data.Date as Date
 import Data.Mastodon.Status
 import Data.Post as Post exposing (Post, PostGist)
 import Data.Tag as Tag
@@ -78,8 +78,12 @@ pages =
         |> BackendTask.map
             (List.map
                 (\postGist ->
-                    { year = Date.year postGist.date |> Int.padLeft 4
-                    , month = Date.monthNumber postGist.date |> Int.padLeft 2
+                    let
+                        date =
+                            Date.fromPosixTzCl postGist.dateTime
+                    in
+                    { year = Date.year date |> Int.padLeft 4
+                    , month = Date.monthNumber date |> Int.padLeft 2
                     , post = postGist.slug
                     }
                 )
@@ -174,7 +178,7 @@ view app shared model =
     let
         date : String
         date =
-            Data.Date.formatShortDate app.data.gist.date
+            Date.formatShortDate (Date.fromPosixTzCl app.data.gist.dateTime)
 
         categoryEls : List (Html Msg)
         categoryEls =

@@ -31,14 +31,14 @@ viewGists posts =
         postsByYearAndMonth : List ( Int, List ( Int, List PostGist ) )
         postsByYearAndMonth =
             posts
-                |> List.gatherUnder (.date >> Date.year)
+                |> List.gatherUnder (.dateTime >> Date.fromPosixTzCl >> Date.year)
                 |> List.sortBy Tuple.first
                 |> List.reverse
                 |> List.map
                     (\( year, yearPosts ) ->
                         ( year
                         , yearPosts
-                            |> List.gatherUnder (.date >> Date.monthNumber)
+                            |> List.gatherUnder (.dateTime >> Date.fromPosixTzCl >> Date.monthNumber)
                             |> List.sortBy Tuple.first
                             |> List.reverse
                             |> List.map
@@ -95,7 +95,7 @@ viewPost post =
         postDayOfMonth : Html msg
         postDayOfMonth =
             Html.div [ class "text-layout-70 min-w-5 tabular-nums" ]
-                [ Html.text (post.date |> Date.day |> Int.padLeft 2)
+                [ Html.text (post.dateTime |> Date.fromPosixTzCl |> Date.day |> Int.padLeft 2)
                 ]
 
         postLink : Html msg
