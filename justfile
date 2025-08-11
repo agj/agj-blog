@@ -32,6 +32,11 @@ deploy: build
 update-ai-block:
     nu ./tasks/update-ai-block.nu
 
+# Updates the newest post's slug and date.
+[group('maintenance')]
+update-post:
+    nu ./tasks/update-post.nu
+
 # Check for errors.
 [group('maintenance')]
 review: install
