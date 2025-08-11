@@ -1,6 +1,6 @@
 ---
 title: Cómo uso Nix, Nushell y Just para configurar mis proyectos de código
-date: "2025-08-11 19:57:00"
+date: "2025-08-11 20:24:00"
 categories:
   - interactive
 tags:
@@ -115,7 +115,7 @@ Ya con todo configurado correctamente, te pongo una versión ajustada del archiv
 }
 ```
 
-Lo que hicimos fue añadir una nueva entrada, de nombre `flake-utils`, y usar la función `eachDefaultSystem` que provee, la que nos ayuda a configurar un shell de desarrollo para múltiples entornos simultáneamente. Lo demás está igual.
+Lo que hicimos fue declarar una nueva entrada bajo `inputs`, de nombre `flake-utils`, y más abajo usar la función `eachDefaultSystem` que provee, la que nos ayuda a configurar un shell de desarrollo para múltiples entornos simultáneamente. Lo demás está igual.
 
 Para agregar otros paquetes, los encuentras en [la búsqueda de Nixpkgs](https://search.nixos.org/packages?channel=unstable). Una vez que encuentres el nombre de lo que quieres, lo puedes agregar en la lista en tu flake.
 
