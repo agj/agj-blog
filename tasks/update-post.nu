@@ -41,6 +41,7 @@ let updatedFilename = $"data/posts/($year)/($month)-($titleSlug).md"
 let updatedDate = $date | format date '%Y-%m-%d %H:%M:00'
 let updatedFrontmatter = $frontmatter | update date $updatedDate
 let updatedFrontmatterLines = $updatedFrontmatter | to yaml | split row "\n"
+  | str replace --regex '^date: (.+)$' 'date: "$1"'
 
 let updatedPostLines = [
     $postLines.0,
