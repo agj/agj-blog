@@ -1,13 +1,11 @@
 ---
 title: Cómo configuro mis proyectos de código con Nix, Nushell y Just
-date: "2025-08-10 00:34:00"
+date: "2025-08-10 20:18:00"
 categories:
   - interactive
 tags:
-  - blog
-  - elm
   - nix
-  - web
+  - nushell
 language: eng
 ---
 
@@ -23,7 +21,7 @@ Vamos a partir viendo el manejo de dependencias usando Nix.
 
 [Nix](https://nixos.org/) es un ecosistema enorme y muy versátil, pero en este contexto lo que nos interesa es que podemos usar esta herramienta para declarar todas las utilidades necesarias para correr un proyecto, compilarlo, hacer linting, etc., _y sin usar contenedores._ Es compatible con casi cualquier entorno tipo Unix, o sea Linux, macOS y Windows bajo WSL.
 
-En particular, lo que vamos a usar es algo llamado “flake”. Este es un archivo de nombre `flake.nix` que ponemos en la raíz de nuestro proyecto, y es donde declararaemos los paquetes que necesita.
+En particular, lo que uso es algo llamado “flake”. Este es un archivo de nombre `flake.nix` que se pone en la raíz del proyecto, y es donde declaramos los paquetes que necesita.
 
 Partamos con un ejemplo simple:
 
@@ -49,9 +47,9 @@ Partamos con un ejemplo simple:
 }
 ```
 
-Con esto, hemos definido un entorno que contiene algunas herramientas para un proyecto [Elm](https://elm-lang.org/), además de los binarios de Nushell y Just, a los que me voy a referir más abajo. Así como está, esto sólo va a funcionar en un Mac de los con procesador Apple Silicon. Después vamos a desarrollar este ejemplo para entenderlo mejor y hacerlo más versátil, pero por ahora partamos por lo básico.
+Con esto, hemos definido un entorno que contiene algunas herramientas para un proyecto [Elm](https://elm-lang.org/), además de los binarios de Nushell y Just, a los que me voy a referir más abajo. Así como está, esto sólo va a funcionar en un Mac de los con procesador Apple Silicon. Después vamos a desarrollar este ejemplo para entenderlo mejor y hacerlo más versátil, pero por ahora partamos viendo en qué nos ayuda tener este archivo.
 
-Teniendo este archivo, si corremos el comando `nix develop` vamos a entrar a un shell que contiene todas las herramientas declaradas en nuestro `flake.nix`. Para salir basta con correr el comando `exit`, y veremos que ya no tenemos disponibles las herramientas—son totalmente locales al proyecto.
+Si corremos el comando `nix develop` vamos a entrar a un shell Bash que contiene todas las herramientas declaradas en nuestro `flake.nix`. Para salir basta con correr el comando `exit`, y veremos que ya no tenemos disponibles las herramientas—son totalmente locales al proyecto.
 
 ```sh
 $ nix develop
@@ -228,7 +226,7 @@ Seguro que hasta ahí no hay nada nuevo, es lo mismo que uno haría con Make o c
 
 El modelo de Just es Make. No sé tú, pero yo al menos he escrito muchos [makefile](https://dev.to/djsurgeon/como-hacer-un-buen-makefile-2pol) para definir tareas para un proyecto. El problema con eso es que Make tiene muchas asperezas para este objetivo. Por ejemplo, si defines una tarea `test` para correr tus tests, y resulta que tienes una carpeta `test` en el mismo directorio, no se va a correr la tarea. Esto es porque Make está hecho para compilar cosas, donde el nombre de la tarea es el nombre del archivo, y cuando el archivo o directorio ya existe, simplemente no se ejecuta la tarea.
 
-Entonces Just es como un Make pero hecho para correr tareas, con todas sus asperezas pulidas. La sintaxis de un “justfile” es igual a la de un makefile, pero un poquito mejor. Por ejemplo, puedes indentar usando espacios en vez de tabs, y puedes poner comentarios de documentación. Además puedes listar tareas usando `just --list`.
+La razón por la que me gusta Just es porque es como un Make pero hecho para correr tareas, con todas sus asperezas pulidas. La sintaxis de un “justfile” es igual a la de un makefile, pero un poquito mejor. Por ejemplo, puedes indentar usando espacios en vez de tabs, y puedes poner comentarios de documentación. Además puedes listar tareas usando `just --list`.
 
 Te pongo un ejemplo. Este archivo lleva el nombre `justfile`.
 
