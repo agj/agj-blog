@@ -1,6 +1,6 @@
 ---
-title: Cómo configuro mis proyectos de código con Nix, Nushell y Just
-date: "2025-08-10 20:18:00"
+title: Cómo uso Nix, Nushell y Just para configurar mis proyectos de código
+date: "2025-08-11 19:57:00"
 categories:
   - interactive
 tags:
