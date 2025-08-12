@@ -6,6 +6,9 @@ export const defineAudioPlayerCustomElement = () => {
         super();
       }
 
+      audioElement?: HTMLAudioElement;
+      onTimeUpdate?: (event: Event) => void;
+
       static get observedAttributes() {
         return ["src", "playing", "current-time"];
       }
@@ -13,7 +16,11 @@ export const defineAudioPlayerCustomElement = () => {
       connectedCallback() {
         this.audioElement = new Audio();
 
-        this.onTimeUpdate = (event) => {
+        this.onTimeUpdate = (_event) => {
+          if (!this.audioElement) {
+            return;
+          }
+
           this.dispatchEvent(
             new CustomEvent("timeupdate", {
               detail: {
@@ -34,9 +41,14 @@ export const defineAudioPlayerCustomElement = () => {
       }
 
       disconnectedCallback() {
-        this.audioElement?.stop?.();
-        this.audioElement?.removeEventListener("timeupdate", this.onTimeUpdate);
-        this.audioElement = null;
+        this.audioElement?.pause();
+        if (this.onTimeUpdate) {
+          this.audioElement?.removeEventListener(
+            "timeupdate",
+            this.onTimeUpdate,
+          );
+        }
+        this.audioElement = undefined;
       }
 
       update() {
@@ -46,23 +58,29 @@ export const defineAudioPlayerCustomElement = () => {
 
         const src = this.getAttribute("src");
         const playing = this.getAttribute("playing");
-        const currentTime = this.getAttribute("current-time");
+        const currentTimeStr = this.getAttribute("current-time");
+        const currentTime = currentTimeStr
+          ? Number.parseInt(currentTimeStr)
+          : null;
 
         const currentSrc = this.audioElement.getAttribute("src");
         const currentCurrentTime = this.audioElement.currentTime;
 
-        if (src !== currentSrc) {
+        if (src !== null && src !== currentSrc) {
           this.audioElement.setAttribute("src", src);
         }
 
-        if (Math.abs(currentTime - currentCurrentTime) > 2) {
+        if (
+          currentTime !== null &&
+          Math.abs(currentTime - currentCurrentTime) > 2
+        ) {
           this.audioElement.currentTime = currentTime;
         }
 
         if (playing === "true") {
-          this.audioElement.play?.();
+          this.audioElement.play();
         } else {
-          this.audioElement.pause?.();
+          this.audioElement.pause();
         }
       }
     },
