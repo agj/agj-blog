@@ -36,6 +36,7 @@ type TrackWithConfig msg
 type alias Config msg =
     { playState : PlayState
     , onPlayStateChanged : PlayState -> msg
+    , onFinishedPlayback : msg
     }
 
 
@@ -108,6 +109,7 @@ view (TrackWithConfig track config) =
                     , isPlaying = isPlaying
                     , currentTime = playhead.currentTime
                     , onPlayStateChanged = config.onPlayStateChanged
+                    , onFinishedPlayback = config.onFinishedPlayback
                     , playState = config.playState
                     }
 
@@ -207,10 +209,11 @@ audioPlayerElement :
     , isPlaying : Bool
     , currentTime : Float
     , onPlayStateChanged : PlayState -> msg
+    , onFinishedPlayback : msg
     , playState : PlayState
     }
     -> Html msg
-audioPlayerElement { src, isPlaying, currentTime, onPlayStateChanged, playState } =
+audioPlayerElement { src, isPlaying, currentTime, onPlayStateChanged, onFinishedPlayback, playState } =
     Html.node "audio-player"
         [ Html.Attributes.attribute "src" src
         , Html.Attributes.attribute "current-time" (String.fromFloat currentTime)
@@ -222,7 +225,12 @@ audioPlayerElement { src, isPlaying, currentTime, onPlayStateChanged, playState 
                 "false"
             )
         , Html.Events.on "timeupdate"
-            (playingTrackStateMsgDecoder { playState = playState, onPlayStateChanged = onPlayStateChanged })
+            (playingTrackStateMsgDecoder
+                { playState = playState
+                , onPlayStateChanged = onPlayStateChanged
+                , onFinishedPlayback = onFinishedPlayback
+                }
+            )
         ]
         []
 
@@ -235,26 +243,30 @@ initialPlayhead =
     }
 
 
-playingTrackStateMsgDecoder : { playState : PlayState, onPlayStateChanged : PlayState -> msg } -> Decoder msg
-playingTrackStateMsgDecoder { playState, onPlayStateChanged } =
+playingTrackStateMsgDecoder :
+    { playState : PlayState
+    , onPlayStateChanged : PlayState -> msg
+    , onFinishedPlayback : msg
+    }
+    -> Decoder msg
+playingTrackStateMsgDecoder { playState, onPlayStateChanged, onFinishedPlayback } =
     playheadDecoder
         |> Decode.map
             (\newPlayhead ->
                 case playState of
                     StatePlaying _ ->
                         if newPlayhead.playing then
-                            StatePlaying newPlayhead
+                            onPlayStateChanged (StatePlaying newPlayhead)
 
                         else
-                            StateStopped
+                            onFinishedPlayback
 
                     StatePaused _ ->
-                        StatePaused newPlayhead
+                        onPlayStateChanged (StatePaused newPlayhead)
 
                     StateStopped ->
-                        StateStopped
+                        onPlayStateChanged StateStopped
             )
-        |> Decode.map onPlayStateChanged
 
 
 playheadDecoder : Decoder Playhead

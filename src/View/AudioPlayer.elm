@@ -14,6 +14,7 @@ import Html exposing (Html)
 import Html.Attributes exposing (class)
 import Html.Events
 import Icon
+import List.Extra
 import Markdown.Html
 import View.AudioPlayer.Track as Track exposing (Track)
 
@@ -78,6 +79,12 @@ view (State state) (AudioPlayerWithConfig audioPlayer config) =
                 NoTrackSelected ->
                     Track.stoppedPlayState
 
+        nextTrack : Track -> Maybe Track
+        nextTrack track =
+            config.tracks
+                |> List.Extra.findIndex ((==) track)
+                |> Maybe.andThen (\index -> List.Extra.getAt (index + 1) config.tracks)
+
         trackConfig : Track -> Track.Config msg
         trackConfig track =
             { playState = trackPlayState track
@@ -85,6 +92,15 @@ view (State state) (AudioPlayerWithConfig audioPlayer config) =
                 \newPlayState ->
                     config.onStateUpdated
                         (State { state | playState = TrackSelected track newPlayState })
+            , onFinishedPlayback =
+                case nextTrack track of
+                    Just nextTrack_ ->
+                        config.onStateUpdated
+                            (State { state | playState = TrackSelected nextTrack_ Track.playingPlayState })
+
+                    Nothing ->
+                        config.onStateUpdated
+                            (State { state | playState = NoTrackSelected })
             }
     in
     case config.tracks of
