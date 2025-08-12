@@ -4,6 +4,7 @@ date: "2025-08-11 20:24:00"
 categories:
   - interactive
 tags:
+  - espanol
   - nix
   - nushell
 language: eng
