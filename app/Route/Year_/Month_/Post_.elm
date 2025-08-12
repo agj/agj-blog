@@ -297,13 +297,6 @@ viewMastodonInteractions postGist mastodonStatuses =
             , postUrl = Post.gistToCanonicalUrl postGist
             }
 
-        tagMeToShareYourThoughtsWithMe : Html Msg
-        tagMeToShareYourThoughtsWithMe =
-            viewMastodonShareLink shareData
-                { text = "tag me to share your thoughts with me"
-                , comment = "@agj@mstdn.social Regarding “{postTitle}”…\n\n{postUrl}"
-                }
-
         justShareThisPostWithOthers : Html Msg
         justShareThisPostWithOthers =
             viewMastodonShareLink shareData
@@ -319,14 +312,7 @@ viewMastodonInteractions postGist mastodonStatuses =
                     ]
                 , Html.p []
                     (List.concat
-                        [ [ Html.text "On "
-                          , viewLink
-                                { text = "Mastodon"
-                                , url = "https://joinmastodon.org/"
-                                }
-                          , Html.text ", you can "
-                          ]
-                        , content
+                        [ content
                         , [ Html.text ". "
                           , Html.span [ class "inline-block align-middle" ]
                                 [ Icon.heart Icon.Small ]
@@ -352,33 +338,48 @@ viewMastodonInteractions postGist mastodonStatuses =
                         _ ->
                             0
 
-                commentOnThisPost : Html Msg
-                commentOnThisPost =
+                replyToMeOnMastodon : Html Msg
+                replyToMeOnMastodon =
                     case mastodonRepliesCount of
                         0 ->
                             viewLink
-                                { text = "directly comment on this post"
+                                { text = "Reply to me on Mastodon"
                                 , url = Data.Mastodon.Status.idToUrl mastodonStatusId
                                 }
 
                         _ ->
                             viewLink
                                 { text =
-                                    "see {repliesCount} comment{s} on this post"
+                                    "See {repliesCount} repl{ies} on Mastodon"
                                         |> String.replace "{repliesCount}" (String.fromInt mastodonRepliesCount)
-                                        |> String.replace "{s}" (ifElse (mastodonRepliesCount /= 1) "s" "")
+                                        |> String.replace "{ies}" (ifElse (mastodonRepliesCount == 1) "y" "ies")
                                 , url = Data.Mastodon.Status.idToUrl mastodonStatusId
                                 }
+
+                tagMeToShareYourThoughtsWithMe : Html Msg
+                tagMeToShareYourThoughtsWithMe =
+                    viewMastodonShareLink shareData
+                        { text = "tag me to share your thoughts with me"
+                        , comment = "@agj@mstdn.social Regarding “{postTitle}”…\n\n{postUrl}"
+                        }
             in
             wrap
-                [ commentOnThisPost
-                , Html.text ", "
+                [ replyToMeOnMastodon
+                , Html.text "! Otherwise, you can "
                 , tagMeToShareYourThoughtsWithMe
                 , Html.text ", or "
                 , justShareThisPostWithOthers
                 ]
 
         Nothing ->
+            let
+                tagMeToShareYourThoughtsWithMe : Html Msg
+                tagMeToShareYourThoughtsWithMe =
+                    viewMastodonShareLink shareData
+                        { text = "Tag me on Mastodon to share your thoughts with me"
+                        , comment = "@agj@mstdn.social Regarding “{postTitle}”…\n\n{postUrl}"
+                        }
+            in
             wrap
                 [ tagMeToShareYourThoughtsWithMe
                 , Html.text ", or "
