@@ -6,6 +6,7 @@ import Custom.Int as Int
 import Custom.Markdown as Markdown
 import Data.Category as Category
 import Data.Date as Date
+import Data.DevTo as DevTo
 import Data.Mastodon.Status
 import Data.Post as Post exposing (Post, PostGist)
 import Data.Tag as Tag
@@ -18,6 +19,7 @@ import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
 import Html.Attributes exposing (class, href, target)
+import Html.Extra
 import Icon
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -248,13 +250,47 @@ view app shared model =
             |> View.PageBody.withTitleAndSubtitle
                 [ Html.text app.data.gist.title ]
                 postInfo
-            |> View.PageBody.withFooter (viewInteractions app.data.gist shared.mastodonStatuses)
+            |> View.PageBody.withFooter (viewInteractions { postGist = app.data.gist, mastodonStatuses = shared.mastodonStatuses })
             |> View.PageBody.view
     }
 
 
-viewInteractions : PostGist -> Dict String Shared.MastodonStatusRequest -> Html Msg
-viewInteractions postGist mastodonStatuses =
+viewInteractions :
+    { postGist : PostGist
+    , mastodonStatuses : Dict String Shared.MastodonStatusRequest
+    }
+    -> Html Msg
+viewInteractions { postGist, mastodonStatuses } =
+    Html.section [ class "flex flex-col gap-4" ]
+        [ viewMastodonInteractions postGist mastodonStatuses
+        , viewDevToInteractions postGist.devToSlug
+        ]
+
+
+viewDevToInteractions : Maybe String -> Html Msg
+viewDevToInteractions maybeDevToSlug =
+    case maybeDevToSlug of
+        Just devToSlug ->
+            Html.section [ class "text-layout-50 flex flex-row gap-4" ]
+                [ Html.div [ class "flex items-center justify-center" ]
+                    [ Icon.devToLogo Icon.Medium
+                    ]
+                , Html.p []
+                    [ Html.text "This article was "
+                    , viewLink
+                        { text = "also published over at Dev.to"
+                        , url = DevTo.slugToUrl devToSlug
+                        }
+                    , Html.text "!"
+                    ]
+                ]
+
+        Nothing ->
+            Html.Extra.nothing
+
+
+viewMastodonInteractions : PostGist -> Dict String Shared.MastodonStatusRequest -> Html Msg
+viewMastodonInteractions postGist mastodonStatuses =
     let
         shareData =
             { postTitle = postGist.title

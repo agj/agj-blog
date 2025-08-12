@@ -9,6 +9,7 @@ tags:
 language: eng
 external:
   mastodon-toot-id: "115012021382018212"
+  devto-slug: "como-uso-nix-nushell-y-just-para-configurar-mis-proyectos-de-codigo-3dcg"
 ---
 
 Desde hace un tiempo que en cualquier proyecto personal de código que empiezo, termino usando tres tecnologías: [Nix][nix], [Nushell][nushell] y [Just][just]. En este artículo quiero presentar estas tres herramientas, y compartir la forma en que las uso para configurar las dependencias del proyecto, escribir scripts, y definir sus tareas de desarrollo. Asumo que entiendes cómo usar tu terminal, que trabajas en un entorno tipo Unix, y que sabes programar.

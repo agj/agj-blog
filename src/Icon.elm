@@ -1,6 +1,7 @@
 module Icon exposing
     ( Icon
     , Size(..)
+    , devToLogo
     , foldLeft
     , foldRight
     , heart
@@ -102,6 +103,11 @@ mastodonLogo =
     icon icons.mastodonLogo
 
 
+devToLogo : Icon msg
+devToLogo =
+    icon icons.devToLogo
+
+
 none : Icon msg
 none size =
     Html.div
@@ -168,4 +174,5 @@ icons =
     , foldRight = { icon = Phosphor.caretRight, md = Phosphor.Bold, sm = Phosphor.Bold }
     , heart = { icon = Phosphor.heart, md = Phosphor.Bold, sm = Phosphor.Bold }
     , mastodonLogo = { icon = Phosphor.mastodonLogo, md = Phosphor.Fill, sm = Phosphor.Fill }
+    , devToLogo = { icon = Phosphor.devToLogo, md = Phosphor.Fill, sm = Phosphor.Fill }
     }

@@ -40,6 +40,7 @@ type alias PostGist =
     , tags : List Tag
     , dateTime : Time.Posix
     , mastodonStatusId : Maybe String
+    , devToSlug : Maybe String
     , isHidden : Bool
     }
 
@@ -52,6 +53,7 @@ type alias Frontmatter =
     , tags : List Tag
     , dateTime : Time.Posix
     , mastodonStatusId : Maybe String
+    , devToSlug : Maybe String
     }
 
 
@@ -199,6 +201,7 @@ globMatchWithFrontmatterToGist ( globMatch, frontmatter ) =
                     , tags = frontmatter.tags
                     , dateTime = frontmatter.dateTime
                     , mastodonStatusId = frontmatter.mastodonStatusId
+                    , devToSlug = frontmatter.devToSlug
                     , isHidden = globMatch.isHidden
                     }
 
@@ -264,3 +267,4 @@ frontmatterDecoder =
                     )
             )
         |> Decode.optionalAt [ "external", "mastodon-toot-id" ] (Decode.maybe Decode.string) Nothing
+        |> Decode.optionalAt [ "external", "devto-slug" ] (Decode.maybe Decode.string) Nothing
