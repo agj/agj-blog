@@ -10,7 +10,8 @@ tags:
   - nix
   - web
 language: eng
-link-mastodon: "114979973656685360"
+external:
+  mastodon-toot-id: "114979973656685360"
 ---
 
 Wow, it's been five years!

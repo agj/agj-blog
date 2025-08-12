@@ -263,4 +263,4 @@ frontmatterDecoder =
                                 Decode.fail "Couldn't parse date."
                     )
             )
-        |> Decode.optional "link-mastodon" (Decode.maybe Decode.string) Nothing
+        |> Decode.optionalAt [ "external", "mastodon-toot-id" ] (Decode.maybe Decode.string) Nothing
