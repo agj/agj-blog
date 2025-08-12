@@ -46,7 +46,8 @@ type PlayState
 
 
 type alias Playhead =
-    { currentTime : Float
+    { playing : Bool
+    , currentTime : Float
     , duration : Float
     }
 
@@ -228,7 +229,8 @@ audioPlayerElement { src, isPlaying, currentTime, onPlayStateChanged, playState 
 
 initialPlayhead : Playhead
 initialPlayhead =
-    { currentTime = 0
+    { playing = False
+    , currentTime = 0
     , duration = 0
     }
 
@@ -240,7 +242,11 @@ playingTrackStateMsgDecoder { playState, onPlayStateChanged } =
             (\newPlayhead ->
                 case playState of
                     StatePlaying _ ->
-                        StatePlaying newPlayhead
+                        if newPlayhead.playing then
+                            StatePlaying newPlayhead
+
+                        else
+                            StateStopped
 
                     StatePaused _ ->
                         StatePaused newPlayhead
@@ -253,7 +259,8 @@ playingTrackStateMsgDecoder { playState, onPlayStateChanged } =
 
 playheadDecoder : Decoder Playhead
 playheadDecoder =
-    Decode.map2 Playhead
+    Decode.map3 Playhead
+        (Decode.at [ "detail", "playing" ] Decode.bool)
         (Decode.at [ "detail", "currentTime" ] Decode.float)
         (Decode.at [ "detail", "duration" ] Decode.float)
 

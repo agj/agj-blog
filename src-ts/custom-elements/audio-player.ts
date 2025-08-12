@@ -24,6 +24,7 @@ export const defineAudioPlayerCustomElement = () => {
           this.dispatchEvent(
             new CustomEvent("timeupdate", {
               detail: {
+                playing: !this.audioElement.paused,
                 currentTime: this.audioElement.currentTime,
                 duration: this.audioElement.duration,
               },
