@@ -28,6 +28,8 @@
             pkgs.pnpm
             pkgs.qrtool
             pkgs.rsync
+            pkgs.typescript
+            pkgs.typescript-language-server
           ];
         };
       }

@@ -18,7 +18,7 @@ dev-review: install
     mprocs
 
 # Build for release.
-build: install
+build: typecheck install
     pnpm run build
 
 # Build and deploy the blog.
@@ -36,6 +36,11 @@ update-ai-block:
 [group('maintenance')]
 update-post:
     nu ./tasks/update-post.nu
+
+# Type-checks TypeScript code.
+[group('maintenance')]
+typecheck:
+    tsc --noEmit
 
 # Check for errors.
 [group('maintenance')]
