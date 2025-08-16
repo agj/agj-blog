@@ -1,8 +1,9 @@
-module Data.AtomFeed exposing (..)
+module Data.AtomFeed exposing (generate, linkNode)
 
 import Custom.Markdown
 import Data.Category as Category exposing (Category)
 import Data.Post as Post exposing (Post)
+import Head
 import Regex
 import Rfc3339
 import Time
@@ -63,6 +64,18 @@ generate config posts =
                     )
                 |> String.join ""
             )
+
+
+{-| Creates a `<link>` node that points to an Atom feed, to place in
+the HTML head.
+-}
+linkNode : String -> Head.Tag
+linkNode url =
+    Head.nonLoadingNode "link"
+        [ ( "rel", Head.raw "alternate" )
+        , ( "href", Head.raw url )
+        , ( "type", Head.raw "application/atom+xml" )
+        ]
 
 
 

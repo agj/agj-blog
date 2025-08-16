@@ -7,7 +7,6 @@ export default {
       <link rel="stylesheet" href="/style.css" />
       <link rel="icon" href="/avatar.svg" type="image/svg+xml" sizes="any" />
       <link rel="me" href="https://mstdn.social/@agj" />
-      <link rel="alternate" href="/atom.xml" type="application/atom+xml" />
       <meta name="generator" content="elm-pages v${context.cliVersion}" />
     `;
   },

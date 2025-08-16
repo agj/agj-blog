@@ -3,6 +3,7 @@ module Route.Index exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Browser.Navigation
 import Consts
+import Data.AtomFeed as AtomFeed
 import Data.Category as Category
 import Data.Post as Post exposing (PostGist)
 import Data.PostList
@@ -142,7 +143,9 @@ title =
 head : App Data ActionData RouteParams -> List Head.Tag
 head app =
     Site.pageMeta title
-        ++ [ Head.rssLink feedUrls.rssUrl ]
+        ++ [ Head.rssLink feedUrls.rssUrl
+           , AtomFeed.linkNode feedUrls.atomUrl
+           ]
 
 
 view :
