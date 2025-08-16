@@ -1,6 +1,7 @@
 module Route.Category.Category_ exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import Data.AtomFeed as AtomFeed
 import Data.Category as Category exposing (Category)
 import Data.PostList
 import Effect exposing (Effect)
@@ -113,7 +114,9 @@ title app =
 head : App Data ActionData RouteParams -> List Head.Tag
 head app =
     Site.pageMeta (title app)
-        ++ [ Head.rssLink (feedUrls app.data).rssUrl ]
+        ++ [ Head.rssLink (feedUrls app.data).rssUrl
+           , AtomFeed.linkNode (feedUrls app.data).atomUrl
+           ]
 
 
 view :
