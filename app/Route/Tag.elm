@@ -224,7 +224,7 @@ view app shared model =
             case feedUrls model.queryTags of
                 Just { rssUrl, atomUrl } ->
                     pageBody
-                        |> View.PageBody.withRssFeed
+                        |> View.PageBody.withFeeds
                             (View.PageBody.FeedUrls
                                 { rssFeedUrl = rssUrl
                                 , atomFeedUrl = atomUrl
@@ -233,9 +233,9 @@ view app shared model =
 
                 Nothing ->
                     pageBody
-                        |> View.PageBody.withRssFeed
+                        |> View.PageBody.withFeeds
                             (View.PageBody.NoFeedsWithExplanation
-                                "RSS feeds are available for single tags only. You currently have multiple tags selected."
+                                "Syndication feeds are available for single tags only. You currently have multiple tags selected."
                             )
     in
     { title = title

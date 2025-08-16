@@ -3,8 +3,8 @@ module View.PageBody exposing
     , PageBody
     , fromContent
     , view
+    , withFeeds
     , withFooter
-    , withRssFeed
     , withTitle
     , withTitleAndSubtitle
     , withoutAboutLink
@@ -27,7 +27,7 @@ type PageBody msg
         , title : PageTitle msg
         , footer : Maybe (Html msg)
         , theme : Theme
-        , rssFeed : Feeds msg
+        , feeds : Feeds msg
         , showAboutLink : Bool
         , onRequestedChangeTheme : msg
         }
@@ -58,7 +58,7 @@ fromContent config content =
         , footer = Nothing
         , theme = config.theme
         , onRequestedChangeTheme = config.onRequestedChangeTheme
-        , rssFeed = NoFeeds
+        , feeds = NoFeeds
         , showAboutLink = True
         }
 
@@ -78,9 +78,9 @@ withFooter footer (PageBody config) =
     PageBody { config | footer = Just footer }
 
 
-withRssFeed : Feeds msg -> PageBody msg -> PageBody msg
-withRssFeed rssFeed (PageBody config) =
-    PageBody { config | rssFeed = rssFeed }
+withFeeds : Feeds msg -> PageBody msg -> PageBody msg
+withFeeds feeds (PageBody config) =
+    PageBody { config | feeds = feeds }
 
 
 withoutAboutLink : PageBody msg -> PageBody msg
@@ -134,7 +134,7 @@ view (PageBody config) =
                         [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
                             [ Html.div [ class "flex w-full flex-row items-center justify-end gap-4 px-4 pt-2 text-sm", class pageMaxWidth ]
                                 [ aboutLink
-                                , viewFeedLinks config.rssFeed
+                                , viewFeedLinks config.feeds
                                 , changeThemeButtonView config
                                 ]
                             , Html.div [ class "w-full flex-grow px-4 pb-2", class pageMaxWidth ]

@@ -164,7 +164,7 @@ view app shared model =
             }
             content
             |> View.PageBody.withTitleAndSubtitle titleEls subtitle
-            |> View.PageBody.withRssFeed
+            |> View.PageBody.withFeeds
                 (View.PageBody.FeedUrls
                     { rssFeedUrl = rssUrl
                     , atomFeedUrl = atomUrl

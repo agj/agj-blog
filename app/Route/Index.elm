@@ -215,7 +215,7 @@ view app shared model =
             content
             |> View.PageBody.withTitle
                 [ Html.text title ]
-            |> View.PageBody.withRssFeed
+            |> View.PageBody.withFeeds
                 (View.PageBody.FeedUrls
                     { rssFeedUrl = feedUrls.rssUrl
                     , atomFeedUrl = feedUrls.atomUrl
