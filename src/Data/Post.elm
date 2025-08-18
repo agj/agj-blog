@@ -41,7 +41,6 @@ type alias PostGist =
     , dateTime : Time.Posix
     , mastodonStatusId : Maybe String
     , devToSlug : Maybe String
-    , isHidden : Bool
     }
 
 
@@ -66,12 +65,27 @@ type alias GlobMatch =
     }
 
 
-gistsList : BackendTask FatalError (List PostGist)
+{-| String appended to the filename, to hide the post in lists.
+-}
+hiddenFlag : String
+hiddenFlag =
+    "-HIDDEN"
+
+
+gistsList : BackendTask FatalError (List ( Bool, PostGist ))
 gistsList =
     globMatchList
         |> BackendTask.andThen (List.map addFrontmatterToGlobMatch >> BackendTask.combine)
         |> BackendTask.andThen
-            (List.map globMatchWithFrontmatterToGist
+            (List.map
+                (\( globMatch, frontmatter ) ->
+                    case globMatchWithFrontmatterToGist ( globMatch, frontmatter ) of
+                        Result.Ok gist ->
+                            Result.Ok ( globMatch.isHidden, gist )
+
+                        Result.Err err ->
+                            Result.Err err
+                )
                 >> Result.Extra.combine
                 >> Result.mapError FatalError.fromString
                 >> BackendTask.fromResult
@@ -90,12 +104,9 @@ single :
     -> String
     -> BackendTask { fatal : FatalError, recoverable : FileReadError Decode.Error } Post
 single year month slug =
-    BackendTask.File.bodyWithFrontmatter (postDecoder { year = year, month = month, slug = slug })
-        ("data/posts/{year}/{month}-{post}.md"
-            |> String.replace "{year}" year
-            |> String.replace "{month}" month
-            |> String.replace "{post}" slug
-        )
+    getPost year month slug False
+        -- Look for it with the "hidden" flag, in case the above fails.
+        |> BackendTask.onError (\_ -> getPost year month slug True)
 
 
 gistToUrl : PostGist -> String
@@ -121,6 +132,28 @@ gistToCanonicalUrl gist =
 -- INTERNAL
 
 
+getPost :
+    String
+    -> String
+    -> String
+    -> Bool
+    -> BackendTask { fatal : FatalError, recoverable : FileReadError Decode.Error } Post
+getPost year month slug isHidden =
+    BackendTask.File.bodyWithFrontmatter (postDecoder { year = year, month = month, slug = slug })
+        ("data/posts/{year}/{month}-{post}{hidden}.md"
+            |> String.replace "{year}" year
+            |> String.replace "{month}" month
+            |> String.replace "{post}" slug
+            |> String.replace "{hidden}"
+                (if isHidden then
+                    hiddenFlag
+
+                 else
+                    ""
+                )
+        )
+
+
 globMatchList : BackendTask FatalError (List GlobMatch)
 globMatchList =
     Glob.succeed GlobMatch
@@ -138,13 +171,12 @@ globMatchList =
         -- Hidden post flag
         |> Glob.capture
             (Glob.oneOf
-                ( ( "-HIDDEN", True )
+                ( ( hiddenFlag, True )
                 , [ ( "", False ) ]
                 )
             )
         |> Glob.match (Glob.literal ".md")
         |> Glob.toBackendTask
-        |> BackendTask.map (List.filter (.isHidden >> not))
         |> BackendTask.allowFatal
 
 
@@ -202,7 +234,6 @@ globMatchWithFrontmatterToGist ( globMatch, frontmatter ) =
                     , dateTime = frontmatter.dateTime
                     , mastodonStatusId = frontmatter.mastodonStatusId
                     , devToSlug = frontmatter.devToSlug
-                    , isHidden = globMatch.isHidden
                     }
 
             else

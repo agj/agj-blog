@@ -84,8 +84,20 @@ type MastodonStatusRequest
 
 data : BackendTask FatalError Data
 data =
-    BackendTask.map Data
-        Post.gistsList
+    Post.gistsList
+        |> BackendTask.map
+            (\postGists ->
+                postGists
+                    |> List.filterMap
+                        (\( isHidden, postGist ) ->
+                            if isHidden then
+                                Nothing
+
+                            else
+                                Just postGist
+                        )
+                    |> Data
+            )
 
 
 

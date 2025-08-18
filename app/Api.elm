@@ -140,10 +140,7 @@ categoryFeeds filename postsToFeed =
                             (\posts ->
                                 posts
                                     |> List.filter
-                                        (\post ->
-                                            List.member categorySlug (List.map Category.getSlug post.gist.categories)
-                                                && not post.gist.isHidden
-                                        )
+                                        (\post -> List.member categorySlug (List.map Category.getSlug post.gist.categories))
                                     |> postsToFeed category
                             )
 
@@ -175,10 +172,7 @@ tagFeeds filename postsToFeed =
                             (\posts ->
                                 posts
                                     |> List.filter
-                                        (\post ->
-                                            List.member tagSlug (List.map Tag.getSlug post.gist.tags)
-                                                && not post.gist.isHidden
-                                        )
+                                        (\post -> List.member tagSlug (List.map Tag.getSlug post.gist.tags))
                                     |> postsToFeed tag
                             )
 
