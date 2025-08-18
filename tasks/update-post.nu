@@ -1,34 +1,11 @@
+use shared.nu *
+
 # Source data.
 let sourceFilename = ls --all data/posts/**/*.md | sort-by --reverse modified | get 0.name
 let postData = $sourceFilename | open
 let postLines = $postData | split row "\n" | split list "---"
 let frontmatter = $postLines | get 1 | str join "\n" | from yaml
 
-# Utilities.
-
-export def remove-diacritics [text: string] {
-  let diacritics_map = {
-    "á": "a",
-    "é": "e",
-    "í": "i",
-    "ó": "o",
-    "ú": "u",
-    "ü": "u",
-  }
-  $text
-  | split chars
-  | each {|char| $diacritics_map | get --optional $char | default $char }
-  | str join ''
-}
-
-def intersperse [toIntersperse] {
-  let list = $in
-  if ($list | length) > 1 {
-    [$list.0, $toIntersperse, ...($list | skip 1 | intersperse $toIntersperse)]
-  } else {
-    $list
-  }
-}
 
 # Update the post's slug and path.
 let date = date now | date to-timezone 'UTC'
@@ -38,10 +15,9 @@ let titleSlug = $frontmatter.title | str trim | str downcase | str kebab-case | 
 let updatedFilename = $"data/posts/($year)/($month)-($titleSlug).md"
 
 # Update the date in the frontmatter.
-let updatedDate = $date | format date '%Y-%m-%d %H:%M:00'
+let updatedDate = $date | formatPostDate
 let updatedFrontmatter = $frontmatter | update date $updatedDate
-let updatedFrontmatterLines = $updatedFrontmatter | to yaml | split row "\n"
-  | str replace --regex '^date: (.+)$' 'date: "$1"'
+let updatedFrontmatterLines = $updatedFrontmatter | toYaml
 
 let updatedPostLines = [
     $postLines.0,

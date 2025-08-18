@@ -25,17 +25,24 @@ build: typecheck install
 deploy: build
     nu ./tasks/deploy.nu
 
+# Posts
+
+# Creates a .md file for a new post.
+[group('posts')]
+create-post:
+    nu ./tasks/create-post.nu
+
+# Updates the newest post's slug and date.
+[group('posts')]
+update-post:
+    nu ./tasks/update-post.nu
+
 # Maintenance
 
 # Update files that block AI crawlers.
 [group('maintenance')]
 update-ai-block:
     nu ./tasks/update-ai-block.nu
-
-# Updates the newest post's slug and date.
-[group('maintenance')]
-update-post:
-    nu ./tasks/update-post.nu
 
 # Type-checks TypeScript code.
 [group('maintenance')]
