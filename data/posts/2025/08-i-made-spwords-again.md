@@ -11,6 +11,8 @@ tags:
   - text-game
   - video-game
 language: eng
+external:
+  mastodon-toot-id: "115047053104100563"
 ---
 
 [A game I made in 2012](/2012/12/spwords), I made it again. That's about it! [It's **playable** from the same address as before.](http://www.agj.cl/files/games/spwords/) [Here's the **code** for the new v2.](https://github.com/agj/spwords/tree/v2.0)
