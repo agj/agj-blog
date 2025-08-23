@@ -95,6 +95,7 @@ gistsList =
 list : BackendTask FatalError (List Post)
 list =
     globMatchList
+        |> BackendTask.map (List.filter (.isHidden >> not))
         |> BackendTask.andThen (List.map globMatchToPost >> BackendTask.combine)
 
 
