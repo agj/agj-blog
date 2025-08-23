@@ -89,7 +89,7 @@ data =
             (\postGists ->
                 postGists
                     |> List.filterMap
-                        (\( isHidden, postGist ) ->
+                        (\{ isHidden, postGist } ->
                             if isHidden then
                                 Nothing
 

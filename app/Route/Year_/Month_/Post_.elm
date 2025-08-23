@@ -79,7 +79,7 @@ pages =
     Post.gistsList
         |> BackendTask.map
             (List.map
-                (\( _, postGist ) ->
+                (\{ postGist } ->
                     let
                         date =
                             Date.fromPosixTzCl postGist.dateTime

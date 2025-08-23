@@ -72,7 +72,10 @@ hiddenFlag =
     "-HIDDEN"
 
 
-gistsList : BackendTask FatalError (List ( Bool, PostGist ))
+{-| List of all `PostGist`s obtained from the filesystem. Includes
+hidden status of the post.
+-}
+gistsList : BackendTask FatalError (List { isHidden : Bool, postGist : PostGist })
 gistsList =
     globMatchList
         |> BackendTask.andThen (List.map addFrontmatterToGlobMatch >> BackendTask.combine)
@@ -80,8 +83,8 @@ gistsList =
             (List.map
                 (\( globMatch, frontmatter ) ->
                     case globMatchWithFrontmatterToGist ( globMatch, frontmatter ) of
-                        Result.Ok gist ->
-                            Result.Ok ( globMatch.isHidden, gist )
+                        Result.Ok postGist ->
+                            Result.Ok { isHidden = globMatch.isHidden, postGist = postGist }
 
                         Result.Err err ->
                             Result.Err err
@@ -92,6 +95,9 @@ gistsList =
             )
 
 
+{-| List of all `Post`s obtained from the filesystem, excluding hidden
+ones.
+-}
 list : BackendTask FatalError (List Post)
 list =
     globMatchList
