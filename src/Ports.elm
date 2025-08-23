@@ -1,6 +1,7 @@
-port module Ports exposing (listenDefaultThemeChange, listenQueryParamsChanges, saveConfig, setTheme)
+port module Ports exposing (Msg(..), listen, saveConfig, setTheme)
 
 import AppUrl exposing (QueryParameters)
+import Custom.Json.Decode
 import Flags exposing (Flags)
 import Json.Decode exposing (Decoder, Value)
 import Json.Encode
@@ -10,6 +11,33 @@ import Url
 
 
 -- INCOMING
+
+
+type Msg
+    = QueryParamsChanged QueryParameters
+    | DefaultThemeChanged ThemeColor
+    | Invalid
+
+
+listen : Sub Msg
+listen =
+    let
+        decoder =
+            Json.Decode.oneOf
+                [ rawMsgDecoder "urlChanged" queryParamsDecoder QueryParamsChanged
+                , rawMsgDecoder "defaultThemeChanged" Theme.themeColorDecoder DefaultThemeChanged
+                ]
+    in
+    receiveFromJs
+        (\raw ->
+            Json.Decode.decodeValue decoder raw
+                |> Result.toMaybe
+                |> Maybe.withDefault Invalid
+        )
+
+
+
+-- OUTGOING
 
 
 saveConfig : Flags -> Cmd msg
@@ -23,47 +51,7 @@ setTheme theme =
 
 
 
--- OUTGOING
-
-
-listenQueryParamsChanges : (QueryParameters -> msg) -> msg -> Sub msg
-listenQueryParamsChanges onQueryParams onNoOp =
-    let
-        listener url =
-            case Url.fromString url of
-                Just u ->
-                    AppUrl.fromUrl u
-                        |> .queryParameters
-                        |> onQueryParams
-
-                Nothing ->
-                    onNoOp
-    in
-    listenIn "urlChanged" Json.Decode.string listener onNoOp
-
-
-listenDefaultThemeChange : (ThemeColor -> msg) -> msg -> Sub msg
-listenDefaultThemeChange onThemeChange onNoOp =
-    let
-        listener maybeThemeColor =
-            case maybeThemeColor of
-                Just themeColor ->
-                    onThemeChange themeColor
-
-                Nothing ->
-                    onNoOp
-    in
-    listenIn "defaultThemeChanged" Theme.themeColorDecoder listener onNoOp
-
-
-
 -- INTERNAL
-
-
-type alias MsgValue a =
-    { msg : String
-    , value : a
-    }
 
 
 sendOut : String -> Value -> Cmd msg
@@ -76,33 +64,31 @@ sendOut msg value =
         )
 
 
-listenIn : String -> Decoder value -> (value -> msg) -> msg -> Sub msg
-listenIn msg valueDecoder toMsg noOpMsg =
-    receiveFromJs
-        (\raw ->
-            Json.Decode.decodeValue (msgValueDecoder valueDecoder) raw
-                |> Result.toMaybe
-                |> Maybe.map
-                    (\msgValue ->
-                        if msgValue.msg == msg then
-                            toMsg msgValue.value
-
-                        else
-                            noOpMsg
-                    )
-                |> Maybe.withDefault noOpMsg
-        )
-
-
 
 -- DECODERS
 
 
-msgValueDecoder : Decoder value -> Decoder (MsgValue value)
-msgValueDecoder valueDecoder =
-    Json.Decode.map2 MsgValue
-        (Json.Decode.field "msg" Json.Decode.string)
+rawMsgDecoder : String -> Decoder value -> (value -> Msg) -> Decoder Msg
+rawMsgDecoder msg valueDecoder toMsg =
+    Json.Decode.map2 (\_ -> toMsg)
+        (Json.Decode.field "msg" (Custom.Json.Decode.literalString msg))
         (Json.Decode.field "value" valueDecoder)
+
+
+queryParamsDecoder : Decoder QueryParameters
+queryParamsDecoder =
+    Json.Decode.string
+        |> Json.Decode.andThen
+            (\string ->
+                case Url.fromString string of
+                    Just url ->
+                        AppUrl.fromUrl url
+                            |> .queryParameters
+                            |> Json.Decode.succeed
+
+                    Nothing ->
+                        Json.Decode.fail "Not a valid URL."
+            )
 
 
 

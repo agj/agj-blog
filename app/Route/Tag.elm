@@ -156,7 +156,16 @@ getTagsFromQueryParams queryParams =
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
 subscriptions routeParams path shared model =
-    Ports.listenQueryParamsChanges QueryParamsChanged NoOp
+    Ports.listen
+        |> Sub.map
+            (\msg ->
+                case msg of
+                    Ports.QueryParamsChanged queryParams ->
+                        QueryParamsChanged queryParams
+
+                    _ ->
+                        NoOp
+            )
 
 
 

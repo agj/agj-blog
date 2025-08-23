@@ -180,7 +180,16 @@ update msg model =
 
 subscriptions : UrlPath -> Model -> Sub Msg
 subscriptions _ _ =
-    Ports.listenDefaultThemeChange DefaultThemeChanged NoOp
+    Ports.listen
+        |> Sub.map
+            (\msg ->
+                case msg of
+                    Ports.DefaultThemeChanged theme ->
+                        DefaultThemeChanged theme
+
+                    _ ->
+                        NoOp
+            )
 
 
 

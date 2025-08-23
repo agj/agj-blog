@@ -1,5 +1,6 @@
 module Theme exposing (Theme, ThemeColor(..), change, decoder, default, encode, themeColorDecoder, updateDefault)
 
+import Custom.Json.Decode
 import Json.Decode exposing (Decoder, Value)
 import Json.Encode
 
@@ -60,29 +61,16 @@ updateDefault newDefault theme =
 decoder : Decoder Theme
 decoder =
     Json.Decode.map2 Theme
-        (Json.Decode.field "set" themeColorDecoder)
-        (Json.Decode.field "default"
-            (themeColorDecoder
-                |> Json.Decode.map (Maybe.withDefault Light)
-            )
-        )
+        (Json.Decode.field "set" (Json.Decode.nullable themeColorDecoder))
+        (Json.Decode.field "default" themeColorDecoder)
 
 
-themeColorDecoder : Decoder (Maybe ThemeColor)
+themeColorDecoder : Decoder ThemeColor
 themeColorDecoder =
-    Json.Decode.nullable Json.Decode.string
-        |> Json.Decode.map
-            (\maybeString ->
-                case maybeString of
-                    Just "light" ->
-                        Just Light
-
-                    Just "dark" ->
-                        Just Dark
-
-                    _ ->
-                        Nothing
-            )
+    Json.Decode.oneOf
+        [ Custom.Json.Decode.literalString "light" |> Json.Decode.map (always Light)
+        , Custom.Json.Decode.literalString "dark" |> Json.Decode.map (always Dark)
+        ]
 
 
 encode : Theme -> Value
