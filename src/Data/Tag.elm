@@ -243,6 +243,7 @@ all =
     , Tag { name = "dot-into", slug = "dot-into" }
     , Tag { name = "dream", slug = "dream" }
     , Tag { name = "Elm", slug = "elm" }
+    , Tag { name = "elm-knobs", slug = "elm-knobs" }
     , Tag { name = "Entretenimientos Diana", slug = "entretenimientos-diana" }
     , Tag { name = "español", slug = "espanol" }
     , Tag { name = "event", slug = "event" }
