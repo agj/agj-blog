@@ -1,6 +1,6 @@
 ---
 title: On my elm-knobs Elm package
-date: "2025-08-24 15:34:00"
+date: "2025-08-25 00:33:00"
 categories:
   - interactive
 tags:
@@ -14,7 +14,7 @@ language: eng
 
 Two years ago I made [a simple Elm package](https://elm.dmy.fr/packages/agj/elm-knobs/latest/) to scratch my own itch, named `agj/elm-knobs`. I wanted a simple interface to tweak constants dynamically in order to see how they affect a visual algorithm (which was just a project I was working on for fun; I'll post about it if I actually get around to finishing it). I found a few packages that get close to what I wanted, but nothing matching precisely my needs, so I just coded the thing and eventually turned it into a simple package.
 
-![image](/files/2025/08-elm-knobs/elm-knobs-screenshot.png "Screenshot of the “polygon” elm-knobs example.")
+![image](/files/2025/08-on-my-elm-knobs-elm-package/elm-knobs-screenshot.png "Screenshot of the “polygon” elm-knobs example.")
 
 The intended use-case for the package is squarely prototyping, so I didn't put effort into making it look nice or visually versatile. What I did though is add “knobs” (interactive controls) for primitive types (`Int`, `Float`, `String`, `Bool`) and a few non-primitives.
 
@@ -73,7 +73,7 @@ floatDoc =
 
 Another thing you might notice from the code block above is that I used some tricks to make writing the documentation more DRY (i.e. more consistent, less error-prone). With ElmBook you write markdown to define the content of each page. I generate this markdown from records like the one you see above. [Here's the module I wrote for that purpose](https://github.com/agj/elm-knobs/blob/d0acf8c5a3d97ef714185e3f090bb33cda988ea1/interactive-docs/src/KnobDoc.elm), although it might be a bit hard to follow, especially given that it's written to accomodate the ElmBook API. But at any rate, something like the above turns into [what you see here](https://agj.github.io/elm-knobs/1.2.0/#/knob-examples/number).
 
-![image](/files/2025/08-elm-knobs/elm-knobs-intdoc-float.png "Screenshot of the above code as rendered in the interactive docs.")
+![image](/files/2025/08-on-my-elm-knobs-elm-package/elm-knobs-intdoc-float.png "Screenshot of the above code as rendered in the interactive docs.")
 
 I'm not happy with having to split the “API docs” and the “interactive docs”, so at some point I might figure out a way of automatically parsing the Elm comment docs and inserting that content into the interactive documentation, to keep it all in one place. Sounds like a lot of effort for such a relatively useless package, so if I ever end up going through the trouble, it'll be for the learning opportunity (or perhaps my OCD.)
 
