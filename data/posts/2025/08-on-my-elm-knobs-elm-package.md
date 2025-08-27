@@ -12,6 +12,7 @@ tags:
 language: eng
 external:
   mastodon-toot-id: "115087445560231107"
+  devto-slug: "on-my-elm-knobs-elm-package-162g"
 ---
 
 Two years ago I made [a simple Elm package](https://elm.dmy.fr/packages/agj/elm-knobs/latest/) to scratch my own itch, named `agj/elm-knobs`. I wanted a simple interface to tweak constants dynamically in order to see how they affect a visual algorithm (which was just a project I was working on for fun; I'll post about it if I actually get around to finishing it). I found a few packages that get close to what I wanted, but nothing matching precisely my needs, so I just coded the thing and eventually turned it into a simple package.
