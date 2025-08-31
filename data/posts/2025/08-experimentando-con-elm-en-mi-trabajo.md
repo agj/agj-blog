@@ -10,6 +10,7 @@ tags:
 language: spa
 external:
   mastodon-toot-id: "115121095181061077"
+  devto-slug: "experimentando-con-elm-en-mi-trabajo-2c78"
 ---
 
 Llevo trabajando cuatro años como desarrollador full-stack en una empresa cuyo producto es un [“SaaS”](https://es.wikipedia.org/wiki/Software_como_servicio), o sea, básicamente una aplicación web. La empresa ha sufrido varios cambios internos de estrategia, y eso ha impactado al lado técnico también. En una de esas ocasiones se vio posible el reconsiderar varios aspectos técnicos que llevábamos en el front-end, y quise probar suerte proponiendo mi tecnología preferida para este ámbito: Elm.
