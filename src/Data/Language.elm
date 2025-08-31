@@ -1,4 +1,4 @@
-module Data.Language exposing (Language(..), decoder, fromString)
+module Data.Language exposing (Language(..), decoder, fromString, toShortString)
 
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
@@ -34,3 +34,19 @@ fromString str =
 
         _ ->
             Err ("Unknown language: " ++ str ++ ".")
+
+
+toShortString : Language -> String
+toShortString language =
+    case language of
+        English ->
+            "eng"
+
+        Spanish ->
+            "spa"
+
+        Japanese ->
+            "jpn"
+
+        Mandarin ->
+            "cnm"

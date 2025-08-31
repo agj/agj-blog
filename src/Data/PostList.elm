@@ -4,6 +4,7 @@ import Custom.Int as Int
 import Custom.List as List
 import Data.Category as Category
 import Data.Date as Date
+import Data.Language as Language
 import Data.Post as Post exposing (PostGist)
 import Date
 import Html exposing (Html)
@@ -85,6 +86,11 @@ viewPost { gist, summary } =
                     [ Html.text gist.title ]
                 ]
 
+        postLanguage : Html msg
+        postLanguage =
+            Html.span [ class "bg-layout-40 text-layout-10 rounded-sm px-1 text-xs" ]
+                [ Html.text (Language.toShortString gist.language |> String.toUpper) ]
+
         postCategoryEls : List (Html msg)
         postCategoryEls =
             gist.categories
@@ -97,7 +103,7 @@ viewPost { gist, summary } =
         postCategories : Html msg
         postCategories =
             Html.span [ class "text-layout-50 text-sm" ]
-                (Html.text " ("
+                (Html.text "("
                     :: (postCategoryEls |> List.intersperse (Html.text ", "))
                     ++ [ Html.text ")" ]
                 )
@@ -114,7 +120,10 @@ viewPost { gist, summary } =
     Html.div [ class "flex flex-row gap-2" ]
         [ postDayOfMonth
         , Html.div []
-            [ Html.p [] [ postLink, postCategories ]
+            [ Html.p []
+                ([ postLink, postLanguage, postCategories ]
+                    |> List.intersperse (Html.text " ")
+                )
             , postSummary
             ]
         ]
