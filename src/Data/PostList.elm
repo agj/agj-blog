@@ -4,11 +4,10 @@ import Custom.Int as Int
 import Custom.List as List
 import Data.Category as Category
 import Data.Date as Date
-import Data.Post as Post exposing (Post, PostGist)
+import Data.Post as Post exposing (PostGist)
 import Date
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
-import Time
 
 
 viewGists : List PostGist -> Html msg

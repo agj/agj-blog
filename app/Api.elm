@@ -7,7 +7,6 @@ import Custom.Markdown
 import Data.AtomFeed as AtomFeed
 import Data.Category as Category exposing (Category)
 import Data.Post as Post exposing (Post)
-import Data.PostList as PostList
 import Data.Tag as Tag exposing (Tag)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
