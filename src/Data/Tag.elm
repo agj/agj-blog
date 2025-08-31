@@ -332,6 +332,7 @@ all =
     , Tag { name = "While telling with the eyes", slug = "while-telling-with-the-eyes" }
     , Tag { name = "Wirewalk", slug = "wirewalk" }
     , Tag { name = "Within", slug = "within" }
+    , Tag { name = "work", slug = "work" }
     , Tag { name = "writing", slug = "writing" }
     , Tag { name = "日本語", slug = "nihongo" }
     ]
