@@ -14,7 +14,7 @@ getSummary markdown =
         |> Doc.ToPlainText.view
         |> String.lines
         |> List.filter ((/=) "")
-        |> String.join " | "
+        |> String.join " ¶ "
         |> String.words
         |> List.take 30
         |> String.join " "
