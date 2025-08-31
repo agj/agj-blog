@@ -1,5 +1,6 @@
 module Custom.Html.Attributes exposing
     ( ariaDescribedBy
+    , ariaPressed
     , none
     , popoverAuto
     , popoverTarget
@@ -14,6 +15,19 @@ import Html.Attributes exposing (attribute)
 ariaDescribedBy : List String -> Attribute msg
 ariaDescribedBy elementIds =
     attribute "aria-describedby" (String.join " " elementIds)
+
+
+{-| Used for `<button>` elements that can be selected.
+-}
+ariaPressed : Bool -> Attribute msg
+ariaPressed isPressed =
+    attribute "aria-pressed"
+        (if isPressed then
+            "true"
+
+         else
+            "false"
+        )
 
 
 roleTooltip : Attribute msg

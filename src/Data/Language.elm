@@ -1,4 +1,4 @@
-module Data.Language exposing (Language(..), decoder, fromString, toShortString)
+module Data.Language exposing (Language(..), all, decoder, fromString, toShortString)
 
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
@@ -9,6 +9,11 @@ type Language
     | Spanish
     | Japanese
     | Mandarin
+
+
+all : List Language
+all =
+    [ English, Spanish, Japanese, Mandarin ]
 
 
 decoder : Decoder Language

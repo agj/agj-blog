@@ -3,9 +3,11 @@ module Route.Index exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Browser.Navigation
 import Consts
+import Custom.Html.Attributes exposing (ariaPressed)
 import Custom.Markdown
 import Data.AtomFeed as AtomFeed
 import Data.Category as Category
+import Data.Language as Language
 import Data.Post as Post exposing (PostGist)
 import Data.PostList exposing (PostGistWithSummary)
 import Data.Tag as Tag
@@ -15,6 +17,7 @@ import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
+import Html.Events
 import List.Extra as List
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -193,6 +196,40 @@ view app shared model =
                             && (postWithSummary.gist.slug == postNoSummary.slug)
                     )
 
+        languageButton language =
+            let
+                isSelected =
+                    List.member language shared.languages
+
+                noneSelected =
+                    shared.languages == []
+
+                newLanguagesOnClick =
+                    if isSelected then
+                        List.remove language shared.languages
+
+                    else
+                        language :: shared.languages
+            in
+            Html.button
+                [ class "rounded-sm px-1 text-xs"
+                , if noneSelected then
+                    class "bg-layout-60 text-layout-10"
+
+                  else
+                    class "bg-layout-30 text-layout-10 aria-pressed:no-underline line-through decoration-layout-50 aria-pressed:bg-layout-90 decoration-2"
+                , ariaPressed isSelected
+                , Html.Events.onClick (SharedMsg (Shared.ChangedLanguages newLanguagesOnClick))
+                ]
+                [ Html.text (Language.toShortString language |> String.toUpper) ]
+
+        languagesView =
+            Html.ul [ class "flex flex-row gap-1" ]
+                (Language.all
+                    |> List.map
+                        (\language -> Html.li [] [ languageButton language ])
+                )
+
         content : Html Msg
         content =
             if not postListsAreMatched then
@@ -217,8 +254,15 @@ view app shared model =
                         , class "sm:grid-cols-[1fr_2fr]"
                         , class "md:order-last md:flex md:flex-col md:gap-5"
                         ]
-                        [ -- Categories.
-                          Html.div [ class "flex flex-col gap-4" ]
+                        [ -- Languages.
+                          Html.div []
+                            [ Html.h2 [ class "text-layout-70 text-2xl" ]
+                                [ Html.text "Language" ]
+                            , languagesView
+                            ]
+
+                        -- Categories.
+                        , Html.div [ class "flex flex-col gap-4" ]
                             [ Html.h2 [ class "text-layout-70 text-2xl" ]
                                 [ Html.text "Categories" ]
                             , Category.viewList
