@@ -29,7 +29,7 @@ fromString str =
         "jpn" ->
             Ok Japanese
 
-        "cnm" ->
+        "cmn" ->
             Ok Mandarin
 
         _ ->
@@ -49,4 +49,4 @@ toShortString language =
             "jpn"
 
         Mandarin ->
-            "cnm"
+            "cmn"
