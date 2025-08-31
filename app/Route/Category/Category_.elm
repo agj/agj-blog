@@ -157,7 +157,7 @@ view app shared model =
                 )
 
         content =
-            Data.PostList.viewGists posts
+            Data.PostList.viewGists (posts |> List.map (\p -> { gist = p, summary = Nothing }))
     in
     { title = title app
     , body =

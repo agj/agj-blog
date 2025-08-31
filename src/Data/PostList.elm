@@ -1,4 +1,4 @@
-module Data.PostList exposing (viewGists)
+module Data.PostList exposing (PostGistWithSummary, viewGists)
 
 import Custom.Int as Int
 import Custom.List as List
@@ -8,20 +8,25 @@ import Data.Post as Post exposing (PostGist)
 import Date
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
+import Html.Extra
 
 
-viewGists : List PostGist -> Html msg
+type alias PostGistWithSummary =
+    { gist : PostGist, summary : Maybe String }
+
+
+viewGists : List PostGistWithSummary -> Html msg
 viewGists posts =
     let
-        postsByYearAndMonth : List ( Int, List ( Int, List PostGist ) )
+        postsByYearAndMonth : List ( Int, List ( Int, List PostGistWithSummary ) )
         postsByYearAndMonth =
             posts
-                |> List.gatherUnder (.dateTime >> Date.fromPosixTzCl >> Date.year)
+                |> List.gatherUnder (.gist >> .dateTime >> Date.fromPosixTzCl >> Date.year)
                 |> List.map
                     (\( year, yearPosts ) ->
                         ( year
                         , yearPosts
-                            |> List.gatherUnder (.dateTime >> Date.fromPosixTzCl >> Date.monthNumber)
+                            |> List.gatherUnder (.gist >> .dateTime >> Date.fromPosixTzCl >> Date.monthNumber)
                         )
                     )
     in
@@ -33,7 +38,7 @@ viewGists posts =
 -- INTERNAL
 
 
-viewPostYear : ( Int, List ( Int, List PostGist ) ) -> Html msg
+viewPostYear : ( Int, List ( Int, List PostGistWithSummary ) ) -> Html msg
 viewPostYear ( year, postMonths ) =
     let
         heading =
@@ -48,7 +53,7 @@ viewPostYear ( year, postMonths ) =
         (heading :: months)
 
 
-viewPostMonth : ( Int, List PostGist ) -> Html msg
+viewPostMonth : ( Int, List PostGistWithSummary ) -> Html msg
 viewPostMonth ( month, posts ) =
     let
         heading : Html msg
@@ -64,25 +69,25 @@ viewPostMonth ( month, posts ) =
         (heading :: gistsList)
 
 
-viewPost : PostGist -> Html msg
-viewPost post =
+viewPost : PostGistWithSummary -> Html msg
+viewPost { gist, summary } =
     let
         postDayOfMonth : Html msg
         postDayOfMonth =
             Html.div [ class "text-layout-70 min-w-5 tabular-nums" ]
-                [ Html.text (post.dateTime |> Date.fromPosixTzCl |> Date.day |> Int.padLeft 2)
+                [ Html.text (gist.dateTime |> Date.fromPosixTzCl |> Date.day |> Int.padLeft 2)
                 ]
 
         postLink : Html msg
         postLink =
             Html.b []
-                [ Html.a [ href (Post.gistToUrl post) ]
-                    [ Html.text post.title ]
+                [ Html.a [ href (Post.gistToUrl gist) ]
+                    [ Html.text gist.title ]
                 ]
 
         postCategoryEls : List (Html msg)
         postCategoryEls =
-            post.categories
+            gist.categories
                 |> List.map
                     (\category ->
                         Html.a [ href (Category.toUrl category) ]
@@ -96,8 +101,20 @@ viewPost post =
                     :: (postCategoryEls |> List.intersperse (Html.text ", "))
                     ++ [ Html.text ")" ]
                 )
+
+        postSummary : Html msg
+        postSummary =
+            case summary of
+                Just text ->
+                    Html.p [ class "text-layout-40 pt-1 text-sm italic" ] [ Html.text text ]
+
+                Nothing ->
+                    Html.Extra.nothing
     in
     Html.div [ class "flex flex-row gap-2" ]
         [ postDayOfMonth
-        , Html.div [] [ postLink, postCategories ]
+        , Html.div []
+            [ Html.p [] [ postLink, postCategories ]
+            , postSummary
+            ]
         ]

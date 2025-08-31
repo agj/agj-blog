@@ -143,7 +143,7 @@ viewSeparation =
 paragraph : List String -> String
 paragraph inlines =
     inlines
-        |> String.join " "
+        |> String.join ""
 
 
 wrapBlocks : List String -> String

@@ -3,10 +3,11 @@ module Route.Index exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Browser.Navigation
 import Consts
+import Custom.Markdown
 import Data.AtomFeed as AtomFeed
 import Data.Category as Category
 import Data.Post as Post exposing (PostGist)
-import Data.PostList
+import Data.PostList exposing (PostGistWithSummary)
 import Data.Tag as Tag
 import Dict
 import Effect exposing (Effect)
@@ -87,7 +88,8 @@ init app shared =
 
 
 type alias Data =
-    {}
+    { postsWithSummary : List { gist : PostGist, summary : String }
+    }
 
 
 type alias ActionData =
@@ -96,7 +98,17 @@ type alias ActionData =
 
 data : BackendTask FatalError Data
 data =
-    BackendTask.succeed {}
+    Post.list
+        |> BackendTask.map
+            (\posts ->
+                posts
+                    |> List.take 10
+                    |> List.map
+                        (\{ gist, markdown } ->
+                            { gist = gist, summary = Custom.Markdown.getSummary markdown }
+                        )
+                    |> Data
+            )
 
 
 
@@ -155,56 +167,95 @@ view :
     -> View (PagesMsg Msg)
 view app shared model =
     let
+        postsWithSummary : List PostGistWithSummary
+        postsWithSummary =
+            app.data.postsWithSummary
+                |> List.map (\{ gist, summary } -> { gist = gist, summary = Just summary })
+
+        restPosts : List PostGistWithSummary
+        restPosts =
+            app.sharedData.posts
+                |> List.drop (List.length postsWithSummary)
+                |> List.map (\p -> { gist = p, summary = Nothing })
+
+        posts : List PostGistWithSummary
+        posts =
+            postsWithSummary ++ restPosts
+
+        -- Sanity check to make sure the two separate lists of posts
+        -- with and without a summary have the same posts.
+        postListsAreMatched : Bool
+        postListsAreMatched =
+            List.zip posts app.sharedData.posts
+                |> List.all
+                    (\( postWithSummary, postNoSummary ) ->
+                        (postWithSummary.gist.dateTime == postNoSummary.dateTime)
+                            && (postWithSummary.gist.slug == postNoSummary.slug)
+                    )
+
         content : Html Msg
         content =
-            Html.div
-                [ class "grid gap-x-5 gap-y-8"
-                , class "md:grid-cols-4"
-                ]
-                [ -- Categories and tags.
-                  Html.div
+            if not postListsAreMatched then
+                Html.text """
+                    POST LISTS ARE UNMATCHED!
+                    The lists of posts with a summary is not the
+                    same as the list of posts without a summary.
+                    It's necessary that these two lists match the
+                    same posts in the same order, so that we can use
+                    `List.take`/`List.drop` on them to combine them,
+                    and still get the same list of posts.
+                """
+
+            else
+                Html.div
                     [ class "grid gap-x-5 gap-y-8"
-                    , class "sm:grid-cols-[1fr_2fr]"
-                    , class "md:order-last md:flex md:flex-col md:gap-5"
+                    , class "md:grid-cols-4"
                     ]
-                    [ -- Categories.
-                      Html.div [ class "flex flex-col gap-4" ]
-                        [ Html.h2 [ class "text-layout-70 text-2xl" ]
-                            [ Html.text "Categories" ]
-                        , Category.viewList
+                    [ -- Categories and tags.
+                      Html.div
+                        [ class "grid gap-x-5 gap-y-8"
+                        , class "sm:grid-cols-[1fr_2fr]"
+                        , class "md:order-last md:flex md:flex-col md:gap-5"
                         ]
+                        [ -- Categories.
+                          Html.div [ class "flex flex-col gap-4" ]
+                            [ Html.h2 [ class "text-layout-70 text-2xl" ]
+                                [ Html.text "Categories" ]
+                            , Category.viewList
+                            ]
 
-                    -- Tags.
-                    , Html.div [ class "flex flex-col gap-4" ]
-                        [ Html.h2 [ class "text-layout-70 text-2xl" ]
-                            [ Html.a [ href "/tag" ]
-                                [ Html.text "Tags" ]
-                            ]
-                        , Html.ul
-                            [ class "flex flex-row flex-wrap gap-x-2 text-sm leading-relaxed"
-                            , class "md:block"
-                            ]
-                            (List.concat
-                                [ Tag.listViewShort 20 app.sharedData.posts Tag.all
-                                    |> List.map (\el -> Html.li [] [ el ])
-                                , [ Html.li []
-                                        [ Html.a
-                                            [ href "/tag"
-                                            , class "text-layout-50"
-                                            ]
-                                            [ Html.text "all other tags…" ]
-                                        ]
-                                  ]
+                        -- Tags.
+                        , Html.div [ class "flex flex-col gap-4" ]
+                            [ Html.h2 [ class "text-layout-70 text-2xl" ]
+                                [ Html.a [ href "/tag" ]
+                                    [ Html.text "Tags" ]
                                 ]
-                            )
+                            , Html.ul
+                                [ class "flex flex-row flex-wrap gap-x-2 text-sm leading-relaxed"
+                                , class "md:block"
+                                ]
+                                (List.concat
+                                    [ Tag.listViewShort 20 app.sharedData.posts Tag.all
+                                        |> List.map (\el -> Html.li [] [ el ])
+                                    , [ Html.li []
+                                            [ Html.a
+                                                [ href "/tag"
+                                                , class "text-layout-50"
+                                                ]
+                                                [ Html.text "all other tags…" ]
+                                            ]
+                                      ]
+                                    ]
+                                )
+                            ]
+                        ]
+
+                    -- Posts.
+                    , Html.div
+                        [ class "md:col-span-3" ]
+                        [ Data.PostList.viewGists posts
                         ]
                     ]
-
-                -- Posts.
-                , Html.div
-                    [ class "md:col-span-3" ]
-                    [ Data.PostList.viewGists app.sharedData.posts ]
-                ]
     in
     { title = title
     , body =
