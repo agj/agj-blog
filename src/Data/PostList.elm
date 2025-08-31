@@ -106,7 +106,7 @@ viewPost { gist, summary } =
         postSummary =
             case summary of
                 Just text ->
-                    Html.p [ class "text-layout-40 italic" ] [ Html.text text ]
+                    Html.p [ class "text-layout-40 pt-1 text-sm italic" ] [ Html.text text ]
 
                 Nothing ->
                     Html.Extra.nothing
