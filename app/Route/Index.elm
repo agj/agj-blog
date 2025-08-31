@@ -27,6 +27,7 @@ import Shared
 import Site
 import UrlPath exposing (UrlPath)
 import View exposing (View)
+import View.LanguageToggle
 import View.PageBody
 
 
@@ -208,38 +209,19 @@ view app shared model =
                             && (postWithSummary.gist.slug == postNoSummary.slug)
                     )
 
-        languageButton language =
-            let
-                isSelected =
-                    List.member language shared.languages
-
-                noneSelected =
-                    shared.languages == []
-
-                newLanguagesOnClick =
-                    if isSelected then
-                        List.remove language shared.languages
-
-                    else
-                        language :: shared.languages
-            in
-            Html.button
-                [ class "rounded-sm px-1 text-xs"
-                , if noneSelected then
-                    class "bg-layout-60 text-layout-10"
-
-                  else
-                    class "bg-layout-30 text-layout-10 decoration-layout-50 aria-pressed:bg-layout-90 line-through decoration-2 aria-pressed:no-underline"
-                , ariaPressed isSelected
-                , Html.Events.onClick (SharedMsg (Shared.ChangedLanguages newLanguagesOnClick))
-                ]
-                [ Html.text (Language.toShortString language |> String.toUpper) ]
-
         languagesView =
             Html.ul [ class "flex flex-row gap-1" ]
                 (Language.all
                     |> List.map
-                        (\language -> Html.li [] [ languageButton language ])
+                        (\language ->
+                            Html.li []
+                                [ View.LanguageToggle.view
+                                    { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
+                                    , selectedLanguages = shared.languages
+                                    }
+                                    language
+                                ]
+                        )
                 )
 
         content : Html Msg
