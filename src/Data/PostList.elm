@@ -1,4 +1,4 @@
-module Data.PostList exposing (viewGists)
+module Data.PostList exposing (PostGistWithSummary, viewGists)
 
 import Custom.Int as Int
 import Custom.List as List
@@ -8,6 +8,7 @@ import Data.Post as Post exposing (PostGist)
 import Date
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
+import Html.Extra
 
 
 type alias PostGistWithSummary =
@@ -100,8 +101,20 @@ viewPost { gist, summary } =
                     :: (postCategoryEls |> List.intersperse (Html.text ", "))
                     ++ [ Html.text ")" ]
                 )
+
+        postSummary : Html msg
+        postSummary =
+            case summary of
+                Just text ->
+                    Html.p [ class "text-layout-40 italic" ] [ Html.text text ]
+
+                Nothing ->
+                    Html.Extra.nothing
     in
     Html.div [ class "flex flex-row gap-2" ]
         [ postDayOfMonth
-        , Html.div [] [ postLink, postCategories ]
+        , Html.div []
+            [ Html.p [] [ postLink, postCategories ]
+            , postSummary
+            ]
         ]

@@ -3,10 +3,11 @@ module Route.Index exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Browser.Navigation
 import Consts
+import Custom.Markdown
 import Data.AtomFeed as AtomFeed
 import Data.Category as Category
 import Data.Post as Post exposing (PostGist)
-import Data.PostList
+import Data.PostList exposing (PostGistWithSummary)
 import Data.Tag as Tag
 import Dict
 import Effect exposing (Effect)
@@ -104,7 +105,7 @@ data =
                     |> List.take 10
                     |> List.map
                         (\{ gist, markdown } ->
-                            { gist = gist, summary = "hola hola hola hola hola hola hola hola" }
+                            { gist = gist, summary = Custom.Markdown.getSummary markdown }
                         )
                     |> Data
             )
@@ -166,6 +167,16 @@ view :
     -> View (PagesMsg Msg)
 view app shared model =
     let
+        posts : List PostGistWithSummary
+        posts =
+            (app.data.postsWithSummary
+                |> List.map (\{ gist, summary } -> { gist = gist, summary = Just summary })
+            )
+                ++ (app.sharedData.posts
+                        |> List.drop (List.length app.data.postsWithSummary)
+                        |> List.map (\p -> { gist = p, summary = Nothing })
+                   )
+
         content : Html Msg
         content =
             Html.div
@@ -214,7 +225,8 @@ view app shared model =
                 -- Posts.
                 , Html.div
                     [ class "md:col-span-3" ]
-                    [ Data.PostList.viewGists (app.sharedData.posts |> List.map (\p -> { gist = p, summary = Nothing })) ]
+                    [ Data.PostList.viewGists posts
+                    ]
                 ]
     in
     { title = title
