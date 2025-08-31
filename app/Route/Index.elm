@@ -87,7 +87,8 @@ init app shared =
 
 
 type alias Data =
-    {}
+    { postsWithSummary : List { gist : PostGist, summary : String }
+    }
 
 
 type alias ActionData =
@@ -96,7 +97,17 @@ type alias ActionData =
 
 data : BackendTask FatalError Data
 data =
-    BackendTask.succeed {}
+    Post.list
+        |> BackendTask.map
+            (\posts ->
+                posts
+                    |> List.take 10
+                    |> List.map
+                        (\{ gist, markdown } ->
+                            { gist = gist, summary = "hola hola hola hola hola hola hola hola" }
+                        )
+                    |> Data
+            )
 
 
 
