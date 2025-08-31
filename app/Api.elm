@@ -205,7 +205,6 @@ rss config posts =
         items : List Rss.Item
         items =
             posts
-                |> PostList.sortByTime
                 |> List.map postToItem
 
         postToItem : Post -> Rss.Item

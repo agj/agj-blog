@@ -13,6 +13,7 @@ import BackendTask.File exposing (FileReadError)
 import BackendTask.Glob as Glob
 import Consts
 import Custom.Int as Int
+import Custom.List as List
 import Data.Category as Category exposing (Category)
 import Data.Date as Date
 import Data.Language as Language exposing (Language)
@@ -90,6 +91,7 @@ gistsList =
                             Result.Err err
                 )
                 >> Result.Extra.combine
+                >> Result.map (List.reverseSortBy (\{ postGist } -> Time.posixToMillis postGist.dateTime))
                 >> Result.mapError FatalError.fromString
                 >> BackendTask.fromResult
             )
@@ -103,6 +105,7 @@ list =
     globMatchList
         |> BackendTask.map (List.filter (.isHidden >> not))
         |> BackendTask.andThen (List.map globMatchToPost >> BackendTask.combine)
+        |> BackendTask.map (List.reverseSortBy (\post -> Time.posixToMillis post.gist.dateTime))
 
 
 single :

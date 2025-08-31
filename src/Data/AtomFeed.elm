@@ -21,12 +21,6 @@ generate :
     -> List Post
     -> String
 generate config posts =
-    let
-        orderedPosts =
-            posts
-                |> List.sortBy (\post -> Time.posixToMillis post.gist.dateTime)
-                |> List.reverse
-    in
     """<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>{url}</id>
@@ -43,7 +37,7 @@ generate config posts =
         |> String.replace "{title}" config.title
         |> String.replace "{url}" (ensureUrlIsCanonical config.url)
         |> String.replace "{updated}"
-            (orderedPosts
+            (posts
                 |> List.head
                 |> Maybe.map (\post -> post.gist.dateTime)
                 |> Maybe.withDefault (Time.millisToPosix 0)
@@ -51,7 +45,7 @@ generate config posts =
             )
         |> String.replace "{atomFeedUrl}" config.atomFeedUrl
         |> String.replace "{entries}"
-            (orderedPosts
+            (posts
                 |> List.map
                     (\post ->
                         generateEntry

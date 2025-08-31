@@ -1,4 +1,4 @@
-module Data.PostList exposing (sortByTime, viewGists)
+module Data.PostList exposing (viewGists)
 
 import Custom.Int as Int
 import Custom.List as List
@@ -11,20 +11,6 @@ import Html.Attributes exposing (class, href)
 import Time
 
 
-sortGistsByTime : List PostGist -> List PostGist
-sortGistsByTime posts =
-    posts
-        |> List.sortBy (.dateTime >> Time.posixToMillis)
-        |> List.reverse
-
-
-sortByTime : List Post -> List Post
-sortByTime posts =
-    posts
-        |> List.sortBy (.gist >> .dateTime >> Time.posixToMillis)
-        |> List.reverse
-
-
 viewGists : List PostGist -> Html msg
 viewGists posts =
     let
@@ -32,21 +18,11 @@ viewGists posts =
         postsByYearAndMonth =
             posts
                 |> List.gatherUnder (.dateTime >> Date.fromPosixTzCl >> Date.year)
-                |> List.sortBy Tuple.first
-                |> List.reverse
                 |> List.map
                     (\( year, yearPosts ) ->
                         ( year
                         , yearPosts
                             |> List.gatherUnder (.dateTime >> Date.fromPosixTzCl >> Date.monthNumber)
-                            |> List.sortBy Tuple.first
-                            |> List.reverse
-                            |> List.map
-                                (\( month, monthPosts ) ->
-                                    ( month
-                                    , sortGistsByTime monthPosts
-                                    )
-                                )
                         )
                     )
     in
