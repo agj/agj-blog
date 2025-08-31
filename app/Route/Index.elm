@@ -181,15 +181,23 @@ view app shared model =
                 |> List.drop (List.length postsWithSummary)
                 |> List.map (\p -> { gist = p, summary = Nothing })
 
+        allPosts : List PostGistWithSummary
+        allPosts =
+            postsWithSummary ++ restPosts
+
         posts : List PostGistWithSummary
         posts =
-            postsWithSummary ++ restPosts
+            if shared.languages == [] then
+                allPosts
+
+            else
+                allPosts |> List.filter (\{ gist } -> List.member gist.language shared.languages)
 
         -- Sanity check to make sure the two separate lists of posts
         -- with and without a summary have the same posts.
         postListsAreMatched : Bool
         postListsAreMatched =
-            List.zip posts app.sharedData.posts
+            List.zip allPosts app.sharedData.posts
                 |> List.all
                     (\( postWithSummary, postNoSummary ) ->
                         (postWithSummary.gist.dateTime == postNoSummary.dateTime)
