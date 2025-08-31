@@ -18,6 +18,7 @@ import Consts
 import Custom.Html
 import Custom.Html.Attributes
 import Custom.Int as Int
+import Custom.List as List
 import Html exposing (Attribute, Html)
 import Html.Attributes exposing (attribute, class, href)
 import Html.Events
@@ -180,13 +181,12 @@ viewItem { onClick, count, tagsToAddTo } tag =
 sortByCount : List { tag : Tag, count : Int } -> List { tag : Tag, count : Int }
 sortByCount tags =
     tags
-        |> List.sortBy
+        |> List.reverseSortBy
             (\{ tag, count } ->
                 "{count}/{tagName}"
                     |> String.replace "{count}" (Int.padLeft 4 count)
                     |> String.replace "{tagName}" (getName tag)
             )
-        |> List.reverse
 
 
 addUseCountToTag :
