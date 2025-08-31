@@ -10,7 +10,7 @@ tags:
   - graphic-design
   - illustration
   - jugosa-cocina-para-ninos
-language: eng
+language: [eng, spa]
 ---
 
 [Español](/2010/01/cookbook-for-children/#language)
@@ -19,7 +19,9 @@ I can now hold in my hands the physical result of half a year of work, the fresh
 
 [![Jugosa Cocina para Niños cover](/files/2010/01-cookbook-for-children/jugosa1small1.jpg "Jugosa Cocina para Niños pages")](//piclog.agj.cl/index.php?showimage=66)
 
-<!-- more -->The author is Mónica Pardo Blum, who once got [an award](http://www.former.cookbookfair.com/html/latin_america.html) for another book of hers, called _Cocina chilena_ (Chilean cuisine). The illustrations were made by visual artist [Cecilia Andrews](http://ceciliaandrews.blogspot.com/), and the photographs taken by Eduardo Banderas. Truth is, being fresh out of university, I wouldn't have been able to get the position I got if it wasn't for the fact that it's a family project; my dad served as an editor, since the author is his mother-in-law, and, in turn, the illustrator is her daughter-in-law. Working like this was bound to cause some problems, but we managed to finish it, after some delays. I'm quite fond of the result.
+<!-- more -->
+
+The author is Mónica Pardo Blum, who once got [an award](http://www.former.cookbookfair.com/html/latin_america.html) for another book of hers, called _Cocina chilena_ (Chilean cuisine). The illustrations were made by visual artist [Cecilia Andrews](http://ceciliaandrews.blogspot.com/), and the photographs taken by Eduardo Banderas. Truth is, being fresh out of university, I wouldn't have been able to get the position I got if it wasn't for the fact that it's a family project; my dad served as an editor, since the author is his mother-in-law, and, in turn, the illustrator is her daughter-in-law. Working like this was bound to cause some problems, but we managed to finish it, after some delays. I'm quite fond of the result.
 
 Below, the cover of the book. Here's [two pages](//piclog.agj.cl/index.php?showimage=67), and [a couple more](//piclog.agj.cl/index.php?showimage=68).
 

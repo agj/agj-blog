@@ -14,7 +14,7 @@ tags:
   - sound-design
   - video
   - video-game
-language: eng
+language: [eng, spa]
 ---
 
 [Español](/2009/01/campodecolor-got-me-out-of-college/#language)

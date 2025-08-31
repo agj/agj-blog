@@ -11,7 +11,7 @@ tags:
   - espanol
   - short-film
   - university
-language: eng
+language: [eng, spa]
 ---
 
 <video-embed service="vimeo" id="2729724" width="500" height="375" />

@@ -12,7 +12,7 @@ tags:
   - muevete
   - santiago
   - video
-language: eng
+language: [eng, spa]
 ---
 
 <video-embed service="vimeo" id="32240154" width="500" height="281" />

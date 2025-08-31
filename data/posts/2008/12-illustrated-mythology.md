@@ -11,7 +11,7 @@ tags:
   - graphic-design
   - illustration
   - university
-language: eng
+language: [eng, spa]
 ---
 
 [Español](/2008/12/illustrated-mythology/#language)

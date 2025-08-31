@@ -9,7 +9,7 @@ tags:
   - competition
   - espanol
   - translation
-language: eng
+language: [eng, spa]
 ---
 
 increpare (Stephen Lavelle) just released an entry for the [CODEAR Single Boss Game competition](http://www.adva.com.ar/foro/index.php?board=33.0) that is currently running, called [_Infidelidad_](http://www.maths.tcd.ie/~icecube/tag/infidelidad/) (Infidelity). Since the competition is held by the [ADVA](http://www.adva.com.ar/) (Video Game Developers Association of Argentina), I offered him to translate it into Spanish, and so I did. The dialogue is brief but quite comical, and I had lots of fun doing the translation. The game itself is short, but sweet. Put a smile on my face.
