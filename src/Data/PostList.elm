@@ -10,6 +10,7 @@ import Date
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
 import Html.Extra
+import List.NonEmpty
 
 
 type alias PostGistWithSummary =
@@ -86,10 +87,15 @@ viewPost { gist, summary } =
                     [ Html.text gist.title ]
                 ]
 
-        postLanguage : Html msg
-        postLanguage =
-            Html.span [ class "bg-layout-40 text-layout-10 rounded-sm px-1 text-xs" ]
-                [ Html.text (Language.toShortString gist.language |> String.toUpper) ]
+        postLanguages : List (Html msg)
+        postLanguages =
+            gist.language
+                |> List.NonEmpty.map
+                    (\language ->
+                        Html.span [ class "bg-layout-40 text-layout-10 rounded-sm px-1 text-xs" ]
+                            [ Html.text (Language.toShortString language |> String.toUpper) ]
+                    )
+                |> List.NonEmpty.toList
 
         postCategoryEls : List (Html msg)
         postCategoryEls =
@@ -121,7 +127,8 @@ viewPost { gist, summary } =
         [ postDayOfMonth
         , Html.div []
             [ Html.p []
-                ([ postLink, postLanguage, postCategories ]
+                ([ [ postLink ], postLanguages, [ postCategories ] ]
+                    |> List.concat
                     |> List.intersperse (Html.text " ")
                 )
             , postSummary

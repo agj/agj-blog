@@ -36,7 +36,7 @@ type alias PostGist =
     { id : Maybe Int
     , slug : String
     , title : String
-    , language : Language
+    , language : ( Language, List Language )
     , categories : List Category
     , tags : List Tag
     , dateTime : Time.Posix
@@ -48,7 +48,7 @@ type alias PostGist =
 type alias Frontmatter =
     { id : Maybe Int
     , title : String
-    , language : Language
+    , language : ( Language, List Language )
     , categories : List Category
     , tags : List Tag
     , dateTime : Time.Posix
@@ -292,7 +292,21 @@ frontmatterDecoder =
     Decode.succeed Frontmatter
         |> Decode.optional "id" (Decode.maybe Decode.int) Nothing
         |> Decode.required "title" Decode.string
-        |> Decode.required "language" Language.decoder
+        |> Decode.required "language"
+            (Decode.oneOf
+                [ Language.decoder |> Decode.map (\language -> ( language, [] ))
+                , Language.listDecoder
+                    |> Decode.andThen
+                        (\languages ->
+                            case languages of
+                                [] ->
+                                    Decode.fail "No languages."
+
+                                first :: rest ->
+                                    Decode.succeed ( first, rest )
+                        )
+                ]
+            )
         |> Decode.required "categories" (Decode.list Category.decoder)
         |> Decode.required "tags" (Decode.list Tag.decoder)
         |> Decode.required "date"

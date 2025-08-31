@@ -1,4 +1,4 @@
-module Data.Language exposing (Language(..), all, decoder, fromString, toShortString)
+module Data.Language exposing (Language(..), all, decoder, fromString, listDecoder, toShortString)
 
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
@@ -20,6 +20,11 @@ decoder : Decoder Language
 decoder =
     Decode.string
         |> Decode.andThen (fromString >> Decode.fromResult)
+
+
+listDecoder : Decoder (List Language)
+listDecoder =
+    Decode.list decoder
 
 
 fromString : String -> Result String Language

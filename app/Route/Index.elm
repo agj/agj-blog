@@ -4,6 +4,7 @@ import BackendTask exposing (BackendTask)
 import Browser.Navigation
 import Consts
 import Custom.Html.Attributes exposing (ariaPressed)
+import Custom.List as List
 import Custom.Markdown
 import Data.AtomFeed as AtomFeed
 import Data.Category as Category
@@ -19,6 +20,7 @@ import Html exposing (Html)
 import Html.Attributes exposing (class, href)
 import Html.Events
 import List.Extra as List
+import List.NonEmpty
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
@@ -191,7 +193,9 @@ view app shared model =
                 allPosts
 
             else
-                allPosts |> List.filter (\{ gist } -> List.member gist.language shared.languages)
+                allPosts
+                    |> List.filter
+                        (\{ gist } -> List.NonEmpty.any (List.memberOf shared.languages) gist.language)
 
         -- Sanity check to make sure the two separate lists of posts
         -- with and without a summary have the same posts.
@@ -225,7 +229,7 @@ view app shared model =
                     class "bg-layout-60 text-layout-10"
 
                   else
-                    class "bg-layout-30 text-layout-10 aria-pressed:no-underline line-through decoration-layout-50 aria-pressed:bg-layout-90 decoration-2"
+                    class "bg-layout-30 text-layout-10 decoration-layout-50 aria-pressed:bg-layout-90 line-through decoration-2 aria-pressed:no-underline"
                 , ariaPressed isSelected
                 , Html.Events.onClick (SharedMsg (Shared.ChangedLanguages newLanguagesOnClick))
                 ]
