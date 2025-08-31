@@ -211,7 +211,7 @@ view app shared model =
                     , class "md:grid-cols-[2fr_1fr]"
                     ]
                     [ tagsColumn
-                    , Data.PostList.viewGists postsShown
+                    , Data.PostList.viewGists (postsShown |> List.map (\p -> { gist = p, summary = Nothing }))
                     ]
 
             else

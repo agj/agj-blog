@@ -203,7 +203,7 @@ view app shared model =
                 -- Posts.
                 , Html.div
                     [ class "md:col-span-3" ]
-                    [ Data.PostList.viewGists app.sharedData.posts ]
+                    [ Data.PostList.viewGists (app.sharedData.posts |> List.map (\p -> { gist = p, summary = Nothing })) ]
                 ]
     in
     { title = title
