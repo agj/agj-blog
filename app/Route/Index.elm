@@ -25,6 +25,7 @@ import Shared
 import Site
 import UrlPath exposing (UrlPath)
 import View exposing (View)
+import View.Card
 import View.LanguageToggle
 import View.PageBody
 
@@ -208,17 +209,15 @@ view app shared model =
                     )
 
         languagesView =
-            Html.ul [ class "flex flex-row gap-1" ]
+            Html.div [ class "flex flex-row flex-wrap gap-1" ]
                 (Language.all
                     |> List.map
                         (\language ->
-                            Html.li []
-                                [ View.LanguageToggle.view
-                                    { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
-                                    , selectedLanguages = shared.languages
-                                    }
-                                    language
-                                ]
+                            View.LanguageToggle.view
+                                { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
+                                , selectedLanguages = shared.languages
+                                }
+                                language
                         )
                 )
 
@@ -247,43 +246,43 @@ view app shared model =
                         , class "md:order-last md:flex md:flex-col md:gap-5"
                         ]
                         [ -- Languages.
-                          Html.div []
-                            [ Html.h2 [ class "text-layout-70 text-2xl" ]
-                                [ Html.text "Language" ]
-                            , languagesView
-                            ]
+                          View.Card.view
+                            { title = Just (Html.text "Language")
+                            , content = languagesView
+                            }
 
                         -- Categories.
-                        , Html.div [ class "flex flex-col gap-4" ]
-                            [ Html.h2 [ class "text-layout-70 text-2xl" ]
-                                [ Html.text "Categories" ]
-                            , Category.viewList
-                            ]
+                        , View.Card.view
+                            { title = Just (Html.text "Categories")
+                            , content = Category.viewList
+                            }
 
                         -- Tags.
-                        , Html.div [ class "flex flex-col gap-4" ]
-                            [ Html.h2 [ class "text-layout-70 text-2xl" ]
-                                [ Html.a [ href "/tag" ]
-                                    [ Html.text "Tags" ]
-                                ]
-                            , Html.ul
-                                [ class "flex flex-row flex-wrap gap-x-2 text-sm leading-relaxed"
-                                , class "md:block"
-                                ]
-                                (List.concat
-                                    [ Tag.listViewShort 20 app.sharedData.posts Tag.all
-                                        |> List.map (\el -> Html.li [] [ el ])
-                                    , [ Html.li []
-                                            [ Html.a
-                                                [ href "/tag"
-                                                , class "text-layout-50"
-                                                ]
-                                                [ Html.text "all other tags…" ]
-                                            ]
-                                      ]
+                        , View.Card.view
+                            { title =
+                                Just
+                                    (Html.a [ href "/tag" ]
+                                        [ Html.text "Tags" ]
+                                    )
+                            , content =
+                                Html.ul
+                                    [ class "flex flex-row flex-wrap gap-x-2 text-sm leading-relaxed"
+                                    , class "md:block"
                                     ]
-                                )
-                            ]
+                                    (List.concat
+                                        [ Tag.listViewShort 20 app.sharedData.posts Tag.all
+                                            |> List.map (\el -> Html.li [] [ el ])
+                                        , [ Html.li []
+                                                [ Html.a
+                                                    [ href "/tag"
+                                                    , class "text-layout-50"
+                                                    ]
+                                                    [ Html.text "all other tags…" ]
+                                                ]
+                                          ]
+                                        ]
+                                    )
+                            }
                         ]
 
                     -- Posts.
