@@ -248,22 +248,21 @@ view app shared model =
                         [ -- Languages.
                           View.Card.view
                             { title = Just (Html.text "Language")
+                            , class = Nothing
                             , content = languagesView
                             }
 
                         -- Categories.
                         , View.Card.view
                             { title = Just (Html.text "Categories")
+                            , class = Nothing
                             , content = Category.viewList
                             }
 
                         -- Tags.
                         , View.Card.view
-                            { title =
-                                Just
-                                    (Html.a [ href "/tag" ]
-                                        [ Html.text "Tags" ]
-                                    )
+                            { title = Just (Html.a [ href "/tag" ] [ Html.text "Tags" ])
+                            , class = Nothing
                             , content =
                                 Html.ul
                                     [ class "flex flex-row flex-wrap gap-x-2 text-sm leading-relaxed"

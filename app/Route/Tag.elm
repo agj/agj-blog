@@ -2,6 +2,8 @@ module Route.Tag exposing (ActionData, Data, Model, Msg, route)
 
 import AppUrl exposing (AppUrl, QueryParameters)
 import BackendTask exposing (BackendTask)
+import Custom.Bool exposing (ifElse)
+import Custom.Html.Attributes
 import Custom.List as List
 import Data.Post exposing (PostGist)
 import Data.PostList
@@ -26,6 +28,7 @@ import Site
 import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
+import View.Card
 import View.PageBody exposing (PageBody)
 import View.Snippets
 
@@ -326,13 +329,9 @@ viewTagsColumn { tags, showAllTags, postsShown, allPosts, showingPosts } =
                 , posts = allPosts
                 }
                 subTags
-    in
-    Html.ul
-        [ class "flex min-w-0 max-w-full flex-row flex-wrap content-start gap-x-2 text-sm leading-relaxed"
-        , attributeIf showingPosts (class "md:order-last md:flex-col")
-        ]
-        (List.concat
-            [ relatedTagEls
+
+        tagViews =
+            relatedTagEls
                 |> List.indexedMap
                     (\index el ->
                         Html.li
@@ -342,26 +341,36 @@ viewTagsColumn { tags, showAllTags, postsShown, allPosts, showingPosts } =
                             ]
                             [ el ]
                     )
-            , [ viewIf showingPosts
-                    (Html.button
-                        [ onClick (ShowAllRelatedTagsStatusChanged (not showAllTags))
-                        , class "button bg-layout-20 gap-1 px-1 py-0.5 text-xs"
-                        , attributeIf showingPosts (class "md:hidden")
-                        ]
-                        (if showAllTags then
-                            [ Icon.foldLeft Icon.Small
-                            , Html.text "Hide tags"
-                            ]
 
-                         else
-                            [ Icon.foldRight Icon.Small
-                            , Html.text "More tags"
-                            ]
-                        )
+        showHideTagsButton =
+            viewIf showingPosts
+                (Html.button
+                    [ onClick (ShowAllRelatedTagsStatusChanged (not showAllTags))
+                    , class "button bg-layout-20 gap-1 px-1 py-0.5 text-xs"
+                    , attributeIf showingPosts (class "md:hidden")
+                    ]
+                    (if showAllTags then
+                        [ Icon.foldLeft Icon.Small
+                        , Html.text "Hide tags"
+                        ]
+
+                     else
+                        [ Icon.foldRight Icon.Small
+                        , Html.text "More tags"
+                        ]
                     )
-              ]
-            ]
-        )
+                )
+    in
+    View.Card.view
+        { title = Nothing
+        , class = ifElse showingPosts (Just "md:order-last md:flex-col min-w-0") (Just "min-w-0")
+        , content =
+            Html.ul
+                [ class "flex flex-row flex-wrap content-start gap-x-2 text-sm leading-relaxed"
+                , attributeIf showingPosts (class "md:order-last md:flex-col")
+                ]
+                (List.concat [ tagViews, [ showHideTagsButton ] ])
+        }
 
 
 feedUrls : List Tag -> Maybe { rssUrl : String, atomUrl : String }
