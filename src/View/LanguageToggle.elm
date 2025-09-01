@@ -1,4 +1,4 @@
-module View.LanguageToggle exposing (view)
+module View.LanguageToggle exposing (viewButton, viewCard)
 
 import Custom.Html.Attributes exposing (ariaPressed)
 import Data.Language as Language exposing (Language)
@@ -6,16 +6,31 @@ import Html exposing (Html)
 import Html.Attributes exposing (class)
 import Html.Events
 import List.Extra as List
+import View.Card
 
 
-type alias Config msg =
+viewCard :
     { onSelectionChange : List Language -> msg
     , selectedLanguages : List Language
     }
+    -> Html msg
+viewCard config =
+    View.Card.view
+        { title = Just (Html.text "Language")
+        , class = Nothing
+        , content =
+            Html.div [ class "flex flex-row flex-wrap gap-1" ]
+                (Language.all |> List.map (viewButton config))
+        }
 
 
-view : Config msg -> Language -> Html msg
-view config language =
+viewButton :
+    { onSelectionChange : List Language -> msg
+    , selectedLanguages : List Language
+    }
+    -> Language
+    -> Html msg
+viewButton config language =
     let
         isSelected =
             List.member language config.selectedLanguages

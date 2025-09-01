@@ -28,6 +28,7 @@ import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.Card
+import View.LanguageToggle
 import View.PageBody exposing (PageBody)
 import View.Snippets
 
@@ -223,10 +224,14 @@ view app shared model =
         sideColumn : Html Msg
         sideColumn =
             Html.aside
-                [ class "min-w-0"
+                [ class "min-w-0 flex flex-col gap-2"
                 , attributeIf showPosts (class "md:order-last md:flex-col")
                 ]
-                [ viewTagsCard
+                [ View.LanguageToggle.viewCard
+                    { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
+                    , selectedLanguages = shared.languages
+                    }
+                , viewTagsCard
                     { tags = model.queryTags
                     , postsShown = postsShown
                     , allPosts = app.sharedData.posts
@@ -366,7 +371,7 @@ viewTagsCard { tags, showAllTags, postsShown, allPosts, showingPosts } =
                 )
     in
     View.Card.view
-        { title = Nothing
+        { title = Just (Html.text "More tags")
         , class = ifElse showingPosts (Just "md:flex-col min-w-0") (Just "min-w-0")
         , content =
             Html.ul
