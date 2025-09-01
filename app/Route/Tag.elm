@@ -3,7 +3,6 @@ module Route.Tag exposing (ActionData, Data, Model, Msg, route)
 import AppUrl exposing (AppUrl, QueryParameters)
 import BackendTask exposing (BackendTask)
 import Custom.Bool exposing (ifElse)
-import Custom.Html.Attributes
 import Custom.List as List
 import Data.Post exposing (PostGist)
 import Data.PostList
@@ -213,23 +212,28 @@ view app shared model =
                     [ class "grid gap-x-5 gap-y-8"
                     , class "md:grid-cols-[2fr_1fr]"
                     ]
-                    [ tagsColumn
+                    [ sideColumn
                     , Data.PostList.viewGists (postsShown |> List.map (\p -> { gist = p, summary = Nothing }))
                     ]
 
             else
                 Html.div []
-                    [ tagsColumn ]
+                    [ sideColumn ]
 
-        tagsColumn : Html Msg
-        tagsColumn =
-            viewTagsColumn
-                { tags = model.queryTags
-                , postsShown = postsShown
-                , allPosts = app.sharedData.posts
-                , showAllTags = model.showAllRelatedTags
-                , showingPosts = showPosts
-                }
+        sideColumn : Html Msg
+        sideColumn =
+            Html.aside
+                [ class "min-w-0"
+                , attributeIf showPosts (class "md:order-last md:flex-col")
+                ]
+                [ viewTagsCard
+                    { tags = model.queryTags
+                    , postsShown = postsShown
+                    , allPosts = app.sharedData.posts
+                    , showAllTags = model.showAllRelatedTags
+                    , showingPosts = showPosts
+                    }
+                ]
 
         withRssFeedLinkMaybe : PageBody Msg -> PageBody Msg
         withRssFeedLinkMaybe pageBody =
@@ -304,7 +308,7 @@ viewTitleTag { queryTags } tag =
         ]
 
 
-viewTagsColumn :
+viewTagsCard :
     { tags : List Tag
     , showAllTags : Bool
     , postsShown : List PostGist
@@ -312,7 +316,7 @@ viewTagsColumn :
     , showingPosts : Bool
     }
     -> Html Msg
-viewTagsColumn { tags, showAllTags, postsShown, allPosts, showingPosts } =
+viewTagsCard { tags, showAllTags, postsShown, allPosts, showingPosts } =
     let
         subTags : List Tag
         subTags =
@@ -363,7 +367,7 @@ viewTagsColumn { tags, showAllTags, postsShown, allPosts, showingPosts } =
     in
     View.Card.view
         { title = Nothing
-        , class = ifElse showingPosts (Just "md:order-last md:flex-col min-w-0") (Just "min-w-0")
+        , class = ifElse showingPosts (Just "md:flex-col min-w-0") (Just "min-w-0")
         , content =
             Html.ul
                 [ class "flex flex-row flex-wrap content-start gap-x-2 text-sm leading-relaxed"
