@@ -7,7 +7,6 @@ import Custom.List as List
 import Custom.Markdown
 import Data.AtomFeed as AtomFeed
 import Data.Category as Category
-import Data.Language as Language
 import Data.Post as Post exposing (PostGist)
 import Data.PostList exposing (PostGistWithSummary)
 import Data.Tag as Tag
@@ -208,19 +207,6 @@ view app shared model =
                             && (postWithSummary.gist.slug == postNoSummary.slug)
                     )
 
-        languagesView =
-            Html.div [ class "flex flex-row flex-wrap gap-1" ]
-                (Language.all
-                    |> List.map
-                        (\language ->
-                            View.LanguageToggle.view
-                                { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
-                                , selectedLanguages = shared.languages
-                                }
-                                language
-                        )
-                )
-
         content : Html Msg
         content =
             if not postListsAreMatched then
@@ -236,20 +222,19 @@ view app shared model =
 
             else
                 Html.div
-                    [ class "grid gap-x-5 gap-y-8"
-                    , class "md:grid-cols-4"
+                    [ class "grid gap-2"
+                    , class "md:grid-cols-[2fr_1fr]"
                     ]
                     [ -- Categories and tags.
                       Html.div
-                        [ class "grid gap-x-5 gap-y-8"
+                        [ class "grid gap-2"
                         , class "sm:grid-cols-[1fr_2fr]"
-                        , class "md:order-last md:flex md:flex-col md:gap-5"
+                        , class "md:order-last md:flex md:flex-col"
                         ]
                         [ -- Languages.
-                          View.Card.view
-                            { title = Just (Html.text "Language")
-                            , class = Nothing
-                            , content = languagesView
+                          View.LanguageToggle.viewCard
+                            { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
+                            , selectedLanguages = shared.languages
                             }
 
                         -- Categories.
@@ -285,10 +270,7 @@ view app shared model =
                         ]
 
                     -- Posts.
-                    , Html.div
-                        [ class "md:col-span-3" ]
-                        [ Data.PostList.viewGists posts
-                        ]
+                    , Html.div [] [ Data.PostList.viewGists posts ]
                     ]
     in
     { title = title
