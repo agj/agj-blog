@@ -3,7 +3,6 @@ module Route.Index exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Browser.Navigation
 import Consts
-import Custom.Html.Attributes exposing (ariaPressed)
 import Custom.List as List
 import Custom.Markdown
 import Data.AtomFeed as AtomFeed
@@ -18,7 +17,6 @@ import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
-import Html.Events
 import List.Extra as List
 import List.NonEmpty
 import PagesMsg exposing (PagesMsg)
