@@ -222,7 +222,7 @@ view app shared model =
 
             else
                 Html.div
-                    [ class "grid gap-2"
+                    [ class "grid gap-6"
                     , class "md:grid-cols-[2fr_1fr]"
                     ]
                     [ -- Categories and tags.

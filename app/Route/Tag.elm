@@ -210,7 +210,7 @@ view app shared model =
         content =
             if showPosts then
                 Html.div
-                    [ class "grid gap-x-5 gap-y-8"
+                    [ class "grid gap-6"
                     , class "md:grid-cols-[2fr_1fr]"
                     ]
                     [ sideColumn
@@ -224,7 +224,7 @@ view app shared model =
         sideColumn : Html Msg
         sideColumn =
             Html.aside
-                [ class "min-w-0 flex flex-col gap-2"
+                [ class "flex min-w-0 flex-col gap-2"
                 , attributeIf showPosts (class "md:order-last md:flex-col")
                 ]
                 [ View.LanguageToggle.viewCard
