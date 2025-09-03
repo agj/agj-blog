@@ -25,6 +25,7 @@ import Site
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.Card
+import View.ColumnsLayout
 import View.LanguageToggle
 import View.PageBody
 
@@ -221,57 +222,53 @@ view app shared model =
                 """
 
             else
-                Html.div
-                    [ class "grid gap-6"
-                    , class "md:grid-cols-[2fr_1fr]"
-                    ]
-                    [ -- Categories and tags.
-                      Html.div
-                        [ class "grid gap-2"
-                        , class "sm:grid-cols-[1fr_2fr]"
-                        , class "md:order-last md:flex md:flex-col"
-                        ]
-                        [ -- Languages.
-                          View.LanguageToggle.viewCard
-                            { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
-                            , selectedLanguages = shared.languages
-                            }
+                View.ColumnsLayout.view2
+                    { main =
+                        Html.div [] [ Data.PostList.viewGists posts ]
+                    , side =
+                        Html.div
+                            [ class "grid gap-2"
+                            , class "sm:grid-flow-col sm:grid-cols-[1fr_2fr]"
+                            , class "md:flex md:flex-col"
+                            ]
+                            [ -- Languages.
+                              View.LanguageToggle.viewCard
+                                { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
+                                , selectedLanguages = shared.languages
+                                }
 
-                        -- Categories.
-                        , View.Card.view
-                            { title = Just (Html.text "Categories")
-                            , class = Nothing
-                            , content = Category.viewList
-                            }
+                            -- Categories.
+                            , View.Card.view
+                                { title = Just (Html.text "Categories")
+                                , class = Nothing
+                                , content = Category.viewList
+                                }
 
-                        -- Tags.
-                        , View.Card.view
-                            { title = Just (Html.a [ href "/tag" ] [ Html.text "Tags" ])
-                            , class = Nothing
-                            , content =
-                                Html.ul
-                                    [ class "flex flex-row flex-wrap gap-x-2 text-sm leading-relaxed"
-                                    , class "md:block"
-                                    ]
-                                    (List.concat
-                                        [ Tag.listViewShort 20 app.sharedData.posts Tag.all
-                                            |> List.map (\el -> Html.li [] [ el ])
-                                        , [ Html.li []
-                                                [ Html.a
-                                                    [ href "/tag"
-                                                    , class "text-layout-50"
-                                                    ]
-                                                    [ Html.text "all other tags…" ]
-                                                ]
-                                          ]
+                            -- Tags.
+                            , View.Card.view
+                                { title = Just (Html.a [ href "/tag" ] [ Html.text "Tags" ])
+                                , class = Just "sm:row-span-2"
+                                , content =
+                                    Html.ul
+                                        [ class "flex flex-row flex-wrap gap-x-2 text-sm leading-relaxed"
+                                        , class "md:block"
                                         ]
-                                    )
-                            }
-                        ]
-
-                    -- Posts.
-                    , Html.div [] [ Data.PostList.viewGists posts ]
-                    ]
+                                        (List.concat
+                                            [ Tag.listViewShort 20 app.sharedData.posts Tag.all
+                                                |> List.map (\el -> Html.li [] [ el ])
+                                            , [ Html.li []
+                                                    [ Html.a
+                                                        [ href "/tag"
+                                                        , class "text-layout-50"
+                                                        ]
+                                                        [ Html.text "all other tags…" ]
+                                                    ]
+                                              ]
+                                            ]
+                                        )
+                                }
+                            ]
+                    }
     in
     { title = title
     , body =
