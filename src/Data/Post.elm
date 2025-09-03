@@ -5,6 +5,7 @@ module Data.Post exposing
     , gistToUrl
     , gistsList
     , list
+    , matchesLanguage
     , single
     )
 
@@ -22,6 +23,7 @@ import Date
 import FatalError exposing (FatalError)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Decode
+import List.NonEmpty
 import Result.Extra
 import Time
 
@@ -136,6 +138,12 @@ gistToCanonicalUrl gist =
     "{root}{path}"
         |> String.replace "{root}" Consts.siteCanonicalUrl
         |> String.replace "{path}" (gistToUrl gist)
+
+
+matchesLanguage : List Language -> PostGist -> Bool
+matchesLanguage selectedLanguages { language } =
+    (selectedLanguages == [])
+        || List.NonEmpty.any (List.memberOf selectedLanguages) language
 
 
 

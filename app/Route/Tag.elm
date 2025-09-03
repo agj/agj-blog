@@ -4,7 +4,8 @@ import AppUrl exposing (AppUrl, QueryParameters)
 import BackendTask exposing (BackendTask)
 import Custom.Bool exposing (ifElse)
 import Custom.List as List
-import Data.Post exposing (PostGist)
+import Data.Language exposing (Language)
+import Data.Post as Post exposing (PostGist)
 import Data.PostList
 import Data.Tag as Tag exposing (Tag)
 import Dict exposing (Dict)
@@ -196,7 +197,7 @@ view app shared model =
         postsShown : List PostGist
         postsShown =
             app.sharedData.posts
-                |> List.filter (showPost model.queryTags)
+                |> List.filter (shouldShowPost model.queryTags shared.languages)
 
         showPosts : Bool
         showPosts =
@@ -401,7 +402,7 @@ feedUrl feedName tag =
         |> String.replace "{tagSlug}" (Tag.getSlug tag)
 
 
-showPost : List Tag -> PostGist -> Bool
-showPost queryTags post =
-    queryTags
-        |> List.all (List.memberOf post.tags)
+shouldShowPost : List Tag -> List Language -> PostGist -> Bool
+shouldShowPost queryTags selectedLanguages post =
+    (queryTags |> List.all (List.memberOf post.tags))
+        && Post.matchesLanguage selectedLanguages post

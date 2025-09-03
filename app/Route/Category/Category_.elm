@@ -3,6 +3,7 @@ module Route.Category.Category_ exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Data.AtomFeed as AtomFeed
 import Data.Category as Category exposing (Category)
+import Data.Post as Post
 import Data.PostList
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
@@ -134,7 +135,11 @@ view app shared model =
 
         posts =
             app.sharedData.posts
-                |> List.filter (.categories >> List.member category)
+                |> List.filter
+                    (\post ->
+                        List.member category post.categories
+                            && Post.matchesLanguage shared.languages post
+                    )
 
         { rssUrl, atomUrl } =
             feedUrls category

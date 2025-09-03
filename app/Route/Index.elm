@@ -3,7 +3,6 @@ module Route.Index exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Browser.Navigation
 import Consts
-import Custom.List as List
 import Custom.Markdown
 import Data.AtomFeed as AtomFeed
 import Data.Category as Category
@@ -17,7 +16,6 @@ import Head
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
 import List.Extra as List
-import List.NonEmpty
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
@@ -189,13 +187,8 @@ view app shared model =
 
         posts : List PostGistWithSummary
         posts =
-            if shared.languages == [] then
-                allPosts
-
-            else
-                allPosts
-                    |> List.filter
-                        (\{ gist } -> List.NonEmpty.any (List.memberOf shared.languages) gist.language)
+            allPosts
+                |> List.filter (\{ gist } -> Post.matchesLanguage shared.languages gist)
 
         -- Sanity check to make sure the two separate lists of posts
         -- with and without a summary have the same posts.
