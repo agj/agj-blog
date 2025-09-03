@@ -8,12 +8,16 @@ import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
+import Html.Attributes exposing (class)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
 import UrlPath exposing (UrlPath)
 import View exposing (View)
+import View.Card
+import View.ColumnsLayout
+import View.LanguageToggle
 import View.PageBody
 import View.Snippets
 
@@ -157,7 +161,26 @@ view app shared model =
                 )
 
         content =
-            Data.PostList.viewGists (posts |> List.map (\p -> { gist = p, summary = Nothing }))
+            View.ColumnsLayout.view2
+                { main =
+                    Data.PostList.viewGists
+                        (posts |> List.map (\p -> { gist = p, summary = Nothing }))
+                , side = sideColumn
+                }
+
+        sideColumn : Html Msg
+        sideColumn =
+            Html.aside [ class "flex flex-col gap-2" ]
+                [ View.LanguageToggle.viewCard
+                    { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
+                    , selectedLanguages = shared.languages
+                    }
+                , View.Card.view
+                    { title = Just (Html.text "Categories")
+                    , class = Nothing
+                    , content = Category.viewList
+                    }
+                ]
     in
     { title = title app
     , body =
