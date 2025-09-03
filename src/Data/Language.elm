@@ -50,13 +50,13 @@ toShortString : Language -> String
 toShortString language =
     case language of
         English ->
-            "eng"
+            "en"
 
         Spanish ->
-            "spa"
+            "es"
 
         Japanese ->
-            "jpn"
+            "日"
 
         Mandarin ->
-            "cmn"
+            "中"
