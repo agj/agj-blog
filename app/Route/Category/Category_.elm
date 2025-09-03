@@ -15,7 +15,6 @@ import Shared
 import Site
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-import View.Card
 import View.ColumnsLayout
 import View.LanguageToggle
 import View.PageBody
@@ -175,11 +174,7 @@ view app shared model =
                     { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
                     , selectedLanguages = shared.languages
                     }
-                , View.Card.view
-                    { title = Just (Html.text "Categories")
-                    , class = Nothing
-                    , content = Category.viewList
-                    }
+                , Category.viewCard
                 ]
     in
     { title = title app

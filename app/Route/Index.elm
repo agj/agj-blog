@@ -238,11 +238,7 @@ view app shared model =
                                 }
 
                             -- Categories.
-                            , View.Card.view
-                                { title = Just (Html.text "Categories")
-                                , class = Nothing
-                                , content = Category.viewList
-                                }
+                            , Category.viewCard
 
                             -- Tags.
                             , View.Card.view
