@@ -28,6 +28,7 @@ import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.Card
+import View.ColumnsLayout
 import View.LanguageToggle
 import View.PageBody exposing (PageBody)
 import View.Snippets
@@ -209,17 +210,15 @@ view app shared model =
         content : Html Msg
         content =
             if showPosts then
-                Html.div
-                    [ class "grid gap-6"
-                    , class "md:grid-cols-[2fr_1fr]"
-                    ]
-                    [ sideColumn
-                    , Data.PostList.viewGists (postsShown |> List.map (\p -> { gist = p, summary = Nothing }))
-                    ]
+                View.ColumnsLayout.view2
+                    { main =
+                        Data.PostList.viewGists
+                            (postsShown |> List.map (\p -> { gist = p, summary = Nothing }))
+                    , side = sideColumn
+                    }
 
             else
-                Html.div []
-                    [ sideColumn ]
+                sideColumn
 
         sideColumn : Html Msg
         sideColumn =
