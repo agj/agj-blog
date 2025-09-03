@@ -223,7 +223,7 @@ view app shared model =
         sideColumn : Html Msg
         sideColumn =
             Html.aside
-                [ class "flex min-w-0 flex-col gap-2"
+                [ class "flex flex-col gap-2"
                 , attributeIf showPosts (class "md:order-last md:flex-col")
                 ]
                 [ View.LanguageToggle.viewCard
@@ -371,7 +371,7 @@ viewTagsCard { tags, showAllTags, postsShown, allPosts, showingPosts } =
     in
     View.Card.view
         { title = Just (Html.text "More tags")
-        , class = ifElse showingPosts (Just "md:flex-col min-w-0") (Just "min-w-0")
+        , class = ifElse showingPosts (Just "md:flex-col") Nothing
         , content =
             Html.ul
                 [ class "flex flex-row flex-wrap content-start gap-x-2 text-sm leading-relaxed"

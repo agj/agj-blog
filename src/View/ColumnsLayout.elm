@@ -10,6 +10,6 @@ view2 { main, side } =
         [ class "grid gap-6"
         , class "md:grid-cols-[2fr_1fr]"
         ]
-        [ Html.main_ [] [ main ]
-        , Html.aside [ class "order-first md:order-last" ] [ side ]
+        [ Html.main_ [ class "min-w-0" ] [ main ]
+        , Html.aside [ class "order-first min-w-0 md:order-last" ] [ side ]
         ]
