@@ -63,7 +63,7 @@ init flagsRaw maybePagePath =
                     Flags.default
     in
     ( { theme = flags.theme
-      , languages = []
+      , languages = flags.languages
       , mastodonStatuses = Dict.empty
       }
     , Effect.SetTheme flags.theme
@@ -132,14 +132,20 @@ update msg model =
             in
             ( { model | theme = newTheme }
             , Effect.batch
-                [ Effect.SaveConfig { theme = newTheme }
+                [ Effect.SaveConfig
+                    { languages = model.languages
+                    , theme = newTheme
+                    }
                 , Effect.SetTheme newTheme
                 ]
             )
 
         ChangedLanguages languages ->
             ( { model | languages = languages }
-            , Effect.none
+            , Effect.SaveConfig
+                { languages = languages
+                , theme = model.theme
+                }
             )
 
         RequestedMastodonStatus statusId ->

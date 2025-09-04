@@ -1,7 +1,8 @@
-module Data.Language exposing (Language(..), all, decoder, fromString, listDecoder, toShortString)
+module Data.Language exposing (Language(..), all, decoder, encode, encodeList, fromString, listDecoder, toShortString)
 
-import Json.Decode as Decode exposing (Decoder)
+import Json.Decode as Decode exposing (Decoder, Value)
 import Json.Decode.Extra as Decode
+import Json.Encode as Encode
 
 
 type Language
@@ -25,6 +26,31 @@ decoder =
 listDecoder : Decoder (List Language)
 listDecoder =
     Decode.list decoder
+
+
+encode : Language -> Value
+encode language =
+    let
+        string =
+            case language of
+                English ->
+                    "eng"
+
+                Spanish ->
+                    "spa"
+
+                Japanese ->
+                    "jpn"
+
+                Mandarin ->
+                    "cmn"
+    in
+    Encode.string string
+
+
+encodeList : List Language -> Value
+encodeList languages =
+    Encode.list encode languages
 
 
 fromString : String -> Result String Language
