@@ -135,11 +135,7 @@ view app shared model =
 
         posts =
             app.sharedData.posts
-                |> List.filter
-                    (\post ->
-                        List.member category post.categories
-                            && Post.matchesLanguage shared.languages post
-                    )
+                |> List.filter (\post -> List.member category post.categories)
 
         { rssUrl, atomUrl } =
             feedUrls category
@@ -167,7 +163,7 @@ view app shared model =
         content =
             View.ColumnsLayout.view2
                 { main =
-                    Data.PostList.viewGists
+                    Data.PostList.viewGists shared.languages
                         (posts |> List.map (\p -> { gist = p, summary = Nothing }))
                 , side = sideColumn
                 }

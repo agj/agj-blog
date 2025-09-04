@@ -185,11 +185,6 @@ view app shared model =
         allPosts =
             postsWithSummary ++ restPosts
 
-        posts : List PostGistWithSummary
-        posts =
-            allPosts
-                |> List.filter (\{ gist } -> Post.matchesLanguage shared.languages gist)
-
         -- Sanity check to make sure the two separate lists of posts
         -- with and without a summary have the same posts.
         postListsAreMatched : Bool
@@ -217,7 +212,7 @@ view app shared model =
             else
                 View.ColumnsLayout.view2
                     { main =
-                        Html.div [] [ Data.PostList.viewGists posts ]
+                        Html.div [] [ Data.PostList.viewGists shared.languages allPosts ]
                     , side =
                         Html.div
                             [ class "grid gap-2"

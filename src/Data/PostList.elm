@@ -4,7 +4,7 @@ import Custom.Int as Int
 import Custom.List as List
 import Data.Category as Category
 import Data.Date as Date
-import Data.Language as Language
+import Data.Language as Language exposing (Language)
 import Data.Post as Post exposing (PostGist)
 import Date
 import Html exposing (Html)
@@ -17,12 +17,16 @@ type alias PostGistWithSummary =
     { gist : PostGist, summary : Maybe String }
 
 
-viewGists : List PostGistWithSummary -> Html msg
-viewGists posts =
+viewGists : List Language -> List PostGistWithSummary -> Html msg
+viewGists selectedLanguages posts =
     let
+        filteredPosts =
+            posts
+                |> List.filter (.gist >> Post.matchesLanguage selectedLanguages)
+
         postsByYearAndMonth : List ( Int, List ( Int, List PostGistWithSummary ) )
         postsByYearAndMonth =
-            posts
+            filteredPosts
                 |> List.gatherUnder (.gist >> .dateTime >> Date.fromPosixTzCl >> Date.year)
                 |> List.map
                     (\( year, yearPosts ) ->
