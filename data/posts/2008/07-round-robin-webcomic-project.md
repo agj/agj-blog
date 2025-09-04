@@ -10,7 +10,7 @@ tags:
   - espanol
   - the-ants-parade
   - web
-language: eng
+language: [eng, spa]
 ---
 
 [Español](/?p=8#language)

@@ -10,7 +10,7 @@ tags:
   - japanese
   - language
   - metaclase-de-kanji
-language: eng
+language: spa
 ---
 
 ![image](/files/2019/06-metaclase-de-kanji-v2/metaclase.png)

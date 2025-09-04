@@ -7,7 +7,7 @@ categories:
 tags:
   - blog
   - espanol
-language: eng
+language: [eng, spa]
 ---
 
 I don't like blogs all that much, to tell you the truth, Dear Reader. I don't think the phrase has much weight when it's written as my first post in this here blog, though. I usually don't like them because they feel exhibitionistic and egocentric in many cases. But there are some important, useful, interesting blogs out there, and these are nice to have; and am I to judge what a good blog is, anyway? A blog is good --it is useful-- if it's fulfilling a purpose. I may find some of those purposes less relevant, but it might be very much so for the person writing it.

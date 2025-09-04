@@ -7,6 +7,7 @@ module Shared exposing
     )
 
 import BackendTask exposing (BackendTask)
+import Data.Language exposing (Language)
 import Data.Mastodon.Status exposing (MastodonStatus)
 import Data.Post as Post exposing (PostGist)
 import Dict exposing (Dict)
@@ -62,6 +63,7 @@ init flagsRaw maybePagePath =
                     Flags.default
     in
     ( { theme = flags.theme
+      , languages = flags.languages
       , mastodonStatuses = Dict.empty
       }
     , Effect.SetTheme flags.theme
@@ -106,6 +108,7 @@ data =
 
 type Msg
     = SelectedChangeTheme
+    | ChangedLanguages (List Language)
     | RequestedMastodonStatus String
     | GotMastodonStatus String (Result Http.Error MastodonStatus)
     | DefaultThemeChanged ThemeColor
@@ -114,6 +117,7 @@ type Msg
 
 type alias Model =
     { theme : Theme
+    , languages : List Language
     , mastodonStatuses : Dict String MastodonStatusRequest
     }
 
@@ -128,9 +132,20 @@ update msg model =
             in
             ( { model | theme = newTheme }
             , Effect.batch
-                [ Effect.SaveConfig { theme = newTheme }
+                [ Effect.SaveConfig
+                    { languages = model.languages
+                    , theme = newTheme
+                    }
                 , Effect.SetTheme newTheme
                 ]
+            )
+
+        ChangedLanguages languages ->
+            ( { model | languages = languages }
+            , Effect.SaveConfig
+                { languages = languages
+                , theme = model.theme
+                }
             )
 
         RequestedMastodonStatus statusId ->

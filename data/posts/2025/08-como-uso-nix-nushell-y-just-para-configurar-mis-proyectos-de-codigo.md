@@ -7,7 +7,7 @@ tags:
   - espanol
   - nix
   - nushell
-language: eng
+language: spa
 external:
   mastodon-toot-id: "115012021382018212"
   devto-slug: "como-uso-nix-nushell-y-just-para-configurar-mis-proyectos-de-codigo-3dcg"

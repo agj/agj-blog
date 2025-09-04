@@ -2,6 +2,7 @@ module Route.Tag exposing (ActionData, Data, Model, Msg, route)
 
 import AppUrl exposing (AppUrl, QueryParameters)
 import BackendTask exposing (BackendTask)
+import Custom.Bool exposing (ifElse)
 import Custom.List as List
 import Data.Post exposing (PostGist)
 import Data.PostList
@@ -26,6 +27,9 @@ import Site
 import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
+import View.Card
+import View.ColumnsLayout
+import View.LanguageToggle
 import View.PageBody exposing (PageBody)
 import View.Snippets
 
@@ -192,7 +196,7 @@ view app shared model =
         postsShown : List PostGist
         postsShown =
             app.sharedData.posts
-                |> List.filter (showPost model.queryTags)
+                |> List.filter (shouldShowPost model.queryTags)
 
         showPosts : Bool
         showPosts =
@@ -206,27 +210,34 @@ view app shared model =
         content : Html Msg
         content =
             if showPosts then
-                Html.div
-                    [ class "grid gap-x-5 gap-y-8"
-                    , class "md:grid-cols-[2fr_1fr]"
-                    ]
-                    [ tagsColumn
-                    , Data.PostList.viewGists (postsShown |> List.map (\p -> { gist = p, summary = Nothing }))
-                    ]
+                View.ColumnsLayout.view2
+                    { main =
+                        Data.PostList.viewGists shared.languages
+                            (postsShown |> List.map (\p -> { gist = p, summary = Nothing }))
+                    , side = sideColumn
+                    }
 
             else
-                Html.div []
-                    [ tagsColumn ]
+                sideColumn
 
-        tagsColumn : Html Msg
-        tagsColumn =
-            viewTagsColumn
-                { tags = model.queryTags
-                , postsShown = postsShown
-                , allPosts = app.sharedData.posts
-                , showAllTags = model.showAllRelatedTags
-                , showingPosts = showPosts
-                }
+        sideColumn : Html Msg
+        sideColumn =
+            Html.aside
+                [ class "flex flex-col gap-2"
+                , attributeIf showPosts (class "md:order-last md:flex-col")
+                ]
+                [ View.LanguageToggle.viewCard
+                    { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
+                    , selectedLanguages = shared.languages
+                    }
+                , viewTagsCard
+                    { tags = model.queryTags
+                    , postsShown = postsShown
+                    , allPosts = app.sharedData.posts
+                    , showAllTags = model.showAllRelatedTags
+                    , showingPosts = showPosts
+                    }
+                ]
 
         withRssFeedLinkMaybe : PageBody Msg -> PageBody Msg
         withRssFeedLinkMaybe pageBody =
@@ -301,7 +312,7 @@ viewTitleTag { queryTags } tag =
         ]
 
 
-viewTagsColumn :
+viewTagsCard :
     { tags : List Tag
     , showAllTags : Bool
     , postsShown : List PostGist
@@ -309,7 +320,7 @@ viewTagsColumn :
     , showingPosts : Bool
     }
     -> Html Msg
-viewTagsColumn { tags, showAllTags, postsShown, allPosts, showingPosts } =
+viewTagsCard { tags, showAllTags, postsShown, allPosts, showingPosts } =
     let
         subTags : List Tag
         subTags =
@@ -326,13 +337,9 @@ viewTagsColumn { tags, showAllTags, postsShown, allPosts, showingPosts } =
                 , posts = allPosts
                 }
                 subTags
-    in
-    Html.ul
-        [ class "flex min-w-0 max-w-full flex-row flex-wrap content-start gap-x-2 text-sm leading-relaxed"
-        , attributeIf showingPosts (class "md:order-last md:flex-col")
-        ]
-        (List.concat
-            [ relatedTagEls
+
+        tagViews =
+            relatedTagEls
                 |> List.indexedMap
                     (\index el ->
                         Html.li
@@ -342,26 +349,36 @@ viewTagsColumn { tags, showAllTags, postsShown, allPosts, showingPosts } =
                             ]
                             [ el ]
                     )
-            , [ viewIf showingPosts
-                    (Html.button
-                        [ onClick (ShowAllRelatedTagsStatusChanged (not showAllTags))
-                        , class "button bg-layout-20 gap-1 px-1 py-0.5 text-xs"
-                        , attributeIf showingPosts (class "md:hidden")
-                        ]
-                        (if showAllTags then
-                            [ Icon.foldLeft Icon.Small
-                            , Html.text "Hide tags"
-                            ]
 
-                         else
-                            [ Icon.foldRight Icon.Small
-                            , Html.text "More tags"
-                            ]
-                        )
+        showHideTagsButton =
+            viewIf showingPosts
+                (Html.button
+                    [ onClick (ShowAllRelatedTagsStatusChanged (not showAllTags))
+                    , class "button bg-layout-20 gap-1 px-1 py-0.5 text-xs"
+                    , attributeIf showingPosts (class "md:hidden")
+                    ]
+                    (if showAllTags then
+                        [ Icon.foldLeft Icon.Small
+                        , Html.text "Hide tags"
+                        ]
+
+                     else
+                        [ Icon.foldRight Icon.Small
+                        , Html.text "More tags"
+                        ]
                     )
-              ]
-            ]
-        )
+                )
+    in
+    View.Card.view
+        { title = Just (Html.text "More tags")
+        , class = ifElse showingPosts (Just "md:flex-col") Nothing
+        , content =
+            Html.ul
+                [ class "flex flex-row flex-wrap content-start gap-x-2 text-sm leading-relaxed"
+                , attributeIf showingPosts (class "md:order-last md:flex-col")
+                ]
+                (List.concat [ tagViews, [ showHideTagsButton ] ])
+        }
 
 
 feedUrls : List Tag -> Maybe { rssUrl : String, atomUrl : String }
@@ -384,7 +401,6 @@ feedUrl feedName tag =
         |> String.replace "{tagSlug}" (Tag.getSlug tag)
 
 
-showPost : List Tag -> PostGist -> Bool
-showPost queryTags post =
-    queryTags
-        |> List.all (List.memberOf post.tags)
+shouldShowPost : List Tag -> PostGist -> Bool
+shouldShowPost queryTags post =
+    queryTags |> List.all (List.memberOf post.tags)

@@ -22,6 +22,9 @@ import Shared
 import Site
 import UrlPath exposing (UrlPath)
 import View exposing (View)
+import View.Card
+import View.ColumnsLayout
+import View.LanguageToggle
 import View.PageBody
 
 
@@ -178,15 +181,15 @@ view app shared model =
                 |> List.drop (List.length postsWithSummary)
                 |> List.map (\p -> { gist = p, summary = Nothing })
 
-        posts : List PostGistWithSummary
-        posts =
+        allPosts : List PostGistWithSummary
+        allPosts =
             postsWithSummary ++ restPosts
 
         -- Sanity check to make sure the two separate lists of posts
         -- with and without a summary have the same posts.
         postListsAreMatched : Bool
         postListsAreMatched =
-            List.zip posts app.sharedData.posts
+            List.zip allPosts app.sharedData.posts
                 |> List.all
                     (\( postWithSummary, postNoSummary ) ->
                         (postWithSummary.gist.dateTime == postNoSummary.dateTime)
@@ -207,55 +210,49 @@ view app shared model =
                 """
 
             else
-                Html.div
-                    [ class "grid gap-x-5 gap-y-8"
-                    , class "md:grid-cols-4"
-                    ]
-                    [ -- Categories and tags.
-                      Html.div
-                        [ class "grid gap-x-5 gap-y-8"
-                        , class "sm:grid-cols-[1fr_2fr]"
-                        , class "md:order-last md:flex md:flex-col md:gap-5"
-                        ]
-                        [ -- Categories.
-                          Html.div [ class "flex flex-col gap-4" ]
-                            [ Html.h2 [ class "text-layout-70 text-2xl" ]
-                                [ Html.text "Categories" ]
-                            , Category.viewList
+                View.ColumnsLayout.view2
+                    { main =
+                        Html.div [] [ Data.PostList.viewGists shared.languages allPosts ]
+                    , side =
+                        Html.div
+                            [ class "grid gap-2"
+                            , class "sm:grid-flow-col sm:grid-cols-[1fr_2fr]"
+                            , class "md:flex md:flex-col"
                             ]
+                            [ -- Languages.
+                              View.LanguageToggle.viewCard
+                                { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
+                                , selectedLanguages = shared.languages
+                                }
 
-                        -- Tags.
-                        , Html.div [ class "flex flex-col gap-4" ]
-                            [ Html.h2 [ class "text-layout-70 text-2xl" ]
-                                [ Html.a [ href "/tag" ]
-                                    [ Html.text "Tags" ]
-                                ]
-                            , Html.ul
-                                [ class "flex flex-row flex-wrap gap-x-2 text-sm leading-relaxed"
-                                , class "md:block"
-                                ]
-                                (List.concat
-                                    [ Tag.listViewShort 20 app.sharedData.posts Tag.all
-                                        |> List.map (\el -> Html.li [] [ el ])
-                                    , [ Html.li []
-                                            [ Html.a
-                                                [ href "/tag"
-                                                , class "text-layout-50"
-                                                ]
-                                                [ Html.text "all other tags…" ]
+                            -- Categories.
+                            , Category.viewCard
+
+                            -- Tags.
+                            , View.Card.view
+                                { title = Just (Html.a [ href "/tag" ] [ Html.text "Tags" ])
+                                , class = Just "sm:row-span-2"
+                                , content =
+                                    Html.ul
+                                        [ class "flex flex-row flex-wrap gap-x-2 text-sm leading-relaxed"
+                                        , class "md:block"
+                                        ]
+                                        (List.concat
+                                            [ Tag.listViewShort 20 app.sharedData.posts Tag.all
+                                                |> List.map (\el -> Html.li [] [ el ])
+                                            , [ Html.li []
+                                                    [ Html.a
+                                                        [ href "/tag"
+                                                        , class "text-layout-50"
+                                                        ]
+                                                        [ Html.text "all other tags…" ]
+                                                    ]
+                                              ]
                                             ]
-                                      ]
-                                    ]
-                                )
+                                        )
+                                }
                             ]
-                        ]
-
-                    -- Posts.
-                    , Html.div
-                        [ class "md:col-span-3" ]
-                        [ Data.PostList.viewGists posts
-                        ]
-                    ]
+                    }
     in
     { title = title
     , body =

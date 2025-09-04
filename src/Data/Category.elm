@@ -11,6 +11,7 @@ module Data.Category exposing
     , toCanonicalUrl
     , toLink
     , toUrl
+    , viewCard
     , viewList
     )
 
@@ -22,6 +23,7 @@ import Html.Attributes exposing (href)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
 import List.Extra as List
+import View.Card
 import View.List
 
 
@@ -89,6 +91,15 @@ viewList =
         |> List.map viewCategory
         |> View.List.fromItems
         |> View.List.view
+
+
+viewCard : Html msg
+viewCard =
+    View.Card.view
+        { title = Just (Html.text "Categories")
+        , class = Nothing
+        , content = viewList
+        }
 
 
 toLink : Category -> Html msg

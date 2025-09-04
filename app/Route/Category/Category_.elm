@@ -3,17 +3,21 @@ module Route.Category.Category_ exposing (ActionData, Data, Model, Msg, route)
 import BackendTask exposing (BackendTask)
 import Data.AtomFeed as AtomFeed
 import Data.Category as Category exposing (Category)
+import Data.Post as Post
 import Data.PostList
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html exposing (Html)
+import Html.Attributes exposing (class)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Site
 import UrlPath exposing (UrlPath)
 import View exposing (View)
+import View.ColumnsLayout
+import View.LanguageToggle
 import View.PageBody
 import View.Snippets
 
@@ -131,7 +135,7 @@ view app shared model =
 
         posts =
             app.sharedData.posts
-                |> List.filter (.categories >> List.member category)
+                |> List.filter (\post -> List.member category post.categories)
 
         { rssUrl, atomUrl } =
             feedUrls category
@@ -157,7 +161,22 @@ view app shared model =
                 )
 
         content =
-            Data.PostList.viewGists (posts |> List.map (\p -> { gist = p, summary = Nothing }))
+            View.ColumnsLayout.view2
+                { main =
+                    Data.PostList.viewGists shared.languages
+                        (posts |> List.map (\p -> { gist = p, summary = Nothing }))
+                , side = sideColumn
+                }
+
+        sideColumn : Html Msg
+        sideColumn =
+            Html.aside [ class "flex flex-col gap-2" ]
+                [ View.LanguageToggle.viewCard
+                    { onSelectionChange = \languages -> SharedMsg (Shared.ChangedLanguages languages)
+                    , selectedLanguages = shared.languages
+                    }
+                , Category.viewCard
+                ]
     in
     { title = title app
     , body =

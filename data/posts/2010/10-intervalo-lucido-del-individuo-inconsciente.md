@@ -10,7 +10,7 @@ tags:
   - intervalo-lucido-del-individuo-inconsciente
   - release
   - video-game
-language: eng
+language: [eng, spa]
 ---
 
 ![image](/files/2010/10-intervalo-lucido-del-individuo-inconsciente/therapyscreenwide.png "Intervalo... screenshot")

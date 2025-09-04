@@ -15,7 +15,7 @@ tags:
   - video
   - tracker
   - dream
-language: eng
+language: [eng, spa]
 ---
 
 <video-embed service="vimeo" id="6445520" width="500" height="375" />

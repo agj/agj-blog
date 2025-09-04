@@ -1,26 +1,16 @@
 import "@total-typescript/ts-reset";
-import { fields, type Infer, primitiveUnion } from "tiny-decoders";
+import {
+  array,
+  fields,
+  type Infer,
+  primitiveUnion,
+  string,
+} from "tiny-decoders";
 import { defineAudioPlayerCustomElement } from "./src-ts/custom-elements/audio-player.js";
 import { defineDropdownCustomElement } from "./src-ts/custom-elements/dropdown.js";
 
 defineAudioPlayerCustomElement();
 defineDropdownCustomElement();
-
-const setTheme = (theme: Theme) => {
-  document.body.classList.remove("dark-theme");
-  document.body.classList.remove("light-theme");
-  if (theme !== null && (["dark", "light"] as const).includes(theme)) {
-    document.body.classList.add(`${theme}-theme`);
-  }
-};
-
-const getDefaultTheme = (): Theme => {
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : window.matchMedia?.("(prefers-color-scheme: light)").matches
-      ? "light"
-      : null;
-};
 
 const config: ElmPagesInit = {
   flags: () => {
@@ -43,7 +33,6 @@ const config: ElmPagesInit = {
 
   load: async function (elmLoaded) {
     const app = await elmLoaded;
-    console.log("App loaded", app);
 
     // Subscribe to Elm messages.
 
@@ -75,11 +64,28 @@ const config: ElmPagesInit = {
   },
 };
 
+const setTheme = (theme: Theme) => {
+  document.body.classList.remove("dark-theme");
+  document.body.classList.remove("light-theme");
+  if (theme !== null && (["dark", "light"] as const).includes(theme)) {
+    document.body.classList.add(`${theme}-theme`);
+  }
+};
+
+const getDefaultTheme = (): Theme => {
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : window.matchMedia?.("(prefers-color-scheme: light)").matches
+      ? "light"
+      : null;
+};
+
 // Decoders.
 
 const themeDecoder = primitiveUnion(["dark", "light", null]);
 
 const configDecoder = fields({
+  languages: array(string),
   theme: themeDecoder,
 });
 
