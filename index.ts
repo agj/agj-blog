@@ -26,8 +26,6 @@ const config: ElmPagesInit = {
       default: getDefaultTheme(),
     };
 
-    console.log({ config });
-
     setTheme(theme.set);
 
     return { ...config, theme };
