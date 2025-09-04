@@ -9,12 +9,20 @@ type Language
     = English
     | Spanish
     | Japanese
-    | Mandarin
+
+
+
+-- | Mandarin
 
 
 all : List Language
 all =
-    [ English, Spanish, Japanese, Mandarin ]
+    [ English
+    , Spanish
+    , Japanese
+
+    -- , Mandarin
+    ]
 
 
 decoder : Decoder Language
@@ -42,8 +50,8 @@ encode language =
                 Japanese ->
                     "jpn"
 
-                Mandarin ->
-                    "cmn"
+        -- Mandarin ->
+        --     "cmn"
     in
     Encode.string string
 
@@ -65,9 +73,8 @@ fromString str =
         "jpn" ->
             Ok Japanese
 
-        "cmn" ->
-            Ok Mandarin
-
+        -- "cmn" ->
+        --     Ok Mandarin
         _ ->
             Err ("Unknown language: " ++ str ++ ".")
 
@@ -84,5 +91,7 @@ toShortString language =
         Japanese ->
             "日"
 
-        Mandarin ->
-            "中"
+
+
+-- Mandarin ->
+--     "中"
