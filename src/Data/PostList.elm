@@ -1,5 +1,6 @@
 module Data.PostList exposing (PostGistWithSummary, viewGists)
 
+import Custom.Html as Html
 import Custom.Int as Int
 import Custom.List as List
 import Data.Category as Category
@@ -41,25 +42,22 @@ viewGists selectedLanguages posts =
 
         hiddenPostsMessage =
             if hiddenPostsCount > 0 then
-                [ Html.p [ class "text-layout-50 italic" ]
+                Html.p [ class "text-layout-50 italic text-center" ]
                     [ Html.text
                         (if hiddenPostsCount == 1 then
-                            "(1 post in another language remains hidden.)"
+                            "(1 other post in another language is not shown.)"
 
                          else
-                            "({count} posts in other languages remain hidden.)"
+                            "({count} other posts in other languages are not shown.)"
                                 |> String.replace "{count}" (String.fromInt hiddenPostsCount)
                         )
                     ]
-                ]
 
             else
-                []
+                Html.none
     in
     Html.div [ class "flex flex-col gap-8" ]
-        (List.map viewPostYear postsByYearAndMonth
-            ++ hiddenPostsMessage
-        )
+        (hiddenPostsMessage :: List.map viewPostYear postsByYearAndMonth)
 
 
 
