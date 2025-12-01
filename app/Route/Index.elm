@@ -212,7 +212,13 @@ view app shared model =
             else
                 View.ColumnsLayout.view2
                     { main =
-                        Html.div [] [ Data.PostList.viewGists shared.languages allPosts ]
+                        Html.div []
+                            [ Data.PostList.viewGists
+                                { selectedLanguages = shared.languages
+                                , onLanguageSelectionChange = \newLanguages -> SharedMsg (Shared.ChangedLanguages newLanguages)
+                                }
+                                allPosts
+                            ]
                     , side =
                         Html.div
                             [ class "grid gap-2"

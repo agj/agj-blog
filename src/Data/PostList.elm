@@ -10,6 +10,7 @@ import Data.Post as Post exposing (PostGist)
 import Date
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
+import Html.Events as Events
 import Html.Extra
 import List.NonEmpty
 
@@ -18,12 +19,17 @@ type alias PostGistWithSummary =
     { gist : PostGist, summary : Maybe String }
 
 
-viewGists : List Language -> List PostGistWithSummary -> Html msg
-viewGists selectedLanguages posts =
+viewGists :
+    { onLanguageSelectionChange : List Language -> msg
+    , selectedLanguages : List Language
+    }
+    -> List PostGistWithSummary
+    -> Html msg
+viewGists config posts =
     let
         filteredPosts =
             posts
-                |> List.filter (.gist >> Post.matchesLanguage selectedLanguages)
+                |> List.filter (.gist >> Post.matchesLanguage config.selectedLanguages)
 
         postsByYearAndMonth : List ( Int, List ( Int, List PostGistWithSummary ) )
         postsByYearAndMonth =
@@ -45,12 +51,17 @@ viewGists selectedLanguages posts =
                 Html.p [ class "text-layout-50 italic text-center" ]
                     [ Html.text
                         (if hiddenPostsCount == 1 then
-                            "(1 other post in another language is not shown.)"
+                            "(1 other post in another language is not shown.) "
 
                          else
-                            "({count} other posts in other languages are not shown.)"
+                            "({count} other posts in other languages are not shown.) "
                                 |> String.replace "{count}" (String.fromInt hiddenPostsCount)
                         )
+                    , Html.button
+                        [ class "button inline-flex px-2 bg-layout-20"
+                        , Events.onClick (config.onLanguageSelectionChange [])
+                        ]
+                        [ Html.text "Remove filter" ]
                     ]
 
             else

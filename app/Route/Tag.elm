@@ -212,7 +212,10 @@ view app shared model =
             if showPosts then
                 View.ColumnsLayout.view2
                     { main =
-                        Data.PostList.viewGists shared.languages
+                        Data.PostList.viewGists
+                            { selectedLanguages = shared.languages
+                            , onLanguageSelectionChange = \newLanguages -> SharedMsg (Shared.ChangedLanguages newLanguages)
+                            }
                             (postsShown |> List.map (\p -> { gist = p, summary = Nothing }))
                     , side = sideColumn
                     }
