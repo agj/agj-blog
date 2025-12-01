@@ -48,7 +48,7 @@ viewGists config posts =
 
         hiddenPostsMessage =
             if hiddenPostsCount > 0 then
-                Html.p [ class "text-layout-50 italic text-center" ]
+                Html.p [ class "text-layout-50 mt-3 text-center italic" ]
                     [ Html.text
                         (if hiddenPostsCount == 1 then
                             "(1 other post in another language is not shown.) "
@@ -58,7 +58,7 @@ viewGists config posts =
                                 |> String.replace "{count}" (String.fromInt hiddenPostsCount)
                         )
                     , Html.button
-                        [ class "button inline-flex px-2 bg-layout-20"
+                        [ class "button bg-layout-20 inline-flex px-2"
                         , Events.onClick (config.onLanguageSelectionChange [])
                         ]
                         [ Html.text "Remove filter" ]
