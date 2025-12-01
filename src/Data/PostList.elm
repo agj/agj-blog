@@ -1,6 +1,5 @@
 module Data.PostList exposing (PostGistWithSummary, viewGists)
 
-import Custom.Bool exposing (ifElse)
 import Custom.Int as Int
 import Custom.List as List
 import Data.Category as Category
@@ -42,7 +41,7 @@ viewGists selectedLanguages posts =
 
         hiddenPostsMessage =
             if hiddenPostsCount > 0 then
-                [ Html.p [ class "italic text-layout-50" ]
+                [ Html.p [ class "text-layout-50 italic" ]
                     [ Html.text
                         (if hiddenPostsCount == 1 then
                             "(1 post in another language remains hidden.)"

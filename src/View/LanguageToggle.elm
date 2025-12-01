@@ -1,4 +1,4 @@
-module View.LanguageToggle exposing (viewButton, viewCard)
+module View.LanguageToggle exposing (viewCard)
 
 import Custom.Html.Attributes exposing (ariaPressed)
 import Data.Language as Language exposing (Language)
