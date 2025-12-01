@@ -10,7 +10,11 @@ only the first bit and elliding the rest.
 getSummary : String -> String
 getSummary markdown =
     markdown
-        |> Doc.FromMarkdown.parse { audioPlayer = Nothing }
+        |> Doc.FromMarkdown.parse
+            { audioPlayer =
+                -- This is just to avoid parsing errors in custom tags.
+                Just { onAudioPlayerStateUpdated = \_ -> () }
+            }
         |> Doc.ToPlainText.view
         |> String.lines
         |> List.filter ((/=) "")
