@@ -107,7 +107,7 @@ data =
 
 
 type Msg
-    = SelectedChangeTheme
+    = SelectedChangeTheme (Maybe Theme.ThemeColor)
     | ChangedLanguages (List Language)
     | RequestedMastodonStatus String
     | GotMastodonStatus String (Result Http.Error MastodonStatus)
@@ -125,10 +125,10 @@ type alias Model =
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
-        SelectedChangeTheme ->
+        SelectedChangeTheme newColor ->
             let
                 newTheme =
-                    Theme.change model.theme
+                    Theme.change newColor model.theme
             in
             ( { model | theme = newTheme }
             , Effect.batch

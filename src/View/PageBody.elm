@@ -12,7 +12,7 @@ module View.PageBody exposing
 import Custom.Html
 import Custom.Html.Attributes exposing (ariaDescribedBy, roleTooltip, tabIndex)
 import Html exposing (Html)
-import Html.Attributes exposing (class, href, id)
+import Html.Attributes exposing (class, classList, href, id)
 import Html.Events
 import Html.Extra
 import Icon
@@ -27,7 +27,7 @@ type PageBody msg
         , footer : Maybe (Html msg)
         , theme : Theme
         , feeds : Feeds msg
-        , onRequestedChangeTheme : msg
+        , onRequestedChangeTheme : Maybe Theme.ThemeColor -> msg
         }
 
 
@@ -45,7 +45,7 @@ type Feeds msg
 
 fromContent :
     { theme : Theme
-    , onRequestedChangeTheme : msg
+    , onRequestedChangeTheme : Maybe Theme.ThemeColor -> msg
     }
     -> Html msg
     -> PageBody msg
@@ -140,7 +140,7 @@ pageMaxWidth =
 viewHeader :
     { a
         | theme : Theme
-        , onRequestedChangeTheme : msg
+        , onRequestedChangeTheme : Maybe Theme.ThemeColor -> msg
         , feeds : Feeds msg
     }
     -> Maybe (Html msg)
@@ -152,8 +152,7 @@ viewHeader config title =
                 [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
                     [ Html.div [ class "flex w-full flex-row items-center justify-end gap-4 px-4 pt-2 text-sm", class pageMaxWidth ]
                         [ viewFeedLinks config.feeds
-                        , changeThemeButtonView config
-                        , viewMenu
+                        , viewMenu config
                         ]
                     , Html.div [ class "w-full flex-grow px-4 pb-2", class pageMaxWidth ]
                         [ title_ ]
@@ -168,24 +167,16 @@ viewFeedLinks : Feeds msg -> Html msg
 viewFeedLinks feed =
     case feed of
         FeedUrls { rssFeedUrl, atomFeedUrl } ->
-            let
-                feedsListId =
-                    "feeds-list"
-            in
-            Html.div []
-                [ Html.button
-                    [ class "button gap-1 px-1 py-0.5"
-                    , Custom.Html.Attributes.popoverTarget feedsListId
-                    ]
-                    [ Icon.rss Icon.Medium
-                    , Html.text "Feeds"
-                    ]
-                , Html.node "custom-dropdown"
-                    [ Html.Attributes.id feedsListId
-                    , Custom.Html.Attributes.popoverAuto
-                    , class "card"
-                    ]
-                    [ Html.ul [ class "flex flex-col gap-2" ]
+            viewDropdown
+                { id = "feeds-list"
+                , trigger =
+                    \attributes ->
+                        Html.button (class "button gap-1 px-1 py-0.5" :: attributes)
+                            [ Icon.rss Icon.Medium
+                            , Html.text "Feeds"
+                            ]
+                , menu =
+                    Html.ul [ class "flex flex-col gap-2" ]
                         [ Html.li []
                             [ Html.a [ href atomFeedUrl ]
                                 [ Html.text "Atom feed" ]
@@ -195,8 +186,7 @@ viewFeedLinks feed =
                                 [ Html.text "RSS feed" ]
                             ]
                         ]
-                    ]
-                ]
+                }
 
         NoFeedsWithExplanation explanation ->
             let
@@ -225,25 +215,21 @@ viewFeedLinks feed =
             Custom.Html.none
 
 
-viewMenu : Html msg
-viewMenu =
-    let
-        menuId =
-            "menu"
-    in
-    Html.div []
-        [ Html.button
-            [ class "button gap-1 px-1 py-0.5"
-            , Custom.Html.Attributes.popoverTarget menuId
-            ]
-            [ Icon.list Icon.Medium
-            ]
-        , Html.node "custom-dropdown"
-            [ Html.Attributes.id menuId
-            , Custom.Html.Attributes.popoverAuto
-            , class "card"
-            ]
-            [ Html.ul [ class "flex flex-col gap-2" ]
+viewMenu :
+    { a
+        | theme : Theme
+        , onRequestedChangeTheme : Maybe Theme.ThemeColor -> msg
+    }
+    -> Html msg
+viewMenu config =
+    viewDropdown
+        { id = "menu"
+        , trigger =
+            \attributes ->
+                Html.button (class "button size-6 gap-1 px-1 py-0.5" :: attributes)
+                    [ Icon.list Icon.Medium ]
+        , menu =
+            Html.ul [ class "flex flex-col gap-2" ]
                 [ Html.li []
                     [ Html.a [ href "/about" ]
                         [ Html.text "About" ]
@@ -252,35 +238,53 @@ viewMenu =
                     [ Html.a [ href "/colophon" ]
                         [ Html.text "Colophon" ]
                     ]
+                , viewMenuSeparator
+                , Html.li []
+                    (Html.text "Theme" :: viewChangeThemeButtons config)
                 ]
-            ]
-        ]
+        }
 
 
-changeThemeButtonView :
-    { a
-        | theme : Theme
-        , onRequestedChangeTheme : msg
+viewDropdown :
+    { trigger : List (Html.Attribute msg) -> Html msg
+    , id : String
+    , menu : Html msg
     }
     -> Html msg
-changeThemeButtonView config =
-    let
-        nextTheme =
-            Theme.change config.theme
-    in
+viewDropdown { trigger, id, menu } =
+    Html.div []
+        [ trigger [ Custom.Html.Attributes.popoverTarget id ]
+        , Html.node "custom-dropdown"
+            [ Html.Attributes.id id
+            , Custom.Html.Attributes.popoverAuto
+            , class "card text-layout-90"
+            ]
+            [ menu ]
+        ]
+
+
+viewMenuSeparator : Html msg
+viewMenuSeparator =
+    Html.hr [ class "bg-layout-30 my-2 h-px border-0" ] []
+
+
+viewChangeThemeButtons :
+    { a
+        | theme : Theme
+        , onRequestedChangeTheme : Maybe Theme.ThemeColor -> msg
+    }
+    -> List (Html msg)
+viewChangeThemeButtons config =
+    [ viewChangeThemeButton (config.theme.set == Just Theme.Light) (config.onRequestedChangeTheme (Just Theme.Light)) Icon.sun
+    , viewChangeThemeButton (config.theme.set == Just Theme.Dark) (config.onRequestedChangeTheme (Just Theme.Dark)) Icon.moon
+    ]
+
+
+viewChangeThemeButton : Bool -> msg -> (Icon.Size -> Html msg) -> Html msg
+viewChangeThemeButton isSelected onClick icon =
     Html.button
         [ class "button size-6"
-        , Html.Events.onClick config.onRequestedChangeTheme
+        , classList [ ( "border-2", isSelected ) ]
+        , Html.Events.onClick onClick
         ]
-        [ (case ( nextTheme.set, nextTheme.default ) of
-            ( Just Theme.Dark, _ ) ->
-                Icon.moon
-
-            ( Just Theme.Light, _ ) ->
-                Icon.sun
-
-            ( Nothing, _ ) ->
-                Icon.minus
-          )
-            Icon.Small
-        ]
+        [ icon Icon.Small ]

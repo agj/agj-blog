@@ -23,34 +23,9 @@ default =
     }
 
 
-change : Theme -> Theme
-change theme =
-    let
-        newSetTheme : Maybe ThemeColor
-        newSetTheme =
-            case ( theme.set, theme.default ) of
-                -- Setting to opposite of default.
-                ( Nothing, Light ) ->
-                    Just Dark
-
-                ( Nothing, Dark ) ->
-                    Just Light
-
-                -- Setting to forced default.
-                ( Just Light, Dark ) ->
-                    Just Dark
-
-                ( Just Dark, Light ) ->
-                    Just Light
-
-                -- Unsetting.
-                ( Just Light, Light ) ->
-                    Nothing
-
-                ( Just Dark, Dark ) ->
-                    Nothing
-    in
-    { theme | set = newSetTheme }
+change : Maybe ThemeColor -> Theme -> Theme
+change color theme =
+    { theme | set = color }
 
 
 updateDefault : ThemeColor -> Theme -> Theme
