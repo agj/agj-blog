@@ -19,7 +19,7 @@ The biggest design challenge was making the app casually usable, since such a ut
 
 Technically challenging was figuring out a way to display the tiles in correct perspective according to the (flat) photos. Turned out that the easiest was using the same geometric technique that visual artists use, involving two vanishing points plus the horizon line for a flat surface, together with algorithms for finding segment intersections. I've obviously little idea of 3D coding, so this was all new to me, but I got good results! I also experimented with two interesting programming patterns that were new for me, [reactive programming](http://en.wikipedia.org/wiki/Reactive_programming) and [promises,](http://domenic.me/2012/10/14/youre-missing-the-point-of-promises/) the combination of which made it easier working with the asynchronous loading of images and other data.
 
-Although I am rather happy with my work on the interaction design end, the result does sadly have many shortcomings...<!-- more -->
+Although I am rather happy with my work on the interaction design end, the result does sadly have many shortcomings…<!-- more -->
 
 <language-break />
 
@@ -29,4 +29,4 @@ Un reto en el diseño fue lograr que la aplicación sea utilizable en forma casu
 
 En el aspecto técnico, fue complicado encontrar la manera de mostrar las baldosas en correcta perspectiva de acuerdo a las fotos (que son planas). Lo que finalmente resultó más fácil fue emplear la misma técnica geométrica que aplican los artistas visuales, que usa dos puntos de fuga y la línea del horizonte, junto con algoritmos para encontrar puntos de intersección entre segmentos. Obviamente no conozco mucho de programación para 3D, así que esto fue terreno nuevo para mí, pero los resultados son buenos. También experimenté con dos nuevos (para mí) patrones de programación, [programación reactiva](http://en.wikipedia.org/wiki/Reactive_programming) y [promesas](http://domenic.me/2012/10/14/youre-missing-the-point-of-promises/), la combinación de los cuales me hizo más fácil lidiar con la carga asincrónica de imágenes y otros datos, por ejemplo.
 
-Aunque me satisface bastante el trabajo que hice con el diseño interactivo de esta aplicación, el resultado sí tiene varios puntos débiles...
+Aunque me satisface bastante el trabajo que hice con el diseño interactivo de esta aplicación, el resultado sí tiene varios puntos débiles…

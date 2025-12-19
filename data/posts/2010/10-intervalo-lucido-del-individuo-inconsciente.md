@@ -13,11 +13,11 @@ tags:
 language: [eng, spa]
 ---
 
-![image](/files/2010/10-intervalo-lucido-del-individuo-inconsciente/therapyscreenwide.png "Intervalo... screenshot")
+![image](/files/2010/10-intervalo-lucido-del-individuo-inconsciente/therapyscreenwide.png "Intervalo… screenshot")
 
 Another arbitrary span of time, another game. I can't really explain much about this one.
 
-[**Play _Intervalo..._**](//www.agj.cl/files/games/intervalo/) (Flash)
+[**Play _Intervalo…_**](//www.agj.cl/files/games/intervalo/) (Flash)
 
 <language-break />
 

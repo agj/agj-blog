@@ -26,6 +26,6 @@ This was my first foray into several HTML5 APIs: the canvas element, touch event
 
 Although I've worked on this toy for this relatively short period of time, the truth is that it has its origins in a much earlier Flash toy I made for my sister. It had different modes, though; 'star' mode remains largely the same, but the rest are different. There was a form of 'chain' mode there, although it didn't link up the strokes following their orientation, so it was much less interesting to look at (current implementation I stole from a concept by [zaphos](https://sites.google.com/site/zaphos/)). The one other mode just repeated what you drew around the screen, rotated randomly.
 
-The code for that I later used as basis for [_Intervalo..._](//www.agj.cl/games/#game:intervalo), for which I created different ways to expand on what you drew. I took ideas in that for this, as well.
+The code for that I later used as basis for [_Intervalo…_](//www.agj.cl/games/#game:intervalo), for which I created different ways to expand on what you drew. I took ideas in that for this, as well.
 
 There were some things I couldn't achieve using canvas that I'd managed with Flash —dealing with color blendings and pixel-level operations with any speed,— but I'm still happy with how this turned out. Hope you enjoy it.

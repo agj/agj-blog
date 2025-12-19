@@ -24,4 +24,4 @@ Although I have functional Japanese, enough to survive in most situations I'm co
 
 **[See _Buranko_](//www.agj.cl/files/interactive/buranko/)** (web; [source](https://github.com/agj/buranko))
 
-Actually, after considering the poem's title a bit as well, it just occurred to me that it might just be about [impostor syndrome](https://en.wikipedia.org/wiki/Impostor_syndrome)...
+Actually, after considering the poem's title a bit as well, it just occurred to me that it might just be about [impostor syndrome](https://en.wikipedia.org/wiki/Impostor_syndrome)…

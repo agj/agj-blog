@@ -27,7 +27,7 @@ The yearly schedule in the New Media program I attended revolves around two publ
 
 <video-embed service="youtube" id="3FnBO_Y6FlI" width="500" height="281" />
 
-The first exhibition for our generation was in fact yet another one. During the first term we do intensive work with each of the professors for a few weeks each, and during the first of those, Fujihata Masaki's, we were tasked for the last week to make an exhibition. This involved making the works to display as well, all during a single week, and with it being our first experience, let's just say it was quite hectic. This exhibit we called _Media Taiso Dai-Ichi_ (playing on Japanese radio calisthenics, "radio taiso".) We had two assignments to cover: "projecting over something other than a screen", and a movement sensor-triggered video. Below is the first of these, as prepared by my team. It's really just a projector fit into a trashcan...
+The first exhibition for our generation was in fact yet another one. During the first term we do intensive work with each of the professors for a few weeks each, and during the first of those, Fujihata Masaki's, we were tasked for the last week to make an exhibition. This involved making the works to display as well, all during a single week, and with it being our first experience, let's just say it was quite hectic. This exhibit we called _Media Taiso Dai-Ichi_ (playing on Japanese radio calisthenics, "radio taiso".) We had two assignments to cover: "projecting over something other than a screen", and a movement sensor-triggered video. Below is the first of these, as prepared by my team. It's really just a projector fit into a trashcan…
 
 <video-embed service="vimeo" id="133152140" width="500" height="281" />
 
