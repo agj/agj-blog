@@ -175,7 +175,7 @@ viewFeedLinks feed =
                             [ Icon.rss Icon.Medium
                             , Html.text "Feeds"
                             ]
-                , menu =
+                , content =
                     Html.ul [ class "flex flex-col gap-2" ]
                         [ Html.li []
                             [ Html.a [ href atomFeedUrl ]
@@ -228,7 +228,7 @@ viewMenu config =
             \attributes ->
                 Html.button (class "button size-6 gap-1 px-1 py-0.5" :: attributes)
                     [ Icon.list Icon.Medium ]
-        , menu =
+        , content =
             Html.ul [ class "flex flex-col gap-2" ]
                 [ Html.li []
                     [ Html.a [ href "/about" ]
@@ -239,27 +239,30 @@ viewMenu config =
                         [ Html.text "Colophon" ]
                     ]
                 , viewMenuSeparator
-                , Html.li []
-                    (Html.text "Theme" :: viewChangeThemeButtons config)
+                , Html.li [ class "flex flex-row items-center gap-2" ]
+                    [ Html.text "Theme"
+                    , Html.div [ class "flex flex-row gap-1" ]
+                        (viewChangeThemeButtons config)
+                    ]
                 ]
         }
 
 
 viewDropdown :
-    { trigger : List (Html.Attribute msg) -> Html msg
-    , id : String
-    , menu : Html msg
+    { id : String
+    , trigger : List (Html.Attribute msg) -> Html msg
+    , content : Html msg
     }
     -> Html msg
-viewDropdown { trigger, id, menu } =
+viewDropdown { id, trigger, content } =
     Html.div []
         [ trigger [ Custom.Html.Attributes.popoverTarget id ]
         , Html.node "custom-dropdown"
             [ Html.Attributes.id id
             , Custom.Html.Attributes.popoverAuto
-            , class "card text-layout-90"
+            , class "card text-layout-60"
             ]
-            [ menu ]
+            [ content ]
         ]
 
 
@@ -275,8 +278,29 @@ viewChangeThemeButtons :
     }
     -> List (Html msg)
 viewChangeThemeButtons config =
-    [ viewChangeThemeButton (config.theme.set == Just Theme.Light) (config.onRequestedChangeTheme (Just Theme.Light)) Icon.sun
-    , viewChangeThemeButton (config.theme.set == Just Theme.Dark) (config.onRequestedChangeTheme (Just Theme.Dark)) Icon.moon
+    let
+        isLight =
+            config.theme.set == Just Theme.Light
+
+        isDark =
+            config.theme.set == Just Theme.Dark
+
+        newLight =
+            if isLight then
+                Nothing
+
+            else
+                Just Theme.Light
+
+        newDark =
+            if isDark then
+                Nothing
+
+            else
+                Just Theme.Dark
+    in
+    [ viewChangeThemeButton isLight (config.onRequestedChangeTheme newLight) Icon.sun
+    , viewChangeThemeButton isDark (config.onRequestedChangeTheme newDark) Icon.moon
     ]
 
 
