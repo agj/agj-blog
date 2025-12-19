@@ -143,6 +143,5 @@ view app shared model =
             }
             content
             |> View.PageBody.withTitleAndSubtitle titleEl subtitle
-            |> View.PageBody.withoutAboutLink
             |> View.PageBody.view
     }

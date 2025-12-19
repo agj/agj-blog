@@ -7,7 +7,6 @@ module View.PageBody exposing
     , withFooter
     , withTitle
     , withTitleAndSubtitle
-    , withoutAboutLink
     )
 
 import Custom.Html
@@ -28,7 +27,6 @@ type PageBody msg
         , footer : Maybe (Html msg)
         , theme : Theme
         , feeds : Feeds msg
-        , showAboutLink : Bool
         , onRequestedChangeTheme : msg
         }
 
@@ -59,7 +57,6 @@ fromContent config content =
         , theme = config.theme
         , onRequestedChangeTheme = config.onRequestedChangeTheme
         , feeds = NoFeeds
-        , showAboutLink = True
         }
 
 
@@ -83,17 +80,9 @@ withFeeds feeds (PageBody config) =
     PageBody { config | feeds = feeds }
 
 
-withoutAboutLink : PageBody msg -> PageBody msg
-withoutAboutLink (PageBody config) =
-    PageBody { config | showAboutLink = False }
-
-
 view : PageBody msg -> Html (PagesMsg msg)
 view (PageBody config) =
     let
-        pageMaxWidth =
-            "max-w-[40rem]"
-
         titleEl : List (Html msg) -> Html msg
         titleEl text =
             Html.h1 [ class "text-layout-90 w-full text-4xl font-light leading-[1.1]" ]
@@ -117,34 +106,6 @@ view (PageBody config) =
                         ]
                         |> Just
 
-        aboutLink : Html msg
-        aboutLink =
-            if config.showAboutLink then
-                Html.a [ href "/about" ]
-                    [ Html.text "About" ]
-
-            else
-                Custom.Html.none
-
-        header : Html msg
-        header =
-            case title of
-                Just title_ ->
-                    Html.div [ class "w-full p-2 pb-0" ]
-                        [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
-                            [ Html.div [ class "flex w-full flex-row items-center justify-end gap-4 px-4 pt-2 text-sm", class pageMaxWidth ]
-                                [ aboutLink
-                                , viewFeedLinks config.feeds
-                                , changeThemeButtonView config
-                                ]
-                            , Html.div [ class "w-full flex-grow px-4 pb-2", class pageMaxWidth ]
-                                [ title_ ]
-                            ]
-                        ]
-
-                Nothing ->
-                    Html.Extra.nothing
-
         content : Html msg
         content =
             Html.main_ [ class "w-full px-6 pt-10 sm:pt-16", class pageMaxWidth ]
@@ -164,11 +125,43 @@ view (PageBody config) =
                     Html.Extra.nothing
     in
     Html.div [ class "text-layout-90 flex w-full flex-col items-center pb-32" ]
-        [ header
+        [ viewHeader config title
         , content
         , footer
         ]
         |> Html.map PagesMsg.fromMsg
+
+
+pageMaxWidth : String
+pageMaxWidth =
+    "max-w-[40rem]"
+
+
+viewHeader :
+    { a
+        | theme : Theme
+        , onRequestedChangeTheme : msg
+        , feeds : Feeds msg
+    }
+    -> Maybe (Html msg)
+    -> Html msg
+viewHeader config title =
+    case title of
+        Just title_ ->
+            Html.div [ class "w-full p-2 pb-0" ]
+                [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
+                    [ Html.div [ class "flex w-full flex-row items-center justify-end gap-4 px-4 pt-2 text-sm", class pageMaxWidth ]
+                        [ viewFeedLinks config.feeds
+                        , changeThemeButtonView config
+                        , viewMenu
+                        ]
+                    , Html.div [ class "w-full flex-grow px-4 pb-2", class pageMaxWidth ]
+                        [ title_ ]
+                    ]
+                ]
+
+        Nothing ->
+            Html.Extra.nothing
 
 
 viewFeedLinks : Feeds msg -> Html msg
@@ -230,6 +223,38 @@ viewFeedLinks feed =
 
         NoFeeds ->
             Custom.Html.none
+
+
+viewMenu : Html msg
+viewMenu =
+    let
+        menuId =
+            "menu"
+    in
+    Html.div []
+        [ Html.button
+            [ class "button gap-1 px-1 py-0.5"
+            , Custom.Html.Attributes.popoverTarget menuId
+            ]
+            [ Icon.list Icon.Medium
+            ]
+        , Html.node "custom-dropdown"
+            [ Html.Attributes.id menuId
+            , Custom.Html.Attributes.popoverAuto
+            , class "card"
+            ]
+            [ Html.ul [ class "flex flex-col gap-2" ]
+                [ Html.li []
+                    [ Html.a [ href "/about" ]
+                        [ Html.text "About" ]
+                    ]
+                , Html.li []
+                    [ Html.a [ href "/colophon" ]
+                        [ Html.text "Colophon" ]
+                    ]
+                ]
+            ]
+        ]
 
 
 changeThemeButtonView :

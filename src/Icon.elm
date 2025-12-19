@@ -6,6 +6,7 @@ module Icon exposing
     , foldRight
     , heart
     , info
+    , list
     , mastodonLogo
     , minus
     , moon
@@ -76,6 +77,11 @@ xMark =
 info : Icon msg
 info =
     icon icons.info
+
+
+list : Icon msg
+list =
+    icon icons.list
 
 
 rss : Icon msg
@@ -160,19 +166,20 @@ sizeToRemsNoUnit size =
 
 
 icons =
-    { play = { icon = Phosphor.play, md = Phosphor.Fill, sm = Phosphor.Fill }
-    , pause = { icon = Phosphor.pause, md = Phosphor.Fill, sm = Phosphor.Fill }
-    , stop = { icon = Phosphor.stop, md = Phosphor.Fill, sm = Phosphor.Fill }
-    , moon = { icon = Phosphor.moon, md = Phosphor.Fill, sm = Phosphor.Fill }
-    , sun = { icon = Phosphor.sun, md = Phosphor.Fill, sm = Phosphor.Fill }
-    , minus = { icon = Phosphor.minus, md = Phosphor.Bold, sm = Phosphor.Bold }
-    , plus = { icon = Phosphor.plus, md = Phosphor.Bold, sm = Phosphor.Bold }
-    , xMark = { icon = Phosphor.x, md = Phosphor.Bold, sm = Phosphor.Bold }
-    , info = { icon = Phosphor.info, md = Phosphor.Bold, sm = Phosphor.Bold }
-    , rss = { icon = Phosphor.rss, md = Phosphor.Bold, sm = Phosphor.Bold }
+    { devToLogo = { icon = Phosphor.devToLogo, md = Phosphor.Fill, sm = Phosphor.Fill }
     , foldLeft = { icon = Phosphor.caretLeft, md = Phosphor.Bold, sm = Phosphor.Bold }
     , foldRight = { icon = Phosphor.caretRight, md = Phosphor.Bold, sm = Phosphor.Bold }
     , heart = { icon = Phosphor.heart, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , info = { icon = Phosphor.info, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , list = { icon = Phosphor.list, md = Phosphor.Bold, sm = Phosphor.Bold }
     , mastodonLogo = { icon = Phosphor.mastodonLogo, md = Phosphor.Fill, sm = Phosphor.Fill }
-    , devToLogo = { icon = Phosphor.devToLogo, md = Phosphor.Fill, sm = Phosphor.Fill }
+    , minus = { icon = Phosphor.minus, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , moon = { icon = Phosphor.moon, md = Phosphor.Fill, sm = Phosphor.Fill }
+    , pause = { icon = Phosphor.pause, md = Phosphor.Fill, sm = Phosphor.Fill }
+    , play = { icon = Phosphor.play, md = Phosphor.Fill, sm = Phosphor.Fill }
+    , plus = { icon = Phosphor.plus, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , rss = { icon = Phosphor.rss, md = Phosphor.Bold, sm = Phosphor.Bold }
+    , stop = { icon = Phosphor.stop, md = Phosphor.Fill, sm = Phosphor.Fill }
+    , sun = { icon = Phosphor.sun, md = Phosphor.Fill, sm = Phosphor.Fill }
+    , xMark = { icon = Phosphor.x, md = Phosphor.Bold, sm = Phosphor.Bold }
     }
