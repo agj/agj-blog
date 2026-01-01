@@ -8,7 +8,6 @@ module View.VideoEmbed exposing
 import Html exposing (Html)
 import Html.Attributes exposing (class)
 import Markdown.Html
-import String
 import View.Figure
 
 
