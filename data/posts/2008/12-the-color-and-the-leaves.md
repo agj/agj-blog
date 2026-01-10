@@ -15,7 +15,7 @@ language: eng
 
 In six days, spaced over three weekends, three guys online, recording songs collaboratively, grabbing what the other made and putting some guitar on top, or some stream-of-consciousness vocals, or some crazy radio static. That was the dynamic that resulted in the creation of _Tree_, a full-length (well, 30 minutes long) digital release by The Color and the Leaves project!
 
-What we lack in technical skills we make up for in craziness, I think. Lots of good stuff in there, and I can even count some of my own in that category! Tools used (other than the boring ones) include: a Game Boy emulator, an actual Game Boy, a keyboard running out of batteries, and a kettle. The two guys who made this with me are Matt Peter (go listen to [his stuff](http://www.fireandrobot.com/)) and Cody Ross (first timer, like me---though he can actually play his musical instruments, which is _unlike_ me).
+What we lack in technical skills we make up for in craziness, I think. Lots of good stuff in there, and I can even count some of my own in that category! Tools used (other than the boring ones) include: a Game Boy emulator, an actual Game Boy, a keyboard running out of batteries, and a kettle. The two guys who made this with me are Matt Peter (go listen to [his stuff](http://www.fireandrobot.com/)) and Cody Ross (first timer, like me—though he can actually play his musical instruments, which is _unlike_ me).
 
 ![image](/files/2008/12-the-color-and-the-leaves/treecover.jpg "Tree cover")
 

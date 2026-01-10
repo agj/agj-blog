@@ -16,7 +16,7 @@ language: [eng, spa]
 
 [Español](/2008/12/illustrated-mythology/#language)
 
-Chile has a rather rich mythology, particularly from the island of Chiloé, from where the better recognized mythical figures, such as the _Trauco_ and the _Pincoya_, originated from. That was the subject for the final exam of my workshop class, the second semester of 2007, with Jennifer King and Ximena Undurraga. What we created was a (loosely termed) dictionary of local mythological beings, a full book of them---since we were around 20, and everyone had to create ten, the result was around 200 pages worth of illustrations.
+Chile has a rather rich mythology, particularly from the island of Chiloé, from where the better recognized mythical figures, such as the _Trauco_ and the _Pincoya_, originated from. That was the subject for the final exam of my workshop class, the second semester of 2007, with Jennifer King and Ximena Undurraga. What we created was a (loosely termed) dictionary of local mythological beings, a full book of them—since we were around 20, and everyone had to create ten, the result was around 200 pages worth of illustrations.
 
 ![Diccionario de Seres Mitológicos en Chile cover](/files/2008/12-illustrated-mythology/mitoscover.jpg "Diccionario de Seres Mitológicos en Chile cover")
 

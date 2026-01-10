@@ -18,7 +18,7 @@ language: eng
 
 (It was about time I posted this.)
 
-Perhaps you remember a Ludum Dare entry I called [Climbrunner](/2009/12/climbrunner/)---well, this game is an evolution of that idea. Here, you run around a tricky series of screens, up the walls and ceilings, only with the ability to jump to avoid the obstacles that get in your way. There's no dying, just lots of cursing over missed jumps and having to do it all over again. It's a short game, but if you think it was fun once you first finish it, there's still a second path you can try.
+Perhaps you remember a Ludum Dare entry I called [Climbrunner](/2009/12/climbrunner/)—well, this game is an evolution of that idea. Here, you run around a tricky series of screens, up the walls and ceilings, only with the ability to jump to avoid the obstacles that get in your way. There's no dying, just lots of cursing over missed jumps and having to do it all over again. It's a short game, but if you think it was fun once you first finish it, there's still a second path you can try.
 
 All you need to know to play it is that you jump with the spacebar.
 
