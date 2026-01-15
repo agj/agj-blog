@@ -7,7 +7,8 @@ let year = $date | format date '%Y'
 let month = $date | format date '%m'
 let titleSlug = $title | str trim | str downcase | str kebab-case | remove-diacritics $in
 
-let filename = $"data/posts/($year)/($month)-($titleSlug).md"
+let directory = $"data/posts/($year)"
+let filename = $"($directory)/($month)-($titleSlug).md"
 let frontmatter = {
   title: $title
   date: ($date | formatPostDate)
@@ -18,6 +19,7 @@ let frontmatter = {
 
 let body = $"---\n($frontmatter | toYaml)\n---\n\nPost content.\n"
 
+mkdir $directory
 $body | save $filename
 
 # Format the new file.
