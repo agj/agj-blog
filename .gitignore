@@ -2,8 +2,8 @@
 /.env
 
 # Private data
-*-HIDDEN.md
-/data/posts/drafts/
+# *-HIDDEN.md
+# /data/posts/drafts/
 
 # elm-pages
 .elm-pages/
