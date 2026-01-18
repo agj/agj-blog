@@ -32,7 +32,7 @@ Después de estar expuesto a tanto contenido en japonés, yo ya tenía una idea 
 
 En las semanas antes de que empezaran las clases hice unas tarjetas de repaso que usé para memorizar todos estos caracteres. Con ese conocimiento bajo el brazo, empecé soplado en mis clases. Todo me parecía extremadamente básico y fácil. Buenas notas, nada de estudio.
 
-🖼️ tarjetas de repaso
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/tarjetas-kana.jpg "Tarjetas de repaso con caracteres japoneses")
 
 Pasaron los semestres. Mis compañeros no echaron a correr antes del disparo como yo, pero iban pausados como maratonistas, repasando poco a poco entre cada clase. Esas clases, que no eran más que dos horas a la semana, avanzaban lento. Y sin embargo por mi lado, los laureles estaban empezando a marchitarse. No sabía repasar entre clases, y rápidamente perdía la ventaja que le había ganado a los maratonistas. Me estaba sacando malas notas, frustrándome.
 
@@ -42,18 +42,13 @@ La culpa la tenía mi nuevo archienemigo: el kanji.
 
 Resulta que el japonés no se escribe sólo usando hiragana y katakana, los silabarios que mencioné más arriba. También existe otro sistema de escritura.
 
-🖼️ 日本語
-[Aquí dice “japonés“, en kanji.]
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/nihongo.png "“Japonés” escrito en kanji")
 
 Se trata de caracteres que originan de China. Son ideográficos, o sea que a cada cual le corresponde, más o menos, un significado. Y son como el jefe final para aprender a leer japonés. No son cincuenta… Son miles y miles de caracteres.
 
-🖼️ kanji
-[Los primeros 400 kanji enseñados durante los niveles 1 a 3 de la enseñanza básica en Japón.]
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/kanji.jpg "Los 400 kanji enseñados durante los niveles 1 a 3 de la educación básica")
 
 Entender kanji es muy importante para aprender japonés, porque la etimología de muchísimo vocabulario proviene de estos caracteres. Y por supuesto, porque si no sabes leer kanji, tu capacidad lectora no supera la de un niño de cuatro años.
-
-🖼️ Foto de una calle en Japón con muchos letreros que usan kanji.
-[Crédito xxx]
 
 Esta fue la gran barrera que bloqueó mi avance en mi proceso de aprendizaje. No tenía ningún esquema para enfrentarme a ellos, y cada lección del libro que avanzaban las clases, más y más caracteres se sumaban como soldados al batallón enemigo.
 
@@ -63,26 +58,23 @@ Eventualmente decidí que ya era suficiente. A esta altura ya llevaba años estu
 
 Descubrí la existencia de un tal filósofo de nombre James Heisig. La historia es que este personaje fue a Japón en los setentas para ser profesor, y lo primero que hicieron en la universidad fue meterlo a clases de japonés por un año. Rápidamente se dio cuenta de que la manera en que intentaban enseñarle kanji era como si fuera un niño de primero básico. Renunció a las clases y se inventó un método propio de aprendizaje, optimizado para adultos.
 
-🖼️ 花
-🖼️ 艹亻匕
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/primitivos.png "Descomposición de un kanji en sus primitivos")
 
 Su descubrimiento fue que, si bien los caracteres son muchos miles, cada uno está compuesto de un número limitado de partes _primitivas_ que son combinadas como piezas de lego para formar nuevos caracteres. Usando esa descomposición de primitivos, empezó a inventar historias mnemónicas que los asociaban a su significado, facilitando su memorización.
 
 Otra cosa que descubrí es que existe un fenómeno de la memoria que es algo así: La primera vez que revisamos un hecho que queremos memorizar, existe una curva de la memoria en el tiempo, que parte como una caída muy empinada. O sea, lo que tratemos de memorizar hoy seguramente lo olvidaremos en dos días.
 
-🖼️ 📉
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/curva-olvido-1.png "Curva del olvido")
 
 Pero si mañana repasamos ese mismo hecho, éste se afirmará un poco en nuestra memoria, aplanando la curva del olvido. La próxima vez, ya no se nos olvidará en dos, sino tal vez en cuatro días. Y si repasamos justo antes de que se nos vuelva a olvidar, o sea unos tres días después, seguiremos aplanando esa curva. Este ese el método descubierto por el psicólogo Hermann Ebbinghaus en el siglo XIX.
 
-data/posts/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar.md
-
-🖼️ 📉📉📉
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/curva-olvido-3.jpg "Curva del olvido, después")
 
 Usando esta observación, un tal Sebastian Leitner desarrolló un sistema de repaso eficiente. Este sistema usa tarjetas de repaso, con un kanji (o cualquier dato) por un lado y su significado por el otro. La manera en que se repasa usando estas tarjetas, si no las conoces, es mirando uno de sus lados (la pregunta) y tratando de recordar lo que está en el lado opuesto (la respuesta).
 
 Bajo el [sistema de repaso espaciado](https://es.wikipedia.org/wiki/Sistema_de_Leitner) de Leitner, estas tarjetas las distribuímos en cajitas según la frecuencia de su repaso. La primera cajita es de repaso diario, y aquí es donde se ponen las tarjetas nuevas. Después tenemos una cajita de repaso cada dos días, donde pondremos las tarjetas que hayamos acertado al repasar usando la primera cajita. Y tendremos una tercera cajita de repaso cada cuatro días, donde pondremos las tarjetas que acertemos de la segunda cajita. Y así sucesivamente, aumentando cada vez el intervalo de tiempo. La regla que queda por especificar es lo que ocurre cuando erramos una respuesta. En ese caso la tarjeta vuelve a la primera cajita, reiniciando el proceso.
 
-🖼️ Cajitas Leitner
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/sistema-leitner.jpg "Sistema de Leitner")
 
 Usando este sistema, cada día repasaremos las tarjetas que más necesitan repaso. Mientras más asentemos la memoria de una tarjeta, necesitaremos repasarla menos frecuentemente, y así optimizamos nuestro tiempo de estudio.
 
@@ -92,6 +84,7 @@ Con esta combinación de técnicas gasté un verano aprendiéndome unos mil cara
 
 ## Recordando mi infancia
 
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/ajatt.jpg "Página principal de AJATT")
 🖼️ AJATT
 
 Entre las cosas que descubrí mientras buscaba cómo estudiar japonés fue un sitio web que se llama [AJATT](https://web.archive.org/web/20100403201214/http://www.alljapaneseallthetime.com:80/blog/all-japanese-all-the-time-ajatt-how-to-learn-japanese-on-your-own-having-fun-and-to-fluency): “All Japanese All The Time”. Esta es la forma en que el autor lo describe:
@@ -100,23 +93,19 @@ Entre las cosas que descubrí mientras buscaba cómo estudiar japonés fue un si
 
 Esta filosofía fue la clave para mí. Las técnicas y estrategias no tienen que ver con memorizar cosas ni con estudiar, sino con inmersión, y con disfrutar usando el idioma.
 
-🖼️ QBasic Gorillas, DKC, Rust in Peace
-[Donkey Kong Country, gorillas.bas de QBasic, y Rust in Peace de Megadeth.]
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/cosas-ninez.jpg "Donkey Kong Country de Super Nintendo, Gorillas de QBasic, y el álbum Rust in Peace de Megadeth")
 
 Recordé experiencias importantes de mi niñez. Tuve la fortuna de tener acceso a computadores cuando muy niño, lo que era poco común en mi contexto, y me encantaba gastar tiempo perdido en sus interfaces. También me gustaban los videojuegos; en esa época lo que llegaba venía directo de Estados Unidos. Y también por casualidades de la vida, desde bastante niño empecé a escuchar metal estadounidense y europeo. Sin querer ni planificarlo, mis intereses involucraban el inglés en gran parte, y así es como lo aprendí, a través de un proceso orgánico de inmersión a través de las actividades que disfrutaba.
 
-🖼️ iPod
-[Algunas bandas y artistas japoneses en mi iPod de esos tiempos.]
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/ipod.jpg "Algunas bandas y artistas en mi iPod viejo")
 
 Empecé a replicar esa experiencia, ahora con el japonés. Llené mi iPod de pura música japonesa, y eso era todo lo que escuchaba. Y lo digo en serio: dejé de escuchar música que no estuviera en japonés, casi por completo. Da igual si entendía, la gracia era escuchar y escuchar el idioma, así como lo hacía cuando escuchaba Megadeth o Helloween. La más pegajosa, como por ejemplo Chatmonchy (チャットモンチー), me la cantaba toda.
 
-🖼️ Manga
-[H2? Touch?]
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/manga.jpg "H2 de Adachi Mitsuru")
 
 Volví a empezar a leer _manga_, pero ahora sin traducir. La gracia es que tienen muchas imágenes que aportan contexto que ayuda a la comprensión, y los diálogos son como la gente habla. Similarmente, también me puse a ver muchas series, animadas y no. Vi montones de _dramas_ románticos, donde casi sin falta sale Kimura Takuya como protagonista, y que siempre dejan las ganas ver el siguiente capítulo. Leía y veía de todo un poco, pero siempre a mi alcance, tratando de mantenerme dentro de contextos relativamente cotidianos, temáticas un poco tontas, nada muy complejo o sofisticado. A medida que mejoraba mi nivel de japonés, también fui sofisticando mi abanico de temáticas. Importantemente, nunca usaba subtítulos ni traducciones.
 
-🖼️ Configurando en japonés.
-[Pantalla de configuración de idioma en Mac OS.]
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/configuracion-idioma.jpg "Configuración de idioma en Mac OS")
 
 También configuré mis dispositivos para que todos estén en japonés. En ese tiempo no tenía celular, pero lo hice con mi computador, un tablet y todos esos aparatos digitales. Lo que se pudiera hacer en japonés, lo hacía.
 
@@ -132,34 +121,29 @@ Por esa influencia, me propuse aprender chino. Además, esos kanji que aprendí 
 
 Lo primero que hice fue investigar el sujeto de mi estudio. Lo que aprendí es que lo que llaman “chino” es, en realidad, una familia de idiomas, entre los cuales los más famosos son el mandarín y el cantonés. El idioma que elegí fue el mandarín, porque es el idioma chino con más hablantes; es una lingua franca entre las etnias chinas.
 
-🖼️ Tradicional, simplificada, japonés.
-[Comparativa entre tres]
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/tradicional-simplificado.png "Tres estándares de caracteres chinos")
 
 La otra decisión a tomar fue el estándar de escritura a aprender: tradicional o simplificado. El estándar tradicional es un poco más cercano a las raíces históricas, y es visualmente más complejo. El simplificado nació como un esfuerzo por mejorar la alfabetización en China, reduciendo la complejidad gráfica de cada carácter. Si bien los caracteres simplificados son usados en muchas más regiones, tomé la decisión de aprender caracteres tradicionales, porque aprenderlos me acerca un poco más a la etimología de cada caracter: un buen prospecto para un nerd de los idiomas como yo.
 
-🖼️ Anki
-[Anki, software de repaso espaciado]
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/anki.jpg "Repasando vocabulario usando Anki")
 
 El siguiente paso fue crear un colchón de conocimiento básico que me va a permitir “poner a andar la máquina” y olvidarme de estudiar. Tuve que ponerme a repasar caracteres nuevos, y también harto vocabulario.
 
-🖼️ ChinesePod
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/chinesepod.jpg "Podcast ChinesePod")
 
 Otra parte importante fue escuchar un podcast de nombre ChinesePod, que tiene un formato muy bueno. Los capítulos no están ordenados en secuencia, sino que se agrupan por nivel de complejidad. Cada capítulo primero parte con una conversación en mandarín, y después los presentadores discuten (en inglés) su contenido, gramática y vocabulario. Dentro del mismo nivel a menudo se repiten los mismos patrones, en distintos contextos.
 
 Escuché podcasts con contenido bilingüe, donde usualmente dos personas hablan, una en mandarín y la otra en un segundo idioma. Uno de ellos era de noticias usando mandarín e inglés; otro, de conversación liviana en mandarín y japonés. Lo importante de este formato es que sin importar mi nivel, al menos la mitad del contenido me es comprensible, y me sirve como contexto y palanca para entender mejor la otra mitad en mandarín.
 
-🖼 琅琊榜
-[_Nirvana in Fire,_ (琅琊榜) por lejos una de las mejores series para ver de China.]
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/nirvana-in-fire.jpg "Nirvana in Fire (琅琊榜), una de las mejores series chinas")
 
 Obviamente, también me puse a ver muchas series. Ví bastante producción de China y Taiwán.
 
-🖼️ Metroid Fusion
-[Un Game Boy Micro con Metroid Fusion en su versión de China.]
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/metroid.jpg "Metroid Fusion, versión china")
 
 Seguí jugando videojuegos. Me resultó difícil encontrar juegos que me interesen y que sean nativamente en chino/mandarín, lo que significa que he jugado muchas traducciones, cuya calidad varía. Igual he jugado hartas novelas visuales, y definitivamente ha sido un aporte.
 
-🖼️ Tandem
-[Una conversación con alguien de Taiwán vía la aplicación Tandem.]
+![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/tandem.jpg "Conversación con alguien de Taiwán en Tandem")
 
 Usé aplicaciones de intercambio de idioma para conversar con nativos del mandarín, intercalando con español o inglés, a veces incluso japonés. También he escuchado otros podcasts con contenido completo en mandarín. Encontré buena música para escuchar, aunque he terminado por incursionar en el “pop indie” de Taiwán, sin tener historia de escuchar pop. He leído cómics, casi todos del formato “webtoon” popularizado en Corea. Y muchas otras cosas más.
 
