@@ -18,7 +18,7 @@
   }
 
   .button {
-    @apply flex flex-row items-center justify-center rounded text-inherit;
+    @apply flex shrink-0 flex-row items-center justify-center rounded text-inherit;
     @apply hover:bg-layout-50 hover:text-layout-20;
   }
 
