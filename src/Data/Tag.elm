@@ -276,6 +276,7 @@ all =
     , Tag { name = "Knytt Stories", slug = "knytt-stories" }
     , Tag { name = "KOTM", slug = "kotm" }
     , Tag { name = "language", slug = "language" }
+    , Tag { name = "learning", slug = "learning" }
     , Tag { name = "library", slug = "library" }
     , Tag { name = "literature", slug = "literature" }
     , Tag { name = "lofi", slug = "lofi" }
