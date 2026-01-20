@@ -1,6 +1,6 @@
 ---
 title: Cielos, y un jam con Gleam
-date: "2026-01-20 02:30:00"
+date: "2026-01-20 02:46:00"
 categories:
   - my-games
 tags:
@@ -54,7 +54,7 @@ case mi_condicion {
 }
 ```
 
-Está muy pulida la experiencia de desarrollo. El CLI `gleam` es una herramienta todo en uno: inicializa tu proyecto, compila, formatea y tiene servidor de lenguaje para tu editor. El formato además sigue la filosofía de go fmt y de elm-format, o sea que no se puede configurar, es un sólo formato transversal y estándar.
+Está muy pulida la experiencia de desarrollo. El CLI `gleam` es una herramienta todo en uno: inicializa tu proyecto, compila, formatea y tiene servidor de lenguaje para tu editor. El formato además sigue la filosofía de go fmt y de elm-format, o sea que nos evitamos tener que configurarlo, porque permite un sólo formato transversal y estándar.
 
 Como último punto positivo no puedo dejar de mencionar su comunidad. Lamentablemente la mayoría de comunidades de software se concentra en lo técnico, en desmedro de lo humano. En el caso de Gleam, la comunidad es mucho más explícitamente inclusiva de lo que he visto hasta ahora, lo cual también [implica ser excluyente a las voces intolerantes](https://es.wikipedia.org/wiki/Paradoja_de_la_tolerancia). Esta es una cita directa de su web:
 
