@@ -8,6 +8,8 @@ tags:
   - gleam
   - video-game
 language: spa
+external:
+  mastodon-toot-id: "115925158259888401"
 ---
 
 Participé en [un _game jam_](https://gamejam.gleam.community/), o sea un evento grupal donde cada quien hace un videojuego durante un periodo de tiempo específico. Es el primer jam de juegos en torno al lenguaje de programación [Gleam](https://gleam.run/), un lenguaje joven que recién el 2024 [llegó a su versión 1.0](https://gleam.run/news/gleam-version-1/) y empezó a ganar tracción.
