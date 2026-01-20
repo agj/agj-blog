@@ -259,6 +259,7 @@ all =
     , Tag { name = "game engine", slug = "game-engine" }
     , Tag { name = "games aggregate", slug = "games-aggregate" }
     , Tag { name = "Gently", slug = "gently" }
+    , Tag { name = "Gleam", slug = "gleam" }
     , Tag { name = "graphic design", slug = "graphic-design" }
     , Tag { name = "GregWS", slug = "gregws" }
     , Tag { name = "Heart", slug = "heart" }
