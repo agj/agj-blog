@@ -8,6 +8,8 @@ tags:
   - learning
   - espanol
 language: spa
+external:
+  mastodon-toot-id: "115956515265471133"
 ---
 
 Aparte de mi español nativo, durante mi vida he aprendido tres idiomas: inglés, japonés y mandarín. En un país mayoritariamente monolingüe como el mío, es algo relativamente excepcional. “Tienes mucha facilidad para los idiomas”, me han dicho. Eventualmente empecé a ofenderme un poco por estas palabras. El mensaje implícito es que mi éxito se debe a un talento natural que ellos no comparten, y por lo tanto, que para mí no ha requerido esfuerzo aprender estos idiomas, o que para ellos es cercano a imposible. Creo que es una reacción defensiva inconsciente que tiene origen en la manera en que nos han enseñado a aprender.
