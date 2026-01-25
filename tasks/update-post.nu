@@ -7,7 +7,7 @@ let hiddenFlag = "-HIDDEN"
 let sourceFilename = ls --all data/posts/**/*.md | sort-by --reverse modified | get 0.name
 let postData = $sourceFilename | open
 let postLines = $postData | split row "\n" | split list "---"
-let frontmatter = $postLines | get 1 | str join "\n" | from yaml
+let frontmatter = $postData | getFrontmatter
 let isHidden = $sourceFilename | str ends-with $"($hiddenFlag).md"
 
 # Update the post's slug and path.
