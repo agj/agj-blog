@@ -7,6 +7,7 @@ tags:
   - elm
   - web
   - work
+  - espanol
 language: spa
 external:
   mastodon-toot-id: "115121095181061077"

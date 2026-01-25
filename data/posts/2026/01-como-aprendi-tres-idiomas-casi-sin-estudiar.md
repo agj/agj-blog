@@ -6,6 +6,7 @@ categories:
 tags:
   - language
   - learning
+  - espanol
 language: spa
 ---
 

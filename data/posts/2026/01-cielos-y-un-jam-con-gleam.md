@@ -7,6 +7,7 @@ tags:
   - release
   - gleam
   - video-game
+  - espanol
 language: spa
 external:
   mastodon-toot-id: "115925158259888401"
