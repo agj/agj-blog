@@ -45,8 +45,8 @@ view (Figure config) =
         caption =
             case config.caption of
                 Just text ->
-                    [ Html.div [ class "text-layout-50 flex flex-col px-10 pt-2 text-center text-sm" ]
-                        [ Html.p [] [ Html.text text ] ]
+                    [ Html.div [ class "text-layout-50 px-10 pt-2 text-center text-sm" ]
+                        [ Html.text text ]
                     ]
 
                 Nothing ->
