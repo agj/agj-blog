@@ -18,7 +18,7 @@ dev-review: install
     mprocs
 
 # Build for release.
-build: typecheck install
+build: typecheck check-data install
     pnpm run build
 
 # Build and deploy the blog.
@@ -48,6 +48,10 @@ update-ai-block:
 [group('maintenance')]
 typecheck:
     tsc --noEmit
+
+# Check for errors in the posts data.
+check-data:
+    nu ./tasks/check-data.nu
 
 # Check for errors.
 [group('maintenance')]
