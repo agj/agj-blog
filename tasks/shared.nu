@@ -36,3 +36,8 @@ export def toYaml []: record -> string {
   | str replace --regex '^date: (.+)$' 'date: "$1"'
   | str join "\n"
 }
+
+# Gets frontmatter data from a Markdown file's string contents.
+export def getFrontmatter []: string -> any {
+  $in | lines | split list "---" | get 1 | str join "\n" | from yaml
+}
