@@ -1,6 +1,6 @@
 ---
 title: Cómo aprendí tres idiomas (casi) sin estudiar
-date: "2026-01-15 16:17:00"
+date: "2026-01-25 15:34:00"
 categories:
   - language
 tags:
@@ -57,7 +57,7 @@ Eventualmente decidí que ya era suficiente. A esta altura ya llevaba años estu
 
 ## Técnicas mnemónicas
 
-Descubrí la existencia de un tal filósofo de nombre James Heisig. La historia es que este personaje fue a Japón en los setentas para ser profesor, y lo primero que hicieron en la universidad fue meterlo a clases de japonés por un año. Rápidamente se dio cuenta de que la manera en que intentaban enseñarle kanji era como si fuera un niño de primero básico. Renunció a las clases y se inventó un método propio de aprendizaje, optimizado para adultos.
+Descubrí la existencia de un tal filósofo de nombre James Heisig. La historia es que este personaje fue a Japón en los setentas para ser académico, y lo primero que hicieron en la universidad fue meterlo a clases de japonés por un año. Rápidamente se dio cuenta de que la manera en que intentaban enseñarle kanji era como si fuera un niño de primero básico. Renunció a las clases y se inventó un método propio de aprendizaje, optimizado para adultos.
 
 ![Un kanji a la izquierda, y a su derecha el mismo carácter despedazado en tres partes.](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/primitivos.png "Descomposición de un kanji en sus primitivos.")
 
@@ -131,7 +131,7 @@ El siguiente paso fue crear un colchón de conocimiento básico que me va a perm
 
 ![Pantalla de reproducción en la aplicación Podcasts en iOS.](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/chinesepod.jpg "Podcast ChinesePod.")
 
-Otra parte importante fue escuchar un podcast de nombre ChinesePod, que tiene un formato muy bueno. Los capítulos no están ordenados en secuencia, sino que se agrupan por nivel de complejidad: básico, intermedio, avanzado, etc. Cada capítulo primero parte con una conversación en mandarín, y después los presentadores discuten (en inglés) su contenido, gramática y vocabulario. Dentro del mismo nivel a menudo se repiten los mismos patrones, en distintos contextos.
+Otra parte importante fue escuchar un podcast de nombre ChinesePod, que tiene un formato muy bueno. Los capítulos no están ordenados en secuencia, sino que se agrupan por nivel de complejidad: básico, intermedio, avanzado, etc. Cada capítulo primero parte con una conversación en mandarín, y después los presentadores discuten (en inglés) su contenido, gramática y vocabulario. En distintos capítulos del mismo nivel se van repitiendo los mismos patrones pero en distintos contextos.
 
 Escuché podcasts con contenido bilingüe, donde usualmente dos personas hablan, una en mandarín y la otra en un segundo idioma. Uno de ellos era de noticias usando mandarín e inglés; otro, de conversación liviana en mandarín y japonés. Lo importante de este formato es que sin importar mi nivel, al menos la mitad del contenido me es comprensible, y me sirve como contexto y palanca para entender mejor la otra mitad en mandarín.
 
@@ -145,7 +145,7 @@ Seguí jugando videojuegos. Me resultó difícil encontrar juegos que me interes
 
 ![](/files/2026/01-como-aprendi-tres-idiomas-casi-sin-estudiar/tandem.jpg "Conversación con alguien de Taiwán en la aplicación Tandem.")
 
-Usé aplicaciones de intercambio de idioma para conversar con nativos del mandarín, intercalando con español o inglés, a veces incluso japonés. También he escuchado otros podcasts con contenido completo en mandarín. Encontré buena música para escuchar, y hasta terminé por incursionar en el “pop indie” de Taiwán, sin tener historia de escuchar pop. He leído cómics, casi todos del formato “webtoon” popularizado en Corea. Y muchas otras cosas más.
+Usé aplicaciones de intercambio de idioma para conversar con nativos del mandarín, intercalando con español o inglés, a veces incluso japonés. También he escuchado otros podcasts con contenido completo en mandarín. Encontré buena música para escuchar, y hasta terminé por incursionar en el pop _indie_ de Taiwán, sin tener historia de escuchar pop. He leído cómics, casi todos del formato [_webtoon_](https://es.wikipedia.org/wiki/Webtoon) popularizado en Corea. Y muchas otras cosas más.
 
 El mandarín es un idioma en el que aún estoy trabajando. Estoy mucho menos enfocado que en mi época con el japonés, he sido menos osado (aún no leo ninguna novela en chino), y tengo muchos puntos ciegos que trabajar. Pero viví un periodo corto en Taiwán, durante el cual no sufrí grandes problemas para interactuar con la gente y llevar mi vida.
 
@@ -153,7 +153,7 @@ El mandarín es un idioma en el que aún estoy trabajando. Estoy mucho menos enf
 
 Destilemos el proceso que experimenté a una serie de recomendaciones para aprender un idioma en forma autónoma, sin clases, sin libros de estudio, y (casi) sin estudiar.
 
-Primero necesitamos **conocer lo que vamos a aprender.** Cuando uno toma clases, hay muchas decisiones que son tomadas de antemano por uno, para luego uno recibir la información regurgitada en forma de un plan de estudios. Para ser autodidactas necesitaremos dedicarle un tiempo a investigar hasta realmente entender qué es lo que vamos a aprender, y en base a eso tomar decisiones y urdir una estrategia.
+Primero necesitamos **conocer lo que vamos a aprender.** Cuando uno toma clases, hay muchas decisiones que son tomadas de antemano por uno, las que se convierten en un plan de estudios que nos entregará la información regurgitada. Para ser autodidactas necesitaremos dedicarle un tiempo a investigar hasta realmente entender qué es lo que vamos a aprender, y en base a eso tomar decisiones y urdir una estrategia.
 
 Listo eso, y para empezar afirmando la confianza y la motivación, es útil crear un **colchón de conocimiento.** Hablo de memorizar la escritura, el vocabulario básico y patrones gramaticales. En esta etapa usamos técnicas más tradicionales, como el repaso espaciado.
 
@@ -163,13 +163,13 @@ Nuestro objetivo de aprendizaje **no es precisión, sino comunicación.** Si est
 
 Similarmente, **las correcciones son nocivas.** Cuando recibimos una corrección, ponemos el foco de la interacción en el medio y no en el mensaje. El miedo al error inhibe nuestra curiosidad y la capacidad de disfrutar del objeto del uso del idioma, o sea, de comunicarnos con un interlocutor.
 
-**No pienses.** Lo que queremos no es comprender, sino _asimilar._ Queremos desarrollar la intuición. Suprimamos la necesidad de entender racionalmente, de traducir a nuestra lengua nativa. Al principio vamos a entender poco. Necesitamos desarrollar la flexibilidad y la tolerancia a la ambigüedad durante este proceso.
+**No pienses.** Lo que queremos no es comprender, sino _asimilar._ Queremos desarrollar una intuición. Suprimamos la necesidad de entender racionalmente, de traducir a nuestra lengua nativa. Al principio vamos a entender poco. Necesitamos desarrollar la flexibilidad y la tolerancia a la ambigüedad durante este proceso.
 
 **El vocabulario se desarrolla leyendo y escuchando mucho,** con apoyo del contexto, y sólo en ocasiones con ayuda de un diccionario. No uses traductores automáticos, no ayudan a aprender. Y para robustecer nuestro léxico necesitamos ir, con el tiempo, expandiendo el rango de contextos de donde consumimos el idioma.
 
 El **contexto** es todo aquello que nos ayuda a comprender el mensaje. Son los gestos y las expresiones faciales de la persona que habla, el lugar y la situación, las ilustraciones que acompañan, etc. Todo lo que no es lenguaje, pero que constituye parte de lo que se comunica.
 
-El cerebro está muy afinado para extraer información comprensible incluso en situaciones donde hay gran pérdida de ésta; por ejemplo, baja visibilidad o mucho ruido. La idea es aprovechar esa capacidad para dejar que el cerebro, con ayuda del contexto, “complete la película” por nosotros en forma subconsciente, aunque entendamos poco o nada de las palabras.
+El cerebro está muy afinado para extraer información comprensible incluso en situaciones donde hay gran pérdida de ésta; por ejemplo, baja visibilidad o mucho ruido. La idea es aprovechar esa capacidad para **dejar que el cerebro “complete la película”** por nosotros en forma subconsciente con ayuda del contexto, aunque entendamos poco o nada de las palabras.
 
 Para dejar que el cerebro haga lo suyo necesitamos rodearnos del idioma, o sea hacer **inmersión.** Ir al país donde se habla es, obviamente, una manera, pero no hace falta. Sólo necesitamos lograr que el idioma exista en nuestro entorno inmediato.
 
@@ -187,7 +187,7 @@ Todo lo anterior es importante, pero no vale nada sin **pasarlo bien.** La exper
 
 Que el aprendizaje vía inmersión sea disfrutable es un acto de equilibrio, y para explicar a lo que me refiero uso **la metáfora del tesoro y la pared.** Imagina un tesoro que está detrás de una pared. Ese tesoro puede ser sumamente deseable para nosotros, al punto en que estaríamos dispuestos a derribar una pared muy sólida. O tal vez el tesoro no es tan interesante, pero si la pared fuera suficientemente débil como para requerir poco esfuerzo para derribarla, tal vez igual iríamos a por él.
 
-Aquí, el “tesoro” es el contenido; por ejemplo, la historia en un libro escrito en el idioma que aprendemos. La “pared” es la dificultad, la barrera lingüística de comprender ese contenido. El libro puede que sea comprensible hasta para un niño (pared débil), pero la historia puede ser poco interesante (tesoro sin brillo). O tal vez el libro es súmamente técnico (pared dura), pero el contenido nos interesa tanto (tesoro apetecible) que estamos dispuestos a sufrir un poco para comprenderlo. Saber equilibrar estos dos factores de acuerdo al nivel en que nos encontremos permite evitar la frustración y mantener una alta motivación que nos impulse a seguir exponiéndonos al idioma, en busca de ese tesoro.
+Aquí, el “tesoro” es el contenido; por ejemplo, la historia en un libro escrito en el idioma que aprendemos. La “pared” es la dificultad, la barrera lingüística de comprender ese contenido. El libro puede que sea comprensible hasta para un niño, pero la historia puede ser poco interesante. O tal vez el libro es súmamente técnico, pero el contenido nos interesa tanto que estamos dispuestos a sufrir un poco para comprenderlo. Saber equilibrar estos dos factores de acuerdo al nivel en que nos encontremos permite evitar la frustración y mantener una alta motivación que nos impulse a seguir exponiéndonos al idioma, en busca de ese tesoro.
 
 Mi último punto es que al elegir material a consumir es muy importante favorecer material nativo del idioma, porque el mensaje no está divorciado del medio. **El idioma refleja la cultura,** y la cultura también está influída por el idioma. Por eso, aprender un idioma también es un proceso de asimilación cultural. Es un proceso de internalización de costumbres y maneras diferentes de ver la vida.
 
@@ -203,8 +203,8 @@ Las pruebas y las notas son dañinas para el proceso de aprendizaje, primero, po
 
 El factor castigo (dado por las notas bajas) destruye la motivación y la confianza. Le ganamos respeto y miedo al proceso de aprender. Nos consolamos diciéndonos a nosotros mismos que no estamos hechos para la matemática, o para la historia. Desarrollamos traumas.
 
-Los seres humanos nacemos curiosos. Los bebés se lo meten todo a la boca, se levantan y se caen, balbucean imitando a los adultos a su alrededor, se equivocan. Nos encanta descubrir lo que está alrededor y aprender. Pero eventualmente nos convencen de que eso no es placentero, de que es una obligación.
+Los seres humanos nacemos curiosos. Los bebés se lo meten todo a la boca, se levantan y se caen, balbucean imitando a los adultos a su alrededor, se equivocan. Nos encanta descubrir lo que está alrededor y aprender. Pero eventualmente nos convencen de que eso no es placentero, que es una obligación.
 
 Mi opinión es que es importante que recuperemos eso que nos quitó la escuela: el valor intrínseco de aprender, y que aprender no es una obligación odiosa sino parte íntegra de muchas actividades placenteras que hacemos todos los días.
 
-Cuando tomes la decisión de aprender algo, recuerda que quien aprende eres tú, y sólo de ti depende. **Hazte cargo de tu aprendizaje.**
+Cuando tomes la decisión de aprender algo, recuerda que quien aprende eres tú, y que sólo de ti depende. **Hazte cargo de tu aprendizaje.**
