@@ -10,7 +10,7 @@ tags:
   - event
   - muevete
   - santiago
-language: eng
+language: [eng, spa]
 ---
 
 ![image](/files/2013/01-muevete-at-the-design-biennial/muevetebiennalphoto.jpg "Muévete biennal photo")
