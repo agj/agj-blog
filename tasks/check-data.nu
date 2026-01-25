@@ -2,10 +2,34 @@ use shared.nu *
 
 print "🔍 Checking errors in posts…\n"
 
+def findImages [] {
+  let cur = $in
+  let type = $cur | describe
+
+  if $type =~ '^list|^table' {
+    $cur | each {|c| $c | findImages }
+  } else if $type =~ "^record" {
+    let tag = $cur.tag
+
+    if ($tag == "image") {
+      [$cur]
+    } else {
+      $cur.content | findImages | flatten
+    }
+  } else {
+    []
+  }
+}
+
 let posts = glob "data/posts/**/*.md"
   | each {|filename|
-    let frontmatter = open $filename | getFrontmatter
-    { filename: $filename, frontmatter: $frontmatter }
+    let file = open $filename
+    let frontmatter = $file | getFrontmatter
+    let content = $file | cmark --to xml | from xml --allow-dtd | get content
+    let images = $content | findImages | flatten
+    let imageUrls = $images.attributes.destination
+
+    { filename: $filename, frontmatter: $frontmatter, imageUrls: $imageUrls }
   }
 
 let errors = $posts

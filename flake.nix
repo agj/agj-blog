@@ -17,6 +17,7 @@
       in {
         devShell = pkgs.mkShell {
           buildInputs = [
+            pkgs.cmark
             pkgs.elmPackages.elm
             pkgs.elmPackages.elm-format
             pkgs.just
