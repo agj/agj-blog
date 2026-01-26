@@ -23,8 +23,8 @@ def findImages [] {
 
 def printError []: record<filename: string, message: string> -> nothing {
   let error = $in
-  print $"- In file: ($error.filename)"
-  print $"  Message: ($error.message)"
+  print $"- Message: ($error.message)"
+  print $"  In file: ($error.filename)"
 }
 
 let posts = glob "data/posts/**/*.md"
@@ -43,10 +43,15 @@ let errors = $posts
       let $isSpanish = $post.frontmatter.language | $in == "spa" or "spa" in $in
       let $hasSpanishTag = "espanol" in $post.frontmatter.tags
 
-      let messages = [
-          (if ($isSpanish and not $hasSpanishTag) { $"Spanish language without `spanish` tag." }),
-          (if (not $isSpanish and $hasSpanishTag) { $"Has `spanish` tag but isn't Spanish language." }),
-        ] | where { $in != null }
+      let spanishTagMessages = [
+          (if ($isSpanish and not $hasSpanishTag) { "Spanish language without `spanish` tag." }),
+          (if (not $isSpanish and $hasSpanishTag) { "Has `spanish` tag but isn't Spanish language." }),
+        ]
+        | where { $in != null }
+      let imageUrlMessages = $post.imageUrls
+        | where {|imageUrl| not ($"..($imageUrl)" | path exists) }
+        | each {|imageUrl| $"Image path doesn't exist: ($imageUrl)" }
+      let messages = $spanishTagMessages | append $imageUrlMessages
 
       $messages | each {|msg| { filename: $post.filename, message: $msg } }
     }
@@ -55,6 +60,7 @@ let errors = $posts
 if ($errors | length) > 0 {
   print "❌ Summary of errors:\n"
   $errors | each { $in | printError }
+  null
 } else {
   print "✅ All posts okay!"
 }
