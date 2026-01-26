@@ -1,6 +1,6 @@
 module View.VideoEmbed exposing
     ( VideoEmbed
-    , VideoService(..)
+    , VideoService
     , renderer
     , view
     )

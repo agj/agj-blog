@@ -1,4 +1,4 @@
-module Data.Language exposing (Language(..), all, decoder, encodeList, fromString, listDecoder, toShortString)
+module Data.Language exposing (Language, all, decoder, encodeList, fromString, listDecoder, toShortString)
 
 import Json.Decode as Decode exposing (Decoder, Value)
 import Json.Decode.Extra as Decode
