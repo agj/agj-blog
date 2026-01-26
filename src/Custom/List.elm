@@ -14,8 +14,14 @@ The returned list's values are tuples of this result and the items that fall und
 gatherUnder : (a -> comparable) -> List a -> List ( comparable, List a )
 gatherUnder toComparable list =
     list
-        |> List.gatherEqualsBy toComparable
-        |> List.map (\( first, rest ) -> ( toComparable first, first :: rest ))
+        |> List.map (\item -> ( toComparable item, item ))
+        |> List.gatherEqualsBy Tuple.first
+        |> List.map
+            (\( first, rest ) ->
+                ( Tuple.first first
+                , first :: rest |> List.map Tuple.second
+                )
+            )
 
 
 {-| Same as `List.sortBy`, except it sorts in descending order (highest to
