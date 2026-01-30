@@ -168,45 +168,49 @@
   .elmsh {
     @apply rounded bg-layout-20 text-xs leading-normal text-layout-90;
   }
+
   .elmsh-hl {
+    /* Highlight. */
     background: #fffbdd;
   }
   .elmsh-add {
+    /* Addition. */
     background: #eaffea;
   }
   .elmsh-del {
+    /* Deletion */
     background: #ffecec;
   }
   .elmsh-comm {
     /* Comment. */
     @apply text-primary-60;
   }
+
   .elmsh1 {
-    /* Period. */
-    @apply text-layout-40;
+    /* Number. */
+    @apply text-layout-50;
   }
   .elmsh2 {
-    /* String. */
+    /* Literal string, attribute value. */
     @apply text-layout-50;
   }
   .elmsh3 {
-    /* Syntax. */
-    @apply text-layout-40;
+    /* Keyword, tag, operator symbols (=+-*.../). */
+    @apply text-layout-50;
   }
   .elmsh4 {
-    /* Type. Brace, bracket, comma. */
+    /* Keyword 2, group symbols ({}(),), type signature. */
     @apply text-layout-50;
   }
   .elmsh5 {
-    /* Function declaration. */
+    /* Function, attribute name. */
     @apply text-primary-70;
   }
   .elmsh6 {
-    /* Module name. */
+    /* Literal keyword, capitalized types. */
     @apply text-layout-50;
   }
   .elmsh7 {
-    /* ? */
-    /* color: #795da3; */
+    /* Argument, parameter. */
   }
 }
