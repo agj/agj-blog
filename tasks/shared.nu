@@ -7,6 +7,7 @@ export def remove-diacritics [text: string] : any -> string {
     "ó": "o",
     "ú": "u",
     "ü": "u",
+    "ñ": "n",
   }
   $text
   | split chars
