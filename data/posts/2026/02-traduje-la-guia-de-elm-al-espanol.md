@@ -10,6 +10,9 @@ tags:
   - espanol
   - release
 language: spa
+external:
+  mastodon-toot-id: "116071882462893259"
+  devto-slug: "traduje-la-guia-de-elm-al-espanol-1mkj"
 ---
 
 Escribí una [**traducción al español de “Introducción a Elm”**](https://agj.github.io/elm-guide-es/). Es un libro digital escrito por el mismo autor del lenguaje de programación Elm, Evan Czaplicki, como una forma accesible de aprender a programar usando el lenguaje. No sólo demuestra y explica el lenguaje mismo, sino que también presenta perspectivas y técnicas que yo considero muy valiosas, en un formato extremadamente accesible. Es una excelente manera de aprender programación funcional. Elm es un lenguaje y una comunidad de donde yo he aprendido muchísimo, y creo que el libro condensa una gran parte de ese valor. Con algo de suerte, esta traducción contribuirá un poquito a popularizar Elm y estas ideas dentro de los círculos hispanohablantes de programación.
