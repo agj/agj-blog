@@ -8,6 +8,7 @@ tags:
   - gleam
   - video-game
   - espanol
+  - cielos
 language: spa
 external:
   mastodon-toot-id: "115925158259888401"
