@@ -18,7 +18,7 @@ dev-review: install
     mprocs
 
 # Build for release.
-build: typecheck check-data install
+build: install typecheck check-data install
     pnpm run build
 
 # Build and deploy the blog.
