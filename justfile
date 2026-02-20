@@ -98,6 +98,7 @@ qr:
 [group('other')]
 clean:
     rm -rf dist .elm-pages gen functions elm-stuff node_modules
+    lamdera reset
 
 # Writes a snapshot of settings as a Git stash.
 [group('other')]
