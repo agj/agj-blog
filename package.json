@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "dev": "elm-pages dev --port 1234",
-    "build": "elm-pages build"
+    "build": "elm-pages build --strict"
   },
   "devDependencies": {
     "@csstools/postcss-sass": "^5.1.1",
