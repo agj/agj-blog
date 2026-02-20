@@ -1,5 +1,5 @@
-# Updates robots.txt and .htaccess with fresh data from the ai.robots.txt
-# project, to block AI crawlers.
+# Updates .htaccess with fresh data from the ai.robots.txt project, to
+# block AI crawlers.
 
 let aiRobotsTxtBaseUrl = "https://raw.githubusercontent.com/ai-robots-txt/ai.robots.txt/refs/heads/main"
 let startMarkerLine = "# Start ai.robots.txt"
@@ -30,4 +30,3 @@ def updateFile [$filename] {
 }
 
 updateFile ".htaccess"
-updateFile "robots.txt"
