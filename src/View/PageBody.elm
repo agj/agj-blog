@@ -149,7 +149,7 @@ viewHeader config title =
     case title of
         Just title_ ->
             Html.div [ class "w-full p-2 pb-0" ]
-                [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center rounded-lg" ]
+                [ Html.header [ class "text-layout-50 bg-layout-20 flex w-full flex-col items-center" ]
                     [ Html.div [ class "flex w-full flex-row items-center justify-end gap-4 px-4 pt-2 text-sm", class pageMaxWidth ]
                         [ viewFeedLinks config.feeds
                         , viewMenu config
