@@ -167,6 +167,12 @@ viewFeedLinks : Feeds msg -> Html msg
 viewFeedLinks feed =
     case feed of
         FeedUrls { rssFeedUrl, atomFeedUrl } ->
+            let
+                linkToNewTab : String -> String -> Html msg
+                linkToNewTab label url =
+                    Html.a [ href url, Html.Attributes.target "_blank" ]
+                        [ Html.text label ]
+            in
             viewDropdown
                 { id = "feeds-list"
                 , trigger =
@@ -177,14 +183,8 @@ viewFeedLinks feed =
                             ]
                 , content =
                     Html.ul [ class "flex flex-col gap-2" ]
-                        [ Html.li []
-                            [ Html.a [ href atomFeedUrl ]
-                                [ Html.text "Atom feed" ]
-                            ]
-                        , Html.li []
-                            [ Html.a [ href rssFeedUrl ]
-                                [ Html.text "RSS feed" ]
-                            ]
+                        [ Html.li [] [ linkToNewTab "Atom feed" atomFeedUrl ]
+                        , Html.li [] [ linkToNewTab "RSS feed" rssFeedUrl ]
                         ]
                 }
 
