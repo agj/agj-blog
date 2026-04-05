@@ -22,7 +22,15 @@ third(second(first(data)), moreData);
 first(data).into(second).into(third, moreData);
 ```
 
-I just released [version 3.0.0](https://github.com/agj/dot-into/tree/v3.0.0), which breaks ES5 compatibility but fixes some outstanding type inference problems that have existed since I introduced TypeScript support. Basically, it should now work with functions that use generic types. However, it's still broken for functions with multiple type signatures, sadly.
+I just released [version 3.0.0](https://github.com/agj/dot-into/tree/v3.0.0), which breaks ES5 compatibility but fixes some outstanding type inference problems that have existed since I introduced TypeScript support. Basically, it should now work with functions that use generic types. However, it's still broken for functions with multiple type signatures, sadly. But it's an easy fix:
+
+```ts
+// This breaks inference:
+data.into(multiSignatureFn);
+
+// This doesn't:
+data.into((value) => multiSignatureFn(value));
+```
 
 I guess I wanted to post about it again because the biggest problem that it had, in my eyes, was that any `null` or `undefined` value in the middle of a pipe would cause a runtime exception. This is because the library extends the `Object` prototype, which those two values don't inherit from, and so the execution throws due to a non-existing object member. But more recently (in this decade or so since it was originally released) there's been two developments that mitigate this issue and make the library more useful:
 
