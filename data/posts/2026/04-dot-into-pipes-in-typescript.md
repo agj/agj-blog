@@ -10,6 +10,7 @@ tags:
 language: eng
 external:
   mastodon-toot-id: "116338519658474885"
+  devto-slug: "dot-into-pipes-in-typescript-1cn"
 ---
 
 So I have a little library for JavaScript and TypeScript called [dot-into](https://github.com/agj/dot-into), which is something I actually every so often use in personal projects I've written using said languages. [I've posted about it before](https://blog.agj.cl/tag/?t=dot-into) back when I launched it, and I've updated it a few times. Here's the short of it:
