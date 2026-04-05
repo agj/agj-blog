@@ -1,6 +1,4 @@
 {
-  description = "Blog";
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
@@ -23,10 +21,10 @@
             pkgs.just
             pkgs.leiningen
             pkgs.mprocs
-            pkgs.nodePackages.prettier
             pkgs.nodejs-slim_24
             pkgs.nushell
             pkgs.pnpm
+            pkgs.prettier
             pkgs.qrtool
             pkgs.rsync
             pkgs.typescript
