@@ -404,7 +404,7 @@ viewMastodonShareLink { postTitle, postUrl } { text, comment } =
     viewLink
         { text = replacePlaceholders text
         , url =
-            "https://tootpick.org/#text={comment}"
+            "https://share.joinmastodon.org/#text={comment}"
                 |> String.replace "{comment}" (Url.percentEncode commentWithReplacements)
         }
 
