@@ -308,7 +308,7 @@ viewTitleTag { queryTags } tag =
             ]
             [ Html.text (Tag.getName tag) ]
         , Html.div
-            [ class "text-layout-50 pointer-events-none absolute top-2 inline-block"
+            [ class "text-layout-50 pointer-events-none relative -top-2 inline-block w-0"
             , class "peer-hover:text-primary-50"
             ]
             [ Icon.xMark Icon.Medium ]
