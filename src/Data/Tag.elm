@@ -232,6 +232,7 @@ all =
     , Tag { name = "campodecolor", slug = "campodecolor" }
     , Tag { name = "Cave Trip", slug = "cave-trip" }
     , Tag { name = "Chile", slug = "chile" }
+    , Tag { name = "Chinese", slug = "chinese" }
     , Tag { name = "Cielos", slug = "cielos" }
     , Tag { name = "cinema", slug = "cinema" }
     , Tag { name = "Climbrunner", slug = "climbrunner" }
