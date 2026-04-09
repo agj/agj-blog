@@ -10,6 +10,8 @@ tags:
   - chinese
   - javascript
 language: eng
+external:
+  mastodon-toot-id: "116376689668605645"
 ---
 
 Again posting about something old. This little project: [“3000+ traditional hanzi Anki deck.”](https://github.com/agj/3000-traditional-hanzi) That links to the Github project; the readme file has a lot of information, but in this post I'll expound on it a bit more, including its most recent developments.
