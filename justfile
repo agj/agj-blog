@@ -50,6 +50,7 @@ typecheck:
     tsc --noEmit
 
 # Check for errors in the posts data.
+[group('maintenance')]
 check-data:
     nu ./tasks/check-data.nu
 
