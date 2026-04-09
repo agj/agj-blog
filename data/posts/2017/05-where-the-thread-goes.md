@@ -10,7 +10,7 @@ tags:
   - university
   - video
   - nihongo
-language: eng
+language: [eng, jpn]
 ---
 
 <video-embed service="vimeo" id="151801842" width="500" height="281" />

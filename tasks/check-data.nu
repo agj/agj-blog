@@ -38,22 +38,31 @@ let posts = glob "data/posts/**/*.md"
     { filename: $filename, frontmatter: $frontmatter, imageUrls: $imageUrls }
   }
 
+let languageTagMatching = [
+  { language: "spa", tag: "espanol" }
+  { language: "jpn", tag: "nihongo" }
+]
+
 let errors = $posts
   | each {|post|
-      let $isSpanish = $post.frontmatter.language | $in == "spa" or "spa" in $in
-      let $hasSpanishTag = "espanol" in $post.frontmatter.tags
+      $languageTagMatching
+        | each {|lm|
+          let $isLanguage = $post.frontmatter.language | $in == $lm.language or $lm.language in $in
+          let $hasLanguageTag = $lm.tag in $post.frontmatter.tags
 
-      let spanishTagMessages = [
-          (if ($isSpanish and not $hasSpanishTag) { "Spanish language without `spanish` tag." }),
-          (if (not $isSpanish and $hasSpanishTag) { "Has `spanish` tag but isn't Spanish language." }),
-        ]
-        | where { $in != null }
-      let imageUrlMessages = $post.imageUrls
-        | where {|imageUrl| not ($"..($imageUrl)" | path exists) }
-        | each {|imageUrl| $"Image path doesn't exist: ($imageUrl)" }
-      let messages = $spanishTagMessages | append $imageUrlMessages
+          let languageTagMessages = [
+              (if ($isLanguage and not $hasLanguageTag) { $"`($lm.language)` language post without `($lm.tag)` tag." }),
+              (if (not $isLanguage and $hasLanguageTag) { $"Post has `($lm.tag)` tag but isn't `($lm.language)` language." }),
+            ]
+            | where { $in != null }
+          let imageUrlMessages = $post.imageUrls
+            | where {|imageUrl| not ($"..($imageUrl)" | path exists) }
+            | each {|imageUrl| $"Image path doesn't exist: ($imageUrl)" }
+          let messages = $languageTagMessages | append $imageUrlMessages
 
-      $messages | each {|msg| { filename: $post.filename, message: $msg } }
+          $messages | each {|msg| { filename: $post.filename, message: $msg } }
+        }
+        | flatten
     }
   | flatten
 
