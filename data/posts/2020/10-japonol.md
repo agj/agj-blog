@@ -9,6 +9,7 @@ tags:
   - espanol
   - japonol
   - language
+  - japanese
 language: spa
 ---
 

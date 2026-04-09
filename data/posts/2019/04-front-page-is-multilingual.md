@@ -11,6 +11,7 @@ tags:
   - elm
   - front-page-design
   - web
+  - japanese
 language: eng
 ---
 

@@ -9,6 +9,7 @@ tags:
   - japonol
   - language
   - nihongo
+  - japanese
 language: jpn
 ---
 

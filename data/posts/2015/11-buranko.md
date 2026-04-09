@@ -7,6 +7,7 @@ categories:
 tags:
   - buranko
   - japan
+  - japanese
   - javascript
   - release
   - university

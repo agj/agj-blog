@@ -6,6 +6,8 @@ categories:
 tags:
   - language
   - learning
+  - japanese
+  - chinese
   - espanol
 language: spa
 external:
