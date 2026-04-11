@@ -75,11 +75,15 @@ Puedes saltarte esta sección si no te interesa. Aquí voy a explicar un poquito
 
 Primero, hace falta especificar que esta funcionalidad llamada “flakes” es, al momento en que escribo esto, considerada experimental, y por lo tanto no está activada por defecto: hay que configurarla.
 
-Si no tienes Nix instalado aún, te recomiendo usar el [Determinate Nix Installer](https://zero-to-nix.com/concepts/nix-installer/). No es el oficial, pero es mejor en varios aspectos, entre ellos, viene con flakes activados por defecto, funciona mejor en macOS, y también incluye una forma fácil de desinstalar. Corre el script de abajo en tu terminal para instalarlo (o copia el script de la dirección vinculada arriba). **Cuidado:** Cuando te pregunte si instalar “Determinate Nix”, ponle que **no**. Ese es un fork, y lo que queremos es instalar Nix oficial.
+Si no tienes Nix instalado aún, te recomiendo usar el [instalador experimental](https://github.com/NixOS/nix-installer). Es mejor que el “normal” en varios aspectos, entre ellos, funciona mejor en macOS, y también incluye una forma fácil de desinstalar. Corre el script de abajo en tu terminal para instalarlo (o copia el script de la dirección vinculada arriba).
 
 ```sh
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install --enable-flakes
 ```
+
+Nótese que le pasamos la opción `--enable-flakes` para inmediatamente dejar activa esta funcionalidad.
+
+_Editado 2026-04-11: Quité la recomendación de instalar usando el “Determinate Nix Installer”, ya que [perdió soporte para instalar Nix original](https://determinate.systems/blog/installer-dropping-upstream/), ya sólo sirve para instalar su fork, el cual no recomiendo._ 👎
 
 Si por otro lado ya tienes instalado Nix y no te funcionan los flakes, necesitas añadir un poco de configuración. Abre o crea un archivo `~/.config/nix/nix.conf` y ponle esto:
 
