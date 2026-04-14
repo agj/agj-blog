@@ -10,6 +10,9 @@ tags:
   - nushell
   - library
 language: eng
+external:
+  mastodon-toot-id: "116405197958258355"
+  devto-slug: "elm-simple-icons-another-elm-package-23pk"
 ---
 
 I released a new Elm package: [agj/**elm-simple-icons**](https://package.elm-lang.org/packages/agj/elm-simple-icons/latest/), an Elm conversion of a project called [Simple Icons](https://simpleicons.org/). It's a collection of icon versions of many logos for brands and projects. This is a practical tool to have lying around to, say, put a little Wikipedia icon next to a link pointing to a Wikipedia article, or otherwise visually annotate content related to external services. I sent a PR to the Simple Icons project to add my package to their list of “third party extensions,” and it's already listed [on their website](https://simpleicons.org/?modal=extensions) next to many other similar packages.
