@@ -246,6 +246,7 @@ all =
     , Tag { name = "dream", slug = "dream" }
     , Tag { name = "Elm", slug = "elm" }
     , Tag { name = "elm-knobs", slug = "elm-knobs" }
+    , Tag { name = "elm-simple-icons", slug = "elm-simple-icons" }
     , Tag { name = "Entretenimientos Diana", slug = "entretenimientos-diana" }
     , Tag { name = "español", slug = "espanol" }
     , Tag { name = "event", slug = "event" }
