@@ -94,11 +94,8 @@ viewInternal config sectionDepth blocks =
 viewInline : Maybe (String -> msg) -> Doc.Inline -> Html msg
 viewInline onClickMaybe inline =
     case inline of
-        Doc.Text styledText ->
-            viewStyledText styledText
-
-        Doc.InlineCode text ->
-            Html.pre [] [ Html.text text ]
+        Doc.Text text ->
+            viewText text
 
         Doc.Link { target, inlines } ->
             Html.a
@@ -110,14 +107,24 @@ viewInline onClickMaybe inline =
                     Nothing ->
                         Custom.Html.Attributes.none
                 ]
-                (List.map viewStyledText inlines)
+                (List.map viewText inlines)
 
         Doc.LineBreak ->
             Html.br [] []
 
 
-viewStyledText : Doc.StyledText -> Html msg
-viewStyledText { text, styles } =
+viewText : Doc.Text -> Html msg
+viewText theText =
+    case theText of
+        Doc.StyledText { text, styles } ->
+            viewStyledText text styles
+
+        Doc.InlineCode code ->
+            Html.pre [] [ Html.text code ]
+
+
+viewStyledText : String -> Doc.Styles -> Html msg
+viewStyledText text styles =
     let
         b : Html msg -> Html msg
         b =

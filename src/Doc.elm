@@ -6,9 +6,8 @@ import View.VideoEmbed
 
 
 type Inline
-    = Text StyledText
-    | InlineCode String
-    | Link { target : String, inlines : List StyledText }
+    = Text Text
+    | Link { target : String, inlines : List Text }
     | LineBreak
 
 
@@ -26,8 +25,9 @@ type Block msg
     | LanguageBreak View.LanguageBreak.LanguageBreak
 
 
-type alias StyledText =
-    { text : String, styles : Styles }
+type Text
+    = StyledText { text : String, styles : Styles }
+    | InlineCode String
 
 
 type alias Styles =
@@ -43,12 +43,12 @@ type alias ListItem msg =
 
 plainText : String -> Inline
 plainText text =
-    Text { text = text, styles = emptyStyles }
+    Text (StyledText { text = text, styles = emptyStyles })
 
 
 inlineCode : String -> Inline
 inlineCode text =
-    InlineCode text
+    Text (InlineCode text)
 
 
 setBold : Inline -> Inline
@@ -74,14 +74,11 @@ toLink target inlines =
                 |> List.filterMap
                     (\inline ->
                         case inline of
-                            Text styledText ->
-                                Just [ styledText ]
+                            Text text ->
+                                Just [ text ]
 
                             Link l ->
                                 Just l.inlines
-
-                            InlineCode text ->
-                                Just [ { text = text, styles = emptyStyles } ]
 
                             LineBreak ->
                                 Nothing
@@ -94,22 +91,24 @@ toLink target inlines =
 mapStyles : (Styles -> Styles) -> Inline -> Inline
 mapStyles mapper inline =
     case inline of
-        Text styledText ->
-            Text (mapStyledTextStyles mapper styledText)
+        Text text ->
+            Text (mapStyledTextStyles mapper text)
 
         Link ({ inlines } as config) ->
             Link { config | inlines = inlines |> List.map (mapStyledTextStyles mapper) }
-
-        InlineCode _ ->
-            inline
 
         LineBreak ->
             inline
 
 
-mapStyledTextStyles : (Styles -> Styles) -> StyledText -> StyledText
-mapStyledTextStyles mapper styledText =
-    { styledText | styles = mapper styledText.styles }
+mapStyledTextStyles : (Styles -> Styles) -> Text -> Text
+mapStyledTextStyles mapper text =
+    case text of
+        StyledText styledText ->
+            StyledText { styledText | styles = mapper styledText.styles }
+
+        InlineCode _ ->
+            text
 
 
 emptyStyles : Styles

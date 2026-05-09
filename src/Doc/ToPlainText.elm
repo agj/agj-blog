@@ -70,24 +70,25 @@ viewInternal blocks =
 viewInline : Doc.Inline -> String
 viewInline inline =
     case inline of
-        Doc.Text styledText ->
-            viewStyledText styledText
-
-        Doc.InlineCode text ->
-            "`{text}`"
-                |> String.replace "{text}" text
+        Doc.Text text ->
+            viewText text
 
         Doc.Link { inlines } ->
-            List.map viewStyledText inlines
+            List.map viewText inlines
                 |> String.join ""
 
         Doc.LineBreak ->
             "\n"
 
 
-viewStyledText : Doc.StyledText -> String
-viewStyledText { text } =
-    text
+viewText : Doc.Text -> String
+viewText text =
+    case text of
+        Doc.StyledText t ->
+            t.text
+
+        Doc.InlineCode code ->
+            "`" ++ code ++ "`"
 
 
 viewList : Maybe Int -> Doc.ListItem msg -> List (Doc.ListItem msg) -> String
