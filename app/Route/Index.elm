@@ -270,7 +270,8 @@ viewContent posts postsWithSummary languages =
                         , class = Just "sm:row-span-2"
                         , content =
                             Html.ul
-                                [ class "flex flex-row flex-wrap gap-x-2 text-sm leading-relaxed"
+                                [ class "hidden text-sm leading-relaxed"
+                                , class "sm:flex sm:flex-row sm:flex-wrap sm:gap-x-2"
                                 , class "md:block"
                                 ]
                                 (List.concat
