@@ -104,10 +104,7 @@ viewCard =
                 ]
                 (cats
                     |> List.map viewCat
-                    |> List.intersperse
-                        (Html.div [ class "sm:hidden" ]
-                            [ Html.text "/" ]
-                        )
+                    |> List.intersperse (viewSeparator "/")
                 )
 
         viewCat : NestedCategory -> Html msg
@@ -121,11 +118,16 @@ viewCard =
 
                  else
                     [ Html.div [] [ toLink category ]
-                    , Html.div [ class "text-layout-50 sm:hidden" ] [ Html.text "[" ]
+                    , viewSeparator "["
                     , viewCatList children
-                    , Html.div [ class "text-layout-50 sm:hidden" ] [ Html.text "]" ]
+                    , viewSeparator "]"
                     ]
                 )
+
+        viewSeparator : String -> Html msg
+        viewSeparator text =
+            Html.div [ class "text-layout-60 sm:hidden" ]
+                [ Html.text text ]
     in
     View.Card.view
         { title = Just (Html.text "Categories")
