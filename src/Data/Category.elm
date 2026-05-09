@@ -19,7 +19,7 @@ import BackendTask exposing (BackendTask)
 import Consts
 import Custom.Html
 import Html exposing (Html)
-import Html.Attributes exposing (href)
+import Html.Attributes exposing (class, href)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
 import List.Extra as List
@@ -95,10 +95,42 @@ viewList =
 
 viewCard : Html msg
 viewCard =
+    let
+        viewCatList : List NestedCategory -> Html msg
+        viewCatList cats =
+            Html.ul
+                [ class "marker:text-layout-60 flex flex-row flex-wrap gap-1"
+                , class "sm:flex sm:list-disc sm:flex-col sm:gap-0"
+                ]
+                (cats
+                    |> List.map viewCat
+                    |> List.intersperse
+                        (Html.div [ class "sm:hidden" ]
+                            [ Html.text "/" ]
+                        )
+                )
+
+        viewCat : NestedCategory -> Html msg
+        viewCat (NestedCategory category children) =
+            Html.li
+                [ class "flex flex-row flex-wrap gap-1 text-nowrap"
+                , class "sm:ml-4 sm:list-item sm:list-disc sm:gap-0"
+                ]
+                (if List.length children <= 0 then
+                    [ toLink category ]
+
+                 else
+                    [ Html.div [] [ toLink category ]
+                    , Html.div [ class "text-layout-50 sm:hidden" ] [ Html.text "[" ]
+                    , viewCatList children
+                    , Html.div [ class "text-layout-50 sm:hidden" ] [ Html.text "]" ]
+                    ]
+                )
+    in
     View.Card.view
         { title = Just (Html.text "Categories")
         , class = Nothing
-        , content = viewList
+        , content = viewCatList allNested
         }
 
 
