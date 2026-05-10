@@ -10,6 +10,8 @@ tags:
   - web
   - graphic-design
 language: eng
+external:
+  mastodon-toot-id: "116547512261531415"
 ---
 
 I remade the front page for [agj.cl](https://agj.cl). This time I developed it using [Gleam](https://gleam.run/), since it's been an objective of mine these past few months to get better acquainted with the language. It's not any different from what I would've done had I stuck with [Elm](https://elm-lang.org/), because [Lustre](https://hexdocs.pm/lustre) (the UI library) uses almost the exact same architecture.
