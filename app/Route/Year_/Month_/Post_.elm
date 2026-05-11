@@ -29,7 +29,7 @@ import Url
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.AudioPlayer
-import View.PageBody
+import View.Page
 
 
 route : StatefulRoute RouteParams Data ActionData Model Msg
@@ -242,16 +242,16 @@ view app shared model =
     in
     { title = title app.data.gist.title
     , body =
-        View.PageBody.fromContent
+        View.Page.fromContent
             { theme = shared.theme
             , onRequestedChangeTheme = Shared.SelectedChangeTheme >> SharedMsg
             }
             contentEl
-            |> View.PageBody.withTitleAndSubtitle
+            |> View.Page.withTitleAndSubtitle
                 [ Html.text app.data.gist.title ]
                 postInfo
-            |> View.PageBody.withFooter (viewInteractions { postGist = app.data.gist, mastodonStatuses = shared.mastodonStatuses })
-            |> View.PageBody.view
+            |> View.Page.withFooter (viewInteractions { postGist = app.data.gist, mastodonStatuses = shared.mastodonStatuses })
+            |> View.Page.view
     }
 
 

@@ -16,7 +16,7 @@ import Shared
 import Site
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-import View.PageBody
+import View.Page
 import View.Snippets
 
 
@@ -137,11 +137,11 @@ view app shared model =
     in
     { title = title app
     , body =
-        View.PageBody.fromContent
+        View.Page.fromContent
             { theme = shared.theme
             , onRequestedChangeTheme = Shared.SelectedChangeTheme >> SharedMsg
             }
             content
-            |> View.PageBody.withTitleAndSubtitle titleEl subtitle
-            |> View.PageBody.view
+            |> View.Page.withTitleAndSubtitle titleEl subtitle
+            |> View.Page.view
     }

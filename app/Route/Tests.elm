@@ -11,7 +11,7 @@ import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import UrlPath exposing (UrlPath)
 import View exposing (View)
-import View.PageBody
+import View.Page
 
 
 route : StatefulRoute RouteParams Data ActionData Model Msg
@@ -148,11 +148,11 @@ view app shared model =
     in
     { title = "Tests"
     , body =
-        View.PageBody.fromContent
+        View.Page.fromContent
             { theme = shared.theme
             , onRequestedChangeTheme = Shared.SelectedChangeTheme >> SharedMsg
             }
             content
-            |> View.PageBody.withTitle [ Html.text "Tests" ]
-            |> View.PageBody.view
+            |> View.Page.withTitle [ Html.text "Tests" ]
+            |> View.Page.view
     }

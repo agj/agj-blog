@@ -1,6 +1,6 @@
-module View.PageBody exposing
+module View.Page exposing
     ( Feeds(..)
-    , PageBody
+    , Page
     , fromContent
     , view
     , withFeeds
@@ -20,8 +20,8 @@ import PagesMsg exposing (PagesMsg)
 import Theme exposing (Theme)
 
 
-type PageBody msg
-    = PageBody
+type Page msg
+    = Page
         { content : Html msg
         , title : PageTitle msg
         , footer : Maybe (Html msg)
@@ -48,9 +48,9 @@ fromContent :
     , onRequestedChangeTheme : Maybe Theme.ThemeColor -> msg
     }
     -> Html msg
-    -> PageBody msg
+    -> Page msg
 fromContent config content =
-    PageBody
+    Page
         { content = content
         , title = NoPageTitle
         , footer = Nothing
@@ -60,28 +60,28 @@ fromContent config content =
         }
 
 
-withTitle : List (Html msg) -> PageBody msg -> PageBody msg
-withTitle titleInlines (PageBody config) =
-    PageBody { config | title = PageTitleOnly titleInlines }
+withTitle : List (Html msg) -> Page msg -> Page msg
+withTitle titleInlines (Page config) =
+    Page { config | title = PageTitleOnly titleInlines }
 
 
-withTitleAndSubtitle : List (Html msg) -> Html msg -> PageBody msg -> PageBody msg
-withTitleAndSubtitle titleInlines subtitleBlock (PageBody config) =
-    PageBody { config | title = PageTitleAndSubtitle titleInlines subtitleBlock }
+withTitleAndSubtitle : List (Html msg) -> Html msg -> Page msg -> Page msg
+withTitleAndSubtitle titleInlines subtitleBlock (Page config) =
+    Page { config | title = PageTitleAndSubtitle titleInlines subtitleBlock }
 
 
-withFooter : Html msg -> PageBody msg -> PageBody msg
-withFooter footer (PageBody config) =
-    PageBody { config | footer = Just footer }
+withFooter : Html msg -> Page msg -> Page msg
+withFooter footer (Page config) =
+    Page { config | footer = Just footer }
 
 
-withFeeds : Feeds msg -> PageBody msg -> PageBody msg
-withFeeds feeds (PageBody config) =
-    PageBody { config | feeds = feeds }
+withFeeds : Feeds msg -> Page msg -> Page msg
+withFeeds feeds (Page config) =
+    Page { config | feeds = feeds }
 
 
-view : PageBody msg -> Html (PagesMsg msg)
-view (PageBody config) =
+view : Page msg -> Html (PagesMsg msg)
+view (Page config) =
     let
         titleEl : List (Html msg) -> Html msg
         titleEl text =

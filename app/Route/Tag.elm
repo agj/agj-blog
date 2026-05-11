@@ -30,7 +30,7 @@ import View exposing (View)
 import View.Card
 import View.ColumnsLayout
 import View.LanguageToggle
-import View.PageBody exposing (PageBody)
+import View.Page exposing (Page)
 import View.Snippets
 
 
@@ -242,13 +242,13 @@ view app shared model =
                     }
                 ]
 
-        withRssFeedLinkMaybe : PageBody Msg -> PageBody Msg
+        withRssFeedLinkMaybe : Page Msg -> Page Msg
         withRssFeedLinkMaybe pageBody =
             case feedUrls model.queryTags of
                 Just { rssUrl, atomUrl } ->
                     pageBody
-                        |> View.PageBody.withFeeds
-                            (View.PageBody.FeedUrls
+                        |> View.Page.withFeeds
+                            (View.Page.FeedUrls
                                 { rssFeedUrl = rssUrl
                                 , atomFeedUrl = atomUrl
                                 }
@@ -256,21 +256,21 @@ view app shared model =
 
                 Nothing ->
                     pageBody
-                        |> View.PageBody.withFeeds
-                            (View.PageBody.NoFeedsWithExplanation
+                        |> View.Page.withFeeds
+                            (View.Page.NoFeedsWithExplanation
                                 "Syndication feeds are available for single tags only. You currently have multiple tags selected."
                             )
     in
     { title = title
     , body =
-        View.PageBody.fromContent
+        View.Page.fromContent
             { theme = shared.theme
             , onRequestedChangeTheme = Shared.SelectedChangeTheme >> SharedMsg
             }
             content
-            |> View.PageBody.withTitleAndSubtitle (viewTitle model) subtitle
+            |> View.Page.withTitleAndSubtitle (viewTitle model) subtitle
             |> withRssFeedLinkMaybe
-            |> View.PageBody.view
+            |> View.Page.view
     }
 
 

@@ -27,7 +27,7 @@ import View exposing (View)
 import View.Card
 import View.ColumnsLayout
 import View.LanguageToggle
-import View.PageBody
+import View.Page
 
 
 route : StatefulRoute RouteParams Data ActionData Model Msg
@@ -178,20 +178,20 @@ view app shared model =
     in
     { title = title
     , body =
-        View.PageBody.fromContent
+        View.Page.fromContent
             { theme = shared.theme
             , onRequestedChangeTheme = Shared.SelectedChangeTheme >> SharedMsg
             }
             content
-            |> View.PageBody.withTitle
+            |> View.Page.withTitle
                 [ Html.text title ]
-            |> View.PageBody.withFeeds
-                (View.PageBody.FeedUrls
+            |> View.Page.withFeeds
+                (View.Page.FeedUrls
                     { rssFeedUrl = feedUrls.rssUrl
                     , atomFeedUrl = feedUrls.atomUrl
                     }
                 )
-            |> View.PageBody.view
+            |> View.Page.view
     }
 
 

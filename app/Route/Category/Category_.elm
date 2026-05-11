@@ -17,7 +17,7 @@ import UrlPath exposing (UrlPath)
 import View exposing (View)
 import View.ColumnsLayout
 import View.LanguageToggle
-import View.PageBody
+import View.Page
 import View.Snippets
 
 
@@ -182,19 +182,19 @@ view app shared model =
     in
     { title = title app
     , body =
-        View.PageBody.fromContent
+        View.Page.fromContent
             { theme = shared.theme
             , onRequestedChangeTheme = Shared.SelectedChangeTheme >> SharedMsg
             }
             content
-            |> View.PageBody.withTitleAndSubtitle titleEls subtitle
-            |> View.PageBody.withFeeds
-                (View.PageBody.FeedUrls
+            |> View.Page.withTitleAndSubtitle titleEls subtitle
+            |> View.Page.withFeeds
+                (View.Page.FeedUrls
                     { rssFeedUrl = rssUrl
                     , atomFeedUrl = atomUrl
                     }
                 )
-            |> View.PageBody.view
+            |> View.Page.view
     }
 
 
