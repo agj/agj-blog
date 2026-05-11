@@ -15,8 +15,8 @@ and has no database.
 
 **No content in this blog was produced using generative AI
 technologies,** which includes the articles, images, and code I made
-myself. I make no claim about third-party code I've used or sources I
-link to, but I sure hope they don't, either.
+myself. I sadly cannot make the same claim about all third-party
+library code I've used here or sources I link to.
 
 Also see the [/about](/about) page for more about me (the author) and
 this blog's content.
@@ -42,8 +42,9 @@ se ejecute en el servidor y no tiene base de datos.
 
 **Ningún contenido en este blog fue producido usando inteligencia
 artificial generativa,** lo cual incluye artículos, imágenes y código
-de mi autoría. No puedo asegurar lo mismo del código de librería
-producido por terceros que ocupo, pero espero que sea el mismo caso.
+de mi autoría. Lamentablemente, no puedo asegurar lo mismo de todo el
+código de librería producido por terceros que ocupo aquí, o fuentes de
+información a las cuales vinculo.
 
 Revisa la página [/about](/about) para ver más información sobre el
 autor y el contenido de este blog.
